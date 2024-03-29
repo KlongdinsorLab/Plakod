@@ -1,5 +1,6 @@
 import { BossTutorialScene } from 'component/enemy/boss/Boss'
-import { LARGE_FONT_SIZE } from 'config'
+import SoundManager from 'component/sound/SoundManager'
+import { BOSS_TUTORIAL_DELAY_MS, LARGE_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 
@@ -10,16 +11,23 @@ export default class BossAttackTutorial extends Phaser.Scene {
 	}
 
 	preload() {
-        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+     this.load.audio('bossAttack', 'sound/boss-attack.mp3')
 	}
 
 	create() {
 		const { width, height } = this.scale
 
+    const soundManager = new SoundManager(this)
+	  const bossAttack = this.sound.add('bossAttack')
+    soundManager.play(bossAttack, false)
+
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, height / 2, 'boss_attack')
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE).setAlpha(0)
+
+		const bossImage = this.add.image(width / 2, -140, 'b1v1', 'b1v1_attack_00000.png').setOrigin(0.5, 1)
 
 		WebFont.load({
 			google: {
@@ -47,10 +55,6 @@ export default class BossAttackTutorial extends Phaser.Scene {
             alpha: 1,
         })
 
-		const bossImage = this.add
-			.image(width / 2, -140, 'alien', 'alienv1_attack_00000.png')
-			.setOrigin(0.5, 1)
-
 		this.tweens.add({
 			targets: bossImage,
 			y: 480,
@@ -58,5 +62,9 @@ export default class BossAttackTutorial extends Phaser.Scene {
 			repeat: 0,
 			ease: 'sine.out',
 		})
+
+		setTimeout(() => {
+			this.scene.stop()
+		}, BOSS_TUTORIAL_DELAY_MS)
 	}
 }

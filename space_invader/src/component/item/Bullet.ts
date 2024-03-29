@@ -1,8 +1,8 @@
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 import {
+  BULLET_SPEED,
   MARGIN,
-  METEOR_SPEED,
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
 import { Item } from './Item'
@@ -47,9 +47,9 @@ export class Bullet extends Item {
   }
 
   move(): void {
-    this.item.setVelocityY(METEOR_SPEED)
+    this.item.setVelocityY(BULLET_SPEED)
     const velocityX = Math.floor(
-      Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
+      Math.random() * (BULLET_SPEED / 3) - BULLET_SPEED / 6,
     )
     this.item.setVelocityX(this.isTutorial ? -120 : velocityX)
   }

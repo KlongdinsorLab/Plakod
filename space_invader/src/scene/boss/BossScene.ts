@@ -18,16 +18,10 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
-import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
-import { B1BossPhase1 } from 'component/enemy/boss/b1/B1BossPhase1'
-
-interface Props {
-	  name: BossName,
-		score: number,
-		playerX: number,
-		reloadCount: number, // TODO change name and class to lap
-}
+import { Boss, BossCutScene, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossInterface } from './bossInterface'
+import SoundManager from 'component/sound/SoundManager'
+import { B1Boss } from 'component/enemy/boss/B1Boss'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -51,10 +45,13 @@ export default class BossScene extends Phaser.Scene {
 	private bulletText!: Phaser.GameObjects.Text
 
 	private isCompleteInit = false
-	private props!: Props
+  private props!: BossInterface
+	private bgm!: Phaser.Sound.BaseSound
+	private soundManager: SoundManager
 
 	constructor() {
 		super({ key: 'bossScene' })
+		this.soundManager = new SoundManager(this)
 	}
 
 	preload() {
@@ -67,27 +64,25 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'alien',
-			'assets/character/enemy/alienV1.png',
-			'assets/character/enemy/alienV1.json',
+			'b1v1',
+			'assets/character/enemy/b1v1_spritesheet.png',
+			'assets/character/enemy/b1v1_spritesheet.json',
 		)
 
 		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
-		this.load.image('fire', 'assets/effect/fire03.png')
-		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
-		this.load.image('charge', 'assets/effect/chargeBlue.png')
-		this.load.image('explosion', 'assets/effect/explosionYellow.png')
-		this.load.image('chevron', 'assets/icon/chevron-down.svg')
+		this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
+
+		this.load.image('laser', 'assets/effect/mc_bullet.png')
+
+		this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
 
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
-		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
-		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
-		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
-		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
-		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
 
-		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
+		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
+    	this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
+    	this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
+    	this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
@@ -95,6 +90,11 @@ export default class BossScene extends Phaser.Scene {
 		this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
 		this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
+		this.load.audio('boss_bgm', 'sound/BGM_BossScene.mp3')
+		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
+		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
+		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
+		this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 		this.load.script(
@@ -103,7 +103,7 @@ export default class BossScene extends Phaser.Scene {
 		)
 	}
 
-	init(props: Props) {
+	init(props: BossInterface) {
 	 this.props = props
 	}
 
@@ -115,6 +115,10 @@ export default class BossScene extends Phaser.Scene {
 			.tileSprite(0, 0, width, height, 'boss_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
+
+		this.bgm = this.sound.add('boss_bgm', {volume: 1, loop: true})
+    	this.soundManager.init()
+    	this.soundManager.play(this.bgm)
 
 		this.bossLayer = this.add.layer()
 
@@ -142,7 +146,7 @@ export default class BossScene extends Phaser.Scene {
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
-		this.gaugeRegistry.get(0).setVisible(false)
+		this.gaugeRegistry.get(0).setVisibleAll(false)
 
 		this.meteorFactory = new MeteorFactory()
 		this.poisonFactory = new PosionFactory()
@@ -177,40 +181,24 @@ export default class BossScene extends Phaser.Scene {
 	  if(!this.isCompleteInit) return
 
 		const gauge = this.gaugeRegistry?.get(0)
+		gauge.setVisibleAll(false)
 
 		if (!this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
 			// Boss Phase 1
-			this.scene.pause()
-			this.scene.launch(BossCutScene.VS)
-			setTimeout(() => {
-				this.scene.stop(BossCutScene.VS)
-				this.scene.resume()
-				this.scene.launch(BossTutorialScene.ATTACK_BOSS)
-				this.boss.startAttackPhase(BossPhase.PHASE_1)
-				setTimeout(() => {
-					this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-				}, 2000) // TODO put in config
-			}, 3000) // TODO put in config
+			this.boss.startAttackPhase(BossPhase.PHASE_1)
+			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
 		}
 
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
 			this.isCompleteItemTutorial = true
-				setTimeout(() => {
-					this.scene.pause()
-					this.scene.launch(BossCutScene.ESCAPE)
-					setTimeout(() => {
-						this.scene.resume()
-						this.scene.stop(BossCutScene.ESCAPE)
-						this.scene.launch(BossTutorialScene.COLLECT_ITEM)
-					},3000)
-				},1500)
+			this.scene.pause()
+			this.scene.launch(BossCutScene.ESCAPE)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
 
-			gauge.setVisible(false)
 			this.bulletText.setVisible(true)
         	this.bulletText.setText(` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`)
 
@@ -219,21 +207,16 @@ export default class BossScene extends Phaser.Scene {
 			this.bulletText.setVisible(false)
 			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
 			this.boss.startAttackPhase(BossPhase.PHASE_2)
-			setTimeout(() => {
-				this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-			}, 2000)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
-			this.scene.launch('boss transition', {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
+			this.scene.launch(BossCutScene.ESCAPE2, {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
 			this.scene.pause()
 			this.boss.resetState()
+			setTimeout(() => {
+				this.soundManager.stop(this.bgm)
+			}, 5000)
 			// TODO booster
-			// this.scene.launch(BossCutScene.ESCAPE2)
-			// setTimeout(() => {
-			// 	// TODO: go back to gameScene
-			// 	this.scene.stop('game')
-			// }, 3000)
 		}
 
 		if (this.input.pointer1.isDown) {

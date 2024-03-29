@@ -13,6 +13,8 @@ export const BOSSV2_PHASE2_BULLET_COUNT = 120
 export const RELOAD_COUNT = 10
 export const BOSS_MULTIPLE_COUNT = 5
 export const BOSS_TIME_MS = 120_000
+export const BOSS_CUTSCENE_DELAY_MS = 3000
+export const BOSS_TUTORIAL_DELAY_MS = 2000
 export const FIRST_STAGE_BOSS_TIME_MS = 30_000
 export const SECOND_STAGE_BOSS_TIME_MS = 45_000
 export const COLLECT_BULLET_COUNT = 10
@@ -41,10 +43,17 @@ export const FULLCHARGE_SCALE = 1.12
 export const FULLCHARGE_ANIMATION_MS = 300
 export const METEOR_FREQUENCY_MS = 2500
 export const METEOR_SPEED = 300
+export const METEOR_ITEMPHASE_SPEED = 500
 export const METEOR_SPIN_SPEED = 100
 export const PLAYER_HIT_DELAY_MS = 3000
 export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
+export const BULLET_FREQUENCY_MS = 1500
+export const BULLET_SPEED = 300
+export const POISON_FREQUENCY_MS = 5000
+export const POISON_SPEED = 400
+export const HIT_POISON_SCORE = -400
+
 
 export const GAME_TIME_LIMIT_MS = 160000
 export const TUTORIAL_DELAY_MS = 3000

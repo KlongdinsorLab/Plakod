@@ -21,7 +21,8 @@ import WebFont from 'webfontloader'
 // import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
-import { BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossCutScene, BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import SoundManager from 'component/sound/SoundManager'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -50,8 +51,12 @@ export default class GameScene extends Phaser.Scene {
   private event!: EventEmitter
   private gameLayer!: Phaser.GameObjects.Layer
 
+  private bgm!: Phaser.Sound.BaseSound
+  private soundManager: SoundManager
+
   constructor() {
     super({ key: 'game' })
+    this.soundManager = new SoundManager(this)
   }
 
   preload() {
@@ -89,6 +94,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
     this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
+    this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
@@ -103,14 +109,19 @@ export default class GameScene extends Phaser.Scene {
       this.reloadCountNumber = reloadCount
     if(isCompleteBoss !== undefined)
       this.isCompleteBoss = isCompleteBoss
+    this.soundManager.unmute()
 	}
 
   create() {
-
     const { width, height } = this.scale
     // const queryString = window.location.search;
     // const urlParams = new URLSearchParams(queryString);
     // this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+
+    this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
+    this.soundManager.init()
+    this.soundManager.play(this.bgm)
+
 
     this.background = this.add
       .tileSprite(0, 0, width, height, 'background')
@@ -238,36 +249,14 @@ export default class GameScene extends Phaser.Scene {
       this.scene.launch('warmup', { event: this.event })
     }
 
-    // TODO add to boss class
     if (this.isCompleteTutorial() && this.isCompleteWarmup) {
       this.meteorFactory.createByTime(this, this.player, this.score, delta)
     }
 
     // TODO move to controller class
     if (!this.controller1) return
-
-    //		if (this.controller1?.direction.LEFT) {
-    //			this.player.moveLeft(delta)
-    //		}
-    //
-    //		if (this.controller1?.direction.RIGHT) {
-    //			this.player.moveRight(delta)
-    //		}
-
-    //		if (this.controller1?.buttons.B12 > 0) {
-    //			gauge.showUp()
-    //		} else {
-    //			gauge.hideUp()
-    //		}
-    //
-    //		if (this.controller1?.buttons.B13 > 0) {
-    //			gauge.showDown()
-    //		} else {
-    //			gauge.hideDown()
-    //		}
-
-    // Must be in this order if B3 press with B6, B3
-    if (this.controller1?.buttons.B2 > 0) {
+    // Must be in this order if B3 press with B6, B3 will be activated
+    if (!this.player.getIsAttacking() && this.controller1?.buttons.B2 > 0) {
       gauge.hold(delta)
     } else if (this.controller1?.buttons.B3 > 0) {
       gauge.setStep(1)
@@ -301,16 +290,6 @@ export default class GameScene extends Phaser.Scene {
       delta,
     )
 
-    if(this.reloadCount.isBossShown(this.isCompleteBoss)){
-      this.scene.stop()
-      this.scene.launch('bossScene', {
-        name: BossName.B1,
-        score: this.score.getScore(),
-        playerX: this.player.getBody().x,
-        reloadCount: this.reloadCount.getCount(),
-      })
-    }
-
     if (this.reloadCount.isDepleted()) {
       gauge.deplete()
       this.scene.launch('end game', {score: this.score.getScore()})
@@ -324,6 +303,16 @@ export default class GameScene extends Phaser.Scene {
       this.player.startReload()
       gauge.setFullCharge()
       this.event.emit('fullInhale')
+      if(this.reloadCount.isBossShown(this.isCompleteBoss)) {
+        this.soundManager.stop(this.bgm)
+        this.scene.stop()
+        this.scene.launch(BossCutScene.VS, {
+          name: BossName.B1,
+          score: this.score.getScore(),
+          playerX: this.player.getBody().x,
+          reloadCount: this.reloadCount.getCount(),
+        })
+      }
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&

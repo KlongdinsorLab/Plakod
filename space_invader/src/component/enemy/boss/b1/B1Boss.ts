@@ -6,6 +6,7 @@ import {
 	BOSS_HIT_DELAY_MS,
 	FIRST_STAGE_BOSS_TIME_MS,
 	SECOND_STAGE_BOSS_TIME_MS,
+	BOSS_TUTORIAL_DELAY_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import {  Boss } from '../Boss'
@@ -35,20 +36,20 @@ export class B1Boss extends Boss {
 		const path = new Phaser.Curves.Path(0, 0)
 		this.scene.anims.create({
 			key: 'boss-move',
-			frames: this.scene.anims.generateFrameNames('alien', {
-				prefix: 'alienv1_attack_',
+			frames: this.scene.anims.generateFrameNames('b1v1', {
+				prefix: 'b1v1_attack_',
 				suffix: '.png',
-				start: 0,
-				end: 24,
+				start: 1,
+				end: 12,
 				zeroPad: 5,
 			}),
-			frameRate: 24,
+			frameRate: 18,
 			repeat: -1,
 		})
 		this.scene.anims.create({
 			key: 'boss-hit',
-			frames: this.scene.anims.generateFrameNames('alien', {
-				prefix: 'alienv1_hurt_',
+			frames: this.scene.anims.generateFrameNames('b1v1', {
+				prefix: 'b1v1_hurt_',
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -59,8 +60,8 @@ export class B1Boss extends Boss {
 		})
 
 		this.enemy = this.scene.add
-			.follower(path, width / 2, -140, 'alien')
-			.setOrigin(0.5).setScale(0.8)
+			.follower(path, width / 2, -140, 'b1v1')
+			.setOrigin(0.5)
 		this.enemy.play('boss-move')
 
 		this.scene.physics.world.enable(this.enemy)
@@ -111,7 +112,24 @@ export class B1Boss extends Boss {
 	hit(): void {
 		if (isHit) return
 
-		this.enemy.stop()
+		const bossHit1 = this.scene.sound.add('bossHit1')
+    const bossHit2 = this.scene.sound.add('bossHit2')
+    const bossHit3 = this.scene.sound.add('bossHit3')
+    const bossHit4 = this.scene.sound.add('bossHit4')
+
+    // TODO fixes me
+    const randomSoundIndex = Math.floor(Math.random() * 4) + 1
+    if(randomSoundIndex === 1) {
+      this.soundManager.play(bossHit1, false)
+    } else if (randomSoundIndex === 2) {
+      this.soundManager.play(bossHit2, false)
+    } else if (randomSoundIndex === 3) {
+      this.soundManager.play(bossHit3, false)
+    } else if (randomSoundIndex === 4) {
+      this.soundManager.play(bossHit4, false)
+    }
+
+    this.enemy.stop()
 		// this.enemy.setTexture('boss')
 		this.enemy.play('boss-hit')
 
@@ -147,7 +165,9 @@ export class B1Boss extends Boss {
 			-140,
 		)
 		this.enemy.setPath(path).startFollow({ duration: 200 })
-		this.endAttackPhase()
+		setTimeout(() => {
+			this.endAttackPhase()
+		}, 1500)
 	}
 
 
@@ -159,7 +179,7 @@ export class B1Boss extends Boss {
 			this.isItemPhase = false
 			this.attack()
 			this.player.startReload()
-		}, 2000)
+		}, BOSS_TUTORIAL_DELAY_MS)
 	}
 
 	endAttackPhase(): void {
