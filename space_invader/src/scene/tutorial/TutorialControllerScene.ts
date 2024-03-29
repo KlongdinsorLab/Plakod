@@ -86,9 +86,9 @@ export default class TutorialControllerScene extends Phaser.Scene {
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNames('player', {
-        prefix: 'mc_normal_', suffix: '.png', start: 0, end: 19, zeroPad: 5
+        prefix: 'mc1_normal_', suffix: '.png', start: 0, end: 12, zeroPad: 5
       }),
-      frameRate: 24,
+      frameRate: 18,
       repeat: -1
     });
 
