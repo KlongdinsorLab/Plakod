@@ -28,8 +28,8 @@ export default class TutorialControllerScene extends Phaser.Scene {
   preload() {
     this.load.atlas(
       'player',
-      'assets/character/player/mc_spritesheet.png',
-      'assets/character/player/mc_spritesheet.json',
+      'assets/character/player/mc1_spritesheet.png',
+      'assets/character/player/mc1_spritesheet.json',
     );
     this.load.audio('tutorialDirection', 'sound/tutorial-direction.mp3')
   }

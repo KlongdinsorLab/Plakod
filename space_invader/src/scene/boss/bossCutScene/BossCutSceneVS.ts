@@ -16,8 +16,8 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		this.load.image('boss_cutscene_background', 'assets/background/bg_set5_cutscene.png')
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc_spritesheet.png',
-			'assets/character/player/mc_spritesheet.json',
+			'assets/character/player/mc1_spritesheet.png',
+			'assets/character/player/mc1_spritesheet.json',
 		)
 
 		this.load.atlas(
@@ -28,6 +28,8 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
     this.load.audio('bossVs', 'sound/boss-vs.mp3')
     this.load.audio('bossB1', 'sound/boss-b1.mp3')
+    this.load.audio('mc1Vs', 'sound/mc1-vs.mp3')
+
 	}
 
 	init(props: BossInterface) {
@@ -40,11 +42,17 @@ export default class BossCutSceneVS extends Phaser.Scene {
     const soundManager = new SoundManager(this)
     const bossB1 = this.sound.add('bossB1')
     const bossVs = this.sound.add('bossVs')
+    const mc1Vs = this.sound.add('mc1Vs')
+
     soundManager.play(bossVs, false)
 
     setTimeout(()=> {
       soundManager.play(bossB1, false)
     }, 500)
+
+    setTimeout(()=> {
+      soundManager.play(mc1Vs, false)
+    }, 2000)
 
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
@@ -61,7 +69,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		const bossText = this.add.text(width / 2, 760, "VS",)
 			.setOrigin(0.5, 1)
 		const bossName = I18nSingleton.getInstance()
-			.createTranslatedText(this, -320, 280, 'alien_boss_name')
+			.createTranslatedText(this, -320, 280, 'b1_boss_name')
 			.setOrigin(0.5, 1)
 		const playerName = I18nSingleton.getInstance()
 			.createTranslatedText(this, 800, 950, 'player_name')

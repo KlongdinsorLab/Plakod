@@ -64,8 +64,8 @@ export default class GameScene extends Phaser.Scene {
 
     this.load.atlas(
       'player',
-      'assets/character/player/mc_spritesheet.png',
-      'assets/character/player/mc_spritesheet.json',
+      'assets/character/player/mc1_spritesheet.png',
+      'assets/character/player/mc1_spritesheet.json',
     );
 
     this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
@@ -97,6 +97,10 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
+
+    this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+    this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+    this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
 
     this.load.scenePlugin('mergedInput', MergedInput)
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');

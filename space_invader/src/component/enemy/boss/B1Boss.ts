@@ -9,7 +9,7 @@ import {
 	BOSS_TUTORIAL_DELAY_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
-import {  Boss } from './Boss'
+import { Boss } from './Boss'
 
 let isHit = false
 
@@ -106,27 +106,24 @@ export class B1Boss extends Boss {
 		}, bossTime)
 	}
 
+	getRandomHitSound(
+		index: number,
+	):
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound {
+		const randomIndex = Math.floor(Math.random() * index)
+		const bossHitSounds = [...Array(index)].map((_, i) =>
+			this.scene.sound.add(`bossHit${i+1}`),
+		)
+		return bossHitSounds[randomIndex]
+	}
+
 	hit(): void {
 		if (isHit) return
 
-		const bossHit1 = this.scene.sound.add('bossHit1')
-    const bossHit2 = this.scene.sound.add('bossHit2')
-    const bossHit3 = this.scene.sound.add('bossHit3')
-    const bossHit4 = this.scene.sound.add('bossHit4')
-
-    // TODO fixes me
-    const randomSoundIndex = Math.floor(Math.random() * 4) + 1
-    if(randomSoundIndex === 1) {
-      this.soundManager.play(bossHit1, false)
-    } else if (randomSoundIndex === 2) {
-      this.soundManager.play(bossHit2, false)
-    } else if (randomSoundIndex === 3) {
-      this.soundManager.play(bossHit3, false)
-    } else if (randomSoundIndex === 4) {
-      this.soundManager.play(bossHit4, false)
-    }
-
-    this.enemy.stop()
+		this.soundManager.play(this.getRandomHitSound(4), false)
+		this.enemy.stop()
 		// this.enemy.setTexture('boss')
 		this.enemy.play('boss-hit')
 
@@ -167,7 +164,6 @@ export class B1Boss extends Boss {
 		}, 1500)
 	}
 
-
 	startAttackPhase(bossPhase: number): void {
 		this.isSecondPhase = bossPhase === 2
 		this.isStartAttack = true
@@ -207,9 +203,9 @@ export class B1Boss extends Boss {
 	}
 
 	resetState(): void {
-	  this.isStartAttack = false
+		this.isStartAttack = false
 		this.isAttackPhase = true
 		this.isItemPhase = false
-	  this.isSecondPhase = false
+		this.isSecondPhase = false
 	}
 }
