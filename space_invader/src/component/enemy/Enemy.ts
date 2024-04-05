@@ -32,7 +32,7 @@ export abstract class Enemy {
 	): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | any
 	abstract move(): void
 	abstract attack(): void
-	abstract hit(): void
+	abstract hit(laser?: Phaser.Types.Physics.Arcade.ImageWithDynamicBody): void
 	abstract destroy(): void
 	// TODO Fix any
 	abstract getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | any

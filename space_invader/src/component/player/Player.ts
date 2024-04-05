@@ -6,6 +6,8 @@ import {
   PLAYER_SPEED,
   PLAYER_START_MARGIN
 } from 'config'
+import I18nSingleton from 'i18n/I18nSingleton'
+import WebFont from 'webfontloader'
 
 export default class Player {
   private scene: Phaser.Scene
@@ -245,5 +247,35 @@ export default class Player {
 
   getBulletCount(): number {
     return this.bullet
+  }
+
+  playVsScene(scene: Phaser.Scene): void{
+    const playerImage = scene.add.image(850, 1200, 'player', 'mc_attack_00001.png').setOrigin(0.5, 1).setScale(2.5);
+		const playerName = I18nSingleton.getInstance()
+			.createTranslatedText(scene, 800, 950, 'player_name')
+			.setOrigin(0.5, 1)
+
+      playerName.setStyle({
+        fontFamily: 'Mali',
+        color: 'white',
+        fontWeight: 800,
+      })
+      .setFontSize('7em')
+      .setStroke('#FB511C', 18)
+		
+		scene.tweens.add({
+			targets: playerImage,
+			x: 500,
+			duration: 1000,
+			repeat: 0,
+			ease: 'bounce.out',
+		})
+		scene.tweens.add({
+			targets: playerName,
+			x: 220,
+			duration: 1000,
+			repeat: 0,
+			ease: 'bounce.out',
+		})
   }
 }

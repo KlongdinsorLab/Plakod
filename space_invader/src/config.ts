@@ -11,12 +11,12 @@ export const BOSS_PHASE1_BULLET_COUNT = 60
 export const BOSSV1_PHASE2_BULLET_COUNT = 90
 export const BOSSV2_PHASE2_BULLET_COUNT = 120
 export const RELOAD_COUNT = 10
-export const BOSS_MULTIPLE_COUNT = 5
+export const BOSS_MULTIPLE_COUNT = 1
 export const BOSS_TIME_MS = 120_000
 export const BOSS_CUTSCENE_DELAY_MS = 3000
 export const BOSS_TUTORIAL_DELAY_MS = 2000
-export const FIRST_STAGE_BOSS_TIME_MS = 30_000
-export const SECOND_STAGE_BOSS_TIME_MS = 45_000
+export const PHASE_1_BOSS_TIME_MS = 30_000
+export const PHASE_2_BOSS_TIME_MS = 45_000
 export const COLLECT_BULLET_COUNT = 10
 
 //export const BULLET_COUNT = 5

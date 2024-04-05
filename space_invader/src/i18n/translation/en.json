@@ -56,9 +56,13 @@
   "warmup_inhale": "Inhale",
   "warmup_continue": "Touch to continue",
   "boss_attack": "Attack Boss",
+  "boss_attack_skill": "Attack Boss\nWhen shield is down",
   "boss_escape": "Boss Escape",
+  "boss_victory": "Defeat Boss Successfully!",
   "avoid_poison": "Avoid Poison",
   "collect_bullet": "Collect until full",
+  "collect_item": "Collect",
   "alien_boss_name": "AlienZa",
+  "alien_boss_name_version2": "AlienZa\n2nd Form",
   "player_name": "Nong Pid"
 }

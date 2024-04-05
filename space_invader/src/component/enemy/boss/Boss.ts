@@ -3,6 +3,7 @@ import { Enemy } from '../Enemy'
 import Player from 'component/player/Player';
 import Score from 'component/ui/Score';
 import { BossVersion } from './BossVersion';
+import { B1Boss } from './b1/B1Boss';
 
 export enum ShootingPhase {
 	NORMAL = BULLET_COUNT,
@@ -12,18 +13,20 @@ export enum ShootingPhase {
 }
 
 export enum BossPhase {
-  PHASE_1 = 1,
-  PHASE_2 = 2
+  PHASE_1 = 'b1v1',
+  PHASE_2 = 'b1v2'
 }
 
 export enum BossCutScene {
 	VS = 'B1V1_CUTSCENE_VS',
 	ESCAPE = 'B1V1_CUTSCENE_ESCAPE1',
-	ESCAPE2 = "B1V1_CUTSCENE_ESCAPE2"
+	ESCAPE2 = "B1V1_CUTSCENE_ESCAPE2",
+	VICTORY = "B1V2_CUTSCENE_VICTORY"
 }
 
 export enum BossTutorialScene {
-	ATTACK_BOSS = "B1V1_TT",
+	TUTORIAL_PHASE_1 = "B1V1_TT_PHASE1",
+	TUTORIAL_PHASE_2 = "B1V1_TT_PHASE2",
 	COLLECT_ITEM = "B1V1_TT_CB",
 }
 
@@ -50,8 +53,11 @@ export abstract class Boss extends Enemy {
 	abstract getIsAttackPhase(): boolean
 	abstract getIsItemPhase(): boolean
 	abstract getIsStartAttack(): boolean
-	abstract startAttackPhase(phase: BossPhase): void
 	abstract getIsSecondPhase(): boolean
+	abstract startAttackPhase(): void
 	abstract resetState(): void
 	abstract setVersion(bossVersion: BossVersion): void
+	abstract getVersion(): BossVersion
+	abstract getSkill(): any
+	abstract createObstacle(delta: number): void
 }

@@ -1,12 +1,18 @@
-import { BossCutScene, BossName } from 'component/enemy/boss/Boss'
-import I18nSingleton from 'i18n/I18nSingleton'
-import WebFont from 'webfontloader'
-import { BossInterface } from '../bossInterface'
+import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
+import { BossByName, BossInterface } from '../bossInterface'
 import SoundManager from 'component/sound/SoundManager'
+import { BossVersion } from 'component/enemy/boss/BossVersion'
+import Player from 'component/player/Player'
+import WebFont from 'webfontloader'
+import Score from 'component/ui/Score'
+import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
+import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
+
 
 export default class BossCutSceneVS extends Phaser.Scene {
-	private background!: Phaser.GameObjects.TileSprite
 	private props!: BossInterface
+	private bossVersion!: BossVersion
+	private boss!: Boss
 
 	constructor() {
 		super({ key: BossCutScene.VS })
@@ -26,6 +32,12 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			'assets/character/enemy/b1v1_spritesheet.json',
 		)
 
+		this.load.atlas(
+			'b1v2',
+			'assets/character/enemy/b1v2_spritesheet.png',
+			'assets/character/enemy/b1v2_spritesheet.json',
+		)
+
     this.load.audio('bossVs', 'sound/boss-vs.mp3')
     this.load.audio('bossB1', 'sound/boss-b1.mp3')
 	}
@@ -34,102 +46,31 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		this.props = props
 	}
 
-	create() {
-		const { width, height } = this.scale
-		const { score,	playerX, reloadCount} = this.props
-    const soundManager = new SoundManager(this)
-    const bossB1 = this.sound.add('bossB1')
-    const bossVs = this.sound.add('bossVs')
-    soundManager.play(bossVs, false)
+	async create() {
+		const { name, score, playerX, reloadCount} = this.props
+		const soundManager = new SoundManager(this)
+		
+		const bossVs = this.sound.add('bossVs')
+		soundManager.play(bossVs, false)
 
-    setTimeout(()=> {
-      soundManager.play(bossB1, false)
-    }, 500)
+		// TODO: recieve player from gameScene
+		const sceneLayer = this.add.layer()
+		const player = new Player(this, sceneLayer)
+		player.hide()
 
-		this.background = this.add
-			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
-			.setOrigin(0)
-			.setScrollFactor(0, 0)
-
-		this.background.tilePositionY = 1
-
-		const bossImage = this.add.image(-350, 500, 'b1v1', 'b1v1_attack_00000.png').setOrigin(0.5, 1).setScale(2.0);
-		const playerImage = this.add.image(850, 1200, 'player', 'mc_attack_00001.png').setOrigin(0.5, 1).setScale(2.5);
-		const rectangleBox = this.add.rectangle(width / 2, 630, 2 * width, 50, 0x000000)
-		rectangleBox.angle = -30
-
-		const bossText = this.add.text(width / 2, 760, "VS",)
-			.setOrigin(0.5, 1)
-		const bossName = I18nSingleton.getInstance()
-			.createTranslatedText(this, -320, 280, 'alien_boss_name')
-			.setOrigin(0.5, 1)
-		const playerName = I18nSingleton.getInstance()
-			.createTranslatedText(this, 800, 950, 'player_name')
-			.setOrigin(0.5, 1)
-
+		const scoreObj = new Score(this)
+		this.bossVersion = new B1BossVersion2()
+		this.boss = new BossByName[name](this, player, scoreObj, this.bossVersion)
+		
+		const self = this
 		WebFont.load({
 			google: {
 				families: ['Mali'],
 			},
 			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 900,
-					})
-					.setFontSize('200px')
-					.setStroke('#000000', 36)
-
-				bossName.setStyle({
-					...bossTutorialUiStyle,
-					color: 'white',
-					fontWeight: 800,
-				})
-				.setFontSize('7em')
-				.setStroke('#FB511C', 18)
-
-				playerName.setStyle({
-					...bossTutorialUiStyle,
-					color: 'white',
-					fontWeight: 800,
-				})
-				.setFontSize('7em')
-				.setStroke('#FB511C', 18)
+				self.boss.getVersion().playVsScene(self)
+				player.playVsScene(self)
 			},
-		})
-
-		this.tweens.add({
-			targets: bossImage,
-			x: 220,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
-		this.tweens.add({
-			targets: bossName,
-			x: 530,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
-		this.tweens.add({
-			targets: playerImage,
-			x: 500,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
-		this.tweens.add({
-			targets: playerName,
-			x: 220,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
 		})
 
 		setTimeout(() => {

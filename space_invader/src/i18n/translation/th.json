@@ -56,9 +56,13 @@
   "warmup_inhale": "ดูด",
   "warmup_continue": "แตะจอเพื่อไปต่อ",
   "boss_attack": "โจมตีบอส",
+  "boss_attack_skill": "โจมตีบอส\nตอนไม่มีเกราะ",
   "boss_escape": "บอสหลบหนี",
+  "boss_victory": "เอาชนะบอส\nได้สำเร็จ !",
   "avoid_poison": "หลบ",
   "collect_bullet": "เก็บให้เต็มหลอด",
+  "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
+  "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
   "player_name": "น้องปิ๊ด"
 }

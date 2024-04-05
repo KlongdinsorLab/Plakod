@@ -19,7 +19,8 @@ import AirflowScene from './scene/level/AirflowScene'
 import BossScene from 'scene/boss/BossScene'
 import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
 import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
-import BossAttackTutorial from 'scene/boss/bossTutorial/BossAttackTutorial'
+import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
+import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
 
@@ -60,7 +61,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		PauseScene,
 		BossScene,
 		BossItemTutorial,
-		BossAttackTutorial,
+		BossTutorialPhase1,
+		BossTutorialPhase2,
 		BossCutSceneVS,
 		BossCutSceneEscape,
 		BossCutSceneEscape2,

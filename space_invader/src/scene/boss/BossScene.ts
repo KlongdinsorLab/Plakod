@@ -18,10 +18,13 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import { BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
-import { B1Boss } from 'component/enemy/boss/B1Boss'
+import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
+import { BossVersion } from 'component/enemy/boss/BossVersion'
+import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
+import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -39,6 +42,7 @@ export default class BossScene extends Phaser.Scene {
 
 	// TODO move to boss class
 	private boss!: Boss
+	private bossVersion!: BossVersion
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
@@ -67,6 +71,12 @@ export default class BossScene extends Phaser.Scene {
 			'b1v1',
 			'assets/character/enemy/b1v1_spritesheet.png',
 			'assets/character/enemy/b1v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b1v2',
+			'assets/character/enemy/b1v2_spritesheet.png',
+			'assets/character/enemy/b1v2_spritesheet.json',
 		)
 
 		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
@@ -104,7 +114,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	init(props: BossInterface) {
-	 this.props = props
+	 	this.props = props
 	}
 
 	async create() {
@@ -140,8 +150,9 @@ export default class BossScene extends Phaser.Scene {
     // const classRef = await importClassByName<Boss>(`${name}Boss`);
 		// this.boss = new classRef(this, this.player, this.score)
 
-		const phase = new B1BossPhase1()
-		this.boss = new B1Boss(this, this.player, this.score, phase)
+		this.bossVersion = new B1BossVersion2()
+		this.boss = new B1Boss(this, this.player, this.score, this.bossVersion)
+		
 		this.isCompleteInit = true
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
@@ -183,19 +194,19 @@ export default class BossScene extends Phaser.Scene {
 		const gauge = this.gaugeRegistry?.get(0)
 		gauge.setVisibleAll(false)
 
-		if (!this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
+		if (!this.boss.getIsSecondPhase() && !this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
 			// Boss Phase 1
-			this.boss.startAttackPhase(BossPhase.PHASE_1)
-			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
+			this.boss.startAttackPhase()
+			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_1, this.boss)
 		}
 
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
 			this.isCompleteItemTutorial = true
 			this.scene.pause()
-			this.scene.launch(BossCutScene.ESCAPE)
+			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
-			this.meteorFactory.createByTime(this, this.player, this.score, delta)
+			this.boss.createObstacle(delta)
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
 
@@ -205,12 +216,20 @@ export default class BossScene extends Phaser.Scene {
 		} else if(this.player.getIsBulletFull() && !this.boss.getIsStartAttack()){
 			// Boss Phase 2
 			this.bulletText.setVisible(false)
-			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
-			this.boss.startAttackPhase(BossPhase.PHASE_2)
+			this.boss.startAttackPhase()
+			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)
+		}
+
+		if(this.boss.getIsSecondPhase() && this.boss.getIsAttackPhase()){
+			this.boss.createObstacle(delta)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
-			this.scene.launch(BossCutScene.ESCAPE2, {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
+			this.scene.launch(BossCutScene.ESCAPE2, {
+				score: this.score.getScore(),
+				reloadCount: this.reloadCount.getCount(),
+				boss: this.boss
+			})
 			this.scene.pause()
 			this.boss.resetState()
 			setTimeout(() => {
@@ -232,7 +251,7 @@ export default class BossScene extends Phaser.Scene {
 		// scroll the background
 		this.background.tilePositionY += 1.5
 
-		this.singleLaserFactory.createByTime(this, this.player, [this.boss], delta)
+		this.singleLaserFactory.createByTime(this, this.player, [this.boss], delta, this.boss.getSkill())
 
 		if (this.player.getIsReload() ) {
 			if(!this.boss.getIsSecondPhase()){
