@@ -3,7 +3,6 @@ import { Enemy } from '../Enemy'
 import Player from 'component/player/Player';
 import Score from 'component/ui/Score';
 import { BossVersion } from './BossVersion';
-import { B1Boss } from './b1/B1Boss';
 
 export enum ShootingPhase {
 	NORMAL = BULLET_COUNT,
@@ -59,5 +58,5 @@ export abstract class Boss extends Enemy {
 	abstract setVersion(bossVersion: BossVersion): void
 	abstract getVersion(): BossVersion
 	abstract getSkill(): any
-	abstract createObstacle(delta: number): void
+	abstract playAttack(delta: number): void
 }

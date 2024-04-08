@@ -5,7 +5,7 @@ import { BossVersion } from 'component/enemy/boss/BossVersion'
 import Player from 'component/player/Player'
 import WebFont from 'webfontloader'
 import Score from 'component/ui/Score'
-import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
+// import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
 import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
 
 
@@ -69,7 +69,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			},
 			active: function () {
 				self.boss.getVersion().playVsScene(self)
-				player.playVsScene(self)
+				// player.playVsScene(self)
 			},
 		})
 

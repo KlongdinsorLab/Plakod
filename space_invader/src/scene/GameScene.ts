@@ -69,6 +69,7 @@ export default class GameScene extends Phaser.Scene {
     );
 
     this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
+    this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
     this.load.image('fire', 'assets/effect/fire03.png')
     this.load.image('laser', 'assets/effect/mc_bullet.png')

@@ -7,7 +7,7 @@ import {
   PLAYER_START_MARGIN
 } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
-import WebFont from 'webfontloader'
+// import WebFont from 'webfontloader'
 
 export default class Player {
   private scene: Phaser.Scene

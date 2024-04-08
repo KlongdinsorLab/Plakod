@@ -48,11 +48,12 @@ export const METEOR_SPIN_SPEED = 100
 export const PLAYER_HIT_DELAY_MS = 3000
 export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
-export const BULLET_FREQUENCY_MS = 1500
+export const BULLET_FREQUENCY_MS = 3000
 export const BULLET_SPEED = 300
 export const POISON_FREQUENCY_MS = 5000
 export const POISON_SPEED = 400
 export const HIT_POISON_SCORE = -400
+export const BOOSTER_FREQUENCT_MS = 25000
 
 
 export const GAME_TIME_LIMIT_MS = 160000

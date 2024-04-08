@@ -11,9 +11,6 @@ import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
 import { BossSkill } from '../BossSkill'
 import { B1BossSkill } from './B1BossSkill'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
-import { B1BossVersion1 } from './B1BossVersion1'
-import { B1BossVersion2 } from './B1BossVersion2'
 
 let isHit = false
 
@@ -26,7 +23,6 @@ export class B1Boss extends Boss {
 	private isSecondPhase = false
 	private bossVersion!: BossVersion
 	private bossSkill!: BossSkill
-	private obstacleFactory!: B1BossObstacleFactory
 
 	constructor(
 		scene: Phaser.Scene,
@@ -40,14 +36,13 @@ export class B1Boss extends Boss {
 
 		this.bossVersion = bossVersion
 		this.enemy = this.bossVersion.createAnimation(this.scene)
-		this.enemy.depth = 1
+		this.enemy.depth = 3
 
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
 
 		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
 		this.scene.physics.world.enable(this.bossSkill.getBody())
-		this.obstacleFactory = new B1BossObstacleFactory()
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -76,7 +71,6 @@ export class B1Boss extends Boss {
 			}, this.bossVersion.getDurationPhase1())
 		} else {
 			this.move()
-			this.version.useSkill(this.scene, this, this.bossSkill)
 			setTimeout(() => {
 				this.remove()
 			}, this.bossVersion.getDurationPhase2())
@@ -202,10 +196,10 @@ export class B1Boss extends Boss {
 		return this.bossSkill
 	}
 
-	createObstacle(
-		delta: number,
-	): void {
-		if (!this.bossVersion.hasObstacle()) return
-		this.obstacleFactory.createByTime(this.scene, this.player, this.score, delta)
+	playAttack(delta: number): void {
+		if(this.isSecondPhase){
+			this.version.createObstacleByTime(this.scene, this.player, this.score, delta)
+			this.version.useSkill(this.bossSkill, delta)
+		}
 	}
 }

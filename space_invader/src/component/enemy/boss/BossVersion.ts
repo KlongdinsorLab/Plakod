@@ -1,5 +1,7 @@
+import Player from "component/player/Player";
 import { Boss } from "./Boss";
 import { BossSkill } from "./BossSkill";
+import Score from "component/ui/Score";
 
 export abstract class BossVersion {
 	abstract createAnimation(scene: Phaser.Scene): void
@@ -7,7 +9,8 @@ export abstract class BossVersion {
 	abstract isShootAttack(): boolean
 	abstract hasObstacle(): boolean
 	abstract hasSkill(): boolean
-	abstract useSkill(scene: Phaser.Scene, boss: Boss, bossSkill: BossSkill): void
+	abstract useSkill(bossSkill: BossSkill, delta: number): void
+	abstract createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void
 	abstract getDurationPhase1(): number
 	abstract getDurationPhase2(): number
 	abstract playVsScene(scene: Phaser.Scene): void
@@ -16,4 +19,5 @@ export abstract class BossVersion {
 	abstract playTutorialPhase1(scene: Phaser.Scene): void
 	abstract playTutorialPhase2(scene: Phaser.Scene): void
 	abstract playItemTutorial(scene: Phaser.Scene): void
+	abstract hasBoosterDrop(): boolean
 }

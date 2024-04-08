@@ -10,12 +10,25 @@ import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
-import { B1BossSkill } from './B1BossSkill'
+import { B1BossObstacleFactory } from './B1BossObstacleFactory'
+import Player from 'component/player/Player'
+import Score from 'component/ui/Score'
 
 export class B1BossVersion2 extends BossVersion {
+	private skillTimer = 0
+	private movePattern!: Phaser.Curves.Path
+	private obstacleFactory!: B1BossObstacleFactory
+
+	constructor(){
+		super()
+		this.obstacleFactory = new B1BossObstacleFactory()
+	}
+
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
 		const path = new Phaser.Curves.Path(0, 0)
+		scene.anims.remove('boss-move')
+		scene.anims.remove('boss-hit')
 		scene.anims.create({
 			key: 'boss-move',
 			frames: scene.anims.generateFrameNames('b1v2', {
@@ -60,6 +73,7 @@ export class B1BossVersion2 extends BossVersion {
 			.lineTo(width / 2, 100)
 			.lineTo(width + 200, 400)
 			.lineTo(-200, 400)
+		this.movePattern = path
 		return path
 	}
 
@@ -71,33 +85,36 @@ export class B1BossVersion2 extends BossVersion {
 		return true
 	}
 
+	hasBoosterDrop(): boolean {
+		return true
+	}
+
 	hasSkill(): boolean {
 		return true
 	}
 
-	useSkill(scene: Phaser.Scene, boss: Boss, bossSkill: BossSkill): void {
-		const path = this.getMovePattern(scene, boss)
-		bossSkill.setMovePath(path)
-		bossSkill.move()
-		setTimeout(() => {
+	useSkill(bossSkill: BossSkill, delta: number): void {
+		if(this.skillTimer === 0){
+			bossSkill.setMovePath(this.movePattern)
+			bossSkill.move()
+		}
+		this.skillTimer += delta
+
+		if(this.skillTimer > 12000 && this.skillTimer < 18000){
 			bossSkill.setActive(true)
-		}, 12000)
-
-		setTimeout(() => {
-			bossSkill.setActive(false)
-		}, 18000)
-
-		setTimeout(() => {
+			return
+		}
+		
+		if(this.skillTimer > 36000 && this.skillTimer < 42000){
 			bossSkill.setActive(true)
-		}, 36000)
+			return
+		}
 
-		setTimeout(() => {
-			bossSkill.setActive(false)
-		}, 42000)
+		bossSkill.setActive(false)
+	}
 
-		setTimeout(() => {
-			bossSkill.stopSkill()
-		}, this.getDurationPhase2())
+	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
+		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
 	getDurationPhase1(): number {
@@ -330,7 +347,7 @@ export class B1BossVersion2 extends BossVersion {
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE)
 
-		const shield = scene.add.ellipse(width / 2, 480, 420, 420, 0x5C5454).setOrigin(0.5, 1).setStrokeStyle(6, 0xFB511C, 1);
+		const shield = scene.add.ellipse(width / 2, 480, 420, 420, 0x5C5454).setOrigin(0.5, 1);
 		const group = scene.add.group({key: 'tranform'}).setXY(width / 2, 480).setOrigin(0.5, 1).scaleXY(0.5);
 		group.playAnimation('boss-move')
 		group.add(shield)

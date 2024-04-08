@@ -12,7 +12,7 @@ import {
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
-import { MeteorFactory } from 'component/enemy/MeteorFactory'
+// import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import { PosionFactory } from 'component/item/PoisonFactory'
 import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
@@ -23,8 +23,9 @@ import { BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
-import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
+// import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
 import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
+import { BoosterFactory } from 'component/item/BoosterFactory'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -35,9 +36,9 @@ export default class BossScene extends Phaser.Scene {
 	private reloadCount!: ReloadCount
 
 	private singleLaserFactory!: SingleLaserFactory
-	private meteorFactory!: MeteorFactory
 	private poisonFactory!: PosionFactory
 	private bulletFactory!: BulletFactory
+	private boosterFactory!: BoosterFactory
 	// private menu!: Menu
 
 	// TODO move to boss class
@@ -159,9 +160,9 @@ export default class BossScene extends Phaser.Scene {
 		this.gaugeRegistry.createbyDivision(1)
 		this.gaugeRegistry.get(0).setVisibleAll(false)
 
-		this.meteorFactory = new MeteorFactory()
 		this.poisonFactory = new PosionFactory()
 		this.bulletFactory = new BulletFactory()
+		this.boosterFactory = new BoosterFactory()
 
 		this.isCompleteItemTutorial = false
 
@@ -200,15 +201,20 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_1, this.boss)
 		}
 
+		if(this.boss.getIsAttackPhase()){
+			this.boss.playAttack(delta)
+		}
+
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
 			this.isCompleteItemTutorial = true
 			this.scene.pause()
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
-			this.boss.createObstacle(delta)
+			this.boss.getVersion().createObstacleByTime(this, this.player, this.score, delta)
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
+			this.boss.getVersion().hasBoosterDrop() && this.boosterFactory.createByTime(this, this.player, this.score, gauge, delta)
 
 			this.bulletText.setVisible(true)
         	this.bulletText.setText(` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`)
@@ -218,10 +224,6 @@ export default class BossScene extends Phaser.Scene {
 			this.bulletText.setVisible(false)
 			this.boss.startAttackPhase()
 			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)
-		}
-
-		if(this.boss.getIsSecondPhase() && this.boss.getIsAttackPhase()){
-			this.boss.createObstacle(delta)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
@@ -235,7 +237,6 @@ export default class BossScene extends Phaser.Scene {
 			setTimeout(() => {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
-			// TODO booster
 		}
 
 		if (this.input.pointer1.isDown) {

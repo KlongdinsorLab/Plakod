@@ -8,10 +8,10 @@ import {
   METEOR_SPEED,
   PLAYER_HIT_DELAY_MS,
 } from 'config'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 
 export class B1BossObstacle extends Enemy {
-  private soundManager: SoundManager
+  // private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
 
@@ -23,31 +23,7 @@ export class B1BossObstacle extends Enemy {
     isInItemPhase?: boolean
   ) {
     super(scene, player, score, isTutorial, isInItemPhase)
-    this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
-        frame: 'fireball2.png',
-        colorEase: 'quart.out',
-        lifespan: 300,
-        angle: { min: -100, max: -60 },
-        scale: { start: 1, end: 0.5, ease: 'sine.inout' },
-        alpha: {start: 1, end: 0.5, ease:"sine.inout"},
-        speed: 150,
-    });
 
-    this.soundManager = new SoundManager(scene)
-    this.explosionEmitter = scene.add.particles(0, 0, 'explosion', {
-      speed: 80,
-      scale: 0.6,
-      blendMode: Phaser.BlendModes.ADD,
-      gravityY: -20,
-    })
-    
-    this.explosionEmitter.active = false
-    this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
-    this.move()
-    this.attack()
-  }
-
-  create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
     const { width } = this.scene.scale
     const startingX = Math.floor(Math.random() * width)
     this.enemy = this.scene.physics.add.image(startingX - 4, 0, 'bossAsset', 'skull.png')
@@ -67,9 +43,37 @@ export class B1BossObstacle extends Enemy {
         })
       },
     )
+
     this.scene.time.delayedCall(5000, () => {
       this.enemy.destroy()
     })
+    
+    this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
+        frame: 'fireball2.png',
+        colorEase: 'quart.out',
+        lifespan: 300,
+        angle: { min: -100, max: -60 },
+        scale: { start: 1, end: 0.5, ease: 'sine.inout' },
+        alpha: {start: 1, end: 0.5, ease:"sine.inout"},
+        speed: 150,
+    });
+
+    // this.soundManager = new SoundManager(scene)
+    this.explosionEmitter = scene.add.particles(0, 0, 'explosion', {
+      speed: 80,
+      scale: 0.6,
+      blendMode: Phaser.BlendModes.ADD,
+      gravityY: -20,
+    })
+    
+    this.explosionEmitter.active = false
+    this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
+    this.move()
+    this.attack()
+  }
+
+  create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
+    
 
     return this.enemy
   }

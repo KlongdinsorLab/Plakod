@@ -10,11 +10,20 @@ import WebFont from 'webfontloader'
 import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
+import { MeteorFactory } from 'component/enemy/MeteorFactory'
+import Score from 'component/ui/Score'
 
 export class B1BossVersion1 extends BossVersion {
+	private meteorFactory!: MeteorFactory
+	constructor(){
+		super()
+		this.meteorFactory = new MeteorFactory()
+	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
 		const path = new Phaser.Curves.Path(0, 0)
+		scene.anims.remove('boss-move')
+		scene.anims.remove('boss-hit')
 		scene.anims.create({
 			key: 'boss-move',
 			frames: scene.anims.generateFrameNames('b1v1', {
@@ -72,11 +81,19 @@ export class B1BossVersion1 extends BossVersion {
 		return false
 	}
 
+	hasBoosterDrop(): boolean {
+		return false
+	}
+
 	hasSkill(): boolean {
 		return false
 	}
 
 	useSkill(): void {}
+
+	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
+		this.meteorFactory.createByTime(scene, player, score, delta)
+	}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS
