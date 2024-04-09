@@ -45,7 +45,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
 
         this.gauge = this.scene.add
 			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
-			.setOrigin(0.5, 0.5) 
+			.setOrigin(0.5, 0.5)
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 
         this.scene.add
@@ -150,7 +150,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
         extraGauge.setVisible(true)
         let y = 0
         const {  width, height } = this.scene.scale
-        
+
         if(step >= 2){
             extraGauge.setRotation(Math.PI)
         } else {
@@ -161,17 +161,17 @@ export default class CenterVerticalGauge extends InhaleGauge {
             y = height/2 - CIRCLE_GAUGE_MARGIN + 260
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 1) {
             y = height/2 - CIRCLE_GAUGE_MARGIN + 170
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 2) {
             y = height/2 - CIRCLE_GAUGE_MARGIN - 170
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 3) {
             y = height/2 - CIRCLE_GAUGE_MARGIN - 260
             extraGauge.setPosition(width/2, y)
@@ -180,5 +180,12 @@ export default class CenterVerticalGauge extends InhaleGauge {
 
     setVisible(isVisible: boolean) {
         extraGauge.setVisible(isVisible)
+    }
+
+    set(_: number): void {
+        // TODO
+    }
+    setVisibleAll(_: boolean): void {
+       // TODO
     }
 }
