@@ -1,5 +1,4 @@
 import {
-	BULLET_COUNT,
 	HOLD_BAR_BORDER,
 	HOLD_BAR_CHARGED_COLOR,
 	//    HOLD_BAR_CHARGING_COLOR,
@@ -17,6 +16,7 @@ import SoundManager from 'component/sound/SoundManager'
 
 let extraGauge: Phaser.GameObjects.Image
 export default class CenterVerticalGauge extends InhaleGauge {
+
     //    private shake: Phaser.Tweens.Tween
     private soundManager: SoundManager
 
@@ -45,7 +45,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
 
         this.gauge = this.scene.add
 			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
-			.setOrigin(0.5, 0.5) 
+			.setOrigin(0.5, 0.5)
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 
         this.scene.add
@@ -110,13 +110,13 @@ export default class CenterVerticalGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset() {
+    set(bulletCount: number): void {
         //        this.shake.restart()
         //        this.shake.pause()
         this.scene.tweens.add({
             targets: this.gauge,
             radius: HOLD_BAR_BORDER / 2,
-            duration: LASER_FREQUENCY_MS * BULLET_COUNT,
+            duration: LASER_FREQUENCY_MS * bulletCount,
             ease: 'sine.inout',
         })
 		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_COLOR, 1)
@@ -124,13 +124,12 @@ export default class CenterVerticalGauge extends InhaleGauge {
         this.holdButtonDuration = 0
         setTimeout(
             () => (this.holdButtonDuration = 0),
-            LASER_FREQUENCY_MS * BULLET_COUNT,
+            LASER_FREQUENCY_MS * bulletCount,
             )
     }
 
-    resetting() {
-        //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-        this.isHoldbarReducing = true
+    resetting(): void {
+      this.isHoldbarReducing = true
     }
 
     deplete() {
@@ -151,7 +150,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
         extraGauge.setVisible(true)
         let y = 0
         const {  width, height } = this.scene.scale
-        
+
         if(step >= 2){
             extraGauge.setRotation(Math.PI)
         } else {
@@ -162,17 +161,17 @@ export default class CenterVerticalGauge extends InhaleGauge {
             y = height/2 - CIRCLE_GAUGE_MARGIN + 260
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 1) {
             y = height/2 - CIRCLE_GAUGE_MARGIN + 170
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 2) {
             y = height/2 - CIRCLE_GAUGE_MARGIN - 170
             extraGauge.setPosition(width/2, y)
         }
-        
+
         if (step === 3) {
             y = height/2 - CIRCLE_GAUGE_MARGIN - 260
             extraGauge.setPosition(width/2, y)
@@ -180,6 +179,10 @@ export default class CenterVerticalGauge extends InhaleGauge {
     }
 
     setVisible(isVisible: boolean) {
+        extraGauge.setVisible(isVisible)
+    }
+
+    setVisibleAll(isVisible: boolean): void {
         extraGauge.setVisible(isVisible)
     }
 }

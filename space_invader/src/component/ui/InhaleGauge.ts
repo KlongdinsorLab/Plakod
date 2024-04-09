@@ -61,7 +61,7 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract reset(): void
+	abstract set(bulletCount: number): void
 
 	abstract resetting(): void
 
@@ -80,6 +80,8 @@ export default abstract class InhaleGauge {
 	abstract setStep(step: number): void
 
 	abstract setVisible(visible: boolean): void
+
+	abstract setVisibleAll(visible: boolean): void
 
 	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge
