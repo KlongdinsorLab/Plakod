@@ -1,0 +1,197 @@
+#include <Arduino.h>
+#include <BleGamepad.h>
+BleGamepad bleGamepad("Breath Buddy", "BreathBuddy", 100);
+
+int batteryLevel = 100;
+#define blueLED 25
+#define greenLED 26
+
+// Variable to track button state
+int buttonState = 0;
+// Variable to track LED state
+bool ledOn = false;
+// Variable to track time of last button press
+unsigned long lastButtonPressTime = 0;
+// Variable to track whether LED is blinking
+bool blinking = false;
+
+#define PS_BUTTON_PIN 13  // Example pin for PS button
+#define BUTTON_A_PIN 15   // Example pin for button A IR sensor
+#define BUTTON_B_PIN 2    // Example pin for button B IR sensor
+#define BUTTON_X_PIN 4    // Example pin for button X IR sensor
+#define BUTTON_Y_PIN 18   // Example pin for button Y IR sensor
+#define BUTTON_L2_PIN 19  // Example pin for button L2 IR sensor
+
+#define LOW_BATTERY_LEVEL 3.5  // Example low battery voltage level (in volts)
+
+bool buttonsEnabled = false;
+
+
+void setup() {
+
+  Serial.begin(115200);
+  pinMode(PS_BUTTON_PIN, INPUT_PULLUP);  //+5V---[Internal 50k]---[pin]---[switch]---GND
+  pinMode(blueLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+
+  bleGamepad.begin();
+  bleGamepad.sendReport();  // to disable auto reporting, and then use bleGamepad.sendReport(); as needed
+  Serial.println("Starting BLE work!");
+
+  delay(500);
+  Serial.println("Breath Buddy is ready, captain!!");
+}
+
+void loop() {
+
+
+  if (bleGamepad.isConnected()) {
+
+    digitalWrite(blueLED, LOW);
+    digitalWrite(greenLED, HIGH);
+
+    // -------------------------------------------------------------- //
+
+    // Check battery voltage level and update green LED
+    // float batteryVoltage = getBatteryVoltage();
+    // if (batteryVoltage < LOW_BATTERY_LEVEL) {
+    //   digitalWrite(GREEN_LED_PIN, HIGH);  // Turn on green LED if battery voltage is low
+    //   Serial.println("LOW BATTERY WARNING");
+    // } else {
+    //   digitalWrite(GREEN_LED_PIN, LOW);  // Turn off green LED if battery voltage is normal
+    // }
+
+    // // -------------------------------------------------------------- //
+
+    if (digitalRead(PS_BUTTON_PIN) == LOW) {
+      buttonsEnabled = !buttonsEnabled;  // Toggle the flag
+      delay(200);                        // Debounce delay
+
+      buttonState = digitalRead(PS_BUTTON_PIN);
+
+      // If the button is pressed and it has been more than 1 second since the last press
+      if (buttonState == HIGH && millis() - lastButtonPressTime > 1000) {
+        // Update lastButtonPressTime
+        lastButtonPressTime = millis();
+        // If LED is not currently blinking
+        if (!blinking) {
+          // Set LED state to on
+          ledOn = true;
+          // Set blinking to true
+          blinking = true;
+        }
+      }
+
+      // If LED is currently blinking
+      if (blinking) {
+        // Blink the LED for 3 seconds
+        unsigned long startTime = millis();
+        while (millis() - startTime < 2000) {
+          digitalWrite(greenLED, HIGH);
+          delay(50);  // ON for 100 ms
+          digitalWrite(greenLED, LOW);
+          delay(50);  // OFF for 100 ms
+        }
+        // Set LED state to off
+        ledOn = false;
+        // Set blinking to false
+        blinking = false;
+      }
+      // Update LED state
+      digitalWrite(greenLED, ledOn ? HIGH : LOW);
+    }
+
+    if (buttonsEnabled) {
+      // Check for button presses only if buttons are enabled
+
+      checkButtonAPress();
+      checkButtonBPress();
+      checkButtonXPress();
+      checkButtonYPress();
+      checkButtonL2Press();
+    }
+
+    bleGamepad.sendReport();
+
+  } else {
+
+    digitalWrite(greenLED, LOW);
+    digitalWrite(blueLED, HIGH);  // turn the LED on (HIGH is the voltage level)
+    delay(100);
+    digitalWrite(blueLED, LOW);  // turn the LED off by making the voltage LOW
+    delay(100);
+  }
+}
+
+
+  void checkButtonAPress() {
+    if (digitalRead(BUTTON_A_PIN) == HIGH) {
+      Serial.println(F("A is pressed"));
+      bleGamepad.press(BUTTON_1);
+    } else {
+      bleGamepad.release(BUTTON_1);
+    }
+  }
+
+  void checkButtonBPress() {
+    if (digitalRead(BUTTON_B_PIN) == HIGH) {
+      Serial.println(F("B is pressed"));
+      bleGamepad.press(BUTTON_2);
+    } else {
+      bleGamepad.release(BUTTON_2);
+    }
+  }
+
+  void checkButtonXPress() {
+    if (digitalRead(BUTTON_X_PIN) == HIGH) {
+      Serial.println(F("X is pressed"));
+      bleGamepad.press(BUTTON_4);
+    } else {
+      bleGamepad.release(BUTTON_4);
+    }
+  }
+
+  void checkButtonYPress() {
+    if (digitalRead(BUTTON_Y_PIN) == HIGH) {
+      Serial.println(F("Y is pressed"));
+      bleGamepad.press(BUTTON_5);
+    } else {
+      bleGamepad.release(BUTTON_5);
+    }
+  }
+
+  void checkButtonL2Press() {
+    if (digitalRead(BUTTON_L2_PIN) == HIGH) {
+      Serial.println(F("L2 is pressed"));
+      bleGamepad.press(BUTTON_9);
+    } else {
+      bleGamepad.release(BUTTON_9);
+    }
+  }
+
+  bool psButtonPressed() {
+
+  if (digitalRead(PS_BUTTON_PIN) == LOW) {
+    // PS button is pressed
+    Serial.println("Press button and start.");
+    bleGamepad.press(BUTTON_7);
+    bleGamepad.pressStart();
+    return true;
+  } else {
+    // PS button is not pressed
+    bleGamepad.release(BUTTON_7);
+    bleGamepad.releaseStart();
+    bleGamepad.sendReport();
+    return false;
+  }
+}
+
+
+  float getBatteryVoltage() {
+    // Read battery voltage here and return the value
+    // For example, you can use a voltage divider to measure the battery voltage
+    // Ensure to adjust the calculation according to your voltage divider configuration
+    // Replace this with actual battery voltage reading code
+    float batteryVoltage = analogRead(A0) * (3.3 / 4095);  // Assuming ESP32 ADC resolution is 12 bits (4096 levels) and VDD is 3.3V
+    return batteryVoltage;
+  }
