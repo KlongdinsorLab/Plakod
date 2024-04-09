@@ -21,9 +21,10 @@ let gaugeY = 0
 let backgroundGauge: Phaser.GameObjects.Graphics
 
 export default class RightVerticalGauge extends InhaleGauge {
+
     //    private shake: Phaser.Tweens.Tween
     private soundManager: SoundManager
-    
+
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
 
@@ -49,26 +50,26 @@ export default class RightVerticalGauge extends InhaleGauge {
 //        this.gauge = this.scene.add
 //			.arc(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
 //			.setOrigin(0.5, 0.5)
-        
+
         gaugeY = height/2 - CIRCLE_GAUGE_MARGIN
-        
+
         this.scene.add
             .image(width - MARGIN/2, height/2 - CIRCLE_GAUGE_MARGIN, 'bar')
             .setOrigin(1, 0.5)
-        
+
         charge = this.scene.add
             .image(width - MARGIN/2, height/2 - CIRCLE_GAUGE_MARGIN, 'charge-gauge')
             .setOrigin(1, 0.5)
-        
+
 //        const backgroundGauge = this.scene.add.graphics();
 //        this.drawArc(backgroundGauge, charge.x - 96, gaugeY, 0xffffff, START_DEGREE, END_DEGREE)
-//        
+//
 //        const gauge = this.scene.add.graphics();
 //        this.gauge = this.drawArc(gauge, charge.x - 96, gaugeY, gaugeColor, START_DEGREE, START_DEGREE)
         const gauge = this.scene.add.graphics();
         backgroundGauge = this.scene.add.graphics();
         this.drawGauge(gauge, charge.x - 96, gaugeY, gaugeColor, START_DEGREE, START_DEGREE)
-        
+
 //        this.scene.tweens.add({
 //            targets: this.gauge,
 //            radius: 0,
@@ -76,7 +77,7 @@ export default class RightVerticalGauge extends InhaleGauge {
 //            ease: 'sine.inout',
 //        })
     }
-    
+
     drawArc(gauge: Phaser.GameObjects.Graphics, x: number, y: number, color: number, startDegree:number, endDegree:number): Phaser.GameObjects.Graphics {
         gauge.lineStyle(16, color, 1);
         gauge.beginPath();
@@ -85,7 +86,7 @@ export default class RightVerticalGauge extends InhaleGauge {
         gauge.setDepth(1)
         return gauge
     }
-    
+
     drawGauge(gauge: Phaser.GameObjects.Graphics, x: number, y: number, color: number, startDegree:number, endDegree:number): Phaser.GameObjects.Graphics {
         gauge.clear();
         backgroundGauge.clear()
@@ -113,11 +114,11 @@ export default class RightVerticalGauge extends InhaleGauge {
 
     charge(_: number) {
         const { height } = this.scene.scale
-        
+
         const gauge = <Phaser.GameObjects.Graphics>this.gauge
         gaugeY = height/2 - CIRCLE_GAUGE_MARGIN
         charge.setY(gaugeY)
-        
+
         this.gauge = this.drawGauge(gauge, charge.x - 96, gaugeY,gaugeColor, START_DEGREE,  this.getHoldDegree(this.holdButtonDuration))
         this.soundManager.play(this.chargingSound!)
     }
@@ -150,7 +151,7 @@ export default class RightVerticalGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset() {
+    set(bulletCount: number) {
         //        this.shake.restart()
         //        this.shake.pause()
 //        this.scene.tweens.add({
@@ -168,7 +169,7 @@ export default class RightVerticalGauge extends InhaleGauge {
                 isReloading = false
                 this.isHoldbarReducing = false
             },
-            LASER_FREQUENCY_MS * BULLET_COUNT,
+            LASER_FREQUENCY_MS * bulletCount,
         )
     }
 
@@ -196,23 +197,28 @@ export default class RightVerticalGauge extends InhaleGauge {
         if (step === 0) {
             gaugeY = height/2 - CIRCLE_GAUGE_MARGIN + 200
         }
-        
+
         if (step === 1) {
             gaugeY = height/2 - CIRCLE_GAUGE_MARGIN + 120
         }
-        
+
         if (step === 2) {
             gaugeY = height/2 - CIRCLE_GAUGE_MARGIN - 120
         }
-        
+
         if (step === 3) {
             gaugeY = height/2 - CIRCLE_GAUGE_MARGIN - 200
         }
-        
+
         backgroundGauge.clear()
         charge.setY(gaugeY);
     }
 
+    setVisibleAll(_: boolean): void {
+      // TODO
+    }
+
     setVisible(_: boolean) {
+      // TODO
     }
 }

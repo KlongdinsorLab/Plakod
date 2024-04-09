@@ -1,10 +1,12 @@
+import SoundManager from 'component/sound/SoundManager'
 import {
-    BULLET_COUNT,
-    FULLCHARGE_ANIMATION_MS,
-    FULLCHARGE_SCALE, LASER_FREQUENCY_MS,
-    MARGIN,
-    PLAYER_SPEED,
-    PLAYER_START_MARGIN
+	COLLECT_BULLET_COUNT,
+	FULLCHARGE_ANIMATION_MS,
+	FULLCHARGE_SCALE,
+	LASER_FREQUENCY_MS,
+	MARGIN,
+	PLAYER_SPEED,
+	PLAYER_START_MARGIN,
 } from 'config'
 
 export default class Player {
@@ -14,49 +16,106 @@ export default class Player {
 	private isHit = false
 	private isReload = false
 	private isReloading = false
+	private isAttacking = false
+	private bullet: number = 0
+	private isBulletFull: boolean = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
+	private soundManager: SoundManager
 
-	constructor(scene: Phaser.Scene) {
+	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
+		this.soundManager = new SoundManager(scene)
 		const { width, height } = this.scene.scale
-//		this.player = this.scene.physics.add.image(
-//			width / 2,
-//			height - PLAYER_START_MARGIN,
-//			'player',
-//		)
+		//		this.player = this.scene.physics.add.image(
+		//			width / 2,
+		//			height - PLAYER_START_MARGIN,
+		//			'player',
+		//		)
 
 		this.player = this.scene.physics.add.sprite(
 			width / 2,
 			height - PLAYER_START_MARGIN,
 			'player',
-		);
+		)
 
+		gameLayer.add(this.player)
+
+		//		this.scene.anims.create({
+		//			key: 'run',
+		//			frames: this.scene.anims.generateFrameNames('player', {
+		//				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+		//			}),
+		//			frameRate: 24,
+		//			repeat: -1
+		//		});
+		//
+		//		this.scene.anims.create({
+		//			key: 'charge',
+		//			frames: this.scene.anims.generateFrameNames('player', {
+		//				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+		//			}),
+		//			frameRate: 48,
+		//			repeat: -1
+		//		});
+		//
+		//		this.scene.anims.create({
+		//			key: 'attack',
+		//			frames: this.scene.anims.generateFrameNames('player', {
+		//				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+		//			}),
+		//			frameRate: 24,
+		//			repeat: -1
+		//		});
 		this.scene.anims.create({
 			key: 'run',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+				prefix: 'mc1_normal_',
+				suffix: '.png',
+				start: 1,
+				end: 12,
+				zeroPad: 5,
 			}),
-			frameRate: 24,
-			repeat: -1
-		});
+			frameRate: 18,
+			repeat: -1,
+		})
 
 		this.scene.anims.create({
 			key: 'charge',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+				prefix: 'mc1_inhale_',
+				suffix: '.png',
+				start: 1,
+				end: 12,
+				zeroPad: 5,
 			}),
-			frameRate: 48,
-			repeat: -1
-		});
+			frameRate: 18,
+			repeat: -1,
+		})
 
 		this.scene.anims.create({
 			key: 'attack',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+				prefix: 'mc1_attack_',
+				suffix: '.png',
+				start: 1,
+				end: 12,
+				zeroPad: 5,
 			}),
-			frameRate: 24,
-			repeat: -1
-		});
+			frameRate: 18,
+			repeat: -1,
+		})
+
+		this.scene.anims.create({
+			key: 'hurt',
+			frames: this.scene.anims.generateFrameNames('player', {
+				prefix: 'mc1_hurt_',
+				suffix: '.png',
+				start: 1,
+				end: 1,
+				zeroPad: 5,
+			}),
+			frameRate: 1,
+		})
 
 		this.player.play('run')
 
@@ -112,14 +171,30 @@ export default class Player {
 	}
 
 	damaged(): void {
+	  this.soundManager.play(this.getRandomHitSound(3), false)
+		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
 	}
 
 	recovered(): void {
+		this.player.play('run')
 		this.player.alpha = 1
 		this.playerHitTweens.restart()
 		this.playerHitTweens.pause()
+	}
+
+	getRandomHitSound(
+		index: number,
+	):
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound {
+		const randomIndex = Math.floor(Math.random() * index)
+		const hitSounds = [...Array(index)].map((_, i) =>
+			this.scene.sound.add(`mcHit${i+1}`),
+		)
+		return hitSounds[randomIndex]
 	}
 
 	isLeftOf(x: number): boolean {
@@ -148,14 +223,15 @@ export default class Player {
 		if (this.chargeEmitter) this.chargeEmitter.active = true
 	}
 
-	reloadReset(): void {
+	reloadSet(bulletCount: number): void {
 		this.player.play('attack', true)
+		this.isAttacking = true
 		this.isReload = false
 		this.chargeEmitter.stop()
-		setTimeout(
-			()=> this.player.play('run', true),
-			LASER_FREQUENCY_MS * BULLET_COUNT
-		)
+		setTimeout(() => {
+			this.isAttacking = false
+			this.player.play('run', true)
+		}, LASER_FREQUENCY_MS * bulletCount)
 	}
 
 	attack(): void {
@@ -164,6 +240,7 @@ export default class Player {
 
 	reloadResetting(): void {
 		this.player.play('run', true)
+		this.isAttacking = false
 		this.isReloading = false
 		this.chargeEmitter.stop()
 	}
@@ -174,5 +251,39 @@ export default class Player {
 
 	getIsReloading(): boolean {
 		return this.isReloading
+	}
+
+	getIsAttacking(): boolean {
+		return this.isAttacking
+	}
+
+	hide(): void {
+		this.player.setVisible(false)
+	}
+
+	show(): void {
+		this.player.setVisible(true)
+	}
+
+	addBullet(): void {
+		if (this.isBulletFull) return
+
+		this.bullet++
+		if (this.bullet >= COLLECT_BULLET_COUNT) {
+			this.isBulletFull = true
+		}
+	}
+
+	resetBullet(): void {
+		this.bullet = 0
+		this.isBulletFull = false
+	}
+
+	getIsBulletFull(): boolean {
+		return this.isBulletFull
+	}
+
+	getBulletCount(): number {
+		return this.bullet
 	}
 }

@@ -1,6 +1,6 @@
 import { Laser } from './Laser'
 import Player from '../player/Player'
-import { BULLET_COUNT, LASER_FREQUENCY_MS } from 'config'
+import { LASER_FREQUENCY_MS } from 'config'
 import { Scene } from 'phaser'
 import { Enemy } from '../enemy/Enemy'
 
@@ -45,7 +45,7 @@ export abstract class LaserFactory {
 		})
 	}
 
-	reset(): void {
-		this.bulletCount = BULLET_COUNT
+	set(bulletCount:number): void {
+		this.bulletCount = bulletCount
 	}
 }
