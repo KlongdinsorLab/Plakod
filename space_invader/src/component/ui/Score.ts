@@ -36,6 +36,7 @@ export default class Score {
       .setFontSize(MEDIUM_FONT_SIZE)
       .setOrigin(1, 0)
     this.layer.add(this.scoreText)
+    this.layer.setDepth(10)
   }
 
   add(added_score: number) {
