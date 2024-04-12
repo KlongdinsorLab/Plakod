@@ -8,8 +8,20 @@ import TutorialHudScene from './scene/tutorial/TutorialHudScene'
 import TutorialControllerScene from './scene/tutorial/TutorialControllerScene'
 import PauseScene from './scene/PauseScene'
 import WarmupScene from './scene/warmup/WarmupScene'
+import WarmupGaugeScene from 'scene/warmup/WarmupGaugeScene'
 import SetupScene from './scene/setup/SetupScene'
 import EndGameScene from './scene/EndGameScene'
+import LoginScene from './scene/auth/LoginScene'
+import OtpScene from './scene/auth/OtpScene'
+import RegisterScene from './scene/auth/RegisterScene'
+import DifficultyScene from './scene/level/DifficultyScene'
+import AirflowScene from './scene/level/AirflowScene'
+import BossScene from 'scene/boss/BossScene'
+import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
+import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
+import BossAttackTutorial from 'scene/boss/bossTutorial/BossAttackTutorial'
+import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
+import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -32,14 +44,26 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		TitleScene,
+		LoginScene,
+		OtpScene,
+		RegisterScene,
+		DifficultyScene,
+		AirflowScene,
 		SetupScene,
 		GameScene,
 		EndGameScene,
 		TutorialCharacterScene,
 		TutorialHudScene,
 		TutorialControllerScene,
+		WarmupGaugeScene,
 		WarmupScene,
 		PauseScene,
+		BossScene,
+		BossItemTutorial,
+		BossAttackTutorial,
+		BossCutSceneVS,
+		BossCutSceneEscape,
+		BossCutSceneEscape2,
 	],
 }
 
