@@ -46,11 +46,13 @@ export default class CenterVerticalGauge extends InhaleGauge {
         this.gauge = this.scene.add
 			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
 			.setOrigin(0.5, 0.5)
+			.setVisible(false)
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 
-        this.scene.add
+        this.gaugeBackground = this.scene.add
             .image(width/2, height/2 - CIRCLE_GAUGE_MARGIN, 'gauge_background')
             .setOrigin(0.5, 0.5)
+            .setVisible(false)
 
         this.scene.tweens.add({
             targets: this.gauge,
@@ -70,7 +72,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
         extraGauge = this.scene.add
             .image(width/2, 0, 'gauge_highlight')
             .setOrigin(0.5, 0.5)
-        extraGauge.setRotation(Math.PI)
+            .setRotation(Math.PI)
     }
 
     getHoldWithIncrement(delta: number): number {
@@ -80,6 +82,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
     hold(delta: number) {
         this.isHoldbarReducing = false
         this.holdButtonDuration += delta
+        this.setVisibleAll(true)
     }
 
     charge(delta: number) {
@@ -96,6 +99,10 @@ export default class CenterVerticalGauge extends InhaleGauge {
 			this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
         this.soundManager.pause(this.chargingSound!)
+        if(this.holdButtonDuration <= delta) {
+          this.holdButtonDuration = 0
+          this.setVisibleAll(false)
+        }
     }
 
     setFullCharge() {
@@ -123,7 +130,10 @@ export default class CenterVerticalGauge extends InhaleGauge {
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
         this.holdButtonDuration = 0
         setTimeout(
-            () => (this.holdButtonDuration = 0),
+            () => {
+              this.holdButtonDuration = 0
+              this.setVisibleAll(false)
+            },
             LASER_FREQUENCY_MS * bulletCount,
             )
     }
@@ -147,6 +157,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
     }
 
     setStep(step: number): void {
+        if(!this.gaugeBackground.visible) return
         extraGauge.setVisible(true)
         let y = 0
         const {  width, height } = this.scene.scale
@@ -184,5 +195,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
 
     setVisibleAll(isVisible: boolean): void {
         extraGauge.setVisible(isVisible)
+        this.gaugeBackground.setVisible(isVisible)
+        this.gauge.setVisible(isVisible)
     }
 }
