@@ -347,14 +347,13 @@ export class B1BossVersion2 extends BossVersion {
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE)
 
-		const shield = scene.add.ellipse(width / 2, 480, 420, 420, 0x5C5454).setOrigin(0.5, 1);
+		const shield = scene.physics.add.image(width / 2, 300, 'bossSkill_Shield').setOrigin(0.5, 0.5).setScale(1.25)
 		const group = scene.add.group({key: 'tranform'}).setXY(width / 2, 480).setOrigin(0.5, 1).scaleXY(0.5);
 		group.playAnimation('boss-move')
-		group.add(shield)
 
 		scene.tweens.add({
 			targets: shield,
-			duration: 1500,
+			duration: 2000,
 			alpha: 0,
 			repeat: -1,
 			ease: 'sine.out'

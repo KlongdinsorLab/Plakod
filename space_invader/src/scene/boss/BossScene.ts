@@ -81,6 +81,7 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
+		this.load.image('bossSkill_Shield','assets/sprites/boss/b1v2_shield.png')
 
 		this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
 

@@ -11,9 +11,7 @@ export class B1BossSkill extends BossSkill{
 		player: Player,
 	){
         super(scene, boss, player)
-
-        const bossWidth = this.boss.getBody().width
-        this.skill = this.scene.add.circle(0, 0, bossWidth / 2 + 30, 0x5C5454, 1).setOrigin(0.5, 0.5).setAlpha(0);
+        this.skill = this.scene.physics.add.image(0, 0, 'bossSkill_Shield').setOrigin(0.5, 0.5).setAlpha(0)
         this.isActive = false
     }
 
