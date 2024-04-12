@@ -19,6 +19,9 @@ export class B1Boss extends Boss {
 	private isItemPhase!: boolean
 	private isAttackPhase!: boolean
 	private isSecondPhase!: boolean
+	private bossHitSounds!: (Phaser.Sound.NoAudioSound
+	| Phaser.Sound.WebAudioSound
+	| Phaser.Sound.HTML5AudioSound)[]
 
 	constructor(scene: Phaser.Scene, player: Player, score: Score) {
 		super(scene, player, score)
@@ -26,6 +29,9 @@ export class B1Boss extends Boss {
 		this.isStartAttack = false
 		this.isAttackPhase = true
 		this.isItemPhase = false
+		this.bossHitSounds = [...Array(4)].map((_, i) =>
+			this.scene.sound.add(`bossHit${i+1}`),
+		)
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
@@ -122,7 +128,7 @@ export class B1Boss extends Boss {
 	hit(): void {
 		if (isHit) return
 
-		this.soundManager.play(this.getRandomHitSound(4), false)
+		this.soundManager.play(this.bossHitSounds[Math.floor(Math.random() * 4)], false)
 		this.enemy.stop()
 		// this.enemy.setTexture('boss')
 		this.enemy.play('boss-hit')

@@ -21,6 +21,9 @@ export default class Player {
 	private isBulletFull: boolean = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 	private soundManager: SoundManager
+	private playerHitSounds!: (Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound)[]
 
 	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
@@ -40,6 +43,9 @@ export default class Player {
 
 		gameLayer.add(this.player)
 
+		this.playerHitSounds = [...Array(3)].map((_, i) =>
+			this.scene.sound.add(`mcHit${i+1}`),
+		)
 		//		this.scene.anims.create({
 		//			key: 'run',
 		//			frames: this.scene.anims.generateFrameNames('player', {
@@ -171,7 +177,7 @@ export default class Player {
 	}
 
 	damaged(): void {
-	  this.soundManager.play(this.getRandomHitSound(3), false)
+	  this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
