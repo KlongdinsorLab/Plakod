@@ -40,6 +40,9 @@ export default class Score {
 
   add(added_score: number) {
     this.score += added_score
+    if (this.score < 0) {
+      this.score = 0;
+    }
     I18nSingleton.getInstance().setTranslatedText(this.scoreText, 'score', {
       score: this.score,
     })
@@ -58,7 +61,7 @@ export default class Score {
   }
 
   setScore(score: number): void {
-    this.score = score
+    this.score = score > 0 ? score : 0
     I18nSingleton.getInstance().setTranslatedText(this.scoreText, 'score', {
       score: this.score,
     })
