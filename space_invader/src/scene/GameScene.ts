@@ -138,7 +138,7 @@ export default class GameScene extends Phaser.Scene {
     this.mergedInput
       ?.defineKey(0, 'LEFT', 'LEFT')
       .defineKey(0, 'RIGHT', 'RIGHT')
-      .defineKey(0, 'B16', 'SPACE') // A
+      .defineKey(0, 'B16', 'SPACE')
       //            .defineKey(0, 'B1', 'CTRL')
       //            .defineKey(0, 'B2', 'ALT')
       .defineKey(0, 'B6', 'ONE')
