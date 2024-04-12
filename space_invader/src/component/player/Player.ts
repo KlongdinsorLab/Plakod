@@ -178,7 +178,8 @@ export default class Player {
 	}
 
 	recovered(): void {
-		this.player.play('run')
+	  const animation = this.isAttacking ? 'attack' : 'run'
+	  this.player.play(animation)
 		this.player.alpha = 1
 		this.playerHitTweens.restart()
 		this.playerHitTweens.pause()
