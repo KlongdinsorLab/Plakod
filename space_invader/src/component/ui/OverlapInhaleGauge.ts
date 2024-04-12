@@ -31,29 +31,32 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         progressBar = this.scene.add
             .image(width/2, this.getY() + 16, 'progress_bar')
             .setOrigin(0.5, 1)
+            .setDepth(10)
 
         rectanglesBackground = [...Array(sections).keys()].map((arrayIndex) => this.createBar(arrayIndex));
-        
+
         this.gauge = this.scene.add
             .rectangle(width/2, this.getY(), this.getBarWidth(), HOLD_BAR_HEIGHT)
             .setOrigin(0.5, 1)
             .setDepth(100)
             .setFillStyle(0x7FCF01)
             .setVisible(false)
-        
+            .setDepth(10)
+
         stepBar = this.createBar(0).setFillStyle(0x7FCF01).setOrigin(0.5, 1).setDepth(200)
-        
+
         bulletText = this.scene.add
                     .text(width /2 , this.getY(), `⚡️: `)
                     .setFontSize(LARGE_FONT_SIZE)
                     .setOrigin(0.5, 1)
         bulletText.setVisible(false)
+        bulletText.setDepth(10)
     }
 
     createBar (index: number): Phaser.GameObjects.Rectangle {
         const barWidth = this.getBarWidth()
         const x = this.getX(index)
-        return this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT).setOrigin(0, 1)
+        return this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT).setOrigin(0, 1).setDepth(10)
 
 //        bar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
     }
@@ -228,7 +231,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         stepBar.setFillStyle(0x7FCF01)
         this.gauge.setAlpha(0.2)
     }
-    
+
     setVisible(visible:boolean): void {
         if(isReloading) return
         stepBar.setVisible(visible)
