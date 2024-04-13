@@ -5,41 +5,47 @@ export default class Score {
   private score = 0
   private scoreText!: Phaser.GameObjects.Text
   private layer: Phaser.GameObjects.Layer
+  private scoreLogo!: Phaser.GameObjects.Image
+  private scoreBackground!: Phaser.GameObjects.Graphics
 
   constructor(scene: Phaser.Scene) {
     const { width } = scene.scale
     this.layer = scene.add.layer()
-    const backgroundGraphic = scene.add.graphics()
+    this.scoreBackground = scene.add.graphics()
     const backgroundWidth = (width - MARGIN) / 3
-    backgroundGraphic.fillStyle(0xffffff, 0.5)
-    backgroundGraphic.fillRoundedRect(
+    this.scoreBackground.fillStyle(0xffffff, 0.5)
+    this.scoreBackground.fillRoundedRect(
       MARGIN,
       MARGIN,
       backgroundWidth,
       MARGIN,
       MARGIN / 2,
     )
-    backgroundGraphic.lineStyle(4, DARK_BROWN, 1)
-    backgroundGraphic.strokeRoundedRect(
+    this.scoreBackground.lineStyle(4, DARK_BROWN, 1)
+    this.scoreBackground.strokeRoundedRect(
       MARGIN,
       MARGIN,
       backgroundWidth,
       MARGIN,
       MARGIN / 2,
     )
-    this.layer.add(backgroundGraphic)
+    this.layer.add(this.scoreBackground)
 
-    const scoreLogo = scene.add.image(backgroundGraphic.x + MARGIN / 4, backgroundGraphic.y + MARGIN / 2, 'ui', 'score.png').setOrigin(0, 0);
-    this.layer.add(scoreLogo)
+    this.scoreLogo = scene.add.image(this.scoreBackground.x + MARGIN / 4, this.scoreBackground.y + MARGIN / 2, 'ui', 'score.png').setOrigin(0, 0);
+    this.layer.add(this.scoreLogo)
 
-    this.scoreText = scene.add.text(backgroundGraphic.x + backgroundWidth + (0.75 * MARGIN), backgroundGraphic.y + MARGIN + 4, `${this.score}`, { fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}` })
+    this.scoreText = scene.add.text(this.scoreBackground.x + backgroundWidth + (0.75 * MARGIN), this.scoreBackground.y + MARGIN + 4, `${this.score}`, { fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}` })
       .setFontSize(MEDIUM_FONT_SIZE)
       .setOrigin(1, 0)
     this.layer.add(this.scoreText)
+    this.layer.setDepth(10)
   }
 
   add(added_score: number) {
     this.score += added_score
+    if (this.score < 0) {
+      this.score = 0;
+    }
     I18nSingleton.getInstance().setTranslatedText(this.scoreText, 'score', {
       score: this.score,
     })
@@ -58,9 +64,15 @@ export default class Score {
   }
 
   setScore(score: number): void {
-    this.score = score
+    this.score = score > 0 ? score : 0
     I18nSingleton.getInstance().setTranslatedText(this.scoreText, 'score', {
       score: this.score,
     })
+  }
+
+  hide(): void{
+    this.scoreText.setVisible(false)
+    this.scoreLogo.setVisible(false)
+    this.scoreBackground.setVisible(false)
   }
 }

@@ -17,6 +17,7 @@ export default class Menu {
       scene.scene.launch('pause', { menu: this.menu })
     })
     this.layer.add(this.menu)
+    this.layer.setDepth(10)
   }
 
   getBody(): Phaser.GameObjects.Image {

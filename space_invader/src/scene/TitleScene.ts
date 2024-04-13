@@ -92,7 +92,7 @@ export default class TitleScene extends Phaser.Scene {
       this.hasController &&
       (this.controller1?.direction.LEFT ||
         this.controller1?.direction.RIGHT ||
-        this.controller1?.buttons.B0 > 0 ||
+        this.controller1?.buttons.B9 > 0 ||
         this.input.pointer1.isDown)
     ) {
       this.startGame()
@@ -101,7 +101,7 @@ export default class TitleScene extends Phaser.Scene {
 
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
-    this.scene.start(import.meta.env.VITE_START_SCENE ?? 'game')
+    this.scene.start(import.meta.env.VITE_START_SCEN || 'game')
     new SoundManager(this).stop(this.bgm!)
   }
 }

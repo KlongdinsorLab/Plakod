@@ -165,7 +165,7 @@ export default class TutorialHudScene extends Phaser.Scene {
     this.anims.create({
       key: 'inhale-animation',
       frames: this.anims.generateFrameNames('warmup', {
-        prefix: 'tt_inhale_', suffix: '.png', start: 0, end: 12, zeroPad: 5
+        prefix: 'tt_inhale_', suffix: '.png', start: 1, end: 12, zeroPad: 5
       }),
       frameRate: 18,
       repeat: -1,

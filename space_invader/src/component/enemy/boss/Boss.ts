@@ -44,7 +44,7 @@ export async function importClassByName<T>(className: string): Promise<Construct
 }
 
 export abstract class Boss extends Enemy {
-  constructor(protected scene: Phaser.Scene, protected player: Player, protected score: Score, protected version: BossVersion){
+  constructor(protected scene: Phaser.Scene, protected player: Player, protected score: Score){
     super(scene, player, score, false);
   }
 	abstract remove(): void
@@ -55,7 +55,7 @@ export abstract class Boss extends Enemy {
 	abstract getIsSecondPhase(): boolean
 	abstract startAttackPhase(): void
 	abstract resetState(): void
-	abstract setVersion(bossVersion: BossVersion): void
+	abstract setVersion(lap: number): BossVersion
 	abstract getVersion(): BossVersion
 	abstract getSkill(): any
 	abstract playAttack(delta: number): void

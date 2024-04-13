@@ -19,12 +19,9 @@ import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 import { Boss, BossCutScene, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
-import { BossInterface } from './bossInterface'
+import { BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
-import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
-// import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
-import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
 import { BoosterFactory } from 'component/item/BoosterFactory'
 
 export default class BossScene extends Phaser.Scene {
@@ -64,8 +61,8 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc_spritesheet.png',
-			'assets/character/player/mc_spritesheet.json',
+			'assets/character/player/mc1_spritesheet.png',
+			'assets/character/player/mc1_spritesheet.json',
 		)
 
 		this.load.atlas(
@@ -92,9 +89,9 @@ export default class BossScene extends Phaser.Scene {
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
 
 		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
-    	this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
-    	this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
-    	this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
+    this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
+    this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
+    this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
@@ -103,6 +100,11 @@ export default class BossScene extends Phaser.Scene {
 		this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 		this.load.audio('boss_bgm', 'sound/BGM_BossScene.mp3')
+
+	  this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+    this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+    this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+
 		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
 		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
 		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
@@ -120,7 +122,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	async create() {
-	  const { score,	playerX, reloadCount} = this.props
+	  const { name, score,	playerX, reloadCount} = this.props
 		const { width, height } = this.scale
 
 		this.background = this.add
@@ -152,8 +154,8 @@ export default class BossScene extends Phaser.Scene {
     // const classRef = await importClassByName<Boss>(`${name}Boss`);
 		// this.boss = new classRef(this, this.player, this.score)
 
-		this.bossVersion = new B1BossVersion2()
-		this.boss = new B1Boss(this, this.player, this.score, this.bossVersion)
+		this.boss = new BossByName[name ?? 'B1'](this, this.player, this.score)
+		this.bossVersion = this.boss.setVersion(reloadCount ?? 4)
 		
 		this.isCompleteInit = true
 
@@ -212,10 +214,10 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
-			this.boss.getVersion().createObstacleByTime(this, this.player, this.score, delta)
+			this.bossVersion.createObstacleByTime(this, this.player, this.score, delta)
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
-			this.boss.getVersion().hasBoosterDrop() && this.boosterFactory.createByTime(this, this.player, this.score, gauge, delta)
+			this.bossVersion.hasBoosterDrop() && this.boosterFactory.createByTime(this, this.player, this.score, gauge, delta)
 
 			this.bulletText.setVisible(true)
         	this.bulletText.setText(` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`)

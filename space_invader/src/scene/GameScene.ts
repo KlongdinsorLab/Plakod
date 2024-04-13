@@ -64,8 +64,8 @@ export default class GameScene extends Phaser.Scene {
 
     this.load.atlas(
       'player',
-      'assets/character/player/mc_spritesheet.png',
-      'assets/character/player/mc_spritesheet.json',
+      'assets/character/player/mc1_spritesheet.png',
+      'assets/character/player/mc1_spritesheet.json',
     );
 
     this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
@@ -99,6 +99,10 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
+    this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+    this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+    this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+
     this.load.scenePlugin('mergedInput', MergedInput)
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
@@ -119,7 +123,7 @@ export default class GameScene extends Phaser.Scene {
     // const urlParams = new URLSearchParams(queryString);
     // this.controlType = <'tilt' | 'touch'>urlParams.get('control')
 
-    this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
+    this.bgm = this.sound.add('bgm', {volume: 1, loop: true})
     this.soundManager.init()
     this.soundManager.play(this.bgm)
 
@@ -133,15 +137,15 @@ export default class GameScene extends Phaser.Scene {
     // https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
     // XBOX controller B0=A, B1=B, B2=X, B3=Y
     this.mergedInput
-      //			?.defineKey(0, 'LEFT', 'LEFT')
-      //			.defineKey(0, 'RIGHT', 'RIGHT')
-      ?.defineKey(0, 'B2', 'SPACE') // A
+      ?.defineKey(0, 'LEFT', 'LEFT')
+      .defineKey(0, 'RIGHT', 'RIGHT')
+      .defineKey(0, 'B16', 'SPACE')
       //            .defineKey(0, 'B1', 'CTRL')
       //            .defineKey(0, 'B2', 'ALT')
       .defineKey(0, 'B6', 'ONE')
-      .defineKey(0, 'B3', 'TWO')
-      .defineKey(0, 'B1', 'THREE')
-      .defineKey(0, 'B0', 'FOUR')
+      .defineKey(0, 'B4', 'TWO')
+      .defineKey(0, 'B7', 'THREE')
+      .defineKey(0, 'B5', 'FOUR')
 
     this.gameLayer = this.add.layer();
     this.player = new Player(this, this.gameLayer)
@@ -257,15 +261,15 @@ export default class GameScene extends Phaser.Scene {
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (!this.player.getIsAttacking() && this.controller1?.buttons.B2 > 0) {
+    if (!this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
       gauge.hold(delta)
-    } else if (this.controller1?.buttons.B3 > 0) {
+    } else if (this.controller1?.buttons.B4 > 0) {
       gauge.setStep(1)
     } else if (this.controller1?.buttons.B6 > 0) {
       gauge.setStep(0)
-    } else if (this.controller1?.buttons.B1 > 0) {
+    } else if (this.controller1?.buttons.B7 > 0) {
       gauge.setStep(2)
-    } else if (this.controller1?.buttons.B0 > 0) {
+    } else if (this.controller1?.buttons.B5 > 0) {
       gauge.setStep(3)
     } else {
       gauge.setVisible(false)
@@ -280,6 +284,14 @@ export default class GameScene extends Phaser.Scene {
         this.player.moveLeft(delta)
       }
     }
+
+    if (this.controller1?.direction.LEFT) {
+			this.player.moveLeft(delta)
+		}
+
+		if (this.controller1?.direction.RIGHT) {
+			this.player.moveRight(delta)
+		}
 
     // scroll the background
     this.background.tilePositionY += 1.5
@@ -299,7 +311,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (
       gauge.getDuratation() > HOLD_DURATION_MS &&
-      this.controller1?.buttons.B2 > 0
+      this.controller1?.buttons.B16 > 0
     ) {
       this.player.startReload()
       gauge.setFullCharge()
@@ -317,7 +329,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B2 > 0 &&
+      this.controller1?.buttons.B16 > 0 &&
       !this.player.getIsAttacking()
     ) {
       this.player.charge()
@@ -325,7 +337,7 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) {
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
       setTimeout(() => {
         this.reloadCount.decrementCount()
@@ -347,7 +359,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {
+    if (this.player.getIsReloading() && !(this.controller1?.buttons.B16 > 0)) {
       this.player.reloadResetting()
       gauge.resetting()
     }

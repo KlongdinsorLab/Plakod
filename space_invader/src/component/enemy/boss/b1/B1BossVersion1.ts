@@ -103,8 +103,9 @@ export class B1BossVersion1 extends BossVersion {
 		return PHASE_2_BOSS_TIME_MS
 	}
 
-	playVsScene(scene: Phaser.Scene): void {
+	playVsScene(scene: Phaser.Scene, player: Player): void {
 		const { width, height } = scene.scale
+		
 		scene.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
 			.setOrigin(0)
@@ -133,6 +134,8 @@ export class B1BossVersion1 extends BossVersion {
 		const bossName = I18nSingleton.getInstance()
 			.createTranslatedText(scene, -320, 280, 'alien_boss_name')
 			.setOrigin(0.5, 1)
+		
+		player.playVsScene(scene)
 
 		bossText
 			.setStyle({

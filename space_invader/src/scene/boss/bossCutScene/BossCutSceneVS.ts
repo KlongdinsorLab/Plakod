@@ -2,12 +2,9 @@ import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from '../bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
-import Player from 'component/player/Player'
 import WebFont from 'webfontloader'
 import Score from 'component/ui/Score'
-// import { B1BossVersion1 } from 'component/enemy/boss/b1/B1BossVersion1'
-import { B1BossVersion2 } from 'component/enemy/boss/b1/B1BossVersion2'
-
+import { PlayerByName } from 'component/player/playerInterface'
 
 export default class BossCutSceneVS extends Phaser.Scene {
 	private props!: BossInterface
@@ -19,11 +16,14 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boss_cutscene_background', 'assets/background/bg_set5_cutscene.png')
+		this.load.image(
+			'boss_cutscene_background',
+			'assets/background/bg_set5_cutscene.png',
+		)
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc_spritesheet.png',
-			'assets/character/player/mc_spritesheet.json',
+			'assets/character/player/mc1_spritesheet.png',
+			'assets/character/player/mc1_spritesheet.json',
 		)
 
 		this.load.atlas(
@@ -38,50 +38,54 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			'assets/character/enemy/b1v2_spritesheet.json',
 		)
 
-    this.load.audio('bossVs', 'sound/boss-vs.mp3')
-    this.load.audio('bossB1', 'sound/boss-b1.mp3')
+		this.load.audio('bossVs', 'sound/boss-vs.mp3')
+		this.load.audio('bossB1', 'sound/boss-b1.mp3')
+		this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+		this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+		this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+		this.load.audio('mc1Vs', 'sound/mc1-vs.mp3')
 	}
 
 	init(props: BossInterface) {
 		this.props = props
 	}
 
-	async create() {
-		const { name, score, playerX, reloadCount} = this.props
+	create() {
+		const { name, score, playerX, reloadCount } = this.props
 		const soundManager = new SoundManager(this)
-		
+
 		const bossVs = this.sound.add('bossVs')
 		soundManager.play(bossVs, false)
 
 		// TODO: recieve player from gameScene
 		const sceneLayer = this.add.layer()
-		const player = new Player(this, sceneLayer)
+		const player = new PlayerByName['MC1'](this, sceneLayer)
 		player.hide()
 
 		const scoreObj = new Score(this)
-		this.bossVersion = new B1BossVersion2()
-		this.boss = new BossByName[name](this, player, scoreObj, this.bossVersion)
-		
+		scoreObj.hide()
+
+		this.boss = new BossByName[name ?? 'B1'](this, player, scoreObj)
+		this.bossVersion = this.boss.setVersion(reloadCount ?? 4)
+
 		const self = this
 		WebFont.load({
 			google: {
 				families: ['Mali'],
 			},
 			active: function () {
-				self.boss.getVersion().playVsScene(self)
-				// player.playVsScene(self)
+				self.bossVersion.playVsScene(self, player)
 			},
 		})
 
 		setTimeout(() => {
 			this.scene.stop()
-			this.scene.start("bossScene", {
+			this.scene.start('bossScene', {
 				name: BossName.B1,
 				score: score,
 				playerX: playerX,
 				reloadCount: reloadCount,
-			  	}
-			  )
+			})
 		}, 3000)
 	}
 }

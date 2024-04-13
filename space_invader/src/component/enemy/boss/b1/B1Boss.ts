@@ -5,12 +5,15 @@ import {
 	DESTROY_METEOR_SCORE,
 	BOSS_HIT_DELAY_MS,
 	BOSS_TUTORIAL_DELAY_MS,
+	BOSS_MULTIPLE_COUNT,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
 import { BossSkill } from '../BossSkill'
 import { B1BossSkill } from './B1BossSkill'
+import { B1BossVersion1 } from './B1BossVersion1'
+import { B1BossVersion2 } from './B1BossVersion2'
 
 let isHit = false
 
@@ -28,13 +31,12 @@ export class B1Boss extends Boss {
 		scene: Phaser.Scene,
 		player: Player,
 		score: Score,
-		bossVersion: BossVersion
 	) {
-		super(scene, player, score, bossVersion)
+		super(scene, player, score)
 		this.soundManager = new SoundManager(scene)
 		this.phaseCount = 0
 
-		this.bossVersion = bossVersion
+		this.bossVersion = this.setVersion(4)
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
 
@@ -184,8 +186,18 @@ export class B1Boss extends Boss {
 		this.isSecondPhase = false
 	}
 
-	setVersion(bossVersion: BossVersion): void {
-		this.bossVersion = bossVersion
+	setVersion(lap: number): BossVersion {
+		const version = (Math.floor((10 - lap )/ BOSS_MULTIPLE_COUNT))
+		const bossVersions = [B1BossVersion1, B1BossVersion2]
+		this.bossVersion = new bossVersions[version]
+
+		this.scene.anims.remove('boss-move')
+		this.scene.anims.remove('boss-hit')
+		this.enemy = this.bossVersion.createAnimation(this.scene)
+		this.enemy.depth = 3
+		this.enemy.play('boss-move')
+		this.scene.physics.world.enable(this.enemy)
+		return this.bossVersion
 	}
 
 	getVersion(): BossVersion {
@@ -198,8 +210,8 @@ export class B1Boss extends Boss {
 
 	playAttack(delta: number): void {
 		if(this.isSecondPhase){
-			this.version.createObstacleByTime(this.scene, this.player, this.score, delta)
-			this.version.useSkill(this.bossSkill, delta)
+			this.bossVersion.createObstacleByTime(this.scene, this.player, this.score, delta)
+			this.bossVersion.useSkill(this.bossSkill, delta)
 		}
 	}
 }
