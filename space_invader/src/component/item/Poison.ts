@@ -3,6 +3,7 @@ import Score from 'component/ui/Score'
 import {
 	HIT_POISON_SCORE,
 	MARGIN,
+	PLAYER_HIT_DELAY_MS,
 	POISON_SPEED,
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
@@ -15,8 +16,8 @@ export class Poison extends Item {
 	constructor(
 		scene: Phaser.Scene,
 		player: Player,
-    score: Score,
-    gauge: InhaleGauge,
+		score: Score,
+		gauge: InhaleGauge,
 		isTutorial?: boolean,
 	) {
 		super(scene, player, score, gauge, isTutorial)
@@ -40,9 +41,16 @@ export class Poison extends Item {
 			this.item,
 			this.player.getBody(),
 			() => {
-        this.score.add(HIT_POISON_SCORE)
+				if (this.player.getIsHit()) return
+				this.player.setIsHit(true)
+				this.player.damaged()
+				this.score.add(HIT_POISON_SCORE)
 				this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
-        poisonCollider.active = false
+				poisonCollider.active = false
+				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
+					this.player.setIsHit(false)
+					this.player.recovered()
+				})
 			},
 		)
 
@@ -57,8 +65,7 @@ export class Poison extends Item {
 		this.item.setVelocityX(this.isTutorial ? -120 : velocityX)
 	}
 
-	hit(): void {
-	}
+	hit(): void {}
 
 	getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
 		return this.item
