@@ -65,8 +65,13 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		const scoreObj = new Score(this)
 		scoreObj.hide()
 
-		this.boss = new BossByName[name ?? 'B1'](this, player, scoreObj)
-		this.bossVersion = this.boss.setVersion(reloadCount ?? 4)
+		this.boss = new BossByName[name ?? 'B1'](
+			this,
+			player,
+			scoreObj,
+			reloadCount,
+		)
+		this.bossVersion = this.boss.getVersion()
 
 		const self = this
 		WebFont.load({

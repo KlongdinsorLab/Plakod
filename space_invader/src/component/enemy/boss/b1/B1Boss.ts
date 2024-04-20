@@ -27,16 +27,13 @@ export class B1Boss extends Boss {
 	private bossVersion!: BossVersion
 	private bossSkill!: BossSkill
 
-	constructor(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-	) {
-		super(scene, player, score)
+	constructor(scene: Phaser.Scene, player: Player, score: Score, lap: number) {
+		super(scene, player, score, lap)
 		this.soundManager = new SoundManager(scene)
 		this.phaseCount = 0
 
-		this.bossVersion = this.setVersion(4)
+		console.log(lap)
+		this.bossVersion = this.setVersion(lap)
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
 
@@ -187,9 +184,9 @@ export class B1Boss extends Boss {
 	}
 
 	setVersion(lap: number): BossVersion {
-		const version = (Math.floor((10 - lap )/ BOSS_MULTIPLE_COUNT))
+		const version = Math.floor((10 - lap) / BOSS_MULTIPLE_COUNT)
 		const bossVersions = [B1BossVersion1, B1BossVersion2]
-		this.bossVersion = new bossVersions[version]
+		this.bossVersion = new bossVersions[version]()
 
 		this.scene.anims.remove('boss-move')
 		this.scene.anims.remove('boss-hit')
@@ -209,8 +206,13 @@ export class B1Boss extends Boss {
 	}
 
 	playAttack(delta: number): void {
-		if(this.isSecondPhase){
-			this.bossVersion.createObstacleByTime(this.scene, this.player, this.score, delta)
+		if (this.isSecondPhase) {
+			this.bossVersion.createObstacleByTime(
+				this.scene,
+				this.player,
+				this.score,
+				delta,
+			)
 			this.bossVersion.useSkill(this.bossSkill, delta)
 		}
 	}
