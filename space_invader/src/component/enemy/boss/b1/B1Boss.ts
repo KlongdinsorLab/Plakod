@@ -27,7 +27,12 @@ export class B1Boss extends Boss {
 	private bossVersion!: BossVersion
 	private bossSkill!: BossSkill
 
-	constructor(scene: Phaser.Scene, player: Player, score: Score, lap: number) {
+	constructor(
+		scene: Phaser.Scene,
+		player: Player,
+		score: Score,
+		lap: number = 6,
+	) {
 		super(scene, player, score, lap)
 		this.soundManager = new SoundManager(scene)
 		this.phaseCount = 0
