@@ -32,7 +32,6 @@ export class B1Boss extends Boss {
 		this.soundManager = new SoundManager(scene)
 		this.phaseCount = 0
 
-		console.log(lap)
 		this.bossVersion = this.setVersion(lap)
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
