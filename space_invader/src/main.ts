@@ -58,7 +58,6 @@ const config: Phaser.Types.Core.GameConfig = {
 		TutorialControllerScene,
 		WarmupGaugeScene,
 		WarmupScene,
-		PauseScene,
 		BossScene,
 		BossItemTutorial,
 		BossTutorialPhase1,
@@ -66,6 +65,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		BossCutSceneVS,
 		BossCutSceneEscape,
 		BossCutSceneEscape2,
+		PauseScene,
 	],
 }
 

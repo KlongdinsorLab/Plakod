@@ -36,7 +36,7 @@ export default class PauseScene extends Phaser.Scene {
     const { width, height } = this.scale
 
     this.add.rectangle(0, 0, width, height, 0x000000, 0.75).setOrigin(0, 0)
-    console.log(this)
+    // console.log(this)
 
     const i18n = I18nSingleton.getInstance()
 
