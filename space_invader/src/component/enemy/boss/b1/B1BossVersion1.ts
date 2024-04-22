@@ -7,7 +7,7 @@ import {
 } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
@@ -105,16 +105,16 @@ export class B1BossVersion1 extends BossVersion {
 
 	playVsScene(scene: Phaser.Scene, player: Player): void {
 		const { width, height } = scene.scale
-		
+
 		scene.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
-		const soundManager = new SoundManager(scene)
-		const bossB1 = scene.sound.add('bossB1')
+		// const soundManager = new SoundManager(scene)
+		// const bossB1 = scene.sound.add('bossB1')
 		setTimeout(() => {
-			soundManager.play(bossB1, false)
+			// soundManager.play(bossB1, false)
 		}, 500)
 
 		const rectangleBox = scene.add.rectangle(
@@ -134,7 +134,7 @@ export class B1BossVersion1 extends BossVersion {
 		const bossName = I18nSingleton.getInstance()
 			.createTranslatedText(scene, -320, 280, 'alien_boss_name')
 			.setOrigin(0.5, 1)
-		
+
 		player.playVsScene(scene)
 
 		bossText
@@ -173,8 +173,8 @@ export class B1BossVersion1 extends BossVersion {
 
 	playEscapePhase1(scene: Phaser.Scene): void {
 		const { width } = scene.scale
-		const soundManager = new SoundManager(scene)
-		const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
+		// const soundManager = new SoundManager(scene)
+		// const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, width / 2, 600, 'boss_escape')
 			.setOrigin(0.5, 1)
@@ -207,7 +207,7 @@ export class B1BossVersion1 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			soundManager.play(bossEscapeVoice, false)
+			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
 		setTimeout(() => {

@@ -1,6 +1,6 @@
 import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from '../bossInterface'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import WebFont from 'webfontloader'
 import Score from 'component/ui/Score'
@@ -38,12 +38,12 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			'assets/character/enemy/b1v2_spritesheet.json',
 		)
 
-		this.load.audio('bossVs', 'sound/boss-vs.mp3')
-		this.load.audio('bossB1', 'sound/boss-b1.mp3')
-		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
-		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
-		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
-		this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
+		// this.load.audio('bossVs', 'sound/boss-vs.mp3')
+		// this.load.audio('bossB1', 'sound/boss-b1.mp3')
+		// this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
+		// this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
+		// this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
+		// this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
 		this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
 		this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
 		this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
@@ -56,10 +56,10 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 	create() {
 		const { name, score, playerX, reloadCount } = this.props
-		const soundManager = new SoundManager(this)
+		// const soundManager = new SoundManager(this)
 
-		const bossVs = this.sound.add('bossVs')
-		soundManager.play(bossVs, false)
+		// const bossVs = this.sound.add('bossVs')
+		// soundManager.play(bossVs, false)
 
 		// TODO: recieve player from gameScene
 		const sceneLayer = this.add.layer()
