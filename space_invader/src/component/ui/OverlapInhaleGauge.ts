@@ -133,25 +133,21 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         progressBar.setVisible(false)
         this.gauge.setVisible(false)
         rectanglesBackground.map(r => r.setVisible(false))
-        setTimeout(
-            () => {
+        
+        const intervalId = window.setInterval(() => {
+            if(this.scene.scene.isPaused()) return
+            currentBulletCount--
+            bulletText.setText(`⚡️: ${currentBulletCount}`)
+
+            if (currentBulletCount === 0) {
+                window.clearInterval(intervalId);
                 progressBar.setVisible(true)
                 rectanglesBackground.map(r => r.setVisible(true))
                 bulletText.setVisible(false)
                 this.holdButtonDuration = 0
                 isReloading = false
-            },
-            LASER_FREQUENCY_MS * bulletCount,
-            )
-
-
-        this.setIntervalTimes(()=> {
-            currentBulletCount--
-            bulletText.setText(`⚡️: ${currentBulletCount}`)
-
-        }, LASER_FREQUENCY_MS, bulletCount
-        )
-
+            }
+        }, LASER_FREQUENCY_MS);
     }
 
     setIntervalTimes(callback: ()=>void, delay: number, repetitions: number) {

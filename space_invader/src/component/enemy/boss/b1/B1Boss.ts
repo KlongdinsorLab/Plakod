@@ -20,6 +20,7 @@ let isHit = false
 export class B1Boss extends Boss {
 	private soundManager: SoundManager
 	private phaseCount!: number
+	private bossTimer = 0
 	private isStartAttack = false
 	private isItemPhase = false
 	private isAttackPhase = true
@@ -29,7 +30,7 @@ export class B1Boss extends Boss {
 	private bossHitSounds!: (Phaser.Sound.NoAudioSound
 		| Phaser.Sound.WebAudioSound
 		| Phaser.Sound.HTML5AudioSound)[]
-	
+	private bossRemoved!: boolean
 
 	constructor(
 		scene: Phaser.Scene,
@@ -74,17 +75,12 @@ export class B1Boss extends Boss {
 		})
 	}
 
-	attack(): void {
-		if (!this.isSecondPhase) {
-			this.move()
-			setTimeout(() => {
-				this.remove()
-			}, this.bossVersion.getDurationPhase1())
+	attack(delta: number): void {
+		this.bossTimer += delta
+		if(!this.isSecondPhase){
+			if(this.bossTimer >= this.bossVersion.getDurationPhase1() && !this.bossRemoved) this.remove()
 		} else {
-			this.move()
-			setTimeout(() => {
-				this.remove()
-			}, this.bossVersion.getDurationPhase2())
+			if(this.bossTimer >= this.bossVersion.getDurationPhase2() && !this.bossRemoved) this.remove()
 		}
 	}
 
@@ -130,10 +126,8 @@ export class B1Boss extends Boss {
 			width / 2,
 			-140,
 		)
-		this.enemy.setPath(path).startFollow({ duration: 200 })
-		setTimeout(() => {
-			this.endAttackPhase()
-		}, 1500)
+		this.bossRemoved = true
+		this.enemy.setPath(path).startFollow({ duration: 300, onComplete:() => this.endAttackPhase() })
 	}
 
 	startAttackPhase(): void {
@@ -143,7 +137,9 @@ export class B1Boss extends Boss {
 		setTimeout(() => {
 			this.isAttackPhase = true
 			this.isItemPhase = false
-			this.attack()
+			this.bossRemoved = false
+			this.bossTimer = 0
+			this.move()
 			this.player.startReload()
 		}, BOSS_TUTORIAL_DELAY_MS)
 	}
@@ -205,6 +201,7 @@ export class B1Boss extends Boss {
 	}
 
 	playAttack(delta: number): void {
+		this.attack(delta)
 		if (this.isSecondPhase) {
 			this.bossVersion.createObstacleByTime(
 				this.scene,

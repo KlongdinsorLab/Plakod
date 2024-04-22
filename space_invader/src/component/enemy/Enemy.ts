@@ -31,7 +31,7 @@ export abstract class Enemy {
 		isTutorial?: boolean,
 	): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | any
 	abstract move(): void
-	abstract attack(): void
+	abstract attack(delta?: number): void
 	abstract hit(laser?: Phaser.Types.Physics.Arcade.ImageWithDynamicBody): void
 	abstract destroy(): void
 	// TODO Fix any
