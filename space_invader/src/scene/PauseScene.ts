@@ -13,13 +13,15 @@ export type Menu = {
 }
 export default class PauseScene extends Phaser.Scene {
   private menu!: Phaser.GameObjects.Image
+  private sceneName!: string
 
   constructor() {
     super('pause')
   }
 
-  init({ menu }: Menu) {
+  init({ menu, sceneName }:{menu: Phaser.GameObjects.Image, sceneName: string}) {
     this.menu = menu
+    this.sceneName = sceneName
   }
 
   preload() {
@@ -34,6 +36,7 @@ export default class PauseScene extends Phaser.Scene {
     const { width, height } = this.scale
 
     this.add.rectangle(0, 0, width, height, 0x000000, 0.75).setOrigin(0, 0)
+    console.log(this)
 
     const i18n = I18nSingleton.getInstance()
 
@@ -94,7 +97,7 @@ export default class PauseScene extends Phaser.Scene {
     resume.on('pointerup', () => {
       soundManager.resumeAll()
       this.menu.setTexture('ui', 'pause.png')
-      this.scene.resume('game')
+      this.scene.resume(this.sceneName)
       this.scene.stop()
     })
 
@@ -114,9 +117,9 @@ export default class PauseScene extends Phaser.Scene {
     restart.setInteractive()
     restart.on('pointerup', () => {
       this.scene.stop()
-      this.scene.stop('game')
+      this.scene.stop(this.sceneName)
       i18n.destroyEmitter()
-      this.scene.start('game')
+      this.scene.start(this.sceneName)
     })
 
     const home = this.add
@@ -135,7 +138,7 @@ export default class PauseScene extends Phaser.Scene {
     home.setInteractive()
     home.on('pointerup', () => {
       this.scene.stop()
-      this.scene.stop('game')
+      this.scene.stop(this.sceneName)
       i18n.destroyEmitter()
       this.scene.start('title')
     })

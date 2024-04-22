@@ -14,7 +14,7 @@ export default class Menu {
     this.menu.on('pointerup', () => {
       this.menu.setTexture('ui', 'play.png')
       scene.scene.pause()
-      scene.scene.launch('pause', { menu: this.menu })
+      scene.scene.launch('pause', { menu: this.menu, sceneName: scene.scene.key })
     })
     this.layer.add(this.menu)
     this.layer.setDepth(10)
