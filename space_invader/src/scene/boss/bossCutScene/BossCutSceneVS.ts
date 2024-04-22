@@ -40,6 +40,10 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 		this.load.audio('bossVs', 'sound/boss-vs.mp3')
 		this.load.audio('bossB1', 'sound/boss-b1.mp3')
+		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
+		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
+		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
+		this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
 		this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
 		this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
 		this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')

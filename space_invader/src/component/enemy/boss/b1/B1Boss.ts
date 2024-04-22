@@ -26,6 +26,10 @@ export class B1Boss extends Boss {
 	private isSecondPhase = false
 	private bossVersion!: BossVersion
 	private bossSkill!: BossSkill
+	private bossHitSounds!: (Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound)[]
+	
 
 	constructor(
 		scene: Phaser.Scene,
@@ -43,6 +47,10 @@ export class B1Boss extends Boss {
 
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
+
+		this.bossHitSounds = [...Array(4)].map((_, i) =>
+			this.scene.sound.add(`bossHit${i+1}`),
+		)
 
 		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
 		this.scene.physics.world.enable(this.bossSkill.getBody())
@@ -83,22 +91,9 @@ export class B1Boss extends Boss {
 	hit(): void {
 		if (isHit) return
 
-		const bossHit1 = this.scene.sound.add('bossHit1')
-		const bossHit2 = this.scene.sound.add('bossHit2')
-		const bossHit3 = this.scene.sound.add('bossHit3')
-		const bossHit4 = this.scene.sound.add('bossHit4')
-
 		// TODO fixes me
-		const randomSoundIndex = Math.floor(Math.random() * 4) + 1
-		if (randomSoundIndex === 1) {
-			this.soundManager.play(bossHit1, false)
-		} else if (randomSoundIndex === 2) {
-			this.soundManager.play(bossHit2, false)
-		} else if (randomSoundIndex === 3) {
-			this.soundManager.play(bossHit3, false)
-		} else if (randomSoundIndex === 4) {
-			this.soundManager.play(bossHit4, false)
-		}
+		const randomSoundIndex = Math.floor(Math.random() * 4)
+		this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
 
 		this.enemy.stop()
 		// this.enemy.setTexture('boss')
