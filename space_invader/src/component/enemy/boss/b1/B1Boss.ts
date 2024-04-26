@@ -124,7 +124,7 @@ export class B1Boss extends Boss {
 		const { width } = this.scene.scale
 		const path = new Phaser.Curves.Path(this.enemy.x, this.enemy.y).lineTo(
 			width / 2,
-			-140,
+			-200,
 		)
 		this.bossRemoved = true
 		this.enemy.setPath(path).startFollow({ duration: 300, onComplete:() => this.endAttackPhase() })
