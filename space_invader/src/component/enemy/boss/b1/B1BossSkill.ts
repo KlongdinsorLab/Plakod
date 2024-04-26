@@ -11,7 +11,9 @@ export class B1BossSkill extends BossSkill{
 		player: Player,
 	){
         super(scene, boss, player)
-        this.skill = this.scene.physics.add.image(0, 0, 'bossSkill_Shield').setOrigin(0.5, 0.5).setAlpha(0)
+        // this.skill = this.scene.physics.add.image(0, 0, 'bossSkill_Shield').setOrigin(0.5, 0.5).setAlpha(0)
+        this.skill = this.scene.add.ellipse(0, 0, boss.getBody().width + 50, boss.getBody().width + 50, 0xFB511C, 1).setOrigin(0.5, 0.5);
+        this.skill.setAlpha(0)
         this.isActive = false
     }
 
@@ -53,7 +55,7 @@ export class B1BossSkill extends BossSkill{
     setActive(isActive: boolean): void {
         this.scene.tweens.add({
             targets: this.skill,
-            alpha: isActive ? 1 : 0,
+            alpha: isActive ? 0.5 : 0,
             duration: 500
         })
         this.isActive = isActive

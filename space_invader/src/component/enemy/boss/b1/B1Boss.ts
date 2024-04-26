@@ -36,7 +36,7 @@ export class B1Boss extends Boss {
 		scene: Phaser.Scene,
 		player: Player,
 		score: Score,
-		lap: number = 6,
+		lap: number = 1,
 	) {
 		super(scene, player, score, lap)
 		this.soundManager = new SoundManager(scene)
