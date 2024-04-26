@@ -97,26 +97,26 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.image('laser', 'assets/effect/mc_bullet.png')
 
-		this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
-
+		
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
-
+		
 		this.load.svg('resume', 'assets/icon/resume.svg')
-
-		this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
+		
+		// this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
+		// this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
 		this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
 		this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 		this.load.audio('boss_bgm', 'sound/BGM_BossScene.mp3')
 
-		this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
-		this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
-		this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+		// this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+		// this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+		// this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
 
-		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
-		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
-		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
-		this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
+		// this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
+		// this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
+		// this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
+		// this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 		this.load.script(

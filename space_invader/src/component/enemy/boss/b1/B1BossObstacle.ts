@@ -67,7 +67,6 @@ export class B1BossObstacle extends Enemy {
     })
     
     this.explosionEmitter.active = false
-    this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     this.move()
     this.attack()
   }

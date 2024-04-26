@@ -53,6 +53,7 @@ export default class GameScene extends Phaser.Scene {
 
   private bgm!: Phaser.Sound.BaseSound
   private soundManager: SoundManager
+  private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
   constructor() {
     super({ key: 'game' })
@@ -88,15 +89,15 @@ export default class GameScene extends Phaser.Scene {
     this.load.svg('resume', 'assets/icon/resume.svg')
     this.load.svg('finger press', 'assets/icon/finger-press.svg')
 
-    this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
-    this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
-    this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
+    // this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
+    // this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
+    // this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
-    this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
-    this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
-    this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+    // this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+    // this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+    // this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
 
     this.load.scenePlugin('mergedInput', MergedInput)
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
@@ -121,7 +122,7 @@ export default class GameScene extends Phaser.Scene {
     this.bgm = this.sound.add('bgm', {volume: 1, loop: true})
     this.soundManager.init()
     this.soundManager.play(this.bgm)
-
+    this.soundEffect = this.sound.addAudioSprite('mcSound')
 
     this.background = this.add
       .tileSprite(0, 0, width, height, 'background')
@@ -177,6 +178,7 @@ export default class GameScene extends Phaser.Scene {
         this,
         this.player,
         this.score,
+        this.soundEffect,
         true,
       )
       this.gameLayer.add(this.tutorialMeteor.getBody())
@@ -250,7 +252,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.isCompleteTutorial() && this.isCompleteWarmup) {
-      this.meteorFactory.createByTime(this, this.player, this.score, delta)
+      this.meteorFactory.createByTime(this, this.player, this.score,this.soundEffect, delta)
     }
 
     // TODO move to controller class
