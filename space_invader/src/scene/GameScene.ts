@@ -71,13 +71,8 @@ export default class GameScene extends Phaser.Scene {
     this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
     this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
-    this.load.image('fire', 'assets/effect/fire03.png')
     this.load.image('laser', 'assets/effect/mc_bullet.png')
     this.load.image('charge', 'assets/effect/chargeBlue.png')
-    this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
-    this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
-    this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
-    this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
     this.load.image('explosion', 'assets/effect/explosionYellow.png')
     this.load.image('chevron', 'assets/icon/chevron-down.svg')
 

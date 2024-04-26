@@ -101,11 +101,6 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
 
-		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
-		this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
-		this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
-		this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
-
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
 		this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
@@ -240,12 +235,12 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()) {
 			// Collecting Item Phase
-			this.bossVersion.createObstacleByTime(
-				this,
-				this.player,
-				this.score,
-				delta,
-			)
+			// this.bossVersion.createObstacleByTime(
+			// 	this,
+			// 	this.player,
+			// 	this.score,
+			// 	delta,
+			// )
 			this.poisonFactory.createByTime(
 				this,
 				this.player,
