@@ -15,7 +15,7 @@ import {
 export class Meteor extends Enemy {
   // private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
-  // private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
+  private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
   constructor(
@@ -35,15 +35,15 @@ export class Meteor extends Enemy {
       blendMode: Phaser.BlendModes.ADD,
       gravityY: -20,
     })
-  //   this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
-  //     frame: 'fireball1.png',
-  //     colorEase: 'quart.out',
-  //     lifespan: 300,
-  //     angle: { min: -100, max: -80 },
-  //     scale: { start: 1, end: 0.5, ease: 'sine.out' },
-  //     alpha: {start: 1, end: 0.5, ease:"sine.inout"},
-  //     speed: 150,
-  // });
+    this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
+      frame: 'fireball1.png',
+      colorEase: 'quart.out',
+      lifespan: 300,
+      angle: { min: -100, max: -80 },
+      scale: { start: 1, end: 0.5, ease: 'sine.out' },
+      alpha: {start: 1, end: 0.5, ease:"sine.inout"},
+      speed: 150,
+  });
     this.explosionEmitter.active = false
     // this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     
@@ -82,16 +82,16 @@ export class Meteor extends Enemy {
 
   move(): void {
     this.isInItemPhase ? this.enemy.setVelocityY(METEOR_ITEMPHASE_SPEED) : this.enemy.setVelocityY(METEOR_SPEED)
-    // this.flareEmitter.startFollow(this.enemy)
-    // this.flareEmitter.depth = 0
+    this.flareEmitter.startFollow(this.enemy)
+    this.flareEmitter.depth = 0
     const velocityX = Math.floor(
       Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
     )
     this.enemy.setVelocityX(this.isTutorial ? -120 : velocityX)
     this.enemy.setAngularVelocity(METEOR_SPIN_SPEED)
-    // this.scene.time.delayedCall(5000, () => {
-    //   this.flareEmitter.destroy()
-    // })
+    this.scene.time.delayedCall(5000, () => {
+      this.flareEmitter.destroy()
+    })
   }
 
   attack(): void {
@@ -123,7 +123,7 @@ export class Meteor extends Enemy {
       this.explosionEmitter.stop()
     })
     this.enemy.destroy()
-    // this.flareEmitter.destroy()
+    this.flareEmitter.destroy()
     // this.soundManager.play(this.enermyDestroyedSound!, true)
     this.soundEffect.play("rock-destroy")
     this.score.add(DESTROY_METEOR_SCORE)

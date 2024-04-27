@@ -13,7 +13,7 @@ import {
 export class B1BossObstacle extends Enemy {
   // private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
-  // private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
+  private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
 
   constructor(
     scene: Phaser.Scene,
@@ -48,15 +48,15 @@ export class B1BossObstacle extends Enemy {
       this.enemy.destroy()
     })
     
-    // this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
-    //     frame: 'fireball2.png',
-    //     colorEase: 'quart.out',
-    //     lifespan: 300,
-    //     angle: { min: -100, max: -60 },
-    //     scale: { start: 1, end: 0.5, ease: 'sine.inout' },
-    //     alpha: {start: 1, end: 0.5, ease:"sine.inout"},
-    //     speed: 150,
-    // });
+    this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
+        frame: 'fireball2.png',
+        colorEase: 'quart.out',
+        lifespan: 300,
+        angle: { min: -100, max: -60 },
+        scale: { start: 1, end: 0.5, ease: 'sine.inout' },
+        alpha: {start: 1, end: 0.5, ease:"sine.inout"},
+        speed: 150,
+    });
 
     // this.soundManager = new SoundManager(scene)
     this.explosionEmitter = scene.add.particles(0, 0, 'explosion', {
@@ -81,14 +81,14 @@ export class B1BossObstacle extends Enemy {
     const velocityX = Math.floor(
       Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
     )
-    // this.flareEmitter.startFollow(this.enemy)
-    // this.flareEmitter.depth = 0
     this.enemy.setVelocityY(this.isInItemPhase ? METEOR_ITEMPHASE_SPEED : METEOR_SPEED)
     this.enemy.setVelocityX(velocityX)
-
-    // this.scene.time.delayedCall(5000, () => {
-    //   this.flareEmitter.destroy()
-    // })
+    
+    this.flareEmitter.startFollow(this.enemy)
+    this.flareEmitter.depth = 0
+    this.scene.time.delayedCall(5000, () => {
+      this.flareEmitter.destroy()
+    })
   }
 
   attack(): void {
