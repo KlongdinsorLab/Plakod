@@ -235,12 +235,12 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()) {
 			// Collecting Item Phase
-			// this.bossVersion.createObstacleByTime(
-			// 	this,
-			// 	this.player,
-			// 	this.score,
-			// 	delta,
-			// )
+			this.bossVersion.createObstacleByTime(
+				this,
+				this.player,
+				this.score,
+				delta,
+			)
 			this.poisonFactory.createByTime(
 				this,
 				this.player,
