@@ -54,7 +54,7 @@ export class B1BossSkill extends BossSkill{
     setActive(isActive: boolean): void {
         this.scene.tweens.add({
             targets: this.skill,
-            alpha: isActive ? 0.5 : 0,
+            alpha: isActive ? 1 : 0,
             duration: 500
         })
         this.isActive = isActive
