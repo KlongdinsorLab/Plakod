@@ -102,7 +102,7 @@ export default class TitleScene extends Phaser.Scene {
       this.input.gamepad.once(
         'connected',
         () => {
-          this.statusText.setText("Controller Connected 1")
+          this.statusText.setText("Controller Connected")
           // this.startGame()
         },
         this,
