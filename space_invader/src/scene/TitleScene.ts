@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 //import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
-import { MEDIUM_FONT_SIZE } from 'config'
+import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class TitleScene extends Phaser.Scene {
@@ -12,6 +12,7 @@ export default class TitleScene extends Phaser.Scene {
   //	private player?: Player
   private bgm?: Phaser.Sound.BaseSound
   private hasController = false
+  private statusText!: Phaser.GameObjects.Text
 
   constructor() {
     super('title')
@@ -87,19 +88,34 @@ export default class TitleScene extends Phaser.Scene {
     }
     */
 
+    this.statusText = this.add
+    .text(
+      width / 2,
+      height - 2* MARGIN,
+      "Start",
+    )
+    .setFontSize("4em")
+    .setOrigin(0.5, 1)
+
     if (!this.hasController && this.input?.gamepad?.total === 0) {
+      this.statusText.setText("Please Connect Controller")
       this.input.gamepad.once(
         'connected',
         () => {
-          this.startGame()
+          this.statusText.setText("Controller Connected 1")
+          // this.startGame()
         },
         this,
       )
     }
-
   }
 
   update() {
+    if (this.controller1?.buttons.B9 > 0){
+      this.statusText.setText("Home Clicked")
+      setTimeout(() => this.startGame(), 1000)
+    }
+
     if (
       this.hasController &&
       (this.controller1?.direction.LEFT ||
