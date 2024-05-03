@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 //import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
-import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
+import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class TitleScene extends Phaser.Scene {
