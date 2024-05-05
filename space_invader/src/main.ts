@@ -23,6 +23,7 @@ import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
 import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
+import HomeScene from 'scene/HomeScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -46,6 +47,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		TitleScene,
 		LoginScene,
+		HomeScene,
 		OtpScene,
 		RegisterScene,
 		DifficultyScene,
