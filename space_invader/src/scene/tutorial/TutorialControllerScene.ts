@@ -9,20 +9,24 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import SoundManager from 'component/sound/SoundManager'
 import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
+import EventEmitter = Phaser.Events.EventEmitter
 
 export type Controller = {
   player: Player
+  event: EventEmitter
 }
 
 export default class TutorialControllerScene extends Phaser.Scene {
   private player!: Player
+  private event!: EventEmitter
 
   constructor() {
     super('tutorial controller')
   }
 
-  init({ player }: Controller) {
+  init({ player, event }: Controller) {
     this.player = player
+    this.event = event
   }
 
   preload() {
@@ -141,9 +145,11 @@ export default class TutorialControllerScene extends Phaser.Scene {
       'pointerdown',
       () => {
         this.player.show()
-        this.scene.resume('game')
+        // this.scene.resume('game')
         isMute ? soundManager.mute() : soundManager.unmute()
         i18n.removeAllListeners(this)
+        this.scene.launch('warmup', { event: this.event })
+        this.event.emit('completeWarmup')
         this.scene.stop()
         setTimeout(
           () => localStorage.setItem('tutorial', 'true'),

@@ -19,7 +19,6 @@ export default class HomeScene extends Phaser.Scene {
 
 	init({bgm}: {bgm:Phaser.Sound.BaseSound}) {
         this.bgm = bgm
-        console.log(bgm)
     }
 
 	preload() {

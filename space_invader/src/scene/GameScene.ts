@@ -242,8 +242,11 @@ export default class GameScene extends Phaser.Scene {
 
       this.tutorial.launchTutorial(Step.CONTROLLER, delta, {
         player: this.player,
+        event: this.event
       })
     }
+
+    this.event.once("completeWarmup", () => this.isCompleteWarmup = true)
 
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
       this.scene.pause()
@@ -258,7 +261,7 @@ export default class GameScene extends Phaser.Scene {
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (!this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
+    if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
       gauge.hold(delta)
     } else if (this.controller1?.buttons.B4 > 0) {
       gauge.setStep(1)
