@@ -1,6 +1,8 @@
 {
     "name": "Breath Buddy",
     "short_name": "BB",
+    "id": "demo",
+    "start_url": "/",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -29,7 +31,8 @@
              "label": "Breathe Buddy"
            }
     ],
-    "start_url": "/",
+    "description": "Breathe Buddy",
+    "categories": ["games"],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone",

@@ -10,8 +10,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 })
 
 window.addEventListener('installClick', async () => {
-	console.log('clicked')
-
 	// Show the install prompt
 	deferredPrompt.prompt()
 	// Wait for the user to respond to the prompt
