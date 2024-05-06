@@ -108,6 +108,17 @@ export default class TitleScene extends Phaser.Scene {
         this,
       )
     }
+
+    const installButton = this.add
+      .rectangle(width / 2, height / 2 + 4 * MARGIN, 300, 150, 0x999999)
+      .setOrigin(0.5, 0.5)
+      installButton.setInteractive()
+      installButton.on('pointerup', () => {
+        window.dispatchEvent(new Event("installClick"))
+        this.statusText.setText("Install App")
+    })
+
+    this.add.text(width / 2, height / 2 + 4 * MARGIN, "Install App").setFontSize("3em").setOrigin(0.5, 0.5)
   }
 
   update() {
