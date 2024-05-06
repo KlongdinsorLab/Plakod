@@ -13,7 +13,23 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/?source=pwa",
+    "screenshots": [
+        {
+         "src": "/android-chrome-384x384.png",
+          "sizes": "384x384",
+          "type": "image/png",
+          "form_factor": "wide",
+          "label": "Breathe Buddy"
+        },
+        {
+            "src": "/android-chrome-384x384.png",
+             "sizes": "384x384",
+             "type": "image/png",
+             "form_factor": "narrow",
+             "label": "Breathe Buddy"
+           }
+    ],
+    "start_url": "/",
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone",
