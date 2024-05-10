@@ -122,7 +122,6 @@ export default class HomeScene extends Phaser.Scene {
 				'heart_full.png',
 			)
 			.setOrigin(1, 0)
-			.postFX.addGlow(0xffffff, 2, 0, false, 0.5, 24)
 		const heartCountdown1 = this.add
 			.text(width / 2 - 1.5 * MARGIN, 216 + 224 + 24 + 84 + 8, `00:59:59`)
 			.setOrigin(0.5, 0)
@@ -135,7 +134,6 @@ export default class HomeScene extends Phaser.Scene {
 				'heart_empty.png',
 			)
 			.setOrigin(0, 0)
-			.postFX.addGlow(0xffffff, 2, 0, false, 0.5, 24)
 		const heartCountdown2 = this.add
 			.text(width / 2 + 1.5 * MARGIN, 216 + 224 + 24 + 84 + 8, `00:59:59`)
 			.setOrigin(0.5, 0)
@@ -199,7 +197,6 @@ export default class HomeScene extends Phaser.Scene {
 		rankingButton.setInteractive()
 		rankingButton.on('pointerdown', () => {
 			// TODO: Link to ranking
-			console.log('ranking')
 		})
 
 		// Reward Button
@@ -224,7 +221,6 @@ export default class HomeScene extends Phaser.Scene {
 		achievementButton.setInteractive()
 		achievementButton.on('pointerdown', () => {
 			// TODO: Link to achievement
-			console.log('achievement')
 		})
 
 		// Setting Button
@@ -249,7 +245,6 @@ export default class HomeScene extends Phaser.Scene {
 		settingButton.setInteractive()
 		settingButton.on('pointerdown', () => {
 			// TODO: Link to setting
-			console.log('setting')
 		})
 
 		// Sound Toggle
@@ -322,8 +317,7 @@ export default class HomeScene extends Phaser.Scene {
 			.setOrigin(0, 0)
 		instructionButton.setInteractive()
 		instructionButton.on('pointerdown', () => {
-			// TODO: link to manual
-			console.log('manual')
+			// TODO: link to instruction
 		})
 
 		WebFont.load({
@@ -331,7 +325,7 @@ export default class HomeScene extends Phaser.Scene {
 				families: ['Mali', 'Jua'],
 			},
 			active: function () {
-				const homeSceneStyle = {
+				const maliFontStyle = {
 					fontFamily: 'Mali',
 					fontStyle: 'bold',
 				}
@@ -349,7 +343,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				airFlowLevelText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: '#57453B',
 					})
 					.setFontSize('32px')
@@ -357,14 +351,14 @@ export default class HomeScene extends Phaser.Scene {
 
 				difficultyText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: '#57453B',
 					})
 					.setFontSize('32px')
 
 				reminderText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: 'white',
 					})
 					.setFontSize(MEDIUM_FONT_SIZE)
@@ -372,7 +366,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				startText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: 'white',
 					})
 					.setFontSize('64px')
@@ -380,7 +374,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				rankingText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: '#7A7367',
 					})
 					.setFontSize('30px')
@@ -388,7 +382,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				achievementText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: '#7A7367',
 					})
 					.setFontSize('30px')
@@ -396,7 +390,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				settingText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: '#7A7367',
 					})
 					.setFontSize('30px')
@@ -404,7 +398,7 @@ export default class HomeScene extends Phaser.Scene {
 
 				instructionText
 					.setStyle({
-						...homeSceneStyle,
+						...maliFontStyle,
 						color: 'white',
 					})
 					.setFontSize('30px')
@@ -417,7 +411,6 @@ export default class HomeScene extends Phaser.Scene {
 					})
 					.setFontSize('24px')
 					.setStroke('white', 3)
-					.postFX.addGlow(0xffffff, 2, 0, false, 0.5, 10)
 
 				heartCountdown2
 					.setStyle({
@@ -426,7 +419,6 @@ export default class HomeScene extends Phaser.Scene {
 					})
 					.setFontSize('24px')
 					.setStroke('white', 3)
-					.postFX.addGlow(0xffffff, 2, 0, false, 0.5, 10)
 			},
 		})
 	}
