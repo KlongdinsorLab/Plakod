@@ -65,11 +65,13 @@
   "alien_boss_name": "เอเลี่ยนซ่า",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
   "player_name": "น้องปิ๊ด",
-  "home_reminder": "อย่าลืม ! เช็คปริมาณอากาศ\nที่เครื่องบริหารปอดก่อนเริ่มเกม",
+  "home_reminder_first_play": "อย่าลืม ! เช็คปริมาณอากาศ\nที่เครื่องบริหารปอดก่อนเริ่มเกม",
+  "home_reminder_play_tomorrow": "กลับมาสนุกกันใหม่พรุ่งนี้นะ !",
+  "home_reminder_empty_heart": "กลับมาอีกครั้ง เมื่อหัวใจเต็มดวง !",
   "home_start_game": "เล่นเกม",
   "home_airflow_level": "ปริมาณอากาศ {{level, number}}",
   "home_ranking": "อันดับ",
-  "home_reward": "รางวัล",
+  "home_achievement": "รางวัล",
   "home_setting": "ตั้งค่า",
-  "home_manual": "คู่มือ"
+  "home_instruction": "คู่มือ"
 }
