@@ -42,11 +42,13 @@ export class B1Boss extends Boss {
 		lap: number = 6,
 	) {
 		super(scene, player, score, lap)
+		
 		// this.soundManager = new SoundManager(scene)
 		this.bossSound = scene.sound.addAudioSprite('bossSound')
 		this.phaseCount = 0
 
 		this.bossVersion = this.setVersion(lap)
+		
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
 

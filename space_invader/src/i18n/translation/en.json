@@ -75,5 +75,6 @@
   "home_ranking": "Ranking",
   "home_achievement": "Achievement",
   "home_setting": "Setting",
-  "home_instruction": "Instruction"
+  "home_instruction": "Instruction",
+  "random_scene_dialog": "And it's another day\n{{username, string}} has to rescue\nhis pet from {{bossName, string}}"
 }

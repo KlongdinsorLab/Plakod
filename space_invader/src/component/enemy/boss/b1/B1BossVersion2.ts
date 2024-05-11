@@ -470,4 +470,8 @@ export class B1BossVersion2 extends BossVersion {
 			bulletText.setVisible(false)
 		}, 2000)
 	}
+
+	playRandomScene(_: Phaser.Scene, __: Player): void {
+		
+	}
 }

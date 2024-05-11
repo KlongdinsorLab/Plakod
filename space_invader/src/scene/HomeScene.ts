@@ -171,7 +171,7 @@ export default class HomeScene extends Phaser.Scene {
 			.setOrigin(0, 0)
 		playButton.setInteractive()
 		playButton.on('pointerdown', () => {
-			this.scene.start('game')
+			this.scene.start('Cutscene_randomboss')
 			new SoundManager(this).stop(this.bgm!)
 		})
 

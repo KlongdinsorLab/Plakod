@@ -24,6 +24,7 @@ import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
 import HomeScene from 'scene/HomeScene'
+import RandomBossCutScene from 'scene/cutscene/RandomBossCutscene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -53,6 +54,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		DifficultyScene,
 		AirflowScene,
 		SetupScene,
+		RandomBossCutScene,
 		GameScene,
 		EndGameScene,
 		TutorialCharacterScene,

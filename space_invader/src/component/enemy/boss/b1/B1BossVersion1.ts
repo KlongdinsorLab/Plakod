@@ -15,7 +15,7 @@ import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 
 export class B1BossVersion1 extends BossVersion {
 	private obstacleFactory!: B1BossObstacleFactory
-	constructor(){
+	constructor() {
 		super()
 		this.obstacleFactory = new B1BossObstacleFactory()
 	}
@@ -91,7 +91,12 @@ export class B1BossVersion1 extends BossVersion {
 
 	useSkill(): void {}
 
-	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
+	createObstacleByTime(
+		scene: Phaser.Scene,
+		player: Player,
+		score: Score,
+		delta: number,
+	): void {
 		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
@@ -105,7 +110,7 @@ export class B1BossVersion1 extends BossVersion {
 
 	playVsScene(scene: Phaser.Scene, player: Player): void {
 		const { width, height } = scene.scale
-		
+
 		scene.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
 			.setOrigin(0)
@@ -128,7 +133,7 @@ export class B1BossVersion1 extends BossVersion {
 		const bossName = I18nSingleton.getInstance()
 			.createTranslatedText(scene, -320, 280, 'alien_boss_name')
 			.setOrigin(0.5, 1)
-		
+
 		player.playVsScene(scene)
 
 		bossText
@@ -202,7 +207,7 @@ export class B1BossVersion1 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			bossSound.play("b1-escape-voice")
+			bossSound.play('b1-escape-voice')
 			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
@@ -415,5 +420,76 @@ export class B1BossVersion1 extends BossVersion {
 			avoidText.setVisible(false)
 			bulletText.setVisible(false)
 		}, 2000)
+	}
+
+	playRandomScene(scene: Phaser.Scene, player: Player): void {
+		const { width, height } = scene.scale
+
+		const bg = scene.add
+			.tileSprite(0, 0, width, height, 'boss_background')
+			.setOrigin(0)
+			.setScrollFactor(0, 0)
+			
+		const bossImage = scene.add.image(870, height - 275, 'b1v1', "b1v1_attack_00005.png").setOrigin(0.5, 1).setScale(2.5)
+		const polygon = scene.add
+					.polygon(width, 0, [48, 622, 668, 484, 668, 910, 48, 910], 0xFFFFFF, 0)
+					.setStrokeStyle(5, 0x000000, 1)
+					.setOrigin(0,0)
+
+		const mask = polygon.createGeometryMask()
+
+		bg.setMask(mask)
+		bossImage.setMask(mask)
+
+		player.playRandomBossScene(scene)
+		
+		const bossText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, width, 780, 'alien_boss_name')
+			.setOrigin(0, 0)
+
+		WebFont.load({
+			google: {
+				families: ['Mali'],
+			},
+			active: function () {
+				const bossTutorialUiStyle = {
+					fontFamily: 'Mali',
+					fontStyle:"bold"
+				}
+
+				bossText
+					.setStyle({
+						...bossTutorialUiStyle,
+						color: 'white',
+					})
+					.setFontSize('40px')
+					.setStroke('#FB511C', 12)
+			},
+		})
+
+		scene.tweens.add({
+			targets: polygon,
+			x: 0,
+			duration: 500,
+			repeat: 0,
+			ease:'sine.out'
+		})
+
+		scene.tweens.add({
+			targets: bossText,
+			x: 80,
+			duration: 500,
+			repeat: 0,
+			ease:'sine.out'
+		})
+
+		scene.tweens.add({
+			targets: bossImage,
+			x: width / 2 + MARGIN,
+			duration: 500,
+			repeat: 0,
+			ease:'sine.out'
+		})
+
 	}
 }
