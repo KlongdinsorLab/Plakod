@@ -345,14 +345,15 @@ export default class Player {
 		const { width, height } = scene.scale
 
 		const bg = scene.add
-			.tileSprite(0, 0, width, height, 'background')
-			.setOrigin(0)
+			.tileSprite(width / 2, 0, width, height, 'background')
+			.setOrigin(0.5, 0.5)
 			.setScrollFactor(0, 0)
+			.setScale(1.15)
 		
 		const playerImage = scene.add
-			.image(-100, 60, 'player', 'mc_attack_00001.png')
+			.image(-100, 100, 'player', 'mc_attack_00001.png')
 			.setOrigin(0.5, 0)
-			.setScale(3.5)
+			.setScale(2.5)
 			
 		const polygon = scene.add
 					.polygon(-400, 0, [48, 80, 668, 80, 668, 437, 48, 576], 0xFFFFFF, 0)
