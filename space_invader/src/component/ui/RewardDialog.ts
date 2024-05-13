@@ -2,61 +2,63 @@ import { boosterList } from 'component/item/Booster'
 import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
-const ItemDescription = {
+const RewardDescription = {
 	scoreX2: 'reward_dialog_scoreX2',
 	speedbullet: '',
 	strongbullet: '',
 }
 
 export default class RewardDialog {
-	private itemDescriptionText!: Phaser.GameObjects.Text
-	private receiveItemText!: Phaser.GameObjects.Text
+	private rewardDescriptionText!: Phaser.GameObjects.Text
+	private rewardText!: Phaser.GameObjects.Text
+	private dialog!: Phaser.GameObjects.Graphics
+	private rewardReceived!: Phaser.GameObjects.Image
 
 	constructor(scene: Phaser.Scene) {
 		const { width } = scene.scale
 		const i18n = I18nSingleton.getInstance()
-		this.receiveItemText = i18n
+		this.rewardText = i18n
 			.createTranslatedText(scene, width / 2, 556 + 80, 'receive_item')
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 
-		scene.add
+		this.dialog = scene.add
 			.graphics()
 			.fillStyle(0xffffff, 1)
 			.fillRoundedRect(
 				96,
-				this.receiveItemText.y + this.receiveItemText.height + 48,
+				this.rewardText.y + this.rewardText.height + 48,
 				528,
 				160,
 				20,
 			)
-		const itemReceived = scene.add
+		this.rewardReceived = scene.add
 			.image(
 				96 + MARGIN / 2,
-				this.receiveItemText.y + this.receiveItemText.height + 48 + 80,
+				this.rewardText.y + this.rewardText.height + 48 + 80,
 				'bossAsset',
 				boosterList[2],
 			)
 			.setOrigin(0, 0.5)
-		this.itemDescriptionText = i18n
+		this.rewardDescriptionText = i18n
 			.createTranslatedText(
 				scene,
-				96 + itemReceived.width + MARGIN,
-				this.receiveItemText.y + this.receiveItemText.height + 48 + 80,
-				ItemDescription['scoreX2'],
+				96 + this.rewardReceived .width + MARGIN,
+				this.rewardText.y + this.rewardText.height + 48 + 80,
+				RewardDescription['scoreX2'],
 			)
 			.setOrigin(0, 0.5)
 	}
 
 	initFontStyle() {
-		this.itemDescriptionText
+		this.rewardDescriptionText
 			.setStyle({
 				fontFamily: 'Mali',
 				color: 'black',
 			})
 			.setFontSize('24px')
 
-		this.receiveItemText
+		this.rewardText
 			.setStyle({
 				fontFamily: 'Mali',
 				fontStyle: 'bold',
@@ -64,5 +66,12 @@ export default class RewardDialog {
 			})
 			.setFontSize('32px')
 			.setStroke('#3F088C', 6)
+	}
+
+	hide(){
+		this.dialog.setVisible(false)
+		this.rewardDescriptionText.setVisible(false)
+		this.rewardText.setVisible(false)
+		this.rewardReceived.setVisible(false)
 	}
 }

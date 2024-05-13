@@ -78,6 +78,5 @@
   "home_instruction": "Instruction",
   "random_scene_dialog": "And it's another day\n{{username, string}} has to rescue\nhis pet from {{bossName, string}}",
   "reward_dialog_scoreX2": "Booster increases bullet points\n1.25 times in next game, unlimited\nExpires within 3 hours.",
-  "reward_dialog_speedbullet": "",
-  "reward_dialog_strongbullet": ""
+  "endgame_complete": "Congratulations\nYou played all 10 times today."
 }

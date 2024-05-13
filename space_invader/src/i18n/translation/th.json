@@ -78,6 +78,5 @@
   "home_instruction": "คู่มือ",
   "random_scene_dialog": "และนี่ก็เป็นอีก 1 วัน\nที่ {{username, string}} ต้องช่วยเหลือ\nสัตว์เลี้ยงจาก {{bossName, string}}",
   "reward_dialog_scoreX2": "บูสเตอร์เพิ่มคะแนนกระสุน\n1.25 เท่า ในเกมถัดไปไม่จำกัด\nหมดอายุภายใน 3 ชม.",
-  "reward_dialog_speedbullet": "",
-  "reward_dialog_strongbullet": ""
+  "endgame_complete": "ขอแสดงความยินดีด้วย\nวันนี้คุณเล่นครบทั้ง 10 ครั้ง"
 }

@@ -4,8 +4,8 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Heart from 'component/ui/Heart'
 import RewardDialog from 'component/ui/RewardDialog'
-
-
+import RestartButton from 'component/ui/Button/RestartButton'
+import HomeButton from 'component/ui/Button/HomeButton'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -13,6 +13,13 @@ export default class EndGameScene extends Phaser.Scene {
 	private heart1!: Heart
 	private heart2!: Heart
 	private rewardDialog!: RewardDialog
+	private restartButton!: RestartButton
+	private homeButton!: HomeButton
+	private playCount!: number
+	private victoryText!: Phaser.GameObjects.Text
+	private highScoreText!: Phaser.GameObjects.Text
+	private scoreText!: Phaser.GameObjects.Text
+	private completeText!: Phaser.GameObjects.Text
 
 	constructor() {
 		super('end game')
@@ -55,6 +62,8 @@ export default class EndGameScene extends Phaser.Scene {
 	create() {
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
+		// TODO: get playCount from backend
+		this.playCount = Number(localStorage.getItem('playCount') ?? '')
 
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
@@ -65,74 +74,46 @@ export default class EndGameScene extends Phaser.Scene {
 			.image(width / 2, 96, 'end_game_scene', 'heading_victory.png')
 			.setOrigin(0.5, 0)
 
-		const victoryText = i18n
+		this.victoryText = i18n
 			.createTranslatedText(this, width / 2, 148, 'victory')
 			.setAlign('center')
 			.setOrigin(0.5, 0.5)
 
-		const highScoreText = i18n
+		this.highScoreText = i18n
 			.createTranslatedText(this, width / 2, 248, 'high_score')
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 			.setVisible(this.isHighScore)
 
-		const scoreText = i18n
+		this.scoreText = i18n
 			.createTranslatedText(this, width / 2, 296, 'score', {
 				score: this.score ?? 200800,
 			})
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 
-		this.heart1 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 1)
-		this.heart2 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 2)
+		this.completeText = i18n
+			.createTranslatedText(this, width / 2, 608, 'endgame_complete')
+			.setAlign('center')
+			.setOrigin(0.5, 0)
+			.setVisible(false)
+
+		this.heart1 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 1)
+		this.heart2 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 2)
 
 		this.rewardDialog = new RewardDialog(this)
 
-		// Restart button
-		const restartButton = this.add
-			.nineslice(width / 2, 900, 'end_game_scene', 'button_purple.png', 528, 96, 24, 24)
-			.setOrigin(0.5, 0)
-		restartButton.setInteractive()
-		restartButton.on("pointerup", () => {
-			this.scene.stop()
-			i18n.destroyEmitter()
-			this.scene.start("game")
-		})
-		const restartText = i18n
-		.createTranslatedText(
-			this,
-			width / 2 + MARGIN / 2,
-			900 + restartButton.height / 2,
-			'restart',
-		)
-		.setAlign('center')
-		.setOrigin(0.5, 0.5)
-		this.add
-			.image(width / 2  - restartText.width - 20, 900 + restartButton.height / 2, 'end_game_scene', 'logo_button_play again.png')
-			.setOrigin(1, 0.5)
+		this.restartButton = new RestartButton(this)
+		this.homeButton = new HomeButton(this)
 
-		// Back to home button
-		const homeButton = this.add
-			.nineslice(width / 2, 1018, 'end_game_scene', 'button_gray.png', 528, 96, 24, 24)
-			.setOrigin(0.5, 0)
-		homeButton.setInteractive()
-		homeButton.on("pointerup", () => {
-			this.scene.stop()
-			i18n.destroyEmitter()
-			this.scene.start("home")
-		})
-		const homeText = i18n
-		.createTranslatedText(
-			this,
-			width / 2 + MARGIN / 2,
-			height - 128 - MARGIN - 40,
-			'home',
-		)
-		.setAlign('center')
-		.setOrigin(0.5, 0.5)
-		this.add
-			.image(width / 2  - 2*MARGIN - 20 , height - 128 - MARGIN - 44, 'end_game_scene', 'logo_button_back to home.png')
-			.setOrigin(1, 0.5)
+		if (
+			this.playCount >= 10 &&
+			(!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged())
+		) {
+			this.restartButton.hide()
+			this.rewardDialog.hide()
+			this.completeText.setVisible(true)
+		}
 
 		const self = this
 		WebFont.load({
@@ -152,8 +133,10 @@ export default class EndGameScene extends Phaser.Scene {
 				self.rewardDialog.initFontStyle()
 				self.heart1.initFontStyle()
 				self.heart2.initFontStyle()
+				self.restartButton.initFontStyle()
+				self.homeButton.initFontStyle()
 
-				victoryText
+				self.victoryText
 					.setStyle({
 						...maliFontStyle,
 						color: 'white',
@@ -161,7 +144,7 @@ export default class EndGameScene extends Phaser.Scene {
 					.setFontSize('64px')
 					.setStroke('#3F088C', 6)
 
-				highScoreText
+				self.highScoreText
 					.setStyle({
 						...maliFontStyle,
 						color: 'white',
@@ -169,27 +152,21 @@ export default class EndGameScene extends Phaser.Scene {
 					.setFontSize('32px')
 					.setStroke('#3F088C', 6)
 
-				scoreText
+				self.scoreText
 					.setStyle({
 						...juaFontStyle,
 						color: 'white',
 					})
 					.setFontSize('110px')
 					.setStroke('#3F088C', 12)
-				
-				restartText.setStyle({
-					...maliFontStyle,
-					color: 'white',
-				})
-				.setFontSize('32px')
-				.setStroke('#3F088C', 6)
 
-				homeText.setStyle({
-					...maliFontStyle,
-					color: 'white',
-				})
-				.setFontSize('32px')
-				.setStroke('#7A7367', 6)
+				self.completeText
+					.setStyle({
+						...maliFontStyle,
+						color: '#DD2D04',
+					})
+					.setFontSize('30px')
+					.setStroke('white', 6)
 			},
 		})
 	}

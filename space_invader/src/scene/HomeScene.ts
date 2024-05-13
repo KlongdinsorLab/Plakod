@@ -1,25 +1,37 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MEDIUM_FONT_SIZE } from 'config'
+import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import WebFont from 'webfontloader'
 import TimeService from 'services/timeService'
-import RankingButton from 'component/ui/home/RankingButton'
+import RankingButton from 'component/ui/Button/RankingButton'
 import HomeTopBar from 'component/ui/home/HomeTopBar'
 import Heart from 'component/ui/Heart'
-import InstructionButton from 'component/ui/home/InstructionButton.'
-import PlayButton from 'component/ui/home/PlayButton'
-import AchievementButton from 'component/ui/home/AchievementButton'
-import SettingButton from 'component/ui/home/SettingButton'
+import InstructionButton from 'component/ui/Button/InstructionButton.'
+import PlayButton from 'component/ui/Button/PlayButton'
+import AchievementButton from 'component/ui/Button/AchievementButton'
+import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 
 const ReminderText = {
-	firstRound: "home_reminder_first_play",
-	playTommorow: "home_reminder_play_tomorrow",
-	heartEmpty: "home_reminder_empty_heart",
+	firstRound: 'home_reminder_first_play',
+	heartEmpty: 'home_reminder_empty_heart',
+	playTomorrow: 'home_reminder_play_tomorrow',
 }
 
 export default class HomeScene extends Phaser.Scene {
 	private bgm?: Phaser.Sound.BaseSound
+	private heart1!: Heart
+	private heart2!: Heart
+	private playCount!: number
+	private reminderCase: keyof typeof ReminderText = 'firstRound'
+	private isShowReminder = false
+	private playButton!: PlayButton
+	private achievementButton!: AchievementButton
+	private instructionButton!: InstructionButton
+	private rankingButton!: RankingButton
+	private settingButton!: SettingButton
+	private timeService!: TimeService
+	private reminderText!: Phaser.GameObjects.Text
 
 	constructor() {
 		super('home')
@@ -47,9 +59,10 @@ export default class HomeScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.scale
-		const timeService = new TimeService(this)
-		const isFirstPlay = timeService.isFirstPlay()
-		console.log(isFirstPlay)
+		this.timeService = new TimeService()
+		
+		// TODO: get playCount from backend
+		this.playCount = Number(localStorage.getItem('playCount') ?? "")
 
 		this.add
 			.tileSprite(0, 0, width, height, 'landing_page_bg')
@@ -59,47 +72,79 @@ export default class HomeScene extends Phaser.Scene {
 		this.add
 			.image(width / 2, 216, 'landing_page', 'logo_breathbuddy.png')
 			.setOrigin(0.5, 0)
-		
+
+		this.heart1 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 1)
+		this.heart2 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 2)
+		this.playButton = new PlayButton(this, this.bgm)
+
+		const isFirstPlay = this.timeService.isFirstPlay()
+		if(isFirstPlay){
+			localStorage.setItem('playCount', "0")
+		}
+		if(isFirstPlay && this.heart1.getIsRecharged() && this.heart2.getIsRecharged()){
+			this.isShowReminder = true
+			this.reminderCase = 'firstRound'
+		} else if(this.playCount < 10 && !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()){
+			this.isShowReminder = true
+			this.reminderCase = 'heartEmpty'
+		} else if(this.playCount >= 10 && !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()){
+			this.isShowReminder = true
+			this.reminderCase = 'playTomorrow'
+		}
 
 		// Reminder
-		const reminderText = I18nSingleton.getInstance()
+		this.reminderText = I18nSingleton.getInstance()
 			.createTranslatedText(
 				this,
 				width / 2,
-				216 + 224 + 24 + 84 + 8 + 24 + 48,
-				ReminderText['firstRound'],
+				628,
+				ReminderText[this.reminderCase],
 			)
 			.setAlign('center')
 			.setOrigin(0.5, 0)
+			.setVisible(this.isShowReminder)
 
+		this.rankingButton = new RankingButton(this)
+		this.instructionButton = new InstructionButton(this)
+		this.achievementButton = new AchievementButton(this)
+		this.settingButton = new SettingButton(this)
+		
 		const self = this
 		WebFont.load({
 			google: {
 				families: ['Mali', 'Jua'],
 			},
 			active: function () {
-				const maliFontStyle = {
-					fontFamily: 'Mali',
-					fontStyle: 'bold',
-				}
-				
+				self.heart1.initFontStyle()
+				self.heart2.initFontStyle()
+				self.playButton.initFontStyle()
+				self.achievementButton.initFontStyle()
+				self.instructionButton.initFontStyle()
+				self.settingButton.initFontStyle()
+				self.rankingButton.initFontStyle()
+
 				new HomeTopBar(self)
-				new Heart(self)
-				new PlayButton(self, self.bgm)
-				new RankingButton(self)
-				new InstructionButton(self)
-				new AchievementButton(self)
-				new SettingButton(self)
 				new SoundToggle(self)
-				
-				reminderText
+
+				self.reminderText
 					.setStyle({
-						...maliFontStyle,
+						fontFamily: 'Mali',
+						fontStyle: 'bold',
 						color: 'white',
 					})
 					.setFontSize(MEDIUM_FONT_SIZE)
 					.setStroke('#57453B', 12)
 			},
 		})
+	}
+
+	update(_: number, __: number): void {
+		const heartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if(this.playCount >= 10 || heartEmpty){
+			this.playButton.disable()
+		}
+
+		const isFirstPlay = this.timeService.isFirstPlay()
+		this.reminderText.setVisible(isFirstPlay || heartEmpty)
 	}
 }
