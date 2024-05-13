@@ -3,6 +3,7 @@ import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import { boosterList } from 'component/item/Booster'
+import Heart from 'component/ui/Heart'
 
 const ItemDescription = {
 	'scoreX2': "บูสเตอร์เพิ่มคะแนนกระสุน\n1.25 เท่า ในเกมถัดไปไม่จำกัด\nหมดอายุภายใน 3 ชม.",
@@ -83,27 +84,12 @@ export default class EndGameScene extends Phaser.Scene {
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 
-		this.add
-			.image(width / 2 - MARGIN / 2, 464, 'landing_page', 'heart_full.png')
-			.setOrigin(1, 0)
-		const heartCountdown1 = this.add
-			.text(width / 2 - 1.5 * MARGIN, 556, `00:59:59`)
-			.setOrigin(0.5, 0)
-			.setVisible(false)
-		this.add
-			.image(width / 2 + MARGIN / 2, 464, 'landing_page', 'heart_empty.png')
-			.setOrigin(0, 0)
-		const heartCountdown2 = this.add
-			.text(width / 2 + 1.5 * MARGIN, 556, `00:59:59`)
-			.setOrigin(0.5, 0)
-			.setVisible(true)
-
 		// Received Booster dialog
 		const receiveItemText = i18n
 			.createTranslatedText(
 				this,
 				width / 2,
-				heartCountdown2.y + 80,
+				556 + 80,
 				'receive_item',
 			)
 			.setAlign('center')
@@ -171,6 +157,7 @@ export default class EndGameScene extends Phaser.Scene {
 			.image(width / 2  - 2*MARGIN - 20 , height - 128 - MARGIN - 44, 'end_game_scene', 'logo_button_back to home.png')
 			.setOrigin(1, 0.5)
 
+		const self = this
 		WebFont.load({
 			google: {
 				families: ['Mali', 'Jua'],
@@ -184,6 +171,8 @@ export default class EndGameScene extends Phaser.Scene {
 				const juaFontStyle = {
 					fontFamily: 'Jua',
 				}
+
+				new Heart(self)
 
 				victoryText
 					.setStyle({
@@ -216,22 +205,6 @@ export default class EndGameScene extends Phaser.Scene {
 					color: 'black',
 					})
 					.setFontSize('24px')
-
-				heartCountdown1
-					.setStyle({
-						...juaFontStyle,
-						color: '#DD2D04',
-					})
-					.setFontSize('24px')
-					.setStroke('white', 3)
-
-				heartCountdown2
-					.setStyle({
-						...juaFontStyle,
-						color: '#DD2D04',
-					})
-					.setFontSize('24px')
-					.setStroke('white', 3)
 
 				receiveItemText
 					.setStyle({
