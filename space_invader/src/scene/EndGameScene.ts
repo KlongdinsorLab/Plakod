@@ -2,18 +2,17 @@ import Phaser from 'phaser'
 import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
-import { boosterList } from 'component/item/Booster'
 import Heart from 'component/ui/Heart'
+import RewardDialog from 'component/ui/RewardDialog'
 
-const ItemDescription = {
-	'scoreX2': "บูสเตอร์เพิ่มคะแนนกระสุน\n1.25 เท่า ในเกมถัดไปไม่จำกัด\nหมดอายุภายใน 3 ชม.",
-	'speedbullet': "",
-	'strongbullet': "",
-}
+
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
 	private isHighScore = true
+	private heart1!: Heart
+	private heart2!: Heart
+	private rewardDialog!: RewardDialog
 
 	constructor() {
 		super('end game')
@@ -84,31 +83,10 @@ export default class EndGameScene extends Phaser.Scene {
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 
-		// Received Booster dialog
-		const receiveItemText = i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				556 + 80,
-				'receive_item',
-			)
-			.setAlign('center')
-			.setOrigin(0.5, 0)
-			
-		this.add
-			.graphics()
-			.fillStyle(0xffffff, 1)
-			.fillRoundedRect(96, receiveItemText.y + receiveItemText.height + 48, 528, 160, 20)
-		const itemReceived = this.add
-			.image(96 + MARGIN / 2, receiveItemText.y + receiveItemText.height + 48 + 80, 'bossAsset', boosterList[2])
-			.setOrigin(0, 0.5)
-		const itemDescriptionText = i18n
-			.createTranslatedText(
-				this,
-				96 + itemReceived.width + MARGIN, receiveItemText.y + receiveItemText.height + 48 + 80,
-				ItemDescription["scoreX2"],
-			)
-			.setOrigin(0, 0.5)
+		this.heart1 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 1)
+		this.heart2 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 2)
+
+		this.rewardDialog = new RewardDialog(this)
 
 		// Restart button
 		const restartButton = this.add
@@ -152,7 +130,6 @@ export default class EndGameScene extends Phaser.Scene {
 		)
 		.setAlign('center')
 		.setOrigin(0.5, 0.5)
-
 		this.add
 			.image(width / 2  - 2*MARGIN - 20 , height - 128 - MARGIN - 44, 'end_game_scene', 'logo_button_back to home.png')
 			.setOrigin(1, 0.5)
@@ -172,7 +149,9 @@ export default class EndGameScene extends Phaser.Scene {
 					fontFamily: 'Jua',
 				}
 
-				new Heart(self)
+				self.rewardDialog.initFontStyle()
+				self.heart1.initFontStyle()
+				self.heart2.initFontStyle()
 
 				victoryText
 					.setStyle({
@@ -198,22 +177,6 @@ export default class EndGameScene extends Phaser.Scene {
 					.setFontSize('110px')
 					.setStroke('#3F088C', 12)
 				
-				// TODO: Finalize itemDescription text style
-				itemDescriptionText
-					.setStyle({
-					fontFamily: "Mali",
-					color: 'black',
-					})
-					.setFontSize('24px')
-
-				receiveItemText
-					.setStyle({
-						...maliFontStyle,
-						color: 'white',
-					})
-					.setFontSize('32px')
-					.setStroke('#3F088C', 6)
-
 				restartText.setStyle({
 					...maliFontStyle,
 					color: 'white',
