@@ -1,21 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Plakod</title>
+		<style media="screen" type="text/css">
+			@font-face {
+				font-family: sarabun;
+				src: url('/assets/font/THSarabunNew.ttf');
+			}
 
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Plakod</title>
-    <style media='screen' type='text/css'>
-        @font-face {
-            font-family: sarabun;
-            src: url('/assets/font/THSarabunNew.ttf');
-        }
-    </style>
-</head>
-
-<body style="margin: 0;background: black;">
-	<div id="app"></div>
-	<script type="module" src="src/main.ts"></script>
-</body>
-
+			@layer base {
+				input[type='number']::-webkit-inner-spin-button,
+				input[type='number']::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+			}
+		</style>
+		<link rel="manifest" href="manifest.json" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/daisyui@3.9.1/dist/full.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+    
+	<body style="margin: 0; background: black">
+        <script src="installPWA.js"></script>
+		<script type="module" src="src/main.ts"></script>
+	</body>
 </html>
