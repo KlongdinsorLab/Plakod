@@ -122,7 +122,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   update() {
-    if (this.controller1?.buttons.B9 > 0){
+    if (this.controller1?.buttons.B5 > 0){
       this.statusText.setText("Home Clicked")
       setTimeout(() => this.startGame(), 1000)
     }
@@ -131,7 +131,7 @@ export default class TitleScene extends Phaser.Scene {
       this.hasController &&
       (this.controller1?.direction.LEFT ||
         this.controller1?.direction.RIGHT ||
-        this.controller1?.buttons.B9 > 0 ||
+        this.controller1?.buttons.B5 > 0 ||
         this.input.pointer1.isDown)
     ) {
       this.startGame()
