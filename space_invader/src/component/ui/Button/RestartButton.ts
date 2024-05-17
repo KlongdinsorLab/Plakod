@@ -21,13 +21,9 @@ export default class RestartButton extends Button {
 
         this.button.setInteractive()
         this.button.on('pointerup', () => {
-			console.log(this.playCount)
 			scene.scene.stop()
 			i18n.destroyEmitter()
-			localStorage.setItem('playCount', `${this.playCount + 1}`)
-
-			const heartIndex = (this.playCount + 1) % 2 !== 0 ? 1 : 2
-			this.timeService.stampLastPlayTime(heartIndex)
+			this.timeService.saveLastPlayTime()
 
 			scene.scene.start('Cutscene_randomboss')
 		})

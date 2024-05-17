@@ -5,14 +5,12 @@ export default class Heart {
 	private heartCountdown: Phaser.GameObjects.Text
 	private isHeartRecharged = true
 	private scene: Phaser.Scene
-	private playCount!: number
 
 	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number) {
 		this.scene = scene
-		// TODO: get playCount from backend
-		this.playCount = Number(localStorage.getItem('playCount') ?? "")
 
 		const timeService = new TimeService()
+		// TODO: call api
 		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
 		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
 		if (!this.isHeartRecharged) {
@@ -32,9 +30,9 @@ export default class Heart {
 			.image(x, y, 'landing_page', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
 			.setOrigin(0.5, 0)
 		this.heartCountdown = scene.add
-			.text(x, y + 92, `00:00:00`)
+			.text(x, y + 92, ``)
 			.setOrigin(0.5, 0)
-			.setVisible(!this.isHeartRecharged && this.playCount < 10)
+			// .setVisible(!this.isHeartRecharged)
 	}
 
 	getBody(): Phaser.GameObjects.Image {

@@ -61,7 +61,7 @@ export default class HomeScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		this.timeService = new TimeService()
 		
-		// TODO: get playCount from backend
+		// TODO: call api
 		this.playCount = Number(localStorage.getItem('playCount') ?? "")
 
 		this.add
@@ -78,9 +78,6 @@ export default class HomeScene extends Phaser.Scene {
 		this.playButton = new PlayButton(this, this.bgm)
 
 		const isFirstPlay = this.timeService.isFirstPlay()
-		if(isFirstPlay){
-			localStorage.setItem('playCount', "0")
-		}
 		if(isFirstPlay && this.heart1.getIsRecharged() && this.heart2.getIsRecharged()){
 			this.isShowReminder = true
 			this.reminderCase = 'firstRound'
@@ -144,7 +141,10 @@ export default class HomeScene extends Phaser.Scene {
 			this.playButton.disable()
 		}
 
-		const isFirstPlay = this.timeService.isFirstPlay()
-		this.reminderText.setVisible(isFirstPlay || heartEmpty)
+		if(!heartEmpty){
+			this.playButton.activate()
+		}
+
+		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
 	}
 }

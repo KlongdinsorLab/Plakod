@@ -62,7 +62,7 @@ export default class EndGameScene extends Phaser.Scene {
 	create() {
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
-		// TODO: get playCount from backend
+		// TODO: call api
 		this.playCount = Number(localStorage.getItem('playCount') ?? '')
 
 		this.add
@@ -106,13 +106,14 @@ export default class EndGameScene extends Phaser.Scene {
 		this.restartButton = new RestartButton(this)
 		this.homeButton = new HomeButton(this)
 
-		if (
-			this.playCount >= 10 &&
-			(!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged())
-		) {
+		if (this.playCount >= 10) {
 			this.restartButton.hide()
 			this.rewardDialog.hide()
 			this.completeText.setVisible(true)
+		}
+
+		if(!this.heart1){
+			this.restartButton.hide()
 		}
 
 		const self = this

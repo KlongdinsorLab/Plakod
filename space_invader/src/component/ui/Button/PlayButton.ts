@@ -5,13 +5,10 @@ import { Button } from './Button'
 
 export default class PlayButton extends Button {
 	private timeService!: TimeService
-	private playCount!: number
 
 	constructor(scene: Phaser.Scene, bgm: any) {
 		super(scene)
 		this.timeService = new TimeService()
-		// TODO: get playCount from backend
-		this.playCount = Number(localStorage.getItem('playCount')) ?? 0
 
        	this.button = scene.add.nineslice(144, 772,'landing_page', 'button_red.png', 432, 170, 32, 32, 64, 64)
 			                        .setOrigin(0,0)
@@ -25,10 +22,8 @@ export default class PlayButton extends Button {
 
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			localStorage.setItem('playCount', `${this.playCount + 1}`)
-
-			const heartIndex = (this.playCount + 1) % 2 !== 0 ? 1 : 2
-			this.timeService.stampLastPlayTime(heartIndex)
+			
+			this.timeService.saveLastPlayTime()
 
 			scene.scene.start('Cutscene_randomboss')
 			new SoundManager(scene).stop(bgm!)
