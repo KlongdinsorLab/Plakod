@@ -2,72 +2,76 @@ import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 //import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
-import { MEDIUM_FONT_SIZE } from 'config'
+import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class TitleScene extends Phaser.Scene {
-  //	private background!: Phaser.GameObjects.TileSprite
-  private mergedInput?: MergedInput
-  private controller1?: InputPlayer | any
-  //	private player?: Player
-  private bgm?: Phaser.Sound.BaseSound
-  private hasController = false
+	//	private background!: Phaser.GameObjects.TileSprite
+	private mergedInput?: MergedInput
+	private controller1?: InputPlayer | any
+	//	private player?: Player
+	private bgm?: Phaser.Sound.BaseSound
+	private hasController = false
+	private statusText!: Phaser.GameObjects.Text
 
-  constructor() {
-    super('title')
-  }
+	constructor() {
+		super('title')
+	}
 
-  preload() {
-    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+	preload() {
+		this.load.script(
+			'webfont',
+			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
+		)
 
-    this.load.image('titleBackground', 'assets/background/title-background.jpg')
-    this.load.image('logo', 'assets/logo/logo_1-01.png')
-    //		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
-    this.load.image('fire', 'assets/effect/fire03.png')
-    // this.load.audio('bgm', 'sound/hofman-138068.mp3')
-    this.load.audio('bgm', 'sound/BGM_GameScene.mp3')
+		this.load.image('titleBackground', 'assets/background/title-background.jpg')
+		this.load.image('logo', 'assets/logo/logo_1-01.png')
+		//		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+		this.load.image('fire', 'assets/effect/fire03.png')
+		// this.load.audio('bgm', 'sound/hofman-138068.mp3')
+		this.load.audio('bgm', 'sound/BGM_GameScene.mp3')
 
-    this.load.scenePlugin('mergedInput', MergedInput)
-  }
+		this.load.scenePlugin('mergedInput', MergedInput)
+	}
 
-  create() {
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    this.hasController = urlParams.get('controller') === 'true'
+	create() {
+		const queryString = window.location.search
+		const urlParams = new URLSearchParams(queryString)
+		this.hasController = urlParams.get('controller') === 'true'
 
-    const { width, height } = this.scale
-    //		const i18n = I18nSingleton.getInstance()
-    //		this.background = this.add
-    //			.tileSprite(0, 0, width, height, 'titleBackground')
-    //			.setOrigin(0)
-    //			.setScrollFactor(0, 0)
+		const { width, height } = this.scale
+		//		const i18n = I18nSingleton.getInstance()
+		//		this.background = this.add
+		//			.tileSprite(0, 0, width, height, 'titleBackground')
+		//			.setOrigin(0)
+		//			.setScrollFactor(0, 0)
 
-    this.add
-      .tileSprite(0, 0, width, height, 'titleBackground')
-      .setOrigin(0)
-      .setScrollFactor(0, 0)
+		this.add
+			.tileSprite(0, 0, width, height, 'titleBackground')
+			.setOrigin(0)
+			.setScrollFactor(0, 0)
 
-    this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
-    I18nSingleton.getInstance()
-      .createTranslatedText(this, width / 2, height / 2, 'start text')
-      .setFontSize(MEDIUM_FONT_SIZE)
-      .setOrigin(0.5, 0)
+		this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
+		I18nSingleton.getInstance()
+			.createTranslatedText(this, width / 2, height / 2, 'start text')
+			.setFontSize(MEDIUM_FONT_SIZE)
+			.setOrigin(0.5, 0)
 
-    this.controller1 = this.mergedInput?.addPlayer(0)
-    this.mergedInput
-      ?.defineKey(0, 'LEFT', 'LEFT')
-      .defineKey(0, 'RIGHT', 'RIGHT')
-      .defineKey(0, 'B0', 'SPACE')
+		this.controller1 = this.mergedInput?.addPlayer(0)
+		this.mergedInput
+			?.defineKey(0, 'LEFT', 'LEFT')
+			.defineKey(0, 'RIGHT', 'RIGHT')
+			.defineKey(0, 'B0', 'SPACE')
 
-    //		this.player = new Player(this)
-    //		this.player.addJetEngine()
+		//		this.player = new Player(this)
+		//		this.player.addJetEngine()
 
-    this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
-    const soundManager = new SoundManager(this)
-    soundManager.init()
-    soundManager.play(this.bgm)
+		this.bgm = this.sound.add('bgm', { volume: 0.5, loop: true })
+		const soundManager = new SoundManager(this)
+		soundManager.init()
+		soundManager.play(this.bgm)
 
-    /* TODO comment just for testing
+		/* TODO comment just for testing
     const isSetup = localStorage.getItem('setup') ?? false
     if (!isSetup) {
       this.scene.pause()
@@ -75,33 +79,66 @@ export default class TitleScene extends Phaser.Scene {
     }
     */
 
-    if (!this.hasController && this.input?.gamepad?.total === 0) {
-      this.input.gamepad.once(
-        'connected',
-        () => {
-          this.startGame()
-        },
-        this,
-      )
-    }
+		// if (!this.hasController && this.input?.gamepad?.total === 0) {
+		// 	this.input.gamepad.once(
+		// 		'connected',
+		// 		() => {
+		// 			// this.startGame()
+		// 		},
+		// 		this,
+		// 	)
+		// }
 
-  }
+		this.statusText = this.add
+			.text(width / 2, height - 2 * MARGIN, 'Start')
+			.setFontSize('4em')
+			.setOrigin(0.5, 1)
 
-  update() {
-    if (
-      this.hasController &&
-      (this.controller1?.direction.LEFT ||
-        this.controller1?.direction.RIGHT ||
-        this.controller1?.buttons.B9 > 0 ||
-        this.input.pointer1.isDown)
-    ) {
-      this.startGame()
-    }
-  }
+		if (!!navigator.getGamepads) {
+			this.statusText.setText('Gamepad API is supported')
+			const self = this
+			window.addEventListener('gamepadconnected', () => {
+				self.statusText.setText('Connected')
+			})
 
-  startGame() {
-    I18nSingleton.getInstance().destroyEmitter()
-    this.scene.start(import.meta.env.VITE_START_SCENE || 'game')
-    new SoundManager(this).stop(this.bgm!)
-  }
+			window.addEventListener('gamepaddisconnected', () => {
+				self.statusText.setText('Disconnected')
+			})
+		} else {
+			this.statusText.setText('Gamepad API is not supported')
+		}
+	}
+
+	update() {
+		const gamepads = navigator.getGamepads ? navigator.getGamepads() : []
+		const gp = gamepads[0]
+		if (gp) {
+			// Handle buttons
+      gp.buttons.forEach((_, idx) => {
+        if (gp.buttons[idx].pressed) {
+          this.statusText.setText(`Button ${idx} pressed`)
+        }
+      })
+			
+			if (gp.buttons[5].pressed) {
+        setTimeout(() => this.startGame(), 1000)
+			}
+		}
+
+		if (
+			this.hasController &&
+			(this.controller1?.direction.LEFT ||
+				this.controller1?.direction.RIGHT ||
+				this.controller1?.buttons.B9 > 0 ||
+				this.input.pointer1.isDown)
+		) {
+			this.startGame()
+		}
+	}
+
+	startGame() {
+		I18nSingleton.getInstance().destroyEmitter()
+		this.scene.start(import.meta.env.VITE_START_SCENE || 'game')
+		new SoundManager(this).stop(this.bgm!)
+	}
 }
