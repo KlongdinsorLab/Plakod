@@ -1,25 +1,30 @@
 import { Boss } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
-import Player from 'component/player/Player'
+// import Player from 'component/player/Player'
+import { PlayerByName } from 'component/player/playerInterface'
 import Score from 'component/ui/Score'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { BossByName } from 'scene/boss/bossInterface'
 import WebFont from 'webfontloader'
 
 const bossNameText = {
-	"B1": "alien_boss_name"
+	"B1": "alien_boss_name",
+	"B2": "slime_boss_name"
 }
 
 export default class RandomBossCutScene extends Phaser.Scene {
 	private boss!: Boss
 	private bossVersion!: BossVersion
 	private bossName!: keyof typeof BossByName
+	private mcName!: keyof typeof PlayerByName
 
 	constructor() {
-		super('Cutscene_randomboss')
+		super('cutscene_randomboss')
 	}
 
-	init() {}
+	init({mcName}: {mcName: keyof typeof PlayerByName}) {
+		this.mcName = mcName
+	}
 
 	preload() {
 		this.load.image('background', 'assets/background/background.jpg')
@@ -39,7 +44,14 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			'assets/character/enemy/b1v1_spritesheet.json',
 		)
 
-		this.load.image('boss_background', 'assets/background/bg_boss.jpg')
+		this.load.atlas(
+			'b2v1',
+			'assets/character/enemy/b2v1_spritesheet.png',
+			'assets/character/enemy/b2v1_spritesheet.json',
+		)
+
+		this.load.image('boss1_background', 'assets/background/bg_boss.jpg')
+		this.load.image('boss2_background', 'assets/background/bg_boss scene_b2.png')
 	}
 
 	create() {
@@ -52,7 +64,8 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.postFX.addBokeh(0.5, 1, 0)
 
 		// TODO: random player
-		const player = new Player(this, this.add.layer())
+		const sceneLayer = this.add.layer()
+		const player = new PlayerByName[this.mcName ?? "mc1"](this, sceneLayer)
 		player.hide()
 		const score = new Score(this)
 		score.hide()
@@ -70,9 +83,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.lineStyle(6, 0xd35e24, 1)
 			.strokeRoundedRect(48, height - 320, 624, 240, 40)
 
-		const playerName = i18n
-			.createTranslatedText(this, 0, 0, 'player_name')
-			.setVisible(false)
+		const playerName = this.add.text(0,0, "username")
 
 		const bossName = i18n
 			.createTranslatedText(this, 0, 0, bossNameText[this.bossName])

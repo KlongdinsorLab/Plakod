@@ -5,7 +5,7 @@ import TimeService from 'services/timeService'
 
 export default class RestartButton extends Button {
 	private timeService!: TimeService
-	private playCount!: number
+	// private playCount!: number
 	
 	constructor(scene: Phaser.Scene) {
 		super(scene)
@@ -13,7 +13,7 @@ export default class RestartButton extends Button {
 		const i18n = I18nSingleton.getInstance()
 		this.timeService = new TimeService()
 		// TODO: get playCount from backend
-		this.playCount = Number(localStorage.getItem('playCount')) ?? 0
+		// this.playCount = Number(localStorage.getItem('playCount')) ?? 0
 
 		this.button = this.scene.add
 			.nineslice(width / 2, 900, 'end_game_scene', 'button_purple.png', 528, 96, 24, 24,)

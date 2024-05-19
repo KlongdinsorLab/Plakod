@@ -65,7 +65,9 @@
   "collect_bullet": "เก็บให้เต็มหลอด",
   "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
+  "slime_boss_name": "สไลม์คิง",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
+  "slime_boss_name_version2": "สไลม์คิง\nร่าง 2",
   "player_name": "น้องปิ๊ด",
   "home_reminder_first_play": "อย่าลืม ! เช็คปริมาณอากาศ\nที่เครื่องบริหารปอดก่อนเริ่มเกม",
   "home_reminder_play_tomorrow": "กลับมาสนุกกันใหม่พรุ่งนี้นะ !",
@@ -78,5 +80,7 @@
   "home_instruction": "คู่มือ",
   "random_scene_dialog": "และนี่ก็เป็นอีก 1 วัน\nที่ {{username, string}} ต้องช่วยเหลือ\nสัตว์เลี้ยงจาก {{bossName, string}}",
   "reward_dialog_scoreX2": "บูสเตอร์เพิ่มคะแนนกระสุน\n1.25 เท่า ในเกมถัดไปไม่จำกัด\nหมดอายุภายใน 3 ชม.",
-  "endgame_complete": "ขอแสดงความยินดีด้วย\nวันนี้คุณเล่นครบทั้ง 10 ครั้ง"
+  "endgame_complete": "ขอแสดงความยินดีด้วย\nวันนี้คุณเล่นครบทั้ง 10 ครั้ง",
+  "cutscene1_dialog": "เช้าวันหนึ่ง ณ บ้านบนยอดเขา",
+  "cutscene2_dialog": "เมื่อตื่นขึ้นมา สัตว์เลี้ยงของ\n{{username, string}} ก็ได้หายไปอีกแล้ว !!!"
 }

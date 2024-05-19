@@ -25,7 +25,7 @@ export default class PlayButton extends Button {
 			
 			this.timeService.saveLastPlayTime()
 
-			scene.scene.start('Cutscene_randomboss')
+			scene.scene.start('cutscene1')
 			new SoundManager(scene).stop(bgm!)
 		})
 	}

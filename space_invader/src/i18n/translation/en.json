@@ -65,7 +65,9 @@
   "collect_bullet": "Collect until full",
   "collect_item": "Collect",
   "alien_boss_name": "AlienZa",
+  "slime_boss_name": "Slime King",
   "alien_boss_name_version2": "AlienZa\n2nd Form",
+  "slime_boss_name_version2": "Slime King\n2nd Form",
   "player_name": "Nong Pid",
   "home_reminder_first_play": "Don't forget to recheck airflow\nbefore start game",
   "home_reminder_play_tomorrow": "Come back tomorrow!",
@@ -78,5 +80,7 @@
   "home_instruction": "Instruction",
   "random_scene_dialog": "And it's another day\n{{username, string}} has to rescue\nhis pet from {{bossName, string}}",
   "reward_dialog_scoreX2": "Booster increases bullet points\n1.25 times in next game, unlimited\nExpires within 3 hours.",
-  "endgame_complete": "Congratulations\nYou played all 10 times today."
+  "endgame_complete": "Congratulations\nYou played all 10 times today.",
+  "cutscene1_dialog": "One morning at the house on the mountain top",
+  "cutscene2_dialog": "When I wake up \n{{username, string}}'s pet has disappeared again!!!"
 }
