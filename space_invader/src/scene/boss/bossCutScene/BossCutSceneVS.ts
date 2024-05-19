@@ -68,7 +68,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 		// TODO: recieve player from gameScene
 		const sceneLayer = this.add.layer()
-		const player = new PlayerByName['MC1'](this, sceneLayer)
+		const player = new PlayerByName['mc1'](this, sceneLayer)
 		player.hide()
 
 		const scoreObj = new Score(this)
