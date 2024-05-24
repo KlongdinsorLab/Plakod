@@ -78,6 +78,9 @@ export default class HomeScene extends Phaser.Scene {
 		this.playButton = new PlayButton(this, this.bgm)
 
 		const isFirstPlay = this.timeService.isFirstPlay()
+		if(isFirstPlay){
+			localStorage.setItem('playCount', "0")
+		}
 		if(isFirstPlay && this.heart1.getIsRecharged() && this.heart2.getIsRecharged()){
 			this.isShowReminder = true
 			this.reminderCase = 'firstRound'

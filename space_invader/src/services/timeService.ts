@@ -15,7 +15,7 @@ export default class TimeService {
 			dateNow.getDate() - this.lastPlay1.getDate(),
 			dateNow.getDate() - this.lastPlay2.getDate(),
 		)
-		return diff >= 1
+		return diff >= 1 || this.playCount === 0
 	}
 
 	saveLastPlayTime() {
@@ -46,6 +46,9 @@ export default class TimeService {
 	}
 
 	isRecharged(lastPlayTime: Date): boolean {
+		if(isNaN(lastPlayTime.getTime())){
+			return true
+		}
 		const diff = (new Date().getTime() - lastPlayTime.getTime()) / 36e5
 		return diff >= 1 && this.playCount != 10
 	}
