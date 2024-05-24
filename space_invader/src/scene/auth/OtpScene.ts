@@ -1,56 +1,88 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from 'i18next'
 import { ConfirmationResult } from 'firebase/auth'
+import { getCookie, setCookie } from 'typescript-cookie'
+import WebFont from 'webfontloader'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
 export default class OtpScene extends Phaser.Scene {
-	private background!: Phaser.GameObjects.TileSprite
 	private confirmationResult!: ConfirmationResult
+	private phoneNumber!: string;
+	private isTimeout: boolean = false;
 
 	constructor() {
 		super('otp')
 	}
 
-	init({confirmationResult}: {confirmationResult:ConfirmationResult}) {
-		this.confirmationResult = confirmationResult
+	init({ confirmationResult, data }: { confirmationResult: ConfirmationResult, data: { phoneNumber: string } }) {
+		this.confirmationResult = confirmationResult;
+		this.phoneNumber = data.phoneNumber;
 	}
-
+	
 	preload() {
+		this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 		this.load.html('otpForm', 'html/auth/otp.html')
-		this.load.image('background', 'assets/background/purple.png')
 	}
 
 	create() {
+		WebFont.load({
+			google: {
+				families: ['Sarabun:300,400,500']
+			},
+			active: () => {
+				applyFontStyles();
+			}
+		});
+		
+		function applyFontStyles(): void {
+			const lightElements = document.querySelectorAll('.sarabun-light');
+			lightElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '300';
+			});
+		
+			const mediumElements = document.querySelectorAll('.sarabun-medium');
+			mediumElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '400';
+			});
+		
+			const regularElements = document.querySelectorAll('.sarabun-regular');
+			regularElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '500';
+			});
+		}
+
 		const { width, height } = this.scale
 
-		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
-			.setOrigin(0)
-			.setScrollFactor(0, 0)
-
 		const i18n = I18nSingleton.getInstance()
-		const title = i18n
-			.createTranslatedText(this, width / 2, 3 * MARGIN, 'otp_title')
-			.setFontSize(LARGE_FONT_SIZE)
-			.setOrigin(0.5, 0)
-		i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				title.y + 2 * MARGIN,
-				'otp_description',
-			)
-			.setFontSize(MEDIUM_FONT_SIZE)
-			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(560, height / 2)
+			.dom(width/2, height / 2)
 			.createFromCache('otpForm')
-			.setScale(1.5)
+			.setScale(1)
+
+		const textElementIds = [
+			'phoneNumber-text', 'otp-head-text', 'otp-description', 
+			'otp-description-2', 'refcode', 'otp-timeout', 
+			'resend-text', 'resend-text-button', 'confirm-button'
+		];
+
+		const textElementKeys = [
+			`\n${this.phoneNumber}`, 'otp_title', 'otp_description', 
+			'otp_description2', 'otp_refcode', 'otp_timeout', 
+			'otp_resend', 'otp_resendButton', 'otp_button'
+		];
+
+		textElementIds.forEach((id, index) => {
+			const textElement = <Element>element.getChildByID(id);
+			textElement.textContent = i18next.t(textElementKeys[index]);
+		});
+
 
 		element.addListener('submit')
 		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
@@ -89,20 +121,38 @@ export default class OtpScene extends Phaser.Scene {
 			} catch (e) {}
 		})
 
-		const label = <Element>element.getChildByID('label')
-		label.textContent = i18next.t('otp_input')
-
-		const button = <Element>element.getChildByID('button')
-		button.textContent = i18next.t('otp_button')
+		//timeout
+		let counter = 60
+		let min = 4
+		setInterval(() => {
+			if(counter>0){
+				counter--
+			}else if(counter===0){
+				counter = 60
+				min--
+				if(min<0){
+					min = 0
+					counter = 0
+				}
+			}else if(min===0 && counter === 0){
+				this.isTimeout = true;
+				console.log("Time out");
+			}
+			const second = document.getElementById('second')! as HTMLElement;
+			second.style.setProperty('--value', counter.toString());
+			const minute = document.getElementById('minute')! as HTMLElement;
+			minute.style.setProperty('--value', min.toString());
+		}, 1000)
+		
 	}
 
-	update() {
-		this.background.tilePositionY -= 1
-	}
+	update() {}
 
 	async verify(code: string): Promise<void> {
 		try {
 			await this.confirmationResult.confirm(code)
+			setCookie('phone', this.phoneNumber, { expires: 7, path: '' });
+			setCookie('scene', 'otpScene', { expires: 7, path: '' });
 			this.scene.stop()
 			this.scene.launch('register')
 		} catch (e){

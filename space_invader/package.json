@@ -13,6 +13,7 @@
 		"format"
 	],
 	"devDependencies": {
+		"@types/webfontloader": "^1.6.38",
 		"@typescript-eslint/eslint-plugin": "^5.40.0",
 		"@typescript-eslint/parser": "^5.40.0",
 		"eslint": "^8.25.0",
@@ -27,6 +28,8 @@
 		"firebase": "^10.5.0",
 		"i18next": "^23.5.1",
 		"phaser": "^3.60.0",
-		"phaser3-merged-input": "^1.6.1"
+		"phaser3-merged-input": "^1.6.1",
+		"typescript-cookie": "^1.0.6",
+		"webfontloader": "^1.6.28"
 	}
 }

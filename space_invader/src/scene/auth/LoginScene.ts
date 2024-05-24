@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from 'i18next'
+import { getCookie, setCookie } from 'typescript-cookie'
+import WebFont from 'webfontloader'
 
 import {
 	getAuth,
@@ -18,66 +20,104 @@ interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
 export default class LoginScene extends Phaser.Scene {
-	private background!: Phaser.GameObjects.TileSprite
+
 
 	constructor() {
 		super('login')
 	}
 
 	preload() {
+		this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 		this.load.html('loginForm', 'html/auth/login.html')
-		this.load.image('background', 'assets/background/purple.png')
 	}
 
 	create() {
-		const { width, height } = this.scale
+		if (getCookie('phone')) {
+			// Phone number cookie exists, proceed to the register scene
+			const phoneNumberCookie = getCookie('name');
+			console.log('Phone number cookie exists, proceed to the register scene')
+			console.log('Phone:', phoneNumberCookie);
+			//this.scene.stop();
+			//this.scene.launch('register');
+		}
+		if(getCookie('lastScene') === 'otpScene') {
+			// OTP scene was the last scene, proceed to the confirm scene
+			console.log('OTP scene was the last scene, proceed to the register scene')
+			console.log(getCookie('lastScene'));
+			//this.scene.stop();
+			//this.scene.launch('register');
+		}else if(getCookie('lastScene') === 'confirmScene') {
+			// Confirm scene was the last scene, proceed to the register scene
+			console.log('User already completed registration, proceed to the title scene')
+			//this.scene.stop();
+			//this.scene.launch('title');
+		}
+		WebFont.load({
+			google: {
+				families: ['Sarabun:300,400,500']
+			},
+			active: () => {
+				applyFontStyles();
+			}
+		});
+		
+		function applyFontStyles(): void {
+			const lightElements = document.querySelectorAll('.sarabun-light');
+			lightElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '300';
+			});
+		
+			const mediumElements = document.querySelectorAll('.sarabun-medium');
+			mediumElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '400';
+			});
+		
+			const regularElements = document.querySelectorAll('.sarabun-regular');
+			regularElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '500';
+			});
+		}
 
-		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
-			.setOrigin(0)
-			.setScrollFactor(0, 0)
+		//const { width, height } = this.scale
 
 		const i18n = I18nSingleton.getInstance()
-		const title = i18n
-			.createTranslatedText(this, width / 2, 3 * MARGIN, 'login_title')
-			.setFontSize(LARGE_FONT_SIZE)
-			.setOrigin(0.5, 0)
-		i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				title.y + 2 * MARGIN,
-				'login_description',
-			)
-			.setFontSize(MEDIUM_FONT_SIZE)
-			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(520, height / 2)
+			.dom(110, 200)
 			.createFromCache('loginForm')
-			.setScale(1.5)
+			.setScale(1)
+		console.log("element added")
 
 		element.addListener('submit')
 
 		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
-				const phoneInput = <HTMLInputElement>element.getChildByID('phone')
-				const phoneNumber = this.getPhoneNumber(phoneInput.value)
+				const phoneInput = <HTMLInputElement>element.getChildByID('phoneNumber-input')
+				const phoneNumber = this.getPhoneNumber(phoneInput.value.trim())
 				this.signIn(phoneNumber)
 			}
 		})
+		const textElementIds = [
+			'head-text', 'login_description', 'phoneNumber-text', 'button'
+		];
+		
+		const textElementKeys = [
+			'login_title', 'login_description', 'login_input', 'login_button'
+		];
+		
+		textElementIds.forEach((id, index) => {
+			const textElement = <Element>element.getChildByID(id);
+			textElement.textContent = i18next.t(textElementKeys[index]);
+		});
+		
 
-		const label = <Element>element.getChildByID('label')
-		label.textContent = i18next.t('login_input')
-
-		const button = <Element>element.getChildByID('button')
-		button.textContent = i18next.t('login_button')
 	}
 
-	update() {
-		this.background.tilePositionY -= 1
-	}
+	update() {}
 
 	getPhoneNumber(phoneNumber: string): string {
 		if(!phoneNumber.startsWith('0')) return `+66${phoneNumber}`
@@ -99,8 +139,13 @@ export default class LoginScene extends Phaser.Scene {
 
 		try {
 			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
+			setCookie('lastScene', 'otpScene', { expires: 7, path: '' });
 			this.scene.stop()
-			this.scene.launch('otp', {confirmationResult})
+			this.scene.launch('otp', {
+				confirmationResult: confirmationResult,
+				data: { phoneNumber: phoneNumber }
+			});
+			
 		} catch (e) {
 			// TODO handle ERROR Message
 			// reset recaptcha
@@ -109,3 +154,4 @@ export default class LoginScene extends Phaser.Scene {
 
 	}
 }
+

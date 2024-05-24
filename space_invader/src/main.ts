@@ -13,10 +13,15 @@ import EndGameScene from './scene/EndGameScene'
 import LoginScene from './scene/auth/LoginScene'
 import OtpScene from './scene/auth/OtpScene'
 import RegisterScene from './scene/auth/RegisterScene'
+import ConfirmScene from 'scene/auth/ConfirmScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import { initializeApp } from "firebase/app";
 import {FIREBASE_API_KEY, FIREBASE_PROJECT_ID} from "./config";
+
+
+
+
 
 const firebaseConfig = {
 	apiKey: FIREBASE_API_KEY,
@@ -47,20 +52,10 @@ const config: Phaser.Types.Core.GameConfig = {
 		createContainer: true,
 	},
 	scene: [
-		TitleScene,
 		LoginScene,
 		OtpScene,
 		RegisterScene,
-		DifficultyScene,
-		AirflowScene,
-		SetupScene,
-		GameScene,
-		EndGameScene,
-		TutorialCharacterScene,
-		TutorialHudScene,
-		TutorialControllerScene,
-		WarmupScene,
-		PauseScene,
+		ConfirmScene,
 	],
 }
 

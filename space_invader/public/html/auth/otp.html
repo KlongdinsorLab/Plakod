@@ -1,27 +1,86 @@
-<label class="label mb-1 max-w-xs" for="otp1">
-    <span class="label-text text-white" id="label">OTP</span>
-</label>
-<form class="flex flex-col items-center" id="submit-form">
-    <div>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp1" type="number" pattern="\d*" maxlength="1" required/>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp2" type="number" pattern="\d*" maxlength="1" required/>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp3" type="number" pattern="\d*" maxlength="1" required/>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp4" type="number" pattern="\d*" maxlength="1" required/>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp5" type="number" pattern="\d*" maxlength="1" required/>
-        <input
-            class="input input-bordered w-12 text-center"
-            placeholder="0" name="otp" id="otp6" type="number" pattern="\d*" maxlength="1" required/>
+<div class='Otp bg-white w-[780px] h-[1280px]'>
+    <div class="Otp-head static bg-slate-100 min-w-full justify-center h-[336px]">
+      <h1 id="otp-head-text" class="sarabun-medium text-[56px] text-black text-center pt-[96px]">
+          ยืนยันรหัส OTP
+      </h1>
+      <br/>
+      <div class="step-box flex justify-center flex-row">
+      <ul class="timeline mt-[56] w-[193px] justify-center flex flex-row ml-12">
+          <li>
+              <div class="timeline-start"></div>
+              <div class="timeline-middle">
+                  <button class="btn btn-circle bg-[#d35e24] w-[60px] h-[60px] border-none text-3xl text-white">1</button>
+              </div>
+          </li>
+          <li class="flex items-center">
+              <hr class="bg-[#d35e24] h-[10px] w-[96px] flex-grow "/>
+            </li>
+          <li>
+              <div class="timeline-middle">
+                  <button class="btn btn-circle bg-[#d35e24] w-[60px] h-[60px] border-none text-3xl text-white">2</button>
+              </div>
+              <div class="timeline-end ml-[123px]"></div>
+          </li>
+      </ul>
+      </div>
     </div>
-    <button class="btn btn-ghost text-white mt-2" id="resend" data-theme="dark">Resend</button>
-    <button class="btn btn-outline btn-wide mt-16" id="button" data-theme="dark">Confirm</button>
-</form>
+    <div class="login-body h-full w-full ">
+      <h1 class="sarabun-regular text-center text-black text-[36px] mt-[48px] w-[586px] mx-[67px]">
+          <span id="otp-description">รับรหัส OTP ทาง SMS ของ </span><br/> <span id="otp-description-2">หมายเลขโทรศัพท์ </span><span id="phoneNumber-text" class="text-[#d35e24]">{phoneNumber}</span>
+      </h1>
+      <br/>
+      <div class="sarabun-regular text-center text-[28px] text-[#727272]">
+          <span id="otp-timeout">รหัส OTP จะหมดอายุภายใน &nbsp;</span>
+          <span id="countdown-element" class="countdown text-[#d35e24]">
+              <span id="minute" style="--value:5;">5</span>:
+              <span id="second" style="--value:0;">00</span>
+          </span>
+      </div>
+      <div class="Resend-section flex flex-col items-center">
+          <label id="resend-text" for="resend" class="sarabun-regular text-center text-[28px] text-[#727272] mt-[48px] mb-[16px]">กรณียังไม่ได้รับรหัส กรุณากด</label>
+          <button id="resend" class="btn sarabun-regular bg-transparent border-2 border-[#727272] rounded-full text-[#727272] text-[28px] w-[336px] h-auto py-4">
+              <span class="mr-2">
+                  <svg width="31" height="32" viewBox="0 0 31 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M29.1723 18.0731C28.1712 24.7253 22.4315 29.8262 15.5 29.8262C7.86327 29.8262 1.67285 23.6358 1.67285 15.999C1.67285 8.36229 7.86327 2.17188 15.5 2.17188C21.1691 2.17188 26.0432 5.58442 28.1767 10.4682" stroke="#727272" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M22.4136 10.4683H28.4975C28.6065 10.4683 28.7143 10.4468 28.815 10.4051C28.9157 10.3634 29.0071 10.3023 29.0842 10.2253C29.1612 10.1482 29.2223 10.0568 29.264 9.95612C29.3057 9.85546 29.3271 9.74758 29.3271 9.63863V3.55469" stroke="#727272" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+              </span>
+              <span id="resend-text-button">ขอรหัส OTP ใหม่</span>
+          </button>
+      </div>
+      <hr class="w-[500px] h-0.5 mx-auto my-4 bg-[#727272] border-0 rounded mt-[56px] mb-[56px]"/>
+      <h1 id="refcode" class="sarabun-regular text-center text-[28px] text-black">รหัสอ้างอิง : <span class="text-[#d35e24]">{refcode}</span></h1>
+      <form id="submit-form">
+          <div class="flex items-center justify-center gap-2.5 my-4">
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none"
+                  maxLength="1" id="otp1" placeholder="1" required/>
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none" 
+                  maxLength="1" id="otp2" placeholder="2" required/>
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none"
+                  maxLength="1" id="otp3" placeholder="3" required/>
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none"
+                  maxLength="1" id="otp4" placeholder="4" required/>
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none"
+                  maxLength="1" id="otp5" placeholder="5" required/>
+              <input
+                  type="text"
+                  class="sarabun-regular w-20 h-20 text-center text-4xl text-black bg-transparent border-2 border-[#727272] rounded-xl p-4 outline-none"
+                  maxLength="1" id="otp6" placeholder="6" required/>
+          </div>
+          <button id="confirm-button" class="btn sarabun-medium rounded-2xl bg-[#d35e24] border-none text-white text-4xl h-[96px] w-[528px] mt-[84px] mx-[96px]">ยืนยัน</button>
+      </form>
+    </div>
+  </div>
+<script>
+  
+</script>
