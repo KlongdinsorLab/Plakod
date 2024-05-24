@@ -114,7 +114,7 @@ export default class TitleScene extends Phaser.Scene {
 
 	startGame() {
 		I18nSingleton.getInstance().destroyEmitter()
-		this.scene.start('game')
+		this.scene.start(import.meta.env.VITE_START_SCEN || 'login')
 		new SoundManager(this).stop(this.bgm!)
 	}
 }
