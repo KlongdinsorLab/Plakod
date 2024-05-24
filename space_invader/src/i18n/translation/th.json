@@ -81,5 +81,13 @@
   "to" : "เป็น",
   "question" : "ใช่หรือไม่",
   "confirmation" : "ตรวจสอบความถูกต้อง",
-  "airflow_confirm" : "คุณยืนยันที่จะปรับปริมาณอากาศ"
+  "airflow_confirm" : "คุณยืนยันที่จะปรับปริมาณอากาศ",
+  "edit_airflow1_advice_top" : "เพื่อประสิทธิภาพในการใช้งานเครื่องบริหารปอด",
+  "edit_airflow1_advice_bottom" : "กรุณาปรับปริมาณอากาศตามคำแนะนำของแพทย์เท่านั้น",
+  "edit_airflow5_advice_top" : "กรุณาปรับปริมาอากาศที่",
+  "edit_airflow5_advice_middle" : "ด้านหลังของเครื่องบริหารปอด",
+  "edit_airflow5_advice_bottom" : "ก่อนเริ่มเกมอีกครั้ง",
+  "successfully_edited" : "เปลี่ยนแปลงสำเร็จ",
+  "changed_airflow_to" : "ปรับปริมาณอากาศเป็น",
+  "successfully" : "สำเร็จ"
 }

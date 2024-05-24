@@ -36,6 +36,22 @@ export default class editAirflowPopUp {
         this.editAirflowForm1 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
             .setOrigin(0,0)
             .createFromCache('editairflowForm1')
+
+        const warning1 = <Element>this.editAirflowForm1.getChildByID('warning')
+        warning1.textContent = i18next.t('warning')
+
+        const editAirflowAdviceTop = <Element>this.editAirflowForm1.getChildByID('edit_airflow_advice_top')
+        editAirflowAdviceTop.textContent = i18next.t('edit_airflow1_advice_top')
+
+        const editAirflowAdviceBottom = <Element>this.editAirflowForm1.getChildByID('edit_airflow_advice_bottom')
+        editAirflowAdviceBottom.textContent = i18next.t('edit_airflow1_advice_bottom')
+
+        const cancel1 = <Element>this.editAirflowForm1.getChildByID('cancel')
+        cancel1.textContent = i18next.t('cancel')
+
+        const submit1 = <Element>this.editAirflowForm1.getChildByID('submit')
+        submit1.textContent = i18next.t('submit_edit')
+
         this.editAirflowForm1.addListener('click')
         this.editAirflowForm1.on('click', function(event : any) { 
             if(event.target.name === 'cancel') {
@@ -153,6 +169,28 @@ export default class editAirflowPopUp {
         this.editAirflowForm5 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
             .createFromCache('editairflowForm5')
             .setOrigin(0,0)
+
+        const successfullyEdited = <Element> this.editAirflowForm5.getChildByID('successfully_edited')
+        successfullyEdited.textContent = i18next.t('successfully_edited')
+
+        const changedAirflowTo = <Element> this.editAirflowForm5.getChildByID('changed_airflow_to')
+        changedAirflowTo.textContent = i18next.t('changed_airflow_to')
+
+        const successfully = <Element> this.editAirflowForm5.getChildByID('successfully')
+        successfully.textContent = i18next.t('successfully')
+
+        const editAirflow5AdviceTop = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_top')
+        editAirflow5AdviceTop.textContent = i18next.t('edit_airflow5_advice_top')
+
+        const editAirflow5AdviceMiddle = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_middle')
+        editAirflow5AdviceMiddle.textContent = i18next.t('edit_airflow5_advice_middle')
+
+        const editAirflow5AdviceBottom = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_bottom')
+        editAirflow5AdviceBottom.textContent = i18next.t('edit_airflow5_advice_bottom')
+
+        const submit5 = <Element> this.editAirflowForm5.getChildByID('submit')
+        submit5.textContent = i18next.t('submit')
+        
         this.editAirflowForm5.addListener('click')
         this.editAirflowForm5.on('click', function (event : any) {
             if(event.target.name === 'submit') {

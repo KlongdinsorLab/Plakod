@@ -81,5 +81,13 @@
   "to" : "to",
   "question" : "?",
   "confirmation" : "Confirmation",
-  "airflow_confirm" : "Are you sure to change airflow"
+  "airflow_confirm" : "Are you sure to change airflow",
+  "edit_airflow1_advice_top" : "To optimize the use of the cliniFLO",
+  "edit_airflow1_advice_bottom" : "Please only change due to doctor's instruction",
+  "edit_airflow5_advice_top" : "Please edit airflow at",
+  "edit_airflow5_advice_middle" : "the back of the CliniFLO",
+  "edit_airflow5_advice_bottom" : "before playing.",
+  "successfully_edited" : "Successfully Edited",
+  "changed_airflow_to" : "Changed airflow to",
+  "successfully" : "successfully"
 }
