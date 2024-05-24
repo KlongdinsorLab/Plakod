@@ -3,6 +3,8 @@ import i18next from "i18next"
 export default class editAirflowPopUp {
     private scene : Phaser.Scene | undefined
 
+    private airflowText : Phaser.GameObjects.Text | undefined
+
     private editAirflowForm1 : Phaser.GameObjects.DOMElement | undefined
     private editAirflowForm2 : Phaser.GameObjects.DOMElement | undefined
     private editAirflowForm3 : Phaser.GameObjects.DOMElement | undefined
@@ -15,10 +17,12 @@ export default class editAirflowPopUp {
     private blackWindow : Phaser.GameObjects.Shape | undefined
     private popUpBox : Phaser.GameObjects.Graphics | undefined
 
-    constructor(scene: Phaser.Scene, airflow?: number) {
+    constructor(scene: Phaser.Scene,airflowText : Phaser.GameObjects.Text,  airflow?: number) {
         const{ width,height } = scene.scale
 
         this.scene = scene
+
+        this.airflowText = airflowText
 
         const self = this
 
@@ -303,7 +307,7 @@ export default class editAirflowPopUp {
 
     updateAirflow(airflow : number) : void {
         this.airflow = airflow
-        // this.airflowText?.setText(this.airflow.toString())
+        this.airflowText?.setText(this.airflow.toString())
     }
 
     getAirflow() : number {

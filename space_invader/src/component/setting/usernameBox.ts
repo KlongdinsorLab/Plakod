@@ -1,7 +1,6 @@
 import editUsernamePopUp from "./editUsernamePopUp"
 
 export default class usernameBox {
-    private scene : Phaser.Scene
 
     private editUsernamePopUp : editUsernamePopUp | undefined
     private usernameBox : Phaser.GameObjects.Graphics | undefined
@@ -9,8 +8,6 @@ export default class usernameBox {
     private editNameIcon : Phaser.GameObjects.Image | undefined
     constructor(scene: Phaser.Scene) {
         const { width,height } = scene.scale
-
-        this.scene = scene
 
         // Username Box
         this.usernameBox = scene.add.graphics()
