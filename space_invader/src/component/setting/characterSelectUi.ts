@@ -117,7 +117,6 @@ export default class characterSelectUi {
                 this.useButton?.setInteractive().on('pointerdown', () => this.useChar())
                 this.useText?.setVisible(true)
                 this.usingText?.setVisible(false)
-
             }
         }
         else { // Locked Character
@@ -145,7 +144,8 @@ export default class characterSelectUi {
         this.usingCharIndex = this.showingCharIndex
         this.usingButton?.setVisible(true)
         this.useButton?.setVisible(false)
-        this.useText?.setText("ใช้อยู่").setStroke('#D35E24', 6)
+        this.useText?.setVisible(false)
+        this.usingText?.setVisible(true)
     }
 
     getUsingCharIndex() : number {
