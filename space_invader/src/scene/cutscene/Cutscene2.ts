@@ -6,11 +6,14 @@ import WebFont from 'webfontloader'
 
 export default class Cutscene1 extends Phaser.Scene {
     private mcName!: keyof typeof PlayerByName
+	private bgm?: Phaser.Sound.BaseSound
 	constructor() {
 		super('cutscene2')
 	}
 
-	init({}) {}
+	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
+		this.bgm = bgm
+	}
 
 	preload() {
 		this.load.script(
@@ -94,7 +97,7 @@ export default class Cutscene1 extends Phaser.Scene {
 					'pointerdown',
 					() => {
 						this.scene.stop()
-						this.scene.start('cutscene_randomboss', {mcName: this.mcName})
+						this.scene.start('cutscene_randomboss', {mcName: this.mcName, bgm: this.bgm})
 						i18n.removeAllListeners(this)
 					},
 					this,

@@ -1,4 +1,3 @@
-import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import TimeService from 'services/timeService'
 import { Button } from './Button'
@@ -25,8 +24,7 @@ export default class PlayButton extends Button {
 			
 			this.timeService.saveLastPlayTime()
 
-			scene.scene.start('cutscene1')
-			new SoundManager(scene).stop(bgm!)
+			scene.scene.start('cutscene1', { bgm: bgm })
 		})
 	}
 

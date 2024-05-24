@@ -2,6 +2,7 @@ import { Boss } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 // import Player from 'component/player/Player'
 import { PlayerByName } from 'component/player/playerInterface'
+import SoundManager from 'component/sound/SoundManager'
 import Score from 'component/ui/Score'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { BossByName } from 'scene/boss/bossInterface'
@@ -17,13 +18,15 @@ export default class RandomBossCutScene extends Phaser.Scene {
 	private bossVersion!: BossVersion
 	private bossName!: keyof typeof BossByName
 	private mcName!: keyof typeof PlayerByName
+	private bgm?: Phaser.Sound.BaseSound
 
 	constructor() {
 		super('cutscene_randomboss')
 	}
 
-	init({mcName}: {mcName: keyof typeof PlayerByName}) {
+	init({mcName, bgm}: {mcName: keyof typeof PlayerByName, bgm: Phaser.Sound.BaseSound}) {
 		this.mcName = mcName
+		this.bgm = bgm
 	}
 
 	preload() {
@@ -126,7 +129,8 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		})
 
 		setTimeout(() => {
-			this.scene.start('game', { bossName: this.bossName })
+			this.scene.start('game', { bossName: "B1" })
+			new SoundManager(this).stop(this.bgm!)
 		}, 3000)
 	}
 

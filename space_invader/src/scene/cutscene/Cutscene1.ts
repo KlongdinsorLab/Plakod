@@ -3,8 +3,13 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 export default class Cutscene1 extends Phaser.Scene {
+	private bgm?: Phaser.Sound.BaseSound
 	constructor() {
 		super('cutscene1')
+	}
+
+	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
+		this.bgm = bgm
 	}
 
 	preload() {
@@ -58,7 +63,7 @@ export default class Cutscene1 extends Phaser.Scene {
 					'pointerdown',
 					() => {
 						this.scene.stop()
-						this.scene.start('cutscene2')
+						this.scene.start('cutscene2', { bgm: this.bgm })
 						i18n.removeAllListeners(this)
 					},
 					this,
