@@ -5,16 +5,20 @@ export default class editUsernamePopUp {
 
     private username : string | undefined
 
+    private usernameText : Phaser.GameObjects.Text 
+
     private editNameForm : Phaser.GameObjects.DOMElement | undefined
 
     private blackWindow : Phaser.GameObjects.Shape | undefined
     private popUpBox : Phaser.GameObjects.Graphics | undefined
 
-    constructor(scene : Phaser.Scene, username?: string) {
+    constructor(scene : Phaser.Scene, usernameText : Phaser.GameObjects.Text, username?: string) {
         const { width,height } = scene.scale
         this.username = username === undefined ? 'Player' : username
 
         this.scene = scene
+
+        this.usernameText = usernameText
 
         // Black Screen When Pop Up
         this.blackWindow = scene.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0).setVisible(false)
@@ -85,6 +89,7 @@ export default class editUsernamePopUp {
 
     updateUsername(newUsername : string) : void {
         this.username = newUsername
+        this.usernameText.setText(this.username)
     }
 
     getUsername() : string {

@@ -7,16 +7,14 @@ import editAirflowPopUp from "component/setting/editAirflowPopUp";
 import characterSelectUi from "component/setting/characterSelectUi"
 import difficultySelectUi from "component/setting/difficultySelectUi";
 import I18nSingleton from "i18n/I18nSingleton";
+import usernameBox from "component/setting/usernameBox";
 
 export default class SettingScene extends Phaser.Scene {
     // Heading
     private headingText : Phaser.GameObjects.Text | undefined
 
     // Username Box
-    private editUsernamePopUp : editUsernamePopUp | undefined
-    private usernameBox : Phaser.GameObjects.Graphics | undefined
-    private usernameText : Phaser.GameObjects.Text | undefined
-    private editNameIcon : Phaser.GameObjects.Image | undefined
+    private usernameBox : usernameBox | undefined
 
     // Character Select
     private characterSelectUi : characterSelectUi | undefined
@@ -85,26 +83,6 @@ export default class SettingScene extends Phaser.Scene {
         // Character Select
         this.characterSelectUi = new characterSelectUi(this)
 
-        // Username Box
-        this.usernameBox = this.add.graphics()
-        this.usernameBox.fillStyle(0xFFFFFF)
-        this.usernameBox.fillRoundedRect( width/2 - 168, 320, 336, 56, 14 )
-        this.usernameBox.lineStyle(1, 0x727272)
-        this.usernameBox.strokeRoundedRect( width/2 - 168, 320, 336, 56, 14 )
-
-        // Username Text
-        this.usernameText = this.add.text(width/2, 320+28 , "")
-            .setColor("#57453B")
-            .setPadding(0,20,0,10)
-            .setFontSize(32)
-            .setOrigin(0.5,0.5)
-        
-        // Edit Name Icon
-        this.editNameIcon = this.add.image(width - 192 - 20 , 320 + 28, 'sheet', "logo_setting_edit name.png")
-            .setInteractive().on('pointerdown', () => this.popUpEditName())
-            .setOrigin(1,0.5) // Guessed the coordinate
-
-
         // Airflow and Difficulty Box
         // this.add.rectangle( width/2, height - 512, 576, 448, 0xFFF6E5 ).setOrigin(0.5,0)
         const bigBox = this.add.graphics()
@@ -157,8 +135,10 @@ export default class SettingScene extends Phaser.Scene {
         this.difficultySelectUi = new difficultySelectUi(this)
 
         // Pop Up Form
-        this.editUsernamePopUp = new editUsernamePopUp(this,"น้องราคูนี่")
         this.editAirflowPopUp = new editAirflowPopUp(this, 100)
+
+        // Username Box
+        this.usernameBox = new usernameBox(this)
 
         // Set font for all texts
         const self = this
@@ -178,7 +158,6 @@ export default class SettingScene extends Phaser.Scene {
     }
 
     update() {
-        this.usernameText?.setText(this.editUsernamePopUp!.getUsername())
         this.airflowText?.setText(this.editAirflowPopUp!.getAirflow().toString())
 
         console.log(this.characterSelectUi?.getUsingCharIndex())
@@ -191,7 +170,7 @@ export default class SettingScene extends Phaser.Scene {
 
         this.difficultySelectUi?.setFont(style)
 
-        this.usernameText?.setStyle(style)
+        this.usernameBox?.setFont(style)
 
         this.headingText?.setStyle(style)
 
@@ -201,15 +180,15 @@ export default class SettingScene extends Phaser.Scene {
         this.airflowText?.setStyle(style)
     }
 
-    popUpEditName() : void {
+    /*popUpEditName() : void {
         this.editUsernamePopUp!.popUpEditName()
-    }
+    }*/
 
     popUpEditAirflow() : void {
         this.editAirflowPopUp?.popUpEditAirflow1()
     }
 
-    setInteractiveOff() : void {
+    /*setInteractiveOff() : void {
         this.characterSelectUi?.setInteractiveOff()
         this.difficultySelectUi?.setInteractiveOff()
         
@@ -223,5 +202,5 @@ export default class SettingScene extends Phaser.Scene {
 
         this.editNameIcon?.setInteractive().on( 'pointerdown', () => this.popUpEditName() )
         this.editAirflowIcon?.setInteractive().on( 'pointerdown', () => this.popUpEditAirflow() )
-    }
+    }*/
 }
