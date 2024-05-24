@@ -180,6 +180,8 @@ export default class SettingScene extends Phaser.Scene {
     update() {
         this.usernameText?.setText(this.editUsernamePopUp!.getUsername())
         this.airflowText?.setText(this.editAirflowPopUp!.getAirflow().toString())
+
+        console.log(this.characterSelectUi?.getUsingCharIndex())
     }
 
     setAllText(style : any) : void {

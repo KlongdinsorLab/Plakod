@@ -1,6 +1,8 @@
 import i18next from "i18next"
 
 export default class editAirflowPopUp {
+    private scene : Phaser.Scene | undefined
+
     private editAirflowForm1 : Phaser.GameObjects.DOMElement | undefined
     private editAirflowForm2 : Phaser.GameObjects.DOMElement | undefined
     private editAirflowForm3 : Phaser.GameObjects.DOMElement | undefined
@@ -15,6 +17,8 @@ export default class editAirflowPopUp {
 
     constructor(scene: Phaser.Scene, airflow?: number) {
         const{ width,height } = scene.scale
+
+        this.scene = scene
 
         const self = this
 
@@ -159,14 +163,8 @@ export default class editAirflowPopUp {
         this.editAirflowForm5.setVisible(false)
     }
 
-    closeEditNamePopUp() : void {
-        this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
-        // this.setInteractiveOn()
-    }
-
     popUpEditAirflow1() : void {
+        this.scene?.scene.pause()
         // this.setInteractiveOff()
         this.popUpBox?.setVisible(true)
         this.popUpBox?.fillStyle(0xffffff)
@@ -180,9 +178,11 @@ export default class editAirflowPopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
+        this.scene?.scene.resume()
     }
 
     popUpEditAirflow2() : void {
+        this.scene?.scene.pause()
         // this.setInteractiveOff()
         this.popUpBox?.setVisible(true)
         this.popUpBox?.fillStyle(0xffffff)
@@ -196,9 +196,11 @@ export default class editAirflowPopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
+        this.scene?.scene.resume()
     }
 
     popUpEditAirflow3() : void {
+        this.scene?.scene.pause()
         // this.setInteractiveOff()
         this.popUpBox?.setVisible(true)
         this.popUpBox?.fillStyle(0xffffff)
@@ -212,9 +214,11 @@ export default class editAirflowPopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
+        this.scene?.scene.resume()
     }
 
     popUpEditAirflow4() : void {
+        this.scene?.scene.pause()
         // this.setInteractiveOff()
         this.popUpBox?.setVisible(true)
         this.popUpBox?.fillStyle(0xffffff)
@@ -235,9 +239,11 @@ export default class editAirflowPopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
+        this.scene?.scene.resume()
     }
 
     popUpEditAirflow5() : void {
+        this.scene?.scene.pause()
         // this.setInteractiveOff()
         this.popUpBox?.setVisible(true)
         this.popUpBox?.fillStyle(0xffffff)
@@ -254,6 +260,7 @@ export default class editAirflowPopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
+        this.scene?.scene.resume()
     }
 
     updateAirflow(airflow : number) : void {

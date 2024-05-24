@@ -1,6 +1,8 @@
 import i18next from "i18next"
 
 export default class editUsernamePopUp {
+    private scene : Phaser.Scene | undefined
+
     private username : string | undefined
 
     private editNameForm : Phaser.GameObjects.DOMElement | undefined
@@ -8,11 +10,11 @@ export default class editUsernamePopUp {
     private blackWindow : Phaser.GameObjects.Shape | undefined
     private popUpBox : Phaser.GameObjects.Graphics | undefined
 
-    private isPopUp = false
-
     constructor(scene : Phaser.Scene, username?: string) {
         const { width,height } = scene.scale
         this.username = username === undefined ? 'Player' : username
+
+        this.scene = scene
 
         // Black Screen When Pop Up
         this.blackWindow = scene.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0).setVisible(false)
@@ -58,6 +60,7 @@ export default class editUsernamePopUp {
 
 
     popUpEditName() : void {
+        this.scene?.scene.pause()
         //this.setInteractiveOff()
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(true)
@@ -69,8 +72,6 @@ export default class editUsernamePopUp {
         // Set default value
         const namefieldValue = <Element>this.editNameForm?.getChildByName('namefield')
         namefieldValue.value = this.username
-
-        this.isPopUp = true
     }
 
     closeEditNamePopUp() : void {
@@ -79,7 +80,7 @@ export default class editUsernamePopUp {
         this.popUpBox?.clear()
         this.popUpBox?.setVisible(false)
 
-        this.isPopUp = false
+        this.scene?.scene.resume()
     }
 
     updateUsername(newUsername : string) : void {
@@ -88,10 +89,6 @@ export default class editUsernamePopUp {
 
     getUsername() : string {
         return this.username === undefined ? 'Player' : this.username
-    }
-
-    getIsPopUp() : boolean {
-        return this.isPopUp
     }
 
     /*setInteractiveOn() : void {
