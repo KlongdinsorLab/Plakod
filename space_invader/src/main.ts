@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
 
-/*import GameScene from './scene/GameScene'
-import TitleScene from './scene/TitleScene'*/
+import GameScene from './scene/GameScene'
+import TitleScene from './scene/TitleScene'
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
-/*import TutorialCharacterScene from './scene/tutorial/TutorialCharacter'
+import TutorialCharacterScene from './scene/tutorial/TutorialCharacter'
 import TutorialHudScene from './scene/tutorial/TutorialHudScene'
 import TutorialControllerScene from './scene/tutorial/TutorialControllerScene'
 import PauseScene from './scene/PauseScene'
@@ -22,7 +22,7 @@ import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
 import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
 import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
-import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'*/
+import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
 import SettingScene from 'scene/SettingScene'
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -45,6 +45,28 @@ const config: Phaser.Types.Core.GameConfig = {
 		createContainer: true,
 	},
 	scene: [
+		TitleScene,
+		LoginScene,
+		OtpScene,
+		RegisterScene,
+		DifficultyScene,
+		AirflowScene,
+		SetupScene,
+		GameScene,
+		EndGameScene,
+		TutorialCharacterScene,
+		TutorialHudScene,
+		TutorialControllerScene,
+		WarmupGaugeScene,
+		WarmupScene,
+		BossScene,
+		BossItemTutorial,
+		BossTutorialPhase1,
+		BossTutorialPhase2,
+		BossCutSceneVS,
+		BossCutSceneEscape,
+		BossCutSceneEscape2,
+		PauseScene,
 		SettingScene
 	],
 }
