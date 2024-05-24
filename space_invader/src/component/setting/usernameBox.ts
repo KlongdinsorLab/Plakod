@@ -15,6 +15,8 @@ export default class usernameBox {
         this.usernameBox.fillRoundedRect( width/2 - 168, 320, 336, 56, 14 )
         this.usernameBox.lineStyle(1, 0x727272)
         this.usernameBox.strokeRoundedRect( width/2 - 168, 320, 336, 56, 14 )
+        this.usernameBox.setInteractive(new Phaser.Geom.Rectangle(width/2 - 168, 320, 336, 56), Phaser.Geom.Rectangle.Contains)
+            .on('pointerdown', () => this.popUpEditName())
 
         // Username Text
         this.usernameText = scene.add.text(width/2, 320+28 , "")
@@ -25,7 +27,7 @@ export default class usernameBox {
         
         // Edit Name Icon
         scene.add.image(width - 192 - 20 , 320 + 28, 'sheet', "logo_setting_edit name.png")
-            .setInteractive().on('pointerdown', () => this.popUpEditName())
+            //.setInteractive().on('pointerdown', () => this.popUpEditName())
             .setOrigin(1,0.5) // Guessed the coordinate
 
         this.editUsernamePopUp = new editUsernamePopUp(scene, this.usernameText, "น้องราคูนี่")

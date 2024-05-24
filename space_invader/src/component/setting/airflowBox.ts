@@ -18,10 +18,12 @@ export default class airflowBox {
         this.airflowBox.fillRoundedRect( width/2 - 164, 920, 328, 56 )
         this.airflowBox.lineStyle(1, 0x727272)
         this.airflowBox.strokeRoundedRect( width/2 - 164, 920, 328, 56 )
+        this.airflowBox.setInteractive(new Phaser.Geom.Rectangle(width/2 - 164, 920, 328, 56), Phaser.Geom.Rectangle.Contains)
+            .on('pointerdown', () => this.popUpEditAirflow())
 
         // Edit Airflow Icon
         scene.add.image(width/2 + 164 - 20, 920 + 28, "sheet", "logo_setting_edit airflow.png")
-            .setInteractive().on('pointerdown', () => this.popUpEditAirflow())
+            // .setInteractive().on('pointerdown', () => this.popUpEditAirflow())
             .setOrigin(1,0.5) // Guessed the coordinate
 
         // Airflow Number
