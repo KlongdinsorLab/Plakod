@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import i18next from "i18next";
+import I18nSingleton from 'i18n/I18nSingleton'
 import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader';
 
@@ -24,6 +25,16 @@ export default class ConfirmScene extends Phaser.Scene {
     }
 
     create() {
+        const i18n = I18nSingleton.getInstance();
+        i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
+            .setFontSize(32)
+            .setPadding(0,20,0,10)
+            .setStroke("#9E461B",6)
+            .setColor("#FFFFFF")
+            .setOrigin(0.5,0.5)
+            .setVisible(false)
+        
+        
         WebFont.load({
 			google: {
 				families: ['Sarabun:300,400,500']
@@ -62,6 +73,7 @@ export default class ConfirmScene extends Phaser.Scene {
 			.dom(width/2,height/2)
 			.createFromCache('confirmForm')
 			.setScale(1)
+
         
         //change language
         const headText = <Element>element.getChildByID('head-text');

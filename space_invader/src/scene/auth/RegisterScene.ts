@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from "i18next";
 //import { getAuth, updateProfile } from 'firebase/auth'
 import WebFont from 'webfontloader';
@@ -27,6 +28,14 @@ export default class RegisterScene extends Phaser.Scene {
 	}
 
 	create() {
+		const i18n = I18nSingleton.getInstance();
+		i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
+            .setFontSize(32)
+            .setPadding(0,20,0,10)
+            .setStroke("#9E461B",6)
+            .setColor("#FFFFFF")
+            .setOrigin(0.5,0.5)
+            .setVisible(false)
 		WebFont.load({
 			google: {
 				families: ['Sarabun:300,400,500']

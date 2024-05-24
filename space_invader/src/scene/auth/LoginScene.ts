@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-
+import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
 import { getCookie, setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
@@ -30,6 +30,8 @@ export default class LoginScene extends Phaser.Scene {
 	}
 
 	create() {
+		const i18n = I18nSingleton.getInstance();
+		
 		if (getCookie('phone')) {
 			// Phone number cookie exists, proceed to the register scene
 			const phoneNumberCookie = getCookie('name');
@@ -86,6 +88,13 @@ export default class LoginScene extends Phaser.Scene {
 			.createFromCache('loginForm')
 			.setScale(1)
 		console.log("element added")
+		i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
+            .setFontSize(32)
+            .setPadding(0,20,0,10)
+            .setStroke("#9E461B",6)
+            .setColor("#FFFFFF")
+            .setOrigin(0.5,0.5)
+            .setVisible(false)
 
 		element.addListener('submit')
 
