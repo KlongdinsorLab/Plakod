@@ -25,7 +25,7 @@ export default class RestartButton extends Button {
 			i18n.destroyEmitter()
 			this.timeService.saveLastPlayTime()
 
-			scene.scene.start('Cutscene_randomboss')
+			scene.scene.start('cutscene_randomboss')
 		})
 
 		this.buttonText = i18n
@@ -81,6 +81,13 @@ export default class RestartButton extends Button {
 
 	getBody(): Phaser.GameObjects.NineSlice | Phaser.GameObjects.Image {
 		return this.button
+	}
+
+	show(): void {
+		this.button.setVisible(true)
+		this.buttonLogo.setVisible(true)
+		this.buttonText.setVisible(true)
+		this.isActive = true
 	}
 
 	hide(): void {

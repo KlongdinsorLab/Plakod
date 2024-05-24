@@ -12,6 +12,7 @@ export default class EndGameScene extends Phaser.Scene {
 	private isHighScore = true
 	private heart1!: Heart
 	private heart2!: Heart
+	private isHeartEmpty!: boolean
 	private rewardDialog!: RewardDialog
 	private restartButton!: RestartButton
 	private homeButton!: HomeButton
@@ -63,8 +64,8 @@ export default class EndGameScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
 		// TODO: call api
+		
 		this.playCount = Number(localStorage.getItem('playCount') ?? '')
-
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
 			.setOrigin(0)
@@ -100,7 +101,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.heart1 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 1)
 		this.heart2 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 2)
-
+		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		this.rewardDialog = new RewardDialog(this)
 
 		this.restartButton = new RestartButton(this)
@@ -112,7 +113,7 @@ export default class EndGameScene extends Phaser.Scene {
 			this.completeText.setVisible(true)
 		}
 
-		if(!this.heart1){
+		if(this.isHeartEmpty){
 			this.restartButton.hide()
 		}
 
@@ -170,5 +171,12 @@ export default class EndGameScene extends Phaser.Scene {
 					.setStroke('white', 6)
 			},
 		})
+	}
+
+	update(_: number, __: number): void {
+		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if(!this.isHeartEmpty){
+			this.restartButton.show()
+		}
 	}
 }
