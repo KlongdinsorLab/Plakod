@@ -101,11 +101,13 @@ export default class SettingScene extends Phaser.Scene {
 
         this.difficultySelectUi = new difficultySelectUi(this)
 
+        // Airflow Box
+        this.airflowBox = new airflowBox(this)
+
         // Username Box
         this.usernameBox = new usernameBox(this)
 
-        // Airflow Box
-        this.airflowBox = new airflowBox(this)
+        
 
         // Set font for all texts
         const self = this

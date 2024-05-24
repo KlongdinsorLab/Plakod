@@ -5,9 +5,9 @@ export default class usernameBox {
     private editUsernamePopUp : editUsernamePopUp | undefined
     private usernameBox : Phaser.GameObjects.Graphics | undefined
     private usernameText : Phaser.GameObjects.Text | undefined
-    private editNameIcon : Phaser.GameObjects.Image | undefined
+    // private editNameIcon : Phaser.GameObjects.Image | undefined
     constructor(scene: Phaser.Scene) {
-        const { width,height } = scene.scale
+        const { width } = scene.scale
 
         // Username Box
         this.usernameBox = scene.add.graphics()
@@ -24,7 +24,7 @@ export default class usernameBox {
             .setOrigin(0.5,0.5)
         
         // Edit Name Icon
-        this.editNameIcon = scene.add.image(width - 192 - 20 , 320 + 28, 'sheet', "logo_setting_edit name.png")
+        scene.add.image(width - 192 - 20 , 320 + 28, 'sheet', "logo_setting_edit name.png")
             .setInteractive().on('pointerdown', () => this.popUpEditName())
             .setOrigin(1,0.5) // Guessed the coordinate
 

@@ -28,7 +28,7 @@ export default class characterSelectUi {
     constructor(scene : Phaser.Scene, usingCharIndex?: number) {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
-        const { width,height } = scene.scale
+        const { width } = scene.scale
 
         const i18n = I18nSingleton.getInstance()
 
@@ -87,7 +87,7 @@ export default class characterSelectUi {
 
     charShift(i : number) : void {
         this.showingCharIndex = (this.showingCharIndex + i + this.charactersCount ) % this.charactersCount // prevent negative number
-        const { width,height } = this.scene!.scale
+        const { width } = this.scene!.scale
 
         // Set Showing Character
         if (this.characters[this.showingCharIndex]["unlocked"]) { // Unlocked Character

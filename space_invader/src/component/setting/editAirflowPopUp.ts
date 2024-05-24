@@ -5,11 +5,11 @@ export default class editAirflowPopUp {
 
     private airflowText : Phaser.GameObjects.Text | undefined
 
-    private editAirflowForm1 : Phaser.GameObjects.DOMElement | undefined
-    private editAirflowForm2 : Phaser.GameObjects.DOMElement | undefined
-    private editAirflowForm3 : Phaser.GameObjects.DOMElement | undefined
-    private editAirflowForm4 : Phaser.GameObjects.DOMElement | undefined
-    private editAirflowForm5 : Phaser.GameObjects.DOMElement | undefined
+    private editAirflowForm1 : Phaser.GameObjects.DOMElement 
+    private editAirflowForm2 : Phaser.GameObjects.DOMElement 
+    private editAirflowForm3 : Phaser.GameObjects.DOMElement 
+    private editAirflowForm4 : Phaser.GameObjects.DOMElement 
+    private editAirflowForm5 : Phaser.GameObjects.DOMElement 
     private airflowInput : number | undefined
 
     private airflow : number | undefined
@@ -90,13 +90,14 @@ export default class editAirflowPopUp {
 
         this.editAirflowForm2.addListener('click')
         this.editAirflowForm2.on('click', function (event : any) {
-            const inputCheck = this.getChildByName('checkbox').checked
+            const inputCheck = <HTMLInputElement>self.editAirflowForm2.getChildByName('checkbox')
+            const inputValue = inputCheck.checked
             if(event.target.name === 'cancel') {
                 self.closeEditAirflowPopUp2()
                 self.editAirflowForm2?.setVisible(false)
             }
             if(event.target.name === 'submit') {
-                if(inputCheck){
+                if(inputValue){
                     self.closeEditAirflowPopUp2()
                     self.editAirflowForm2?.setVisible(false)
                     self.popUpEditAirflow3()
@@ -123,7 +124,8 @@ export default class editAirflowPopUp {
 
         this.editAirflowForm3.addListener('click')
         this.editAirflowForm3.on('click', function (event : any) {
-            const airflowInput = this.getChildByName('select').value
+            const airflowInput = <HTMLInputElement>self.editAirflowForm3.getChildByName('select')
+            const airflowValue = airflowInput.value
             if(event.target.name === 'cancel') {
                 self.closeEditAirflowPopUp3()
                 self.editAirflowForm3?.setVisible(false)
@@ -131,7 +133,7 @@ export default class editAirflowPopUp {
             if(event.target.name === 'submit') {
                 self.closeEditAirflowPopUp3()
                 self.editAirflowForm3?.setVisible(false)
-                self.airflowInput = Number(airflowInput)
+                self.airflowInput = Number(airflowValue)
                 self.popUpEditAirflow4()
             }
         })

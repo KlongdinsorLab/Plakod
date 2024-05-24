@@ -1,3 +1,4 @@
+//import { CIRCLE_GAUGE_MARGIN } from "config"
 import i18next from "i18next"
 
 export default class editUsernamePopUp {
@@ -7,7 +8,7 @@ export default class editUsernamePopUp {
 
     private usernameText : Phaser.GameObjects.Text 
 
-    private editNameForm : Phaser.GameObjects.DOMElement | undefined
+    private editNameForm 
 
     private blackWindow : Phaser.GameObjects.Shape | undefined
     private popUpBox : Phaser.GameObjects.Graphics | undefined
@@ -46,9 +47,11 @@ export default class editUsernamePopUp {
         this.editNameForm.addListener('click')
         this.editNameForm.on('click', function(event : any) {
             if(event.target.name === 'submit') {
-                const inputUsername = self.editNameForm?.getChildByName('namefield')?.value
-                if (inputUsername != ''){
-                    self.updateUsername(inputUsername)
+                const inputUsername = <HTMLInputElement>self.editNameForm.getChildByID('namefield')
+                const inputValue = inputUsername.value
+                console.log(inputValue)
+                if (inputValue != ''){
+                    self.updateUsername(inputValue ?? 'Player')
                 }
                 self.closeEditNamePopUp()
                 self.editNameForm?.setVisible(false)
@@ -71,11 +74,12 @@ export default class editUsernamePopUp {
         this.popUpBox?.fillStyle(0xffffff)
         this.popUpBox?.fillRoundedRect(72,345,576,590,48)
         this.editNameForm?.setVisible(true)
+        //this.editNameForm?.setDepth(100)
         this.blackWindow?.setVisible(true)
 
         // Set default value
-        const namefieldValue = <Element>this.editNameForm?.getChildByName('namefield')
-        namefieldValue.value = this.username
+        const namefieldValue = <HTMLInputElement>this.editNameForm?.getChildByName('namefield')
+        namefieldValue.value = this.username ?? 'Player'
     }
 
     closeEditNamePopUp() : void {

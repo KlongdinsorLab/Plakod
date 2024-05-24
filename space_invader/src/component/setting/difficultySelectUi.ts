@@ -5,9 +5,9 @@ export default class difficultySelectUi {
     //Difficulty
     private difficulty : number | undefined// from database
 
-    private easyButton : Phaser.GameObjects.NineSlice | undefined
+    /*private easyButton : Phaser.GameObjects.NineSlice | undefined
     private mediumButton : Phaser.GameObjects.NineSlice | undefined
-    private hardButton : Phaser.GameObjects.NineSlice | undefined
+    private hardButton : Phaser.GameObjects.NineSlice | undefined*/
 
     private disableEasyButton : Phaser.GameObjects.Graphics | undefined
     private disableMediumButton : Phaser.GameObjects.Graphics| undefined
@@ -21,12 +21,12 @@ export default class difficultySelectUi {
         const i18n = I18nSingleton.getInstance()
 
         this.difficulty = difficulty === undefined ? 0 : difficulty
-        const { width,height } = scene.scale
+        const { width } = scene.scale
 
         // Difficulty Boxes
-        this.easyButton = scene.add.nineslice(width/2 - 96, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(1,0)
-        this.mediumButton = scene.add.nineslice(width/2, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(0.5,0)
-        this.hardButton = scene.add.nineslice(width/2 + 96, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(0,0)
+        scene.add.nineslice(width/2 - 96, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(1,0)
+        scene.add.nineslice(width/2, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(0.5,0)
+        scene.add.nineslice(width/2 + 96, 1088, 'sheet', 'button_medium.png',144,80).setOrigin(0,0)
         
         // Gray boxes
         // Easy

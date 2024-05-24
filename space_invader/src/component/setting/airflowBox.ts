@@ -7,10 +7,10 @@ export default class airflowBox {
     private airflowText : Phaser.GameObjects.Text | undefined
     private editAirflowPopUp : editAirflowPopUp | undefined
 
-    private editAirflowIcon : Phaser.GameObjects.Image | undefined
+    // private editAirflowIcon : Phaser.GameObjects.Image | undefined
 
     constructor(scene : Phaser.Scene){
-        const { width,height } = scene.scale
+        const { width } = scene.scale
 
         // Airflow Box
         this.airflowBox = scene.add.graphics()
@@ -20,7 +20,7 @@ export default class airflowBox {
         this.airflowBox.strokeRoundedRect( width/2 - 164, 920, 328, 56 )
 
         // Edit Airflow Icon
-        this.editAirflowIcon = scene.add.image(width/2 + 164 - 20, 920 + 28, "sheet", "logo_setting_edit airflow.png")
+        scene.add.image(width/2 + 164 - 20, 920 + 28, "sheet", "logo_setting_edit airflow.png")
             .setInteractive().on('pointerdown', () => this.popUpEditAirflow())
             .setOrigin(1,0.5) // Guessed the coordinate
 
