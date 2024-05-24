@@ -233,6 +233,10 @@ export default class editAirflowPopUp {
         this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm2?.setVisible(true)
         this.blackWindow?.setVisible(true)
+
+        // Set default value
+        const checkboxValue = <HTMLInputElement>this.editAirflowForm2?.getChildByName('checkbox')
+        checkboxValue.checked = false
     }
 
     closeEditAirflowPopUp2() : void {
