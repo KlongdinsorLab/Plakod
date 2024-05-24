@@ -150,6 +150,15 @@ export default class editAirflowPopUp {
         const changeAirflowConfirm = <Element> this.editAirflowForm4.getChildByID('change_airflow_confirm')
         changeAirflowConfirm.textContent = i18next.t('airflow_confirm')
 
+        const fromText = <Element> this.editAirflowForm4.getChildByID('from')
+        fromText.textContent = i18next.t('from')
+
+        const toText = <Element> this.editAirflowForm4.getChildByID('to')
+        toText.textContent = i18next.t('to')
+
+        const question = <Element> this.editAirflowForm4.getChildByID('question')
+        question.textContent = i18next.t('question')
+
         const cancel4 = <Element> this.editAirflowForm4.getChildByID('cancel')
         cancel4.textContent = i18next.t('cancel')
 
