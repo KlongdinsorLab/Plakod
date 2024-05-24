@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import i18next from "i18next";
-import I18nSingleton from 'i18n/I18nSingleton'
-import { getCookie, setCookie } from 'typescript-cookie'
+import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader';
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -54,7 +53,6 @@ export default class ConfirmScene extends Phaser.Scene {
 			});
 		}
 
-        const i18n = I18nSingleton.getInstance();
         const { width, height } = this.scale;
         if (!this.selectedData) {
             console.error('No data received in ConfirmScene');

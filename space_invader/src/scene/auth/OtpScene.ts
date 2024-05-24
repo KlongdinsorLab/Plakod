@@ -1,8 +1,7 @@
 import Phaser from 'phaser'
-import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
 import { ConfirmationResult } from 'firebase/auth'
-import { getCookie, setCookie } from 'typescript-cookie'
+import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -59,7 +58,6 @@ export default class OtpScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 
-		const i18n = I18nSingleton.getInstance()
 
 		const element = this.add
 			.dom(width/2, height / 2)
@@ -150,6 +148,12 @@ export default class OtpScene extends Phaser.Scene {
 
 	async verify(code: string): Promise<void> {
 		try {
+			if(this.isTimeout){
+				alert('Time out');
+				this.scene.stop()
+				this.scene.launch('login')
+				return;
+			}
 			await this.confirmationResult.confirm(code)
 			setCookie('phone', this.phoneNumber, { expires: 7, path: '' });
 			setCookie('scene', 'otpScene', { expires: 7, path: '' });

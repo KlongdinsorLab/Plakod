@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
-import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from "i18next";
-import { getAuth, updateProfile } from 'firebase/auth'
+//import { getAuth, updateProfile } from 'firebase/auth'
 import WebFont from 'webfontloader';
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -85,7 +84,7 @@ export default class RegisterScene extends Phaser.Scene {
 			
 			this.isEdit = false;
 		}
-		const i18n = I18nSingleton.getInstance()
+
 		
 		const labelIds = [
 			'default-value1', 'default-value2', 'default-value3', 'default-value4', 
@@ -132,10 +131,10 @@ export default class RegisterScene extends Phaser.Scene {
 				if (event?.target?.id === 'submit-form') {
 					// TODO
 					
-					const selectedAge = ageSelect.options[ageSelect.selectedIndex].value;
-					const selectedGender = genderSelect.options[genderSelect.selectedIndex].value;		
-					const selectedAirflow = airflowSelect.options[airflowSelect.selectedIndex].value;
-					const selectedDifficulty = difficultySelect.options[difficultySelect.selectedIndex].value;
+					//const selectedAge = ageSelect.options[ageSelect.selectedIndex].value;
+					//const selectedGender = genderSelect.options[genderSelect.selectedIndex].value;		
+					//const selectedAirflow = airflowSelect.options[airflowSelect.selectedIndex].value;
+					//const selectedDifficulty = difficultySelect.options[difficultySelect.selectedIndex].value;
 				}
 			
 
@@ -148,8 +147,8 @@ export default class RegisterScene extends Phaser.Scene {
 
 	async updateProfile(age: string, gender: string, airflow: string, difficulty:string) {
 // 		TODO add database
-		const auth = getAuth()
-		const user = auth.currentUser;
+		//const auth = getAuth()
+		//const user = auth.currentUser;
 //		await updateProfile(user!, {
 //			displayName: "Test User"
 //		})

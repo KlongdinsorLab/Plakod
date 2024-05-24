@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
-import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
+
 import i18next from 'i18next'
 import { getCookie, setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
@@ -10,7 +9,6 @@ import {
 	signInWithPhoneNumber,
 	RecaptchaVerifier,
 	ConfirmationResult,
-	browserLocalPersistence,
 	setPersistence,
 	browserSessionPersistence,
 } from 'firebase/auth'
@@ -82,8 +80,6 @@ export default class LoginScene extends Phaser.Scene {
 		}
 
 		//const { width, height } = this.scale
-
-		const i18n = I18nSingleton.getInstance()
 
 		const element = this.add
 			.dom(110, 200)
