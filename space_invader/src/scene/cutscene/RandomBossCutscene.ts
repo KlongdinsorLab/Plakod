@@ -86,7 +86,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.lineStyle(6, 0xd35e24, 1)
 			.strokeRoundedRect(48, height - 320, 624, 240, 40)
 
-		const playerName = this.add.text(0,0, "username")
+		const playerName = this.add.text(0,0, "username").setVisible(false)
 
 		const bossName = i18n
 			.createTranslatedText(this, 0, 0, bossNameText[this.bossName])
