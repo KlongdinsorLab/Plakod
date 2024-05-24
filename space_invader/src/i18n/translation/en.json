@@ -64,5 +64,22 @@
   "collect_item": "Collect",
   "alien_boss_name": "AlienZa",
   "alien_boss_name_version2": "AlienZa\n2nd Form",
-  "player_name": "Nong Pid"
+  "player_name": "Nong Pid",
+  "setting_title" : "Setting",
+  "airflow_volume" : "Airflow Volume",
+  "doctor_advice_airflow" : "*Only change when instructed by a doctor*",
+  "use_button" : "Use",
+  "using_button" : "Using",
+  "edit_your_name" : "Edit your name",
+  "cancel" : "Cancel",
+  "submit" : "Submit",
+  "submit_edit" : "Edit",
+  "warning" : "Warning",
+  "airflow_doctor_instructed_confirm" : "I've got doctor's instruction to edit the airflow",
+  "edit_airflow" : "ปรับปริมาณอากาศ",
+  "from" : "from",
+  "to" : "to",
+  "question" : "?",
+  "confirmation" : "Confirmation",
+  "airflow_confirm" : "Are you sure to change airflow"
 }
