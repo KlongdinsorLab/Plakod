@@ -49,7 +49,6 @@ export default class editUsernamePopUp {
             if(event.target.name === 'submit') {
                 const inputUsername = <HTMLInputElement>self.editNameForm.getChildByID('namefield')
                 const inputValue = inputUsername.value
-                console.log(inputValue)
                 if (inputValue != ''){
                     self.updateUsername(inputValue ?? 'Player')
                 }
@@ -98,6 +97,15 @@ export default class editUsernamePopUp {
 
     getUsername() : string {
         return this.username === undefined ? 'Player' : this.username
+    }
+
+    setFontSize (str : string) {
+        if(str.length > 12) {
+            this.usernameText.setFontSize(32 - str.length + 9)
+        }
+        else {
+            this.usernameText.setFontSize(32)
+        }
     }
 
     /*setInteractiveOn() : void {
