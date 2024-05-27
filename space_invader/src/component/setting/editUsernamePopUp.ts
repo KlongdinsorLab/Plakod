@@ -92,6 +92,14 @@ export default class editUsernamePopUp {
 
     updateUsername(newUsername : string) : void {
         this.username = newUsername
+        if(newUsername.length > 12) {
+            console.log("Small Text")
+            this.usernameText?.setFontSize(32 - newUsername.length + 9)
+        }
+        else {
+            console.log("Big Text")
+            this.usernameText?.setFontSize(32)
+        }
         this.usernameText.setText(this.username)
     }
 
@@ -99,14 +107,6 @@ export default class editUsernamePopUp {
         return this.username === undefined ? 'Player' : this.username
     }
 
-    setFontSize (str : string) {
-        if(str.length > 12) {
-            this.usernameText.setFontSize(32 - str.length + 9)
-        }
-        else {
-            this.usernameText.setFontSize(32)
-        }
-    }
 
     /*setInteractiveOn() : void {
         this.editNameIcon?.setInteractive().on('pointerdown', () => this.popUpEditName())

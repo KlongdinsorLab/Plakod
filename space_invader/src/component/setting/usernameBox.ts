@@ -15,7 +15,7 @@ export default class usernameBox {
         this.usernameBox.fillRoundedRect( width/2 - 238, 320, 476, 56, 14 )
         this.usernameBox.lineStyle(1, 0x727272)
         this.usernameBox.strokeRoundedRect( width/2 - 238, 320, 476, 56, 14 )
-        this.usernameBox.setInteractive(new Phaser.Geom.Rectangle(width/2 - 168, 320, 336, 56), Phaser.Geom.Rectangle.Contains)
+        this.usernameBox.setInteractive(new Phaser.Geom.Rectangle(width/2 - 238, 320, 476, 56), Phaser.Geom.Rectangle.Contains)
             .on('pointerdown', () => this.popUpEditName())
 
         // Username Text
@@ -41,9 +41,11 @@ export default class usernameBox {
 
     updateUsername(username : string) : void{
         if(username.length > 12) {
+            console.log("Small Text")
             this.usernameText?.setFontSize(32 - username.length + 9)
         }
         else {
+            console.log("Big Text")
             this.usernameText?.setFontSize(32)
         }
 
