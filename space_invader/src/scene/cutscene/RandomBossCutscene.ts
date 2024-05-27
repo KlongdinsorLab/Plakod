@@ -64,7 +64,6 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.tileSprite(0, 0, width, height, 'background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
-			.postFX.addBokeh(0.5, 1, 0)
 
 		// TODO: random player
 		const sceneLayer = this.add.layer()

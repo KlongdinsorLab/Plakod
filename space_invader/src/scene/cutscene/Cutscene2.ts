@@ -34,7 +34,6 @@ export default class Cutscene1 extends Phaser.Scene {
 			.tileSprite(0, 0, width, height, 'cutscene_bg')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
-			.postFX.addBokeh(0.5, 1, 0)
 
 		const i18n = I18nSingleton.getInstance()
 
@@ -97,7 +96,7 @@ export default class Cutscene1 extends Phaser.Scene {
 					'pointerdown',
 					() => {
 						this.scene.stop()
-						this.scene.start('cutscene_randomboss', {mcName: this.mcName, bgm: this.bgm})
+						this.scene.launch('cutscene_randomboss', {mcName: this.mcName, bgm: this.bgm})
 						i18n.removeAllListeners(this)
 					},
 					this,
