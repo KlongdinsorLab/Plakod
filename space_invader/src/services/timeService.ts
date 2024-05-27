@@ -12,10 +12,13 @@ export default class TimeService {
 	isFirstPlay(): boolean {
 		const dateNow = new Date()
 		const diff = Math.min(
-			dateNow.getDate() - this.lastPlay1.getDate(),
-			dateNow.getDate() - this.lastPlay2.getDate(),
+			dateNow.getDate() - (this.lastPlay1.getDate() || 0),
+			dateNow.getDate() - (this.lastPlay2.getDate() || 0),
 		)
-		return diff >= 1 || this.playCount === 0
+		const heart1Recharged = this.isRecharged(this.lastPlay1)
+		const heart2Recharged = this.isRecharged(this.lastPlay2)
+
+		return diff >= 1 && heart1Recharged && heart2Recharged
 	}
 
 	saveLastPlayTime() {
@@ -46,7 +49,7 @@ export default class TimeService {
 	}
 
 	isRecharged(lastPlayTime: Date): boolean {
-		if(isNaN(lastPlayTime.getTime())){
+		if (isNaN(lastPlayTime.getTime())) {
 			return true
 		}
 		const diff = (new Date().getTime() - lastPlayTime.getTime()) / 36e5
