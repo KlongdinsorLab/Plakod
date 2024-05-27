@@ -113,13 +113,15 @@ export default class SettingScene extends Phaser.Scene {
         const self = this
         WebFont.load({
             google: {
-              families: ['Mali:Bold 700']
+              families: ['Mali:Bold 700','Sarabun:Regular 400']
             },
             active: function() {
               const menuUiStyle = {
                 fontFamily: 'Mali'
               }
+
               self.setAllText(menuUiStyle)
+              self.setPopUpFont()
             }
           });
 
@@ -128,11 +130,9 @@ export default class SettingScene extends Phaser.Scene {
 
     update() {
 
-        // console.log(this.characterSelectUi?.getUsingCharIndex())
     }
 
     setAllText(style : any) : void {
-        // this.usernameText?.setStyle(style)
 
         this.characterSelectUi?.setFont(style)
 
@@ -148,27 +148,10 @@ export default class SettingScene extends Phaser.Scene {
         this.difficultyText?.setStyle(style)
     }
 
-    /*popUpEditName() : void {
-        this.editUsernamePopUp!.popUpEditName()
+    setPopUpFont() : void {
+        const sarabunElements = document.querySelectorAll('.sarabun')
+        sarabunElements.forEach(element => {
+            (element as HTMLElement).style.fontFamily = 'Sarabun'
+        })
     }
-
-    popUpEditAirflow() : void {
-        this.editAirflowPopUp?.popUpEditAirflow1()
-    }
-
-    setInteractiveOff() : void {
-        this.characterSelectUi?.setInteractiveOff()
-        this.difficultySelectUi?.setInteractiveOff()
-        
-        this.editNameIcon?.setInteractive().off('pointerdown')
-        this.editAirflowIcon?.setInteractive().off('pointerdown')
-    }
-
-    setInteractiveOn() : void {
-        this.characterSelectUi?.setInteractiveOn()
-        this.difficultySelectUi?.setInteractiveOn()
-
-        this.editNameIcon?.setInteractive().on( 'pointerdown', () => this.popUpEditName() )
-        this.editAirflowIcon?.setInteractive().on( 'pointerdown', () => this.popUpEditAirflow() )
-    }*/
 }

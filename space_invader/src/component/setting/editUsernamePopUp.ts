@@ -62,6 +62,7 @@ export default class editUsernamePopUp {
             }
         })
         this.editNameForm.setVisible(false)
+
     }
 
 
@@ -93,11 +94,9 @@ export default class editUsernamePopUp {
     updateUsername(newUsername : string) : void {
         this.username = newUsername
         if(newUsername.length > 12) {
-            console.log("Small Text")
             this.usernameText?.setFontSize(32 - newUsername.length + 9)
         }
         else {
-            console.log("Big Text")
             this.usernameText?.setFontSize(32)
         }
         this.usernameText.setText(this.username)
@@ -106,7 +105,6 @@ export default class editUsernamePopUp {
     getUsername() : string {
         return this.username === undefined ? 'Player' : this.username
     }
-
 
     /*setInteractiveOn() : void {
         this.editNameIcon?.setInteractive().on('pointerdown', () => this.popUpEditName())

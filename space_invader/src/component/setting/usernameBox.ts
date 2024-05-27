@@ -41,11 +41,9 @@ export default class usernameBox {
 
     updateUsername(username : string) : void{
         if(username.length > 12) {
-            console.log("Small Text")
             this.usernameText?.setFontSize(32 - username.length + 9)
         }
         else {
-            console.log("Big Text")
             this.usernameText?.setFontSize(32)
         }
 
@@ -55,4 +53,5 @@ export default class usernameBox {
     setFont(style : any) : void {
         this.usernameText?.setStyle(style)
     }
+
 }
