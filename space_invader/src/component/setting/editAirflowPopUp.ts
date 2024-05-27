@@ -125,6 +125,7 @@ export default class editAirflowPopUp {
         this.editAirflowForm3.addListener('click')
         this.editAirflowForm3.on('click', function (event : any) {
             const airflowInput = <HTMLInputElement>self.editAirflowForm3.getChildByName('select')
+            
             const airflowValue = airflowInput.value
             if(event.target.name === 'cancel') {
                 self.closeEditAirflowPopUp3()
@@ -264,6 +265,9 @@ export default class editAirflowPopUp {
         this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm3?.setVisible(true)
         this.blackWindow?.setVisible(true)
+
+        const defaultInput = <HTMLOptionElement>this.editAirflowForm3.getChildByID(this.airflow?.toString() ?? "100")
+        defaultInput.selected = true
     }
 
     closeEditAirflowPopUp3() : void {
