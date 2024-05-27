@@ -105,16 +105,4 @@ export default class editUsernamePopUp {
     getUsername() : string {
         return this.username === undefined ? 'Player' : this.username
     }
-
-    /*setInteractiveOn() : void {
-        this.editNameIcon?.setInteractive().on('pointerdown', () => this.popUpEditName())
-    }
-
-    setInteractiveOff() : void {
-        this.editNameIcon?.setInteractive().off('pointerdown')
-    }
-
-    setFont(style : any) : void {
-        this.usernameText?.setStyle(style)
-    }*/
 }

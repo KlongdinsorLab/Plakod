@@ -46,11 +46,11 @@ export default class difficultySelectUi {
 
         // Set button in these gray boxes
         this.disableEasyButton.setInteractive( new Phaser.Geom.Rectangle(120, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerdown', () => this.changeDifficulty(0))
+            .on('pointerup', () => this.changeDifficulty(0))
         this.disableMediumButton.setInteractive( new Phaser.Geom.Rectangle(288, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerdown', () => this.changeDifficulty(1))
+            .on('pointerup', () => this.changeDifficulty(1))
         this.disableHardButton.setInteractive( new Phaser.Geom.Rectangle(456, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerdown', () => this.changeDifficulty(2))
+            .on('pointerup', () => this.changeDifficulty(2))
 
         // Difficulty Texts
         this.easyText = i18n.createTranslatedText( scene, width/2 - 168, 1088 + 40, "difficulty_easy")
@@ -111,17 +111,5 @@ export default class difficultySelectUi {
         this.easyText?.setStyle(style)
         this.mediumText?.setStyle(style)
         this.hardText?.setStyle(style)
-    }
-
-    setInteractiveOff() : void {
-        this.disableEasyButton?.setInteractive().off('pointerdown')
-        this.disableMediumButton?.setInteractive().off('pointerdown')
-        this.disableHardButton?.setInteractive().off('pointerdown')
-    }
-
-    setInteractiveOn() : void {
-        this.disableEasyButton?.setInteractive().on( 'pointerdown', () => this.changeDifficulty(0) )
-        this.disableMediumButton?.setInteractive().on( 'pointerdown', () => this.changeDifficulty(1) )
-        this.disableHardButton?.setInteractive().on( 'pointerdown', () => this.changeDifficulty(2) )
     }
 }

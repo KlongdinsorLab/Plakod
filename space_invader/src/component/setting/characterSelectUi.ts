@@ -43,8 +43,8 @@ export default class characterSelectUi {
         this.scene.add.image( 520, 564, 'sheet', "logo_setting_next.png" ).setFlipX(true).setOrigin(1,0.5)
         this.prevButton = this.scene.add.rectangle(192, 564, 50, 120,0xFFFFFF,0).setOrigin(0,0.5)
         this.nextButton = this.scene.add.rectangle(528, 564, 50, 120,0xFFFFFF,0).setOrigin(1,0.5)
-        this.prevButton.setInteractive().on('pointerdown', () => this.charShift(-1)) // Make the functional button larger than arrow sprite
-        this.nextButton.setInteractive().on('pointerdown', () => this.charShift(1))
+        this.prevButton.setInteractive().on('pointerup', () => this.charShift(-1)) // Make the functional button larger than arrow sprite
+        this.nextButton.setInteractive().on('pointerup', () => this.charShift(1))
         // Showing Character
         this.showingCharImg = this.scene.add.image( width/2, 504, 'sheet', this.characters[this.showingCharIndex]['frame']).setOrigin(0.5,0.5)
         // Character Text (Name)
@@ -67,7 +67,7 @@ export default class characterSelectUi {
         this.useButton = this.scene.add.nineslice( width/2 - 168, 640, "sheet", "button_hard.png", 336, 80 ).setOrigin(0,0)
 
         // set Button
-        this.useButton.setInteractive().on('pointerdown', () => this.useChar())
+        this.useButton.setInteractive().on('pointerup', () => this.useChar())
         this.useText = i18n.createTranslatedText( scene, width/2, 680 -3, "use_button" )
             .setFontSize(32)
             .setPadding(0,20,0,10)
@@ -104,7 +104,7 @@ export default class characterSelectUi {
 
             // Set Use Button
             this.useText?.setVisible(true)
-                .on('pointerdown', () => this.useChar())
+                .on('pointerup', () => this.useChar())
             if (this.showingCharIndex === this.usingCharIndex) { // Currently Using Character
                 this.usingButton?.setVisible(true)
                 this.useButton?.setVisible(false)
@@ -114,7 +114,7 @@ export default class characterSelectUi {
             else { // Other Characters
                 this.usingButton?.setVisible(false)
                 this.useButton?.setVisible(true)
-                this.useButton?.setInteractive().on('pointerdown', () => this.useChar())
+                this.useButton?.setInteractive().on('pointerup', () => this.useChar())
                 this.useText?.setVisible(true)
                 this.usingText?.setVisible(false)
             }
@@ -131,7 +131,7 @@ export default class characterSelectUi {
             this.characterBox?.fillRoundedRect( width/2 -168, 504, 336, 120, 14 )
 
             // Set Use Button
-            this.useButton?.setInteractive().off('pointerdown')
+            this.useButton?.setInteractive().off('pointerup')
             this.usingButton?.setVisible(false)
             this.useText?.setVisible(false)
             this.usingText?.setVisible(false)
@@ -158,17 +158,4 @@ export default class characterSelectUi {
         this.usingText?.setStyle(style)
     }
 
-    setInteractiveOff() : void {
-        this.useButton?.setInteractive().off('pointerdown')
-        this.prevButton?.setInteractive().off('pointerdown')
-        this.nextButton?.setInteractive().off('pointerdown')
-    }
-
-    setInteractiveOn() : void {
-        this.prevButton?.setInteractive().on( 'pointerdown', () => this.charShift(-1) )
-        this.nextButton?.setInteractive().on( 'pointerdown', () => this.charShift(1) )
-        if (this.characters[this.showingCharIndex]["unlocked"] && this.showingCharIndex != this.usingCharIndex) {
-            this.useButton?.setInteractive().on( 'pointerdown', () => this.useChar() )
-        }
-    }
 }
