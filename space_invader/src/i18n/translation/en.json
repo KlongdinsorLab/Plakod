@@ -76,7 +76,7 @@
   "submit_edit" : "Edit",
   "warning" : "Warning",
   "airflow_doctor_instructed_confirm" : "I've got doctor's instruction to edit the airflow",
-  "edit_airflow" : "ปรับปริมาณอากาศ",
+  "edit_airflow" : "Edit airflow",
   "from" : "from",
   "to" : "to",
   "question" : "?",
