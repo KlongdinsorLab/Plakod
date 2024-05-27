@@ -10,8 +10,6 @@ import {
 import SoundManager from 'component/sound/SoundManager'
 import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
-import { BossSkill } from '../BossSkill'
-import { B1BossSkill } from './B1BossSkill'
 import { B1BossVersion1 } from './B1BossVersion1'
 import { B1BossVersion2 } from './B1BossVersion2'
 
@@ -19,29 +17,19 @@ let isHit = false
 
 export class B1Boss extends Boss {
 	private soundManager: SoundManager
-	private phaseCount!: number
-	private bossTimer = 0
-	private isStartAttack = false
-	private isItemPhase = false
-	private isAttackPhase = true
-	private isSecondPhase = false
-	private bossVersion!: BossVersion
-	private bossSkill!: BossSkill
 	private bossHitSounds!: (Phaser.Sound.NoAudioSound
 		| Phaser.Sound.WebAudioSound
 		| Phaser.Sound.HTML5AudioSound)[]
-	private bossRemoved!: boolean
 
 	constructor(
 		scene: Phaser.Scene,
 		player: Player,
 		score: Score,
-		lap: number = 6,
+		lap: number = 1,
 	) {
 		super(scene, player, score, lap)
 		this.soundManager = new SoundManager(scene)
 		this.phaseCount = 0
-
 		this.bossVersion = this.setVersion(lap)
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
@@ -52,9 +40,7 @@ export class B1Boss extends Boss {
 		this.bossHitSounds = [...Array(4)].map((_, i) =>
 			this.scene.sound.add(`bossHit${i+1}`),
 		)
-
-		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
-		this.scene.physics.world.enable(this.bossSkill.getBody())
+		this.movePath = this.bossVersion.getMovePattern(this.scene, this)
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -64,8 +50,7 @@ export class B1Boss extends Boss {
 	path(): void {}
 
 	move(): void {
-		const path = this.bossVersion.getMovePattern(this.scene, this)
-		this.enemy.setPath(path)
+		this.enemy.setPath(this.movePath)
 		this.enemy.startFollow({
 			positionOnPath: true,
 			duration: 7000,
@@ -92,7 +77,6 @@ export class B1Boss extends Boss {
 		this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
 
 		this.enemy.stop()
-		// this.enemy.setTexture('boss')
 		this.enemy.play('boss-hit')
 
 		isHit = true
@@ -101,10 +85,9 @@ export class B1Boss extends Boss {
 			isHit = false
 			this.enemy.setAlpha(1)
 			this.enemy.stop()
-			// this.enemy.setTexture('boss')
 			this.enemy.play('boss-move')
 		}, BOSS_HIT_DELAY_MS)
-		this.soundManager.play(this.enermyDestroyedSound!, true)
+		this.soundManager.play(this.enemyDestroyedSound!, true)
 		this.score.add(DESTROY_METEOR_SCORE)
 	}
 
@@ -181,7 +164,7 @@ export class B1Boss extends Boss {
 	setVersion(lap: number): BossVersion {
 		const version = Math.floor((10 - lap) / BOSS_MULTIPLE_COUNT)
 		const bossVersions = [B1BossVersion1, B1BossVersion2]
-		this.bossVersion = new bossVersions[version]()
+		this.bossVersion = new bossVersions[version](this.scene, this, this.player)
 
 		this.scene.anims.remove('boss-move')
 		this.scene.anims.remove('boss-hit')
@@ -196,20 +179,8 @@ export class B1Boss extends Boss {
 		return this.bossVersion
 	}
 
-	getSkill(): any {
-		return this.bossSkill
-	}
-
 	playAttack(delta: number): void {
 		this.attack(delta)
-		if (this.isSecondPhase) {
-			this.bossVersion.createObstacleByTime(
-				this.scene,
-				this.player,
-				this.score,
-				delta,
-			)
-			this.bossVersion.useSkill(this.bossSkill, delta)
-		}
+		this.bossVersion.useSkill(this.isSecondPhase, delta)
 	}
 }

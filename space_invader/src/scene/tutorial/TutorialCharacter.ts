@@ -1,4 +1,4 @@
-import { Meteor } from 'component/enemy/Meteor'
+import { B1Obstacle } from 'component/enemy/obstacle/B1Obstacle'
 import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import {
@@ -16,13 +16,13 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 export type Character = {
-  meteor: Meteor
+  obstacle: B1Obstacle
   player: Player
   gameLayer: Phaser.GameObjects.Layer
 }
 
 export default class TutorialCharacterScene extends Phaser.Scene {
-  private meteor!: Meteor
+  private obstacle!: B1Obstacle
   private player!: Player
   private gameLayer!: Phaser.GameObjects.Layer
 
@@ -30,8 +30,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
     super('tutorial character')
   }
 
-  init({ meteor, player, gameLayer }: Character) {
-    this.meteor = meteor
+  init({ obstacle, player, gameLayer }: Character) {
+    this.obstacle = obstacle
     this.player = player
     this.gameLayer = gameLayer
   }
@@ -55,33 +55,33 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
     const i18n = I18nSingleton.getInstance()
 
-    const meteor = this.meteor.getBody()
-    tutorialLayer.add(meteor)
+    const obstacle = this.obstacle.getBody()
+    tutorialLayer.add(obstacle)
 
-    const meteorBoxWidth = 400
+    const obstacleBoxWidth = 400
     this.add.nineslice(
-      meteor.x + MARGIN,
-      meteor.y,
+      obstacle.x + MARGIN,
+      obstacle.y,
       'ui',
       'side purple bubble.png',
-      meteorBoxWidth, 200, 56, 36, 36, 112
+      obstacleBoxWidth, 200, 56, 36, 36, 112
     ).setOrigin(0, 0.5)
 
-    const meteorTitle = i18n
+    const obstacleTitle = i18n
       .createTranslatedText(
         this,
-        meteor.x + meteor.width + 2 * MARGIN,
-        meteor.y - meteor.height / 2,
+        obstacle.x + obstacle.width + 2 * MARGIN,
+        obstacle.y - obstacle.height / 2,
         'tutorial_enemy_title',
       )
       .setColor(`#${DARK_PURPLE.toString(16)}`)
       .setFontSize(LARGE_FONT_SIZE)
       .setOrigin(0, 0.5)
-    const meteorDescription = i18n
+    const obstacleDescription = i18n
       .createTranslatedText(
         this,
-        meteor.x + meteor.width - 4,
-        meteor.y - meteor.height / 2 + MARGIN / 2,
+        obstacle.x + obstacle.width - 4,
+        obstacle.y - obstacle.height / 2 + MARGIN / 2,
         'tutorial_enemy_description',
         { score: HIT_METEOR_SCORE },
       )
@@ -165,8 +165,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
         const tutorialUiStyle = {
           fontFamily: 'Mali'
         }
-        meteorTitle.setStyle(tutorialUiStyle)
-        meteorDescription.setStyle(tutorialUiStyle)
+        obstacleTitle.setStyle(tutorialUiStyle)
+        obstacleDescription.setStyle(tutorialUiStyle)
         playerTitle.setStyle(tutorialUiStyle)
         playerDescription.setStyle(tutorialUiStyle)
         continueText.setStyle(tutorialUiStyle)
@@ -180,7 +180,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
         'pointerdown',
         () => {
           self.gameLayer.add(player)
-          self.gameLayer.add(meteor)
+          self.gameLayer.add(obstacle)
           self.scene.resume('game')
           isMute ? soundManager.mute() : soundManager.unmute()
           i18n.removeAllListeners(self)

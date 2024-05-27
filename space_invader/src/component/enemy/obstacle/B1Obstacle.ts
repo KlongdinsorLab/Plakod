@@ -1,4 +1,4 @@
-import { Enemy } from './Enemy'
+import { Enemy } from '../Enemy'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
@@ -12,7 +12,7 @@ import {
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 
-export class Meteor extends Enemy {
+export class B1Obstacle extends Enemy {
   private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
@@ -35,14 +35,14 @@ export class Meteor extends Enemy {
     this.flareEmitter = scene.add.particles(5, -80, 'bossAsset',{
       frame: 'fireball1.png',
       colorEase: 'quart.out',
-      lifespan: 300,
+      lifespan: isInItemPhase ? 200 : 300,
       angle: { min: -100, max: -80 },
       scale: { start: 1, end: 0.5, ease: 'sine.out' },
       alpha: {start: 1, end: 0.5, ease:"sine.inout"},
       speed: 150,
   });
     this.explosionEmitter.active = false
-    this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
+    this.enemyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     this.move()
     this.attack()
   }
@@ -58,7 +58,7 @@ export class Meteor extends Enemy {
     this.scene.physics.add.overlap(
       this.player.getBody(),
       this.enemy,
-      (_, _meteor) => {
+      (_, _obstacle) => {
         if (this.player.getIsHit()) return
         this.player.setIsHit(true)
         this.player.damaged()
@@ -92,19 +92,6 @@ export class Meteor extends Enemy {
 
   attack(): void {
     // Do Nothing
-    //        this.scene.physics.add.overlap(this.player.getBody(), this.enemy, (_, _meteor) => {
-    //            if (this.player.getIsHit()) return;
-    //            this.player.setIsHit(true)
-    //            this.player.damaged()
-    //            this.score.add(HIT_METEOR_SCORE)
-    //            this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
-    //                this.player.setIsHit(false)
-    //                this.player.recovered()
-    //            })
-    //        })
-    //        this.scene.time.delayedCall(5000, () => {
-    //            this.enemy.destroy()
-    //        })
   }
 
   hit(): void {
@@ -120,7 +107,7 @@ export class Meteor extends Enemy {
     })
     this.enemy.destroy()
     this.flareEmitter.destroy()
-    this.soundManager.play(this.enermyDestroyedSound!, true)
+    this.soundManager.play(this.enemyDestroyedSound!, true)
     this.score.add(DESTROY_METEOR_SCORE)
   }
 

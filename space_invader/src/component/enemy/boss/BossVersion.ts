@@ -1,16 +1,24 @@
 import Player from "component/player/Player";
 import { Boss } from "./Boss";
 import { BossSkill } from "./BossSkill";
-import Score from "component/ui/Score";
 
 export abstract class BossVersion {
+	protected skillTimer = 0
+	protected movePattern!: Phaser.Curves.Path
+	protected phase1Skills!: BossSkill[]
+	protected phase2Skills!: BossSkill[]
+	protected enemy!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody | any
+	protected scene!: Phaser.Scene
+
+	constructor(scene: Phaser.Scene){
+		this.scene = scene
+	}
+
 	abstract createAnimation(scene: Phaser.Scene): void
 	abstract getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path
-	abstract isShootAttack(): boolean
-	abstract hasObstacle(): boolean
 	abstract hasSkill(): boolean
-	abstract useSkill(bossSkill: BossSkill, delta: number): void
-	abstract createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void
+	abstract getSkills(): BossSkill[]
+	abstract useSkill(isSecondPhase: boolean, delta: number): void
 	abstract getDurationPhase1(): number
 	abstract getDurationPhase2(): number
 	abstract playVsScene(scene: Phaser.Scene, player: Player): void

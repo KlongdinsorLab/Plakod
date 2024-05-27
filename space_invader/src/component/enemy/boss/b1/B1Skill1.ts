@@ -2,27 +2,40 @@ import Player from 'component/player/Player'
 import { Boss } from "../Boss";
 import { BossSkill } from "../BossSkill";
 
-export class B1BossSkill extends BossSkill{
+export class B1Skill1 extends BossSkill{
     private path!: Phaser.Curves.Path
-    private isActive!: boolean
     constructor(
 		scene: Phaser.Scene,
         boss: Boss,
 		player: Player,
+        path: Phaser.Curves.Path
 	){
         super(scene, boss, player)
-        this.skill = this.scene.physics.add.image(0, 0, 'bossSkill_Shield').setOrigin(0.5, 0.5).setAlpha(0)
-        this.isActive = false
+        this.skill = this.scene.physics.add.image(0, 0, 'b1v2_shield').setOrigin(0.5, 0.5).setAlpha(0)
+        this.setMovePath(path)
     }
 
-    startSkill(): void {
+    start(): void {
+        this.skillTimer = 0
         this.setActive(true)
+        this.move()
     }
 
-    stopSkill(): void {
-        this.setActive(false)
-    }
+    activate(delta: number): void{
+        this.skillTimer += delta
+        if (this.skillTimer > 12000 && this.skillTimer < 18000) {
+			this.setActive(true)
+			return
+		}
 
+		if (this.skillTimer > 36000 && this.skillTimer < 42000) {
+			this.setActive(true)
+			return
+		}
+
+		this.setActive(false)
+    }
+    
     setMovePath(path: Phaser.Curves.Path): void {
         this.path = path
     }

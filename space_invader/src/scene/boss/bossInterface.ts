@@ -1,17 +1,22 @@
-import { Boss, BossName } from 'component/enemy/boss/Boss'
+import { Boss } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
-
-export interface BossInterface {
-	  name: BossName,
-	  bossVersion: BossVersion,
-	  boss: Boss,
-		score: number,
-		playerX: number,
-		reloadCount: number, // TODO change name and class to lap
-}
+import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
 
 export const BossByName = {
-	"B1": B1Boss
+	"B1": {
+		"Boss": B1Boss,
+		"ObstacleFactory": B1ObstacleFactory,
+		"Background": "boss_background"
+	}
+}
+
+export interface BossInterface {
+	name: keyof typeof BossByName,
+	bossVersion: BossVersion,
+	boss: Boss,
+	  score: number,
+	  playerX: number,
+	  reloadCount: number, // TODO change name and class to lap
 }
 

@@ -22,20 +22,16 @@ export enum BossPhase {
 }
 
 export enum BossCutScene {
-	VS = 'B1V1_CUTSCENE_VS',
-	ESCAPE = 'B1V1_CUTSCENE_ESCAPE1',
-	ESCAPE2 = 'B1V1_CUTSCENE_ESCAPE2',
-	VICTORY = 'B1V2_CUTSCENE_VICTORY',
+	VS = 'BOSS_CUTSCENE_VS',
+	ESCAPE = 'BOSS_CUTSCENE_ESCAPE1',
+	ESCAPE2 = 'BOSS_CUTSCENE_ESCAPE2',
+	VICTORY = 'BOSS_CUTSCENE_VICTORY',
 }
 
 export enum BossTutorialScene {
-	TUTORIAL_PHASE_1 = 'B1V1_TT_PHASE1',
-	TUTORIAL_PHASE_2 = 'B1V1_TT_PHASE2',
-	COLLECT_ITEM = 'B1V1_TT_CB',
-}
-
-export enum BossName {
-	B1 = 'B1',
+	TUTORIAL_PHASE_1 = 'TT_PHASE1',
+	TUTORIAL_PHASE_2 = 'TT_PHASE2',
+	COLLECT_ITEM = 'TT_CB',
 }
 
 interface Constructable<T> {
@@ -51,6 +47,16 @@ export async function importClassByName<T>(
 }
 
 export abstract class Boss extends Enemy {
+	protected phaseCount!: number
+	protected bossTimer = 0
+	protected isStartAttack = false
+	protected isItemPhase = false
+	protected isAttackPhase = false
+	protected isSecondPhase = false
+	protected bossVersion!: BossVersion
+	protected bossRemoved!: boolean
+	protected movePath!: Phaser.Curves.Path
+
 	constructor(
 		protected scene: Phaser.Scene,
 		protected player: Player,
@@ -69,6 +75,5 @@ export abstract class Boss extends Enemy {
 	abstract resetState(): void
 	abstract setVersion(lap: number): BossVersion
 	abstract getVersion(): BossVersion
-	abstract getSkill(): any
 	abstract playAttack(delta: number): void
 }

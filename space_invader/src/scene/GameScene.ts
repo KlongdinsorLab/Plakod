@@ -12,8 +12,6 @@ import {
 import Phaser from 'phaser'
 import MergedInput, { Player as PlayerInput } from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
-import { Meteor } from 'component/enemy/Meteor'
-import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
@@ -21,8 +19,11 @@ import WebFont from 'webfontloader'
 // import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
-import { BossCutScene, BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossCutScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
+import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
+import { B1Obstacle } from 'component/enemy/obstacle/B1Obstacle'
+import { BossByName } from './boss/bossInterface'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -31,6 +32,7 @@ export default class GameScene extends Phaser.Scene {
   private score!: Score
   private scoreNumber = 0
   private reloadCountNumber = RELOAD_COUNT
+  private bossName!: keyof typeof BossByName
 
   private reloadCount!: ReloadCount
   //	private reloadCount = RELOAD_COUNT
@@ -41,9 +43,9 @@ export default class GameScene extends Phaser.Scene {
   //    private timerText!: Phaser.GameObjects.Text;
 
   private singleLaserFactory!: SingleLaserFactory
-  private meteorFactory!: MeteorFactory
+  private obstacleFactory!: B1ObstacleFactory
   private tutorial!: Tutorial
-  private tutorialMeteor!: Meteor
+  private tutorialObstacle!: B1Obstacle
   private isCompleteWarmup = false
   private isCompleteBoss = false
   private menu!: Menu
@@ -74,10 +76,6 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('fire', 'assets/effect/fire03.png')
     this.load.image('laser', 'assets/effect/mc_bullet.png')
     this.load.image('charge', 'assets/effect/chargeBlue.png')
-    this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
-    this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
-    this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
-    this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
     this.load.image('explosion', 'assets/effect/explosionYellow.png')
     this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
@@ -107,13 +105,14 @@ export default class GameScene extends Phaser.Scene {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
 
-  init({ score, reloadCount, isCompleteBoss }: { score: number, reloadCount: number, isCompleteBoss: boolean }) {
+  init({ bossName, score, reloadCount, isCompleteBoss }: { bossName: keyof typeof BossByName, score: number, reloadCount: number, isCompleteBoss: boolean }) {
     if(score)
       this.scoreNumber = score
     if(reloadCount)
       this.reloadCountNumber = reloadCount
     if(isCompleteBoss !== undefined)
       this.isCompleteBoss = isCompleteBoss
+    this.bossName = bossName ?? "B1"
     this.soundManager.unmute()
 	}
 
@@ -171,20 +170,20 @@ export default class GameScene extends Phaser.Scene {
     this.score.setScore(this.scoreNumber)
     // this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
-    this.meteorFactory = new MeteorFactory()
+    this.obstacleFactory = new BossByName[this.bossName].ObstacleFactory()
     this.singleLaserFactory = new SingleLaserFactory()
     this.tutorial = new Tutorial(this)
 
     this.menu = new Menu(this)
 
     if (!this.isCompleteTutorial()) {
-      this.tutorialMeteor = this.meteorFactory.create(
+      this.tutorialObstacle = this.obstacleFactory.create(
         this,
         this.player,
         this.score,
         true,
       )
-      this.gameLayer.add(this.tutorialMeteor.getBody())
+      this.gameLayer.add(this.tutorialObstacle.getBody())
     }
 
     this.isCompleteWarmup = this.reloadCountNumber !== RELOAD_COUNT
@@ -231,7 +230,7 @@ export default class GameScene extends Phaser.Scene {
     // Tutorial
     if (!this.isCompleteTutorial()) {
       this.tutorial.launchTutorial(Step.CHARACTER, delta, {
-        meteor: this.tutorialMeteor,
+        obstacle: this.tutorialObstacle,
         player: this.player,
         gameLayer: this.gameLayer,
       })
@@ -255,7 +254,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.isCompleteTutorial() && this.isCompleteWarmup) {
-      this.meteorFactory.createByTime(this, this.player, this.score, delta)
+      this.obstacleFactory.createByTime(this, this.player, this.score, delta)
     }
 
     // TODO move to controller class
@@ -299,7 +298,7 @@ export default class GameScene extends Phaser.Scene {
     this.singleLaserFactory.createByTime(
       this,
       this.player,
-      [...this.meteorFactory.getMeteors()],
+      [...this.obstacleFactory.getObstacles()],
       delta,
     )
 
@@ -320,7 +319,7 @@ export default class GameScene extends Phaser.Scene {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
         this.scene.launch(BossCutScene.VS, {
-          name: BossName.B1,
+          name: this.bossName,
           score: this.score.getScore(),
           playerX: this.player.getBody().x,
           reloadCount: this.reloadCount.getCount(),

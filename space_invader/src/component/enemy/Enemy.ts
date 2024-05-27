@@ -7,7 +7,7 @@ export abstract class Enemy {
 	protected scene: Phaser.Scene
 	protected player: Player
 	protected score: Score
-	protected enermyDestroyedSound?: Phaser.Sound.BaseSound
+	protected enemyDestroyedSound?: Phaser.Sound.BaseSound
 	protected isTutorial = false
 	protected isInItemPhase = false
 

@@ -9,19 +9,35 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
-import { Boss } from '../Boss'
-import { MeteorFactory } from 'component/enemy/MeteorFactory'
-import Score from 'component/ui/Score'
+import { BossSkill } from '../BossSkill'
 
 export class B1BossVersion1 extends BossVersion {
-	private meteorFactory!: MeteorFactory
-	constructor(){
-		super()
-		this.meteorFactory = new MeteorFactory()
-	}
-	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
+	constructor(scene: Phaser.Scene) {
+		super(scene)
 		const { width } = scene.scale
-		const path = new Phaser.Curves.Path(0, 0)
+		this.movePattern = new Phaser.Curves.Path(0, 0)
+		this.enemy = scene.add
+			.follower(this.movePattern, width / 2, -140, 'b1v1')
+			.setOrigin(0.5)
+
+		const randomVector = [...Array(5)].map((_) => {
+			return new Phaser.Math.Vector2(
+				Math.floor(Math.random() * width),
+				Math.floor(Math.random() * width),
+			)
+		})
+
+		this.movePattern = new Phaser.Curves.Path(this.enemy.x, this.enemy.y)
+			.lineTo(width / 2, 350)
+			.circleTo(100)
+			.splineTo(randomVector)
+			.circleTo(60)
+			.lineTo(width / 2, 100)
+			.lineTo(width + 200, 400)
+			.lineTo(-200, 400)
+	}
+
+	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		scene.anims.remove('boss-move')
 		scene.anims.remove('boss-hit')
 		scene.anims.create({
@@ -50,35 +66,11 @@ export class B1BossVersion1 extends BossVersion {
 			repeat: -1,
 		})
 
-		return scene.add.follower(path, width / 2, -140, 'b1v1').setOrigin(0.5)
+		return this.enemy
 	}
 
-	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
-		const enemy = boss.getBody()
-		const { width } = scene.scale
-		const randomVector = [...Array(5)].map((_) => {
-			return new Phaser.Math.Vector2(
-				Math.floor(Math.random() * width),
-				Math.floor(Math.random() * width),
-			)
-		})
-		const path = new Phaser.Curves.Path(enemy.x, enemy.y)
-			.lineTo(width / 2, 350)
-			.circleTo(100)
-			.splineTo(randomVector)
-			.circleTo(60)
-			.lineTo(width / 2, 100)
-			.lineTo(width + 200, 400)
-			.lineTo(-200, 400)
-		return path
-	}
-
-	isShootAttack(): boolean {
-		return false
-	}
-
-	hasObstacle(): boolean {
-		return false
+	getMovePattern(): Phaser.Curves.Path {
+		return this.movePattern
 	}
 
 	hasBoosterDrop(): boolean {
@@ -89,11 +81,11 @@ export class B1BossVersion1 extends BossVersion {
 		return false
 	}
 
-	useSkill(): void {}
-
-	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
-		this.meteorFactory.createByTime(scene, player, score, delta)
+	getSkills(): BossSkill[] {
+		return []
 	}
+
+	useSkill(): void {}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS
@@ -105,7 +97,7 @@ export class B1BossVersion1 extends BossVersion {
 
 	playVsScene(scene: Phaser.Scene, player: Player): void {
 		const { width, height } = scene.scale
-		
+
 		scene.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
 			.setOrigin(0)
@@ -134,7 +126,7 @@ export class B1BossVersion1 extends BossVersion {
 		const bossName = I18nSingleton.getInstance()
 			.createTranslatedText(scene, -320, 280, 'alien_boss_name')
 			.setOrigin(0.5, 1)
-		
+
 		player.playVsScene(scene)
 
 		bossText

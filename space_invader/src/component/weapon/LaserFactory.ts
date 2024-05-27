@@ -16,7 +16,7 @@ export abstract class LaserFactory {
 		player: Player,
 		enemies: Enemy[],
 		delta: number,
-		bossSkill?: BossSkill,
+		bossSkill?: BossSkill[],
 	): void {
 		this.timer += delta
 		while (this.timer > LASER_FREQUENCY_MS) {
@@ -51,14 +51,17 @@ export abstract class LaserFactory {
 	setSkillCollision(
 		scene: Phaser.Scene,
 		lasers: Phaser.Types.Physics.Arcade.ImageWithDynamicBody[],
-		bossSkill: BossSkill
+		bossSkill: BossSkill[]
 	) {
 		if (!bossSkill) return
 		lasers.forEach((laser) => {
-			const collider = scene.physics.add.collider(laser, bossSkill.getBody(), () =>
-				bossSkill.applySkill(laser)
-			)
-			!bossSkill.getIsActive() && scene.physics.world.removeCollider(collider)
+			bossSkill.forEach((skill) => {
+				const collider = scene.physics.add.collider(laser, skill.getBody(), () =>
+					skill.applySkill(laser)
+				)
+				!skill.getIsActive() && scene.physics.world.removeCollider(collider)
+			})
+			
 		})
 	}
 

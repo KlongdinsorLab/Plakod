@@ -8,25 +8,45 @@ import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
+import { B1Skill1 } from './B1Skill1'
+import { Boss } from '../Boss'
 import Player from 'component/player/Player'
-import Score from 'component/ui/Score'
 
 export class B1BossVersion2 extends BossVersion {
-	private skillTimer = 0
-	private movePattern!: Phaser.Curves.Path
-	private obstacleFactory!: B1BossObstacleFactory
+	constructor(scene: Phaser.Scene, boss: Boss, player: Player) {
+		super(scene)
+		const { width } = scene.scale
+		this.movePattern = new Phaser.Curves.Path(0, 0)
+		this.enemy = scene.add
+			.follower(this.movePattern, width / 2, -140, 'b1v2')
+			.setOrigin(0.5)
 
-	constructor(){
-		super()
-		this.obstacleFactory = new B1BossObstacleFactory()
+		this.movePattern = new Phaser.Curves.Path(this.enemy.x, this.enemy.y)
+			.lineTo(width / 2, 350)
+			.circleTo(100)
+			.circleTo(60)
+			.lineTo(width / 2, 100)
+			.lineTo(width + 200, 400)
+			.lineTo(-200, 400)
+			.lineTo(width / 2, 350)
+			.circleTo(100)
+			.circleTo(60)
+			.lineTo(width / 2, 100)
+			.lineTo(width + 200, 400)
+			.lineTo(-200, 400)
+
+		const shieldSkill = new B1Skill1(scene, boss, player, this.movePattern)
+		this.phase1Skills = [shieldSkill]
+		this.phase2Skills = [shieldSkill]
+
+		const allSkills = [...this.phase1Skills, ...this.phase2Skills]
+		allSkills.forEach((skill) =>
+			scene.physics.world.enable(skill.getBody()),
+		)
 	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
-		const { width } = scene.scale
-		const path = new Phaser.Curves.Path(0, 0)
 		scene.anims.remove('boss-move')
 		scene.anims.remove('boss-hit')
 		scene.anims.create({
@@ -54,35 +74,11 @@ export class B1BossVersion2 extends BossVersion {
 			frameRate: 18,
 			repeat: -1,
 		})
-		return scene.add.follower(path, width / 2, -140, 'b1v1').setOrigin(0.5)
+		return this.enemy
 	}
 
-	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
-		const enemy = boss.getBody()
-		const { width } = scene.scale
-		const path = new Phaser.Curves.Path(enemy.x, enemy.y)
-			.lineTo(width / 2, 350)
-			.circleTo(100)
-			.circleTo(60)
-			.lineTo(width / 2, 100)
-			.lineTo(width + 200, 400)
-			.lineTo(-200, 400)
-			.lineTo(width / 2, 350)
-			.circleTo(100)
-			.circleTo(60)
-			.lineTo(width / 2, 100)
-			.lineTo(width + 200, 400)
-			.lineTo(-200, 400)
-		this.movePattern = path
-		return path
-	}
-
-	isShootAttack(): boolean {
-		return false
-	}
-
-	hasObstacle(): boolean {
-		return true
+	getMovePattern(): Phaser.Curves.Path {
+		return this.movePattern
 	}
 
 	hasBoosterDrop(): boolean {
@@ -93,28 +89,31 @@ export class B1BossVersion2 extends BossVersion {
 		return true
 	}
 
-	useSkill(bossSkill: BossSkill, delta: number): void {
-		if(this.skillTimer === 0){
-			bossSkill.setMovePath(this.movePattern)
-			bossSkill.move()
-		}
-		this.skillTimer += delta
-
-		if(this.skillTimer > 12000 && this.skillTimer < 18000){
-			bossSkill.setActive(true)
-			return
-		}
-		
-		if(this.skillTimer > 36000 && this.skillTimer < 42000){
-			bossSkill.setActive(true)
-			return
-		}
-
-		bossSkill.setActive(false)
+	getSkills(): BossSkill[] {
+		return [...this.phase1Skills, ...this.phase2Skills]
 	}
 
-	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
-		this.obstacleFactory.createByTime(scene, player, score, delta)
+	useSkill(isSecondPhase: boolean, delta: number): void {
+		if(!isSecondPhase){
+			this.phase1Skills.forEach((bossSkill) => {
+				if (this.skillTimer === 0) {
+					bossSkill.start()
+				}
+	
+				this.skillTimer += delta
+				bossSkill.activate(delta)
+			})
+		} else {
+			this.phase2Skills.forEach((bossSkill) => {
+				if (this.skillTimer === 0) {
+					bossSkill.start()
+				}
+	
+				this.skillTimer += delta
+				bossSkill.activate(delta)
+			})
+		}
+		
 	}
 
 	getDurationPhase1(): number {
@@ -133,8 +132,13 @@ export class B1BossVersion2 extends BossVersion {
 			.setScrollFactor(0, 0)
 
 		const bossText = I18nSingleton.getInstance()
-		.createTranslatedText(scene, width / 2, height - 2*MARGIN, 'alien_boss_name_version2')
-		.setOrigin(0.5, 1)
+			.createTranslatedText(
+				scene,
+				width / 2,
+				height - 2 * MARGIN,
+				'alien_boss_name_version2',
+			)
+			.setOrigin(0.5, 1)
 
 		WebFont.load({
 			google: {
@@ -150,7 +154,7 @@ export class B1BossVersion2 extends BossVersion {
 						...bossTutorialUiStyle,
 						color: 'white',
 						fontWeight: 700,
-						align: 'center'
+						align: 'center',
 					})
 					.setFontSize('80px')
 					.setStroke('#FB511C', 16)
@@ -170,8 +174,12 @@ export class B1BossVersion2 extends BossVersion {
 			repeat: -1,
 		})
 
-		const group = scene.add.group({key: 'tranform'}).setOrigin(0.5,1).setXY(width / 2, -140).scaleXY(1);
-		group.playAnimation('b1v1');
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setOrigin(0.5, 1)
+			.setXY(width / 2, -140)
+			.scaleXY(1)
+		group.playAnimation('b1v1')
 
 		scene.tweens.add({
 			targets: group.getChildren(),
@@ -191,14 +199,15 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4*MARGIN)
+					group.setXY(width / 2, height / 2 + 4 * MARGIN)
 					group.scaleXY(1.25)
-				},1000)
-			}
+				}, 1000)
+			},
 		})
 	}
 
 	playEscapePhase1(scene: Phaser.Scene): void {
+		this.skillTimer = 0
 		const { width } = scene.scale
 		const soundManager = new SoundManager(scene)
 		const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
@@ -343,12 +352,24 @@ export class B1BossVersion2 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2 + 2*MARGIN, 'boss_attack_skill')
+			.createTranslatedText(
+				scene,
+				width / 2,
+				height / 2 + 2 * MARGIN,
+				'boss_attack_skill',
+			)
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE)
 
-		const shield = scene.physics.add.image(width / 2, 300, 'bossSkill_Shield').setOrigin(0.5, 0.5).setScale(1.25)
-		const group = scene.add.group({key: 'tranform'}).setXY(width / 2, 480).setOrigin(0.5, 1).scaleXY(0.5);
+		const shield = scene.physics.add
+			.image(width / 2, 300, 'b1v2_shield')
+			.setOrigin(0.5, 0.5)
+			.setScale(1.25)
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setXY(width / 2, 480)
+			.setOrigin(0.5, 1)
+			.scaleXY(0.5)
 		group.playAnimation('boss-move')
 
 		scene.tweens.add({
@@ -356,7 +377,7 @@ export class B1BossVersion2 extends BossVersion {
 			duration: 2000,
 			alpha: 0,
 			repeat: -1,
-			ease: 'sine.out'
+			ease: 'sine.out',
 		})
 
 		WebFont.load({
@@ -373,7 +394,7 @@ export class B1BossVersion2 extends BossVersion {
 						...bossTutorialUiStyle,
 						color: 'white',
 						fontWeight: 700,
-						align: "center"
+						align: 'center',
 					})
 					.setFontSize('6em')
 					.setStroke('#FB511C', 12)
@@ -390,11 +411,11 @@ export class B1BossVersion2 extends BossVersion {
 			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
-		const meteor = scene.physics.add.staticGroup()
-		meteor
+		const obstacle = scene.physics.add.staticGroup()
+		obstacle
 			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
 			.setOrigin(0.5, 1)
-		meteor
+		obstacle
 			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
 			.setOrigin(0.5, 1)
 		const poison = scene.add
@@ -458,7 +479,7 @@ export class B1BossVersion2 extends BossVersion {
 		})
 
 		setTimeout(() => {
-			meteor.setVisible(false)
+			obstacle.setVisible(false)
 			poison.setVisible(false)
 			bullet.setVisible(false)
 			booster.setVisible(false)

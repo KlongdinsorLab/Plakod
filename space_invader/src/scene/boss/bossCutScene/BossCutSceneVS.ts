@@ -1,4 +1,4 @@
-import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from '../bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
@@ -69,12 +69,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		const scoreObj = new Score(this)
 		scoreObj.hide()
 
-		this.boss = new BossByName[name ?? 'B1'](
-			this,
-			player,
-			scoreObj,
-			reloadCount,
-		)
+		this.boss = new BossByName[name ?? 'B1'].Boss(this, player, scoreObj, reloadCount)
 		this.bossVersion = this.boss.getVersion()
 
 		const self = this
@@ -90,7 +85,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		setTimeout(() => {
 			this.scene.stop()
 			this.scene.start('bossScene', {
-				name: BossName.B1,
+				name: name ?? "B1",
 				score: score,
 				playerX: playerX,
 				reloadCount: reloadCount,
