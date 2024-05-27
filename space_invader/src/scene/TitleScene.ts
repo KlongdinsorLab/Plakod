@@ -3,7 +3,7 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MEDIUM_FONT_SIZE } from 'config'
+import { LARGE_FONT_SIZE } from 'config'
 import {
 	browserSessionPersistence,
 	getAuth,
@@ -46,7 +46,7 @@ export default class TitleScene extends Phaser.Scene {
 		this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
 		I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, height / 2, 'start text')
-			.setFontSize(MEDIUM_FONT_SIZE)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0)
 
 		this.controller1 = this.mergedInput?.addPlayer(0)
@@ -114,7 +114,7 @@ export default class TitleScene extends Phaser.Scene {
 
 	startGame() {
 		I18nSingleton.getInstance().destroyEmitter()
-		this.scene.start(import.meta.env.VITE_START_SCEN || 'login')
+		this.scene.start(import.meta.env.VITE_START_SCEN || 'start-login')
 		new SoundManager(this).stop(this.bgm!)
 	}
 }

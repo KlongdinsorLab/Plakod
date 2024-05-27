@@ -84,5 +84,7 @@
   "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
-  "player_name": "น้องปิ๊ด"
+  "player_name": "น้องปิ๊ด",
+  "start_login_text":"กรุณาเข้าสู่ระบบก่อนเริ่มเกม",
+  "start_login_button":"เข้าสู่ระบบ"
 }

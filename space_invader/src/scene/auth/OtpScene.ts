@@ -1,9 +1,17 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
-import { ConfirmationResult } from 'firebase/auth'
 import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
+
+import {
+	getAuth,
+	signInWithPhoneNumber,
+	RecaptchaVerifier,
+	ConfirmationResult,
+	setPersistence,
+	browserSessionPersistence,
+} from 'firebase/auth'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -12,6 +20,9 @@ export default class OtpScene extends Phaser.Scene {
 	private confirmationResult!: ConfirmationResult
 	private phoneNumber!: string;
 	private isTimeout: boolean = false;
+	private isResend: boolean = false;
+	private countdownInterval: number | undefined
+
 
 	constructor() {
 		super('otp')
@@ -72,6 +83,7 @@ export default class OtpScene extends Phaser.Scene {
 			.dom(width/2, height / 2)
 			.createFromCache('otpForm')
 			.setScale(1)
+		console.log("otp scene added")
 
 		const textElementIds = [
 			'phoneNumber-text', 'otp-head-text', 'otp-description', 
@@ -128,28 +140,18 @@ export default class OtpScene extends Phaser.Scene {
 			} catch (e) {}
 		})
 
-		//timeout
-		let counter = 60
-		let min = 4
-		setInterval(() => {
-			if(counter>0){
-				counter--
-			}else if(counter===0){
-				counter = 60
-				min--
-				if(min<0){
-					min = 0
-					counter = 0
-				}
-			}else if(min===0 && counter === 0){
-				this.isTimeout = true;
-				console.log("Time out");
+		element.addListener('click');
+		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
+			console.log(event.target.id);
+			if(event.target.id === 'resend' || event.target.id === 'resend-text-button'){
+				console.log('Resend');
+				this.isResend = true;
+				this.signIn(this.phoneNumber);
 			}
-			const second = document.getElementById('second')! as HTMLElement;
-			second.style.setProperty('--value', counter.toString());
-			const minute = document.getElementById('minute')! as HTMLElement;
-			minute.style.setProperty('--value', min.toString());
-		}, 1000)
+		});
+
+		//timeout
+		this.SetCountDown();
 		
 	}
 
@@ -173,4 +175,72 @@ export default class OtpScene extends Phaser.Scene {
 			console.log(e)
 		}
 	}
+
+	async signIn(phoneNumber: string): Promise<void> {
+		const auth = getAuth();
+		auth.useDeviceLanguage();
+		const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+			'size': 'invisible'
+		});
+		try {
+			await setPersistence(auth, browserSessionPersistence)
+		} catch (e) {
+			console.log(e)
+			// TODO
+		}
+
+		try {
+			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
+			setCookie('lastScene', 'otpScene', { expires: 7, path: '' });
+			this.confirmationResult = confirmationResult;
+			this.phoneNumber = phoneNumber;
+			recaptchaVerifier.clear();
+			this.isTimeout = false;
+			this.SetCountDown();
+			
+			
+		} catch (e) {
+			// TODO handle ERROR Message
+			// reset recaptcha
+			console.log(e)
+		}
+
+	}
+
+	//timeout
+	SetCountDown() {
+        // Clear any existing countdown interval to avoid multiple intervals running simultaneously
+        if (this.countdownInterval) {
+            clearInterval(this.countdownInterval)
+        }
+
+        let counter = 60
+        let min = 4
+
+        const updateTimer = () => {
+            if (counter > 0) {
+                counter--
+            } else {
+                counter = 59
+                min--
+            }
+
+            if (min === 0 && counter === 0) {
+                this.isTimeout = true
+                console.log("Time out")
+                clearInterval(this.countdownInterval)
+                return
+            }
+
+            const second = document.getElementById('second')! as HTMLElement
+            second.style.setProperty('--value', counter.toString())
+            const minute = document.getElementById('minute')! as HTMLElement
+            minute.style.setProperty('--value', min.toString())
+        }
+
+        // Set a new interval
+        this.countdownInterval = window.setInterval(updateTimer, 1000)
+    }
+	
+
 }

@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import GameScene from './scene/GameScene'
 import TitleScene from './scene/TitleScene'
+import StartLoginScene from 'scene/auth/StartLoginScene'
 
 import TutorialCharacterScene from './scene/tutorial/TutorialCharacter'
 import TutorialHudScene from './scene/tutorial/TutorialHudScene'
@@ -52,6 +53,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		createContainer: true,
 	},
 	scene: [
+		StartLoginScene,
 		LoginScene,
 		OtpScene,
 		RegisterScene,
