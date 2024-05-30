@@ -15,7 +15,6 @@ export default class editAirflowPopUp {
     private airflow : number | undefined
 
     private blackWindow : Phaser.GameObjects.Shape | undefined
-    private popUpBox : Phaser.GameObjects.Graphics | undefined
 
     constructor(scene: Phaser.Scene,airflowText : Phaser.GameObjects.Text,  airflow?: number) {
         const{ width,height } = scene.scale
@@ -31,13 +30,8 @@ export default class editAirflowPopUp {
         // Black Screen When Pop Up
         this.blackWindow = scene.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0).setVisible(false)
 
-        // Pop Up Box
-        this.popUpBox = scene.add.graphics()
-            .fillStyle(0xffffff)
-            .setVisible(false)
-
         // Edit Airflow1
-        this.editAirflowForm1 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
+        this.editAirflowForm1 = scene.add.dom( 72, height/2 - 720/2 )
             .setOrigin(0,0)
             .createFromCache('editairflowForm1')
 
@@ -72,7 +66,7 @@ export default class editAirflowPopUp {
         this.editAirflowForm1.setVisible(false)
 
         // Edit Airflow2
-        this.editAirflowForm2 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
+        this.editAirflowForm2 = scene.add.dom( 72, height/2 - 610/2 )
             .createFromCache('editairflowForm2')
             .setOrigin(0,0)
 
@@ -109,7 +103,7 @@ export default class editAirflowPopUp {
         
 
         // Edit Airflow3
-        this.editAirflowForm3 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
+        this.editAirflowForm3 = scene.add.dom( 72, height/2 - 813/2 )
             .createFromCache('editairflowForm3')
             .setOrigin(0,0)
 
@@ -141,7 +135,7 @@ export default class editAirflowPopUp {
         this.editAirflowForm3.setVisible(false)
 
         // Edit Airflow 4
-        this.editAirflowForm4 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
+        this.editAirflowForm4 = scene.add.dom( 72, height/2 - 598/2 )
             .createFromCache('editairflowForm4')
             .setOrigin(0,0)
 
@@ -182,7 +176,7 @@ export default class editAirflowPopUp {
         this.editAirflowForm4.setVisible(false)
 
         // Edit Airflow 5
-        this.editAirflowForm5 = scene.add.dom( 72 + 48, 345 + 48 - 250 )
+        this.editAirflowForm5 = scene.add.dom( 72, height/2 - 1022/2 )
             .createFromCache('editairflowForm5')
             .setOrigin(0,0)
 
@@ -215,22 +209,17 @@ export default class editAirflowPopUp {
             }
         })
         this.editAirflowForm5.setVisible(false)
+
     }
 
     popUpEditAirflow1() : void {
         this.scene?.scene.pause()
-        // this.setInteractiveOff()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm1?.setVisible(true)
         this.blackWindow?.setVisible(true)
     }
 
     closeEditAirflowPopUp1() : void {
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
         this.scene?.scene.resume()
     }
@@ -238,9 +227,6 @@ export default class editAirflowPopUp {
     popUpEditAirflow2() : void {
         this.scene?.scene.pause()
         // this.setInteractiveOff()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm2?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
@@ -251,8 +237,6 @@ export default class editAirflowPopUp {
 
     closeEditAirflowPopUp2() : void {
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
         this.scene?.scene.resume()
     }
@@ -260,9 +244,6 @@ export default class editAirflowPopUp {
     popUpEditAirflow3() : void {
         this.scene?.scene.pause()
         // this.setInteractiveOff()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm3?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
@@ -272,8 +253,6 @@ export default class editAirflowPopUp {
 
     closeEditAirflowPopUp3() : void {
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
         this.scene?.scene.resume()
     }
@@ -281,9 +260,6 @@ export default class editAirflowPopUp {
     popUpEditAirflow4() : void {
         this.scene?.scene.pause()
         // this.setInteractiveOff()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm4?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
@@ -297,8 +273,6 @@ export default class editAirflowPopUp {
 
     closeEditAirflowPopUp4() : void {
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
         this.scene?.scene.resume()
     }
@@ -306,9 +280,6 @@ export default class editAirflowPopUp {
     popUpEditAirflow5() : void {
         this.scene?.scene.pause()
         // this.setInteractiveOff()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72, 345 - 250, 576, 590 + 500, 48) // TODO size vary, change later
         this.editAirflowForm5?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
@@ -318,8 +289,6 @@ export default class editAirflowPopUp {
 
     closeEditAirflowPopUp5() : void {
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
         // this.setInteractiveOn()
         this.scene?.scene.resume()
     }

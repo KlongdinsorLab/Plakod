@@ -107,7 +107,10 @@ export default class SettingScene extends Phaser.Scene {
         // Username Box
         this.usernameBox = new usernameBox(this)
 
-        
+        this.usernameBox.createPopUp(this)
+
+        this.airflowBox.createPopUp(this)
+
 
         // Set font for all texts
         const self = this

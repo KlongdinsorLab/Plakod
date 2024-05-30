@@ -34,10 +34,17 @@ export default class airflowBox {
 
         // Don't forget to initiate airflow text
 
-        this.editAirflowPopUp = new editAirflowPopUp(scene, this.airflowText)
+    }
 
-        this.airflowText.setText(this.editAirflowPopUp.getAirflow().toString())
+    createPopUp(scene : Phaser.Scene){
+        const {width} = scene.scale
 
+        this.editAirflowPopUp = new editAirflowPopUp(scene, this.airflowText ?? scene.add.text(width/2, 920 + 28, "")
+        .setFontSize(32)
+        .setColor("#57453B")
+        .setOrigin(0.5,0.5))
+
+        this.airflowText?.setText(this.editAirflowPopUp.getAirflow().toString())
     }
 
     popUpEditAirflow() {

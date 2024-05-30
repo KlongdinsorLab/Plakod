@@ -30,7 +30,18 @@ export default class usernameBox {
             //.setInteractive().on('pointerup', () => this.popUpEditName())
             .setOrigin(1,0.5) // Guessed the coordinate
 
-        this.editUsernamePopUp = new editUsernamePopUp(scene, this.usernameText, "ญญญญญญญญญญญญญญญญญญญญ")
+    }
+
+    createPopUp(scene : Phaser.Scene){
+        const {width} = scene.scale
+
+        this.editUsernamePopUp = new editUsernamePopUp(scene, this.usernameText ?? 
+            scene.add.text(width/2, 320+28 , "")
+            .setColor("#57453B")
+            .setPadding(0,20,0,10)
+            .setFontSize(32)
+            .setOrigin(0.5,0.5)
+        ,"ญญญญญญญญญญญญญญญญญญญญ")
 
         this.updateUsername(this.editUsernamePopUp.getUsername())
     }

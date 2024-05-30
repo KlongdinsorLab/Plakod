@@ -11,7 +11,6 @@ export default class editUsernamePopUp {
     private editNameForm 
 
     private blackWindow : Phaser.GameObjects.Shape | undefined
-    private popUpBox : Phaser.GameObjects.Graphics | undefined
 
     constructor(scene : Phaser.Scene, usernameText : Phaser.GameObjects.Text, username?: string) {
         const { width,height } = scene.scale
@@ -24,14 +23,9 @@ export default class editUsernamePopUp {
         // Black Screen When Pop Up
         this.blackWindow = scene.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0).setVisible(false)
 
-        // Pop Up Box
-        this.popUpBox = scene.add.graphics()
-            .fillStyle(0xffffff)
-            .setVisible(false)
-
         // Pop Up Form
         const self = this
-        this.editNameForm = scene.add.dom( 72 + 48, 345 + 48 )
+        this.editNameForm = scene.add.dom( 72 , 345 )
             .setOrigin(0,0)
             .createFromCache('editnameForm')
         // Set I18n text
@@ -68,13 +62,7 @@ export default class editUsernamePopUp {
 
     popUpEditName() : void {
         this.scene?.scene.pause()
-        //this.setInteractiveOff()
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(true)
-        this.popUpBox?.fillStyle(0xffffff)
-        this.popUpBox?.fillRoundedRect(72,345,576,590,48)
         this.editNameForm?.setVisible(true)
-        //this.editNameForm?.setDepth(100)
         this.blackWindow?.setVisible(true)
 
         // Set default value
@@ -85,8 +73,6 @@ export default class editUsernamePopUp {
     closeEditNamePopUp() : void {
         //this.setInteractiveOn()
         this.blackWindow?.setVisible(false)
-        this.popUpBox?.clear()
-        this.popUpBox?.setVisible(false)
 
         this.scene?.scene.resume()
     }
