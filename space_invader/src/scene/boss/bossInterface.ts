@@ -7,7 +7,13 @@ export const BossByName = {
 	"B1": {
 		"Boss": B1Boss,
 		"ObstacleFactory": B1ObstacleFactory,
-		"Background": "boss_background"
+	}
+}
+
+export const BackgroundByBoss = {
+	"B1": {
+		"GameBackground": "bg_b1_normal",
+		"BossBackground": "bg_b1_boss"
 	}
 }
 

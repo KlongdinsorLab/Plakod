@@ -23,7 +23,7 @@ import { BossCutScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
 import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
 import { B1Obstacle } from 'component/enemy/obstacle/B1Obstacle'
-import { BossByName } from './boss/bossInterface'
+import { BackgroundByBoss, BossByName } from './boss/bossInterface'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -62,7 +62,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/background/background.jpg')
+    this.load.image('bg_b1_normal', 'assets/background/background.jpg')
 
     this.load.atlas(
       'player',
@@ -128,7 +128,7 @@ export default class GameScene extends Phaser.Scene {
 
 
     this.background = this.add
-      .tileSprite(0, 0, width, height, 'background')
+      .tileSprite(0, 0, width, height, BackgroundByBoss[this.bossName].GameBackground)
       .setOrigin(0)
       .setScrollFactor(0, 0)
 

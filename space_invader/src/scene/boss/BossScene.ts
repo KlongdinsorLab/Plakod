@@ -23,7 +23,7 @@ import {
 	BossTutorialScene,
 	ShootingPhase,
 } from 'component/enemy/boss/Boss'
-import { BossByName, BossInterface } from './bossInterface'
+import { BackgroundByBoss, BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { BoosterFactory } from 'component/item/BoosterFactory'
@@ -64,7 +64,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boss_background', 'assets/background/bg_boss.jpg')
+		this.load.image('bg_b1_boss', 'assets/background/bg_boss.jpg')
 
 		this.load.atlas(
 			'player',
@@ -137,7 +137,7 @@ export default class BossScene extends Phaser.Scene {
 		const { width, height } = this.scale
 
 		this.background = this.add
-			.tileSprite(0, 0, width, height, BossByName[name ?? 'B1'].Background)
+			.tileSprite(0, 0, width, height, BackgroundByBoss[name ?? 'B1'].BossBackground)
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
