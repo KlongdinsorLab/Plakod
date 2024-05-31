@@ -62,7 +62,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('bg_b1_normal', 'assets/background/background.jpg')
+    this.load.image('b1_game_map', 'assets/background/background.jpg')
 
     this.load.atlas(
       'player',

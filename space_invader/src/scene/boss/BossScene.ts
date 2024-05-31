@@ -64,7 +64,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('bg_b1_boss', 'assets/background/bg_boss.jpg')
+		this.load.image('b1_boss_map', 'assets/background/bg_boss.jpg')
 
 		this.load.atlas(
 			'player',

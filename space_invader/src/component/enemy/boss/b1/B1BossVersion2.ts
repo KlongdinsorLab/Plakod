@@ -413,10 +413,10 @@ export class B1BossVersion2 extends BossVersion {
 
 		const obstacle = scene.physics.add.staticGroup()
 		obstacle
-			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
+			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball1.png')
 			.setOrigin(0.5, 1)
 		obstacle
-			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
+			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'stone.png')
 			.setOrigin(0.5, 1)
 		const poison = scene.add
 			.image((2 * width) / 3, 8 * MARGIN, 'bossAsset', 'item_poison.png')
