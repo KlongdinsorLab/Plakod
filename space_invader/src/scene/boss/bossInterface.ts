@@ -1,12 +1,10 @@
 import { Boss } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
-import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
 
 export const BossByName = {
 	"B1": {
 		"Boss": B1Boss,
-		"ObstacleFactory": B1ObstacleFactory,
 	}
 }
 

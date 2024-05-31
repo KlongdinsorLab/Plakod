@@ -1,11 +1,11 @@
 import { METEOR_FREQUENCY_MS } from 'config'
-import { EnemyFactory } from '../EnemyFactory'
-import { B1Obstacle } from './B1Obstacle'
+import { EnemyFactory } from './EnemyFactory'
+import { Obstacle } from './Obstacle'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
-export class B1ObstacleFactory extends EnemyFactory {
-	private obstacles: B1Obstacle[] = []
+export class ObstacleFactory extends EnemyFactory {
+	private obstacles: Obstacle[] = []
 	private obstacleTimer = 0
 
 	create(
@@ -14,8 +14,8 @@ export class B1ObstacleFactory extends EnemyFactory {
 		score: Score,
 		tutorial?: boolean,
 		itemPhase?: boolean
-	): B1Obstacle {
-		return new B1Obstacle(scene, player, score, tutorial, itemPhase)
+	): Obstacle {
+		return new Obstacle(scene, player, score, tutorial, itemPhase)
 	}
 
 	createByTime(
@@ -39,7 +39,7 @@ export class B1ObstacleFactory extends EnemyFactory {
 		}
 	}
 
-	getObstacles(): B1Obstacle[] {
+	getObstacles(): Obstacle[] {
 		return this.obstacles
 	}
 }

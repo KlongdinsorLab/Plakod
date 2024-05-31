@@ -1,4 +1,4 @@
-import { Enemy } from '../Enemy'
+import { Enemy } from './Enemy'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
@@ -12,7 +12,7 @@ import {
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 
-export class B1Obstacle extends Enemy {
+export class Obstacle extends Enemy {
   private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter

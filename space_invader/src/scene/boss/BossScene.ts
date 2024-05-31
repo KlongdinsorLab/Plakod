@@ -27,7 +27,7 @@ import { BackgroundByBoss, BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { BoosterFactory } from 'component/item/BoosterFactory'
-import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
+import { ObstacleFactory } from 'component/enemy/ObstacleFactory'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -41,7 +41,7 @@ export default class BossScene extends Phaser.Scene {
 	private poisonFactory!: PosionFactory
 	private bulletFactory!: BulletFactory
 	private boosterFactory!: BoosterFactory
-	private obstacleFactory!: B1ObstacleFactory
+	private obstacleFactory!: ObstacleFactory
 	// private menu!: Menu
 
 	// TODO move to boss class
@@ -167,7 +167,7 @@ export default class BossScene extends Phaser.Scene {
 
 		this.boss = new BossByName[name ?? 'B1'].Boss(this, this.player, this.score, reloadCount)
 		this.bossVersion = this.boss.getVersion()
-		this.obstacleFactory = new BossByName[name ?? 'B1'].ObstacleFactory()
+		this.obstacleFactory = new ObstacleFactory()
 
 		this.isCompleteInit = true
 

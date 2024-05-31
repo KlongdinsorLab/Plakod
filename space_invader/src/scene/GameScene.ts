@@ -21,8 +21,8 @@ import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
 import { BossCutScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
-import { B1ObstacleFactory } from 'component/enemy/obstacle/B1ObstacleFactory'
-import { B1Obstacle } from 'component/enemy/obstacle/B1Obstacle'
+import { ObstacleFactory } from 'component/enemy/ObstacleFactory'
+import { Obstacle } from 'component/enemy/Obstacle'
 import { BackgroundByBoss, BossByName } from './boss/bossInterface'
 
 export default class GameScene extends Phaser.Scene {
@@ -43,9 +43,9 @@ export default class GameScene extends Phaser.Scene {
   //    private timerText!: Phaser.GameObjects.Text;
 
   private singleLaserFactory!: SingleLaserFactory
-  private obstacleFactory!: B1ObstacleFactory
+  private obstacleFactory!: ObstacleFactory
   private tutorial!: Tutorial
-  private tutorialObstacle!: B1Obstacle
+  private tutorialObstacle!: Obstacle
   private isCompleteWarmup = false
   private isCompleteBoss = false
   private menu!: Menu
@@ -170,7 +170,7 @@ export default class GameScene extends Phaser.Scene {
     this.score.setScore(this.scoreNumber)
     // this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
-    this.obstacleFactory = new BossByName[this.bossName].ObstacleFactory()
+    this.obstacleFactory = new ObstacleFactory()
     this.singleLaserFactory = new SingleLaserFactory()
     this.tutorial = new Tutorial(this)
 
