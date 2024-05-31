@@ -65,12 +65,12 @@ export default class RegisterScene extends Phaser.Scene {
 			});
 		}
 
-		const { width, height } = this.scale
+		//const { width, height } = this.scale
 
 		const element = this.add
-			.dom(width/2,height/2)
+			.dom(0,0)
 			.createFromCache('registerForm')
-			.setScale(1)
+			.setOrigin(0,0)
 
 		
 		if (this.isEdit) {

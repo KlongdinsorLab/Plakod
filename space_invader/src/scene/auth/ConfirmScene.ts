@@ -64,15 +64,15 @@ export default class ConfirmScene extends Phaser.Scene {
 			});
 		}
 
-        const { width, height } = this.scale;
+        //const { width, height } = this.scale;
         if (!this.selectedData) {
             console.error('No data received in ConfirmScene');
         }
         // Set up the scene elements and logic
         const element = this.add
-			.dom(width/2,height/2)
+			.dom(0,0)
 			.createFromCache('confirmForm')
-			.setScale(1)
+			.setOrigin(0,0)
 
         
         //change language

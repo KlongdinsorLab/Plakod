@@ -1,30 +1,29 @@
-<div class='Otp bg-white w-[780px] h-[1280px]'>
-    <div class="Otp-head static bg-slate-100 min-w-full justify-center h-[336px]">
-      <h1 id="otp-head-text" class="sarabun-medium text-[56px] text-black text-center pt-[96px]">
-          ยืนยันรหัส OTP
-      </h1>
-      <br/>
-      <div class="step-box flex justify-center flex-row">
-      <ul class="timeline mt-[56] w-[193px] justify-center flex flex-row ml-12">
-          <li>
-              <div class="timeline-start"></div>
-              <div class="timeline-middle">
-                  <button class="btn btn-circle bg-[#d35e24] w-[60px] h-[60px] border-none text-3xl text-white">1</button>
-              </div>
-          </li>
-          <li class="flex items-center">
-              <hr class="bg-[#d35e24] h-[10px] w-[96px] flex-grow "/>
-            </li>
-          <li>
-              <div class="timeline-middle">
-                  <button class="btn btn-circle bg-[#d35e24] w-[60px] h-[60px] border-none text-3xl text-white">2</button>
-              </div>
-              <div class="timeline-end ml-[123px]"></div>
-          </li>
+<div class='Otp bg-white w-[720px] h-[1280px]'>
+  <div class="otp-head static bg-[#f1f1f1] w-[720px] h-[336px] flex flex-col">
+    <h1 id="otp-head-text" class="sarabun-medium text-[56px] text-black text-center pt-[96px]">
+        ยืนยันรหัส OTP
+    </h1>
+    <br/>
+    <div class="step-box w-[720px] flex flex-row justify-center ">
+      <ul class="timeline mt-[56] w-[720px] justify-center flex flex-row">
+        <li>
+          <div class="timeline-start"></div>
+          <div class="timeline-middle">
+            <div class="sarabun-regular bg-[#d35e24] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">1</div>
+          </div>
+        </li>
+        <li class="flex items-center">
+          <hr class="bg-[#d35e24] h-[10px] w-[96px] flex-grow "/>
+        </li>
+        <li>
+          <div class="timeline-middle">
+            <div class="sarabun-regular bg-[#d35e24] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">2</div>
+          </div>
+        </li>
       </ul>
-      </div>
     </div>
-    <div class="login-body h-full w-full ">
+  </div>
+    <div class="otp-body h-full w-[720px] ">
       <h1 class="sarabun-regular text-center text-black text-[36px] mt-[48px] w-[586px] mx-[67px]">
           <span id="otp-description">รับรหัส OTP ทาง SMS ของ </span><br/> <span id="otp-description-2">หมายเลขโทรศัพท์ </span><span id="phoneNumber-text" class="text-[#d35e24]">{phoneNumber}</span>
       </h1>
@@ -36,7 +35,7 @@
               <span id="second" style="--value:0;">00</span>
           </span>
       </div>
-      <div class="Resend-section flex flex-col items-center">
+      <div class="Resend-section flex flex-col items-center w-[720px]">
           <label id="resend-text" for="resend" class="sarabun-regular text-center text-[28px] text-[#727272] mt-[48px] mb-[16px]">กรณียังไม่ได้รับรหัส กรุณากด</label>
           <button id="resend" class="btn sarabun-regular bg-transparent border-2 border-[#727272] rounded-full text-[#727272] text-[28px] w-[336px] h-auto py-4">
               <span class="mr-2">

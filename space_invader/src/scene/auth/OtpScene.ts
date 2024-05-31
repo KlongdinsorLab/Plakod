@@ -76,13 +76,13 @@ export default class OtpScene extends Phaser.Scene {
 			});
 		}
 
-		const { width, height } = this.scale
+		//const { width, height } = this.scale
 
 
 		const element = this.add
-			.dom(width/2, height / 2)
+			.dom(0, 0)
 			.createFromCache('otpForm')
-			.setScale(1)
+			.setOrigin(0,0)
 		console.log("otp scene added")
 
 		const textElementIds = [
@@ -98,7 +98,7 @@ export default class OtpScene extends Phaser.Scene {
 		];
 
 		textElementIds.forEach((id, index) => {
-			const textElement = <Element>element.getChildByID(id);
+			const textElement = <Element>element.getChildByID(id)! as HTMLElement;
 			textElement.textContent = i18next.t(textElementKeys[index]);
 		});
 
@@ -137,7 +137,9 @@ export default class OtpScene extends Phaser.Scene {
 			try {
 				next.focus()
 				// eslint-disable-next-line no-empty
-			} catch (e) {}
+			} catch (e) {
+				console.error('otp: focus error', e)
+			}
 		})
 
 		element.addListener('click');

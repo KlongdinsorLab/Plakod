@@ -84,9 +84,9 @@ export default class LoginScene extends Phaser.Scene {
 		//const { width, height } = this.scale
 
 		const element = this.add
-			.dom(110, 200)
+			.dom(0, 0)
 			.createFromCache('loginForm')
-			.setScale(1)
+			.setOrigin(0,0)
 		console.log("element added")
 		i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
             .setFontSize(32)
