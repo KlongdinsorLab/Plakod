@@ -1,4 +1,4 @@
-import { B1Obstacle } from 'component/enemy/obstacle/B1Obstacle'
+import { Obstacle } from 'component/enemy/Obstacle'
 import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import {
@@ -16,13 +16,13 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 export type Character = {
-  obstacle: B1Obstacle
+  obstacle: Obstacle
   player: Player
   gameLayer: Phaser.GameObjects.Layer
 }
 
 export default class TutorialCharacterScene extends Phaser.Scene {
-  private obstacle!: B1Obstacle
+  private obstacle!: Obstacle
   private player!: Player
   private gameLayer!: Phaser.GameObjects.Layer
 
