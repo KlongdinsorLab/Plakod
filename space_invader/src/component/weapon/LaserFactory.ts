@@ -1,8 +1,9 @@
 import { Laser } from './Laser'
 import Player from '../player/Player'
-import { BULLET_COUNT, LASER_FREQUENCY_MS } from 'config'
+import { LASER_FREQUENCY_MS } from 'config'
 import { Scene } from 'phaser'
 import { Enemy } from '../enemy/Enemy'
+import { BossSkill } from 'component/enemy/boss/BossSkill'
 
 export abstract class LaserFactory {
 	protected bulletCount = 0
@@ -15,6 +16,7 @@ export abstract class LaserFactory {
 		player: Player,
 		enemies: Enemy[],
 		delta: number,
+		bossSkill?: BossSkill[],
 	): void {
 		this.timer += delta
 		while (this.timer > LASER_FREQUENCY_MS) {
@@ -23,6 +25,7 @@ export abstract class LaserFactory {
 			const laser = this.create(scene, player)
 			const laserBodies = laser.shoot()
 			this.bulletCount -= 1
+			bossSkill && this.setSkillCollision(scene, laserBodies, bossSkill)
 			this.setEnemiesCollision(scene, laserBodies, enemies)
 			scene.time.delayedCall(5000, () => {
 				laser.destroy()
@@ -33,19 +36,36 @@ export abstract class LaserFactory {
 	setEnemiesCollision(
 		scene: Phaser.Scene,
 		lasers: Phaser.Types.Physics.Arcade.ImageWithDynamicBody[],
-		enemies: Enemy[],
+		enemies: Enemy[]
 	) {
 		if (!Array.isArray(enemies) || enemies.length === 0) return
-		enemies.forEach((enermy) => {
+		enemies.forEach((enemy) => {
 			lasers.forEach((laser) => {
-				scene.physics.add.overlap(laser, enermy.getBody(), () =>
-					enermy.destroy(),
+				scene.physics.add.overlap(laser, enemy.getBody(), () =>
+					enemy.hit()
 				)
 			})
 		})
 	}
 
-	reset(): void {
-		this.bulletCount = BULLET_COUNT
+	setSkillCollision(
+		scene: Phaser.Scene,
+		lasers: Phaser.Types.Physics.Arcade.ImageWithDynamicBody[],
+		bossSkill: BossSkill[]
+	) {
+		if (!bossSkill) return
+		lasers.forEach((laser) => {
+			bossSkill.forEach((skill) => {
+				const collider = scene.physics.add.collider(laser, skill.getBody(), () =>
+					skill.applySkill(laser)
+				)
+				!skill.getIsActive() && scene.physics.world.removeCollider(collider)
+			})
+			
+		})
+	}
+
+	set(bulletCount:number): void {
+		this.bulletCount = bulletCount
 	}
 }
