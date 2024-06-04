@@ -24,10 +24,11 @@ export default class LifeCountScene extends Phaser.Scene{
 
         this.add.image(205 + 2+ + 258, 528, 'sheet', 'heart_full.png').setOrigin(1,0)
 
-        const HeartText = this.add.text(width/2, 528 + 166, "หัวใจเหลือ 9 ดวง")
+        const HeartText = this.add.text(width/2, 528 + 166 - 20, "หัวใจเหลือ 9 ดวง")
             .setColor("#DD2E05")
             .setStroke("#FFFFFF",6)
             .setFontSize(32)
+            .setPadding(0,20,0,10)
             .setOrigin(0.5,0)
 
         WebFont.load({
