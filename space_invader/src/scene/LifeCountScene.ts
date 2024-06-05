@@ -1,9 +1,12 @@
 import Phaser from "phaser";
+import Heart from "component/ui/Heart";
 import WebFont from 'webfontloader'
 
 export default class LifeCountScene extends Phaser.Scene{
     private allheart = 5
     private showingheart = 1
+    private heart1 !: Heart
+    private heart2 !: Heart
 
     constructor() {
         super('life_count')
@@ -24,7 +27,7 @@ export default class LifeCountScene extends Phaser.Scene{
         this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0,0)
 
         // Heart 1
-        if (this.showingheart >= 1) { 
+        /*if (this.showingheart >= 1) { 
           this.add.image(205 + 26, 528, 'sheet', 'heart_full.png').setOrigin(0,0) 
         }
         else {
@@ -33,11 +36,14 @@ export default class LifeCountScene extends Phaser.Scene{
 
         // Heart 2
         if (this.showingheart >= 2) { 
-          this.add.image(205 + 2+ + 258, 528, 'sheet', 'heart_full.png').setOrigin(1,0)
+          this.add.image(205 + 2 + 258, 528, 'sheet', 'heart_full.png').setOrigin(1,0)
         }
         else {
-          this.add.image(205 + 2+ + 258, 528, 'sheet', 'heart_empty.png').setOrigin(1,0)
-        }
+          this.add.image(205 + 2 + 258, 528, 'sheet', 'heart_empty.png').setOrigin(1,0)
+        }*/
+
+        this.heart1 = new Heart(this, 205 + 26, 528, 1)
+        this.heart2 = new Heart(this, 205 + 2 + 258, 528, 2)
 
         const HeartText = this.add.text(width/2, 528 + 166 - 20, `หัวใจเหลือ ${this.allheart} ดวง`)
             .setColor("#DD2E05")
