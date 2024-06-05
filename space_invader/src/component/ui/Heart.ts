@@ -66,7 +66,7 @@ export default class Heart {
 			alpha: 0,
 			duration: 1000,
 			onComplete: (_, targets) => {
-				targets[0].setTexture('sheet', 'heart_empty.png')
+				targets[0].setTexture('heart_spritesheet', 'heart_empty.png')
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
@@ -82,7 +82,7 @@ export default class Heart {
 			alpha: 0,
 			duration: 1000,
 			onComplete: (_, targets) => {
-				targets[0].setTexture('sheet', 'heart_full.png')
+				targets[0].setTexture('heart_spritesheet', 'heart_full.png')
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,

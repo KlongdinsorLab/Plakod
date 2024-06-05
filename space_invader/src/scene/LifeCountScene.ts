@@ -4,8 +4,6 @@ import WebFont from 'webfontloader'
 import I18nSingleton from "i18n/I18nSingleton";
 
 export default class LifeCountScene extends Phaser.Scene{
-    private allheart = 5
-    private showingheart = 1
     private heart1 !: Heart
     private heart2 !: Heart
 
@@ -29,24 +27,15 @@ export default class LifeCountScene extends Phaser.Scene{
         // Black Window
         this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0,0)
 
-        // Heart 1
-        /*if (this.showingheart >= 1) { 
-          this.add.image(205 + 26, 528, 'sheet', 'heart_full.png').setOrigin(0,0) 
-        }
-        else {
-          this.add.image(205 + 26, 528, 'sheet', 'heart_empty.png').setOrigin(0,0) 
-        }
-
-        // Heart 2
-        if (this.showingheart >= 2) { 
-          this.add.image(205 + 2 + 258, 528, 'sheet', 'heart_full.png').setOrigin(1,0)
-        }
-        else {
-          this.add.image(205 + 2 + 258, 528, 'sheet', 'heart_empty.png').setOrigin(1,0)
-        }*/
-
         this.heart1 = new Heart(this, width/2 - 24 - 46, 528, 1)
         this.heart2 = new Heart(this, width/2 + 24 + 46, 528, 2)
+
+        if (this.heart2.getIsRecharged()) {
+          this.heart2.emptyHeart()
+        }
+        else {
+          this.heart1.emptyHeart()
+        }
 
         const HeartText = i18n.createTranslatedText(this, width/2, 528 + 166 - 20, `life_count`, {heart : 7})
             .setColor("#DD2E05")
@@ -56,16 +45,20 @@ export default class LifeCountScene extends Phaser.Scene{
             .setAlign("center")
             .setOrigin(0.5,0)
 
+        const self = this
+
         WebFont.load({
             google: {
               families: ['Jua']
             },
             active: function() {
               const menuUiStyle = {
-                fontFamily: 'Jua'
+                fontFamily: 'Jua',
               }
-
+              self.heart1.initFontStyle()
+              self.heart2.initFontStyle()
               HeartText.setStyle(menuUiStyle)
+              
             }
           });
     }
