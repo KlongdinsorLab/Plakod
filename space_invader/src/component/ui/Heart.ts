@@ -27,7 +27,7 @@ export default class Heart {
 		}
 
 		this.heart = scene.add
-			.image(x, y, 'sheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
+			.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
 			.setOrigin(0.5, 0)
 		this.heartCountdown = scene.add
 			.text(x, y + 92, ``)

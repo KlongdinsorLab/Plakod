@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Heart from "component/ui/Heart";
 import WebFont from 'webfontloader'
+import I18nSingleton from "i18n/I18nSingleton";
 
 export default class LifeCountScene extends Phaser.Scene{
     private allheart = 5
@@ -15,12 +16,14 @@ export default class LifeCountScene extends Phaser.Scene{
     preload() {
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 
-        this.load.atlas('sheet', 'assets/landing page/landing page_spritesheet.png', 'assets/landing page/landing page_spritesheet.json')
-        this.load.image('bg', 'assets/landing page/landing page_bg.png')
+        this.load.atlas('heart_spritesheet', 'assets/heart_spritesheet/heart_spritesheet.png', 'assets/heart_spritesheet/heart_spritesheet.json')
+        this.load.image('bg', 'assets/background/bg/landing page_bg.png')
     }
 
     create(){
         const { width,height } = this.scale
+
+        const i18n = I18nSingleton.getInstance()
         this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
 
         // Black Window
@@ -42,10 +45,10 @@ export default class LifeCountScene extends Phaser.Scene{
           this.add.image(205 + 2 + 258, 528, 'sheet', 'heart_empty.png').setOrigin(1,0)
         }*/
 
-        this.heart1 = new Heart(this, 205 + 26, 528, 1)
-        this.heart2 = new Heart(this, 205 + 2 + 258, 528, 2)
+        this.heart1 = new Heart(this, width/2 - 24 - 46, 528, 1)
+        this.heart2 = new Heart(this, width/2 + 24 + 46, 528, 2)
 
-        const HeartText = this.add.text(width/2, 528 + 166 - 20, `หัวใจเหลือ ${this.allheart} ดวง`)
+        const HeartText = i18n.createTranslatedText(this, width/2, 528 + 166 - 20, `life_count`, {heart : 7})
             .setColor("#DD2E05")
             .setStroke("#FFFFFF",6)
             .setFontSize(32)
@@ -55,11 +58,11 @@ export default class LifeCountScene extends Phaser.Scene{
 
         WebFont.load({
             google: {
-              families: ['Mali:Bold 700']
+              families: ['Jua']
             },
             active: function() {
               const menuUiStyle = {
-                fontFamily: 'Mali'
+                fontFamily: 'Jua'
               }
 
               HeartText.setStyle(menuUiStyle)
