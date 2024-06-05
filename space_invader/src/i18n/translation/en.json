@@ -64,5 +64,10 @@
   "collect_item": "Collect",
   "alien_boss_name": "AlienZa",
   "alien_boss_name_version2": "AlienZa\n2nd Form",
-  "player_name": "Nong Pid"
+  "player_name": "Nong Pid",
+  "dc_controller_connect" : "Please, connect to the controller via Bluetooth and",
+  "dc_press_home" : "Press home to start",
+  "how_to_connect" : "How to connect device",
+  "how_to_close" : "How to close device",
+  "how_to_charge" : "How to charge device's battery"
 }

@@ -64,5 +64,10 @@
   "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
-  "player_name": "น้องปิ๊ด"
+  "player_name": "น้องปิ๊ด",
+  "dc_controller_connect" : "กรุณาเชื่อมต่อสัญญาณ Bluetooth เข้ากับคอนโทรลเลอร์และ",
+  "dc_press_home" : "กดปุ่ม Home เพื่อเข้าสู่หน้าเกม",
+  "how_to_connect" : "วิธีเชื่อมต่ออุปกรณ์",
+  "how_to_close" : "วิธีปิดอุปกรณ์",
+  "how_to_charge" : "วิธีชาร์จอุปกรณ์"
 }
