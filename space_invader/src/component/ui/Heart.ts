@@ -29,10 +29,27 @@ export default class Heart {
 		this.heart = scene.add
 			.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
 			.setOrigin(0.5, 0)
+
+		if(this.isHeartRecharged) {
+			this.heart.postFX?.addGlow(0xFFFFFF,1,0,false,0.1,50)
+		}
+
 		this.heartCountdown = scene.add
 			.text(x, y + 92, ``)
 			.setOrigin(0.5, 0)
 			// .setVisible(!this.isHeartRecharged)
+
+		// For animation testing
+		/*this.heart.setInteractive().on('pointerup', () => {
+			if (this.isHeartRecharged) {
+				this.emptyHeart()
+				this.isHeartRecharged = false
+			}
+			else {
+				this.fillHeart()
+				this.isHeartRecharged = true
+			}
+		})*/
 	}
 
 	getBody(): Phaser.GameObjects.Image {
@@ -67,6 +84,7 @@ export default class Heart {
 			duration: 1000,
 			onComplete: (_, targets) => {
 				targets[0].setTexture('heart_spritesheet', 'heart_empty.png')
+				targets[0].postFX.clear()
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
@@ -74,6 +92,7 @@ export default class Heart {
 				})
 			},
 		})
+
 	}
 
 	fillHeart() {
@@ -83,6 +102,7 @@ export default class Heart {
 			duration: 1000,
 			onComplete: (_, targets) => {
 				targets[0].setTexture('heart_spritesheet', 'heart_full.png')
+				targets[0].postFX.addGlow(0xFFFFFF,1,0,false,0.1,40)
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
