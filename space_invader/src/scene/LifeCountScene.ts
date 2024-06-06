@@ -7,6 +7,8 @@ export default class LifeCountScene extends Phaser.Scene{
     private heart1 !: Heart
     private heart2 !: Heart
 
+    private heart_count = 7 // from backend
+
     constructor() {
         super('life_count')
     }
@@ -37,7 +39,7 @@ export default class LifeCountScene extends Phaser.Scene{
           this.heart1.emptyHeart()
         }
 
-        const HeartText = i18n.createTranslatedText(this, width/2, 528 + 166 - 20, `life_count`, {heart : 7})
+        const HeartText = i18n.createTranslatedText(this, width/2, 528 + 166 - 20, `life_count`, {heart : this.heart_count})
             .setColor("#DD2E05")
             .setStroke("#FFFFFF",6)
             .setFontSize(32)
