@@ -64,5 +64,8 @@
   "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
-  "player_name": "น้องปิ๊ด"
+  "player_name": "น้องปิ๊ด",
+  "ranking_title": "อันดับ",
+  "accumulate_score": "คะแนนสะสม",
+  "accumulate_play": "เล่นสะสม"
 }

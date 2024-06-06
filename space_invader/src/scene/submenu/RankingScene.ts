@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import I18nSingleton from 'i18n/I18nSingleton';
+import WebFont from 'webfontloader';
 
 export default class RankingScene extends Phaser.Scene {
 
@@ -40,21 +42,26 @@ export default class RankingScene extends Phaser.Scene {
 
      private onScorePage: boolean = true;
 
+     private i18n: I18nSingleton = I18nSingleton.getInstance();
+
+     private texts: Phaser.GameObjects.Text[] = [];
+
+     private textsInSlot: Phaser.GameObjects.Text[] = [];
     
      constructor() {
           super({ key: 'RankingScene' });
      }
 
-     loadingData(): void {
+     private loadingData(): void {
 
           // fetch data
           // TODO real fetching data
           this.fakeData = [
-               { id: '1', name: 'Player 1', score: 100 , played: 50},
-               { id: '2', name: 'Player 2', score: 90 , played: 60},
-               { id: '3', name: 'Player 3', score: 80 , played: 40},
-               { id: '4', name: 'Player 4', score: 70 , played: 20},
-               { id: '5', name: 'Player 5', score: 60 , played: 10}
+               { id: '1', name: 'Player 1', score: 100000 , played: 50},
+               { id: '2', name: 'Player 2', score: 999999999 , played: 60},
+               { id: '3', name: 'Player 3', score: 80000 , played: 40},
+               { id: '4', name: 'Player 4', score: 700000 , played: 20},
+               { id: '5', name: 'Player 5', score: 600000 , played: 10}
           ]
 
           // initial my data
@@ -65,17 +72,34 @@ export default class RankingScene extends Phaser.Scene {
 
      }
 
-     sortScore(): void {
+     private sortScore(): void {
           this.fakeData.sort((a, b) => b.score - a.score);
           this.fakeData.forEach( data => this.dataSortByScore.push(data));
      }
 
-     sortPlayed(): void {
+     private sortPlayed(): void {
           this.fakeData.sort((a, b) => b.played - a.played);
           this.fakeData.forEach( data => this.dataSortByPlayed.push(data));
      }
 
+     private setAllFont(allText: Phaser.GameObjects.Text[]): void {
+          // Set font for all texts
+          WebFont.load({
+               google: {
+               families: ['Mali:Bold 700','Sarabun:Regular 400']
+               },
+               active: () => {
+                    const menuUiStyle = {
+                         fontFamily: 'Mali'
+                    }
+                    allText.forEach( text => text.setStyle(menuUiStyle));
+               
+               }
+          });
+     }
+
      preload() {
+          this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
           this.load.image('bg', 'assets/background/submenu-background.png');
           this.load.atlas('heading', 'assets/ui/heading_spritesheet.png', 'assets/ui/heading_spritesheet.json');
           this.load.atlas('icon', 'assets/icon/homepage/icon_spritesheet.png', 'assets/icon/homepage/icon_spritesheet.json');
@@ -98,6 +122,12 @@ export default class RankingScene extends Phaser.Scene {
           // heading
           this.add.image(268.03, 48, 'icon', 'icon_ranking.png').setOrigin(0).setScale(2.5);
           this.add.image( 96.02, 168.86, 'heading', 'heading_red.png' ).setOrigin(0);
+          const headingText = this.i18n.createTranslatedText(this, 280, 180, 'ranking_title')
+               .setFontSize(42)
+               .setColor('#ffffff')
+               .setStroke('#9E461B', 12)
+          this.texts.push(headingText);
+
           
           // button
           const bsx = 88;
@@ -111,6 +141,19 @@ export default class RankingScene extends Phaser.Scene {
           const scoreStrokeColor = 0x327F76;
           const playedFillColor = 0xFFAA04;
           const playedStrokeColor = 0xBF7F03;
+          const buttonScoreText = this.i18n.createTranslatedText(this, 110, 370, 'accumulate_score')
+               .setFontSize(32)
+               .setColor('#ffffff')
+               .setStroke('#958E83', 8);
+          this.texts.push(buttonScoreText);
+          const buttonPlayedText = this.i18n.createTranslatedText(this, 411, 370, 'accumulate_play')
+               .setFontSize(32)
+               .setColor('#ffffff')
+               .setStroke('#958E83', 8);
+          this.texts.push(buttonPlayedText);
+          buttonScoreText.setDepth(1);  // to display over graphic
+          buttonPlayedText.setDepth(1);
+
           const drawScoreButtonActive = () => {
                // draw new graphic button
                buttonScore.clear();
@@ -123,6 +166,10 @@ export default class RankingScene extends Phaser.Scene {
                buttonPlayed.lineStyle(5, defaultStrokeColor);
                buttonPlayed.fillRoundedRect(bpx, by, 264, 80, { tl: 40, tr: 40, bl: 0, br: 0 }); 
                buttonPlayed.strokeRoundedRect(bpx, by, 264, 80, { tl: 40, tr: 40, bl: 0, br: 0 });
+
+               // text
+               buttonScoreText.setStroke('#327F76', 8);
+               buttonPlayedText.setStroke('#958E83', 8);
           }
           const drawPlayedButtonActive = () => {
                // draw new graphic button
@@ -136,6 +183,10 @@ export default class RankingScene extends Phaser.Scene {
                buttonPlayed.lineStyle(5, playedStrokeColor);
                buttonPlayed.fillRoundedRect(bpx, by, 264, 80, { tl: 40, tr: 40, bl: 0, br: 0 }); 
                buttonPlayed.strokeRoundedRect(bpx, by, 264, 80, { tl: 40, tr: 40, bl: 0, br: 0 });
+
+               // text
+               buttonScoreText.setStroke('#958E83', 8);
+               buttonPlayedText.setStroke('#BF7F03', 8);
           }
           drawScoreButtonActive();
           
@@ -155,13 +206,25 @@ export default class RankingScene extends Phaser.Scene {
           const slot = this.add.graphics();
           const garbage: Phaser.GameObjects.GameObject[] = [];
           const clearGarbage = () => {
-               garbage.forEach(item => {
+
+               // destroy all object
+               garbage.forEach( item => {
                     item.destroy();
-               })
+               });
+               this.textsInSlot.forEach( text => {
+                    text.destroy();
+               });
+
+               // clear the array
+               garbage.length = 0;
+               this.textsInSlot.length = 0;
+
           }
-          const createSlot = (x: number, y: number, 
-               textPrefix: string, textPostfix: string, 
-               index: number, isPlayer: boolean) => {
+          const createSlot = (
+                    x: number, y: number, 
+                    textPrefix: string, textPostfix: string, 
+                    index: number, isPlayer: boolean
+               ) => {
                // slot bg
                if (isPlayer) {
                     if (this.onScorePage) slot.fillStyle(slotScoreFillColor) 
@@ -171,10 +234,16 @@ export default class RankingScene extends Phaser.Scene {
                }
                slot.fillRoundedRect(x, y, slotWidth, slotHeight, 20);
                // text
-               const tpr = this.add.text(x + 96, y + 30, textPrefix, { fontSize: '32px', color: '#57453B' });
-               const tpo = this.add.text(x + 376, y + 30, textPostfix, { fontSize: '32px', color: '#57453B' });
-               garbage.push(tpr);
-               garbage.push(tpo);
+               const tpr = this.add.text(x + 96, y + 30, textPrefix, { 
+                    fontSize: '32px', 
+                    color: '#57453B' 
+               });
+               const tpo = this.add.text(x + 550, y + 30, textPostfix, { 
+                    fontSize: '32px', 
+                    color: '#57453B',
+               }).setOrigin(1, 0);
+               this.textsInSlot.push(tpr);
+               this.textsInSlot.push(tpo);
                // icon
                if (index == 0) {
                     // rank 1 icon
@@ -182,7 +251,7 @@ export default class RankingScene extends Phaser.Scene {
                     if (this.onScorePage) {
                          rank1 = this.add.image(x + 24, y, 'icon', 'icon_badge_gold.png').setOrigin(0, 0);
                     } else {
-                         rank1 = this.add.image(x + 24, y+22, 'icon', 'icon_heart_gold.png').setOrigin(0, 0);
+                         rank1 = this.add.image(x + 24, y+18, 'icon', 'icon_heart_gold.png').setOrigin(0, 0);
                     }
                     garbage.push(rank1);
                } else if (index == 1) {
@@ -191,7 +260,7 @@ export default class RankingScene extends Phaser.Scene {
                     if (this.onScorePage) {
                          rank2 = this.add.image(x + 24, y, 'icon', 'icon_badge_silver.png').setOrigin(0, 0);
                     } else {
-                         rank2 = this.add.image(x + 24, y+22, 'icon', 'icon_heart_silver.png').setOrigin(0, 0);
+                         rank2 = this.add.image(x + 24, y+18, 'icon', 'icon_heart_silver.png').setOrigin(0, 0);
                     }
                     garbage.push(rank2);
                } else if (index == 2) {
@@ -200,7 +269,7 @@ export default class RankingScene extends Phaser.Scene {
                     if (this.onScorePage) {
                          rank3 = this.add.image(x + 24, y, 'icon', 'icon_badge_bronze.png').setOrigin(0, 0);
                     } else {
-                         rank3 = this.add.image(x + 24, y+22, 'icon', 'icon_heart_bronze.png').setOrigin(0, 0);
+                         rank3 = this.add.image(x + 24, y+18, 'icon', 'icon_heart_bronze.png').setOrigin(0, 0);
                     }
                     garbage.push(rank3);
                } else {
@@ -211,22 +280,21 @@ export default class RankingScene extends Phaser.Scene {
                     slot.strokeCircle(x + 56, y + 44, 26);
                }
                // text in icon
-               const tr = this.add.text(x + 45, y + 34, String(index + 1), { fontSize: '28px', color: '#ffffff' });
+               const tr = this.add.text(x + 44, y + 26, String(index + 1), { fontSize: '28px', color: '#ffffff' });
                if (index == 0) {
                     // rank 1 text
-                    tr.setStroke('#E39600', 3);
+                    tr.setStroke('#E39600', 6);
                } else if (index == 1) {
                     // rank 2 text
-                    tr.setStroke('#777777', 3);
+                    tr.setStroke('#777777', 6);
                } else if (index == 2) {
                     // rank 3 text
-                    tr.setStroke('#E39600', 3);
+                    tr.setStroke('#E39600', 6);
                } else {
                     // normal text
-                    tr.setStroke('#958E83', 3);
+                    tr.setStroke('#958E83', 6);
                }
-               garbage.push(tr);
-
+               this.textsInSlot.push(tr);
           }
           const createStackOfSlot = (x: number, y: number) => {
                // clear 
@@ -247,7 +315,6 @@ export default class RankingScene extends Phaser.Scene {
                const textPostfix = this.onScorePage ? String(this.myData.score) : String(this.myData.played);
                const index = data.findIndex(player => player.id == this.myPlayerID);
                createSlot(x, rby + 656, textPrefix, textPostfix, index, true);
-               // TODO my rank
           }
           
           // draw slot
@@ -261,6 +328,7 @@ export default class RankingScene extends Phaser.Scene {
                this.onScorePage = true;
                drawScoreButtonActive();
                createStackOfSlot(72, 456);
+               this.setAllFont(this.textsInSlot);  // update font
                
           });
           // button played
@@ -270,32 +338,11 @@ export default class RankingScene extends Phaser.Scene {
                this.onScorePage = false;
                drawPlayedButtonActive();
                createStackOfSlot(72, 456);
+               this.setAllFont(this.textsInSlot); // update font
           });
-          
-          
-          
-          
-          // // Add a title text
-          // this.add.text(400, 50, 'Rankings', { fontSize: '32px', color: '#fff' }).setOrigin(0.5);
 
-          // // Display rankings by score
-          // this.dataSortByScore.forEach((player, index) => {
-          //      const y = 100 + index * 40;
-          //      this.add.text(300, y, `${index + 1}. ${player.name}`, { fontSize: '24px', color: '#fff' });
-          //      this.add.text(500, y, `${player.score}`, { fontSize: '24px', color: '#fff' });
-          // });
-
-          // // Display rankings by played
-          // this.dataSortByPlayed.forEach((player, index) => {
-          //      const y = 500 + index * 40;
-          //      this.add.text(300, y, `${index + 1}. ${player.name}`, { fontSize: '24px', color: '#fff' });
-          //      this.add.text(500, y, `${player.played}`, { fontSize: '24px', color: '#fff' });
-          // });
-
-          // this.add.text(0 , 100, `my score: ${this.myData.score}`, { fontSize: '24px', color: '#fff' });
-          // this.add.text(0 , 200, `my played: ${this.myData.played}`, { fontSize: '24px', color: '#fff' });
-
-
+          // set Font
+          this.setAllFont([...this.texts, ...this.textsInSlot]);
      }    
      
 
