@@ -40,6 +40,8 @@ export default class DeviceConnectedScene extends Phaser.Scene {
         // Icon
         this.add.image(width/2,464,'icon_spritesheet', 'icon_bluetooth.png').setOrigin(0.5,0).setScale(2,2)
 
+        
+
         // Main Text
         const mainText1 = i18n.createTranslatedText(this, width/2, 568 - 20, "dc_controller_connect").setOrigin(0.5,0)
             .setColor("#292929")
@@ -53,6 +55,12 @@ export default class DeviceConnectedScene extends Phaser.Scene {
             .setFontSize(30)
             .setAlign('center')
             .setPadding(0,20,0,10)
+
+        // Cursed Underline
+        this.add.line(width/2, 568+137 - 5, 0, 0, 435, 0, 0xD35E24, 1)
+        
+
+
 
         // Button 1 Guessed the Position for all Text and icon in buttons
         this.add.nineslice(width/2, 800, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
@@ -83,7 +91,7 @@ export default class DeviceConnectedScene extends Phaser.Scene {
 
         WebFont.load({
             google: {
-              families: ['Mali:Bold 700','Sarabun:Regular 400']
+              families: ['Mali:Bold 700']
             },
             active: function() {
               const menuUiStyle = {
