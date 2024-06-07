@@ -61,7 +61,10 @@ export default class RankingScene extends Phaser.Scene {
                { id: '2', name: 'ไจ๋จจจจจจจจจจจจจจจจจจจจจ', score: 9999999999 , played: 60},
                { id: '3', name: "น้องลาคูนี่888", score: 80000 , played: 40},
                { id: '4', name: 'จิ๊บ', score: 700000 , played: 20},
-               { id: '5', name: 'เจนนี่', score: 600000 , played: 10}
+               { id: '5', name: 'เจนนี่', score: 600000 , played: 8},
+               { id: '6', name: 'บูม', score: 999999995 , played: 999},
+               { id: '7', name: 'กิ๊ก', score: 6999999 , played: 11},
+               { id: '8', name: 'IM C', score: 100100 , played: 6}
           ]
 
           // initial my data
@@ -75,11 +78,21 @@ export default class RankingScene extends Phaser.Scene {
      private sortScore(): void {
           this.fakeData.sort((a, b) => b.score - a.score);
           this.fakeData.forEach( data => this.dataSortByScore.push(data));
+          
+          let n = this.dataSortByScore.length;
+          if (n > 6) {
+               this.dataSortByScore.length = 6;
+          }
      }
 
      private sortPlayed(): void {
           this.fakeData.sort((a, b) => b.played - a.played);
           this.fakeData.forEach( data => this.dataSortByPlayed.push(data));
+
+          let n = this.dataSortByPlayed.length;
+          if (n > 6) {
+               this.dataSortByPlayed.length = 6;
+          }
      }
 
      private setAllFont(allText: Phaser.GameObjects.Text[]): void {
