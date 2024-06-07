@@ -12,6 +12,8 @@ export default class editUsernamePopUp {
 
     private blackWindow : Phaser.GameObjects.Shape | undefined
 
+    private special_char = ['ั','็','ิ','ี','ํ','ุ','ู','่','้','๊','๋','์']
+
     constructor(scene : Phaser.Scene, usernameText : Phaser.GameObjects.Text, username?: string) {
         const { width,height } = scene.scale
         this.username = username === undefined ? 'Player' : username
@@ -57,6 +59,7 @@ export default class editUsernamePopUp {
         })
         this.editNameForm.setVisible(false)
 
+        this.updateUsername(this.username)
     }
 
 
@@ -77,18 +80,31 @@ export default class editUsernamePopUp {
         this.scene?.scene.resume()
     }
 
-    updateUsername(newUsername : string) : void {
-        this.username = newUsername
-        if(newUsername.length > 12) {
-            this.usernameText?.setFontSize(32 - newUsername.length + 9)
+    updateUsername(username : string) : void{
+        if(this.getLength(username) > 12) {
+            this.usernameText?.setFontSize(32 - username.length + 9)
         }
         else {
             this.usernameText?.setFontSize(32)
         }
-        this.usernameText.setText(this.username)
+
+        console.log(this.getLength(username))
+
+        this.usernameText?.setText(username)
+        this.username = username
     }
 
     getUsername() : string {
         return this.username === undefined ? 'Player' : this.username
+    }
+
+    getLength(text : string) : number {
+        let count = 0
+        for(const char of text) {
+            if (! this.special_char.includes(char)) {
+                count++
+            }
+        }
+        return count
     }
 }

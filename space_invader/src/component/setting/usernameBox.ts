@@ -6,6 +6,7 @@ export default class usernameBox {
     private usernameBox : Phaser.GameObjects.Graphics | undefined
     private usernameText : Phaser.GameObjects.Text | undefined
     // private editNameIcon : Phaser.GameObjects.Image | undefined
+
     constructor(scene: Phaser.Scene) {
         const { width } = scene.scale
 
@@ -43,23 +44,12 @@ export default class usernameBox {
             .setOrigin(0.5,0.5)
         ,"ญญญญญญญญญญญญญญญญญญญญ")
 
-        this.updateUsername(this.editUsernamePopUp.getUsername())
     }
 
     popUpEditName() : void{
         this.editUsernamePopUp?.popUpEditName()
     }
 
-    updateUsername(username : string) : void{
-        if(username.length > 12) {
-            this.usernameText?.setFontSize(32 - username.length + 9)
-        }
-        else {
-            this.usernameText?.setFontSize(32)
-        }
-
-        this.usernameText?.setText(username)
-    }
 
     setFont(style : any) : void {
         this.usernameText?.setStyle(style)
