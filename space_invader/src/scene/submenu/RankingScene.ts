@@ -158,7 +158,7 @@ export default class RankingScene extends Phaser.Scene {
           });
      }
 
-     private formatTextInSlot(str: string, n: number, isNumber: boolean) : string {
+     private formatTextInSlot(str: string, n: number, isNumber: boolean): string {
           let fstr = '';
           let strNo = 0;
           let notCnt = 0;
@@ -183,6 +183,26 @@ export default class RankingScene extends Phaser.Scene {
           }
 
           return fstr;
+     }
+
+     private goToHome(): void {
+          console.log('back to home!')
+          // TODO go to home function and less resource
+
+          //remove
+          this.texts.forEach( text => {
+               text.destroy();
+          });
+          this.textsInSlot.forEach( text => {
+               text.destroy();
+          });
+
+          // clear the array
+          this.texts.length = 0;
+          this.textsInSlot.length = 0;
+
+          // go to title scene
+          this.scene.start('title');
      }
 
 
@@ -322,6 +342,9 @@ export default class RankingScene extends Phaser.Scene {
 
           drawScoreButtonActive(); // draw first score active
           
+          // button back (white arrow)
+          const buttonBack = this.add.image(48, 48, 'icon', 'icon_white arrow.png')
+               .setOrigin(0)
 
           // ranking box
           const rankingBox = this.add.graphics();
@@ -563,6 +586,11 @@ export default class RankingScene extends Phaser.Scene {
                }
           });
 
+          // button back arrow
+          buttonBack.setInteractive()
+               .on('pointerup', () => {
+                    this.goToHome();
+               });
           
           // set Font
           this.setAllFont([...this.texts, ...this.textsInSlot]);
