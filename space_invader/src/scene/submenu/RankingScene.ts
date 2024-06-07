@@ -38,6 +38,7 @@ export default class RankingScene extends Phaser.Scene {
           played: 0
       };
      
+     // TODO initial my player id
      private myPlayerID: string = '1';
 
      private onScorePage: boolean = true;
@@ -329,7 +330,7 @@ export default class RankingScene extends Phaser.Scene {
                .fillRoundedRect(rbx, rby, 624, 768, 40)
                .strokeRoundedRect(rbx, rby, 624, 768, 40);
           
-               
+
           // slot
           const slotNormalFillColor = 0xFFE7BA;
           const slotScoreFillColor = 0x8FEED1;
@@ -515,7 +516,7 @@ export default class RankingScene extends Phaser.Scene {
 
                          createSlot(x, y, textPrefix, textPostfix, index, isPlayer);
                          
-                         y+= slotHeight + 16;
+                         y += slotHeight + 16;
                     })
                
                // my slot rank
