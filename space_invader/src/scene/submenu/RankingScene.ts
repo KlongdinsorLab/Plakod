@@ -57,11 +57,11 @@ export default class RankingScene extends Phaser.Scene {
           // fetch data
           // TODO real fetching data
           this.fakeData = [
-               { id: '1', name: 'Player 1', score: 100000 , played: 50},
-               { id: '2', name: 'Player 2', score: 999999999 , played: 60},
-               { id: '3', name: 'Player 3', score: 80000 , played: 40},
-               { id: '4', name: 'Player 4', score: 700000 , played: 20},
-               { id: '5', name: 'Player 5', score: 600000 , played: 10}
+               { id: '1', name: 'พีซZA55555555555555555555', score: 100000 , played: 50},
+               { id: '2', name: 'ไจ๋จจจจจจจจจจจจจจจจจจจจจ', score: 9999999999 , played: 60},
+               { id: '3', name: "น้องลาคูนี่888", score: 80000 , played: 40},
+               { id: '4', name: 'จิ๊บ', score: 700000 , played: 20},
+               { id: '5', name: 'เจนนี่', score: 600000 , played: 10}
           ]
 
           // initial my data
@@ -90,12 +90,43 @@ export default class RankingScene extends Phaser.Scene {
                },
                active: () => {
                     const menuUiStyle = {
-                         fontFamily: 'Mali'
+                         fontFamily: 'Mali',
                     }
-                    allText.forEach( text => text.setStyle(menuUiStyle));
+                    allText.forEach( text => {
+                              text.setStyle(menuUiStyle);
+                              text.setPadding(0,20,0,10);
+                         }
+                    );
                
                }
           });
+     }
+
+     private formatTextInSlot(str: string, n: number, isNumber: boolean) : string {
+          let fstr = '';
+          let strNo = 0;
+          let notCnt = 0;
+          const pattern = /[่้๊๋ิี็ํูืฺุ]/;
+
+          if (isNumber) {
+               str = str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+               strNo = str.length;
+          } else {
+               for (let char of str) {
+                    if (pattern.test(char)) {
+                         notCnt++;
+                    }
+               }
+               strNo = str.length - notCnt;
+          }
+
+          if (strNo > n) {
+               fstr = str.substring(0, n + notCnt) + '...';
+          } else {
+               fstr = str;
+          }
+
+          return fstr;
      }
 
      preload() {
@@ -122,7 +153,7 @@ export default class RankingScene extends Phaser.Scene {
           // heading
           this.add.image(268.03, 48, 'icon', 'icon_ranking.png').setOrigin(0).setScale(2.5);
           this.add.image( 96.02, 168.86, 'heading', 'heading_red.png' ).setOrigin(0);
-          const headingText = this.i18n.createTranslatedText(this, 280, 180, 'ranking_title')
+          const headingText = this.i18n.createTranslatedText(this, 285, 165, 'ranking_title')
                .setFontSize(42)
                .setColor('#ffffff')
                .setStroke('#9E461B', 12)
@@ -141,12 +172,12 @@ export default class RankingScene extends Phaser.Scene {
           const scoreStrokeColor = 0x327F76;
           const playedFillColor = 0xFFAA04;
           const playedStrokeColor = 0xBF7F03;
-          const buttonScoreText = this.i18n.createTranslatedText(this, 110, 370, 'accumulate_score')
+          const buttonScoreText = this.i18n.createTranslatedText(this, 110, 355, 'accumulate_score')
                .setFontSize(32)
                .setColor('#ffffff')
                .setStroke('#958E83', 8);
           this.texts.push(buttonScoreText);
-          const buttonPlayedText = this.i18n.createTranslatedText(this, 411, 370, 'accumulate_play')
+          const buttonPlayedText = this.i18n.createTranslatedText(this, 411, 355, 'accumulate_play')
                .setFontSize(32)
                .setColor('#ffffff')
                .setStroke('#958E83', 8);
@@ -234,14 +265,22 @@ export default class RankingScene extends Phaser.Scene {
                }
                slot.fillRoundedRect(x, y, slotWidth, slotHeight, 20);
                // text
-               const tpr = this.add.text(x + 96, y + 30, textPrefix, { 
-                    fontSize: '32px', 
-                    color: '#57453B' 
-               });
-               const tpo = this.add.text(x + 550, y + 30, textPostfix, { 
-                    fontSize: '32px', 
-                    color: '#57453B',
-               }).setOrigin(1, 0);
+               const tpr = this.add.text(
+                    x + 96, y + 10, 
+                    this.formatTextInSlot(textPrefix, 10, false), 
+                    { 
+                         fontSize: '32px', 
+                         color: '#57453B' 
+                    }
+               );
+               const tpo = this.add.text(
+                    x + 550, y + 10, 
+                    this.formatTextInSlot(textPostfix, 10, true), 
+                    { 
+                         fontSize: '32px', 
+                         color: '#57453B',
+                    }
+               ).setOrigin(1, 0);
                this.textsInSlot.push(tpr);
                this.textsInSlot.push(tpo);
                // icon
@@ -280,7 +319,11 @@ export default class RankingScene extends Phaser.Scene {
                     slot.strokeCircle(x + 56, y + 44, 26);
                }
                // text in icon
-               const tr = this.add.text(x + 44, y + 26, String(index + 1), { fontSize: '28px', color: '#ffffff' });
+               const tr = this.add.text(x + 44, y + 6, String(index + 1), 
+                    { 
+                         fontSize: '28px', 
+                         color: '#ffffff' 
+                    });
                if (index == 0) {
                     // rank 1 text
                     tr.setStroke('#E39600', 6);
