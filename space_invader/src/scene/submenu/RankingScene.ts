@@ -78,21 +78,11 @@ export default class RankingScene extends Phaser.Scene {
      private sortScore(): void {
           this.fakeData.sort((a, b) => b.score - a.score);
           this.fakeData.forEach( data => this.dataSortByScore.push(data));
-          
-          let n = this.dataSortByScore.length;
-          if (n > 6) {
-               this.dataSortByScore.length = 6;
-          }
      }
 
      private sortPlayed(): void {
           this.fakeData.sort((a, b) => b.played - a.played);
           this.fakeData.forEach( data => this.dataSortByPlayed.push(data));
-
-          let n = this.dataSortByPlayed.length;
-          if (n > 6) {
-               this.dataSortByPlayed.length = 6;
-          }
      }
 
      private setAllFont(allText: Phaser.GameObjects.Text[]): void {
@@ -357,14 +347,15 @@ export default class RankingScene extends Phaser.Scene {
                slot.clear();
                clearGarbage();
 
-               const data = this.onScorePage ? this.dataSortByScore : this.dataSortByPlayed; 
-               data.forEach((player, index) => {
-                    const textPrefix = player.name;
-                    const textPostfix = this.onScorePage ? String(player.score) : String(player.played);
-                    const isPlayer = player.id == this.myPlayerID;
-                    createSlot(x, y, textPrefix, textPostfix, index, isPlayer);
-                    y+= slotHeight + 16;
-               })
+               let data = this.onScorePage ? this.dataSortByScore : this.dataSortByPlayed;
+               data.slice(0, Math.min(data.length, 6))
+                    .forEach((player, index) => {
+                         const textPrefix = player.name;
+                         const textPostfix = this.onScorePage ? String(player.score) : String(player.played);
+                         const isPlayer = player.id == this.myPlayerID;
+                         createSlot(x, y, textPrefix, textPostfix, index, isPlayer);
+                         y+= slotHeight + 16;
+                    })
                
                // my slot rank
                const textPrefix = this.myData.name;
