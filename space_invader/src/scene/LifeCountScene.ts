@@ -29,15 +29,13 @@ export default class LifeCountScene extends Phaser.Scene{
         // Black Window
         this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0,0)
 
-        this.heart1 = new Heart(this, width/2 - 24 - 46, 528, 1)
-        this.heart2 = new Heart(this, width/2 + 24 + 46, 528, 2)
-
-        if (this.heart2.getIsRecharged()) {
-          this.heart2.emptyHeart()
+        // Heart 1
+        /*if (this.showingheart >= 1) { 
+          this.add.image(205 + 26, 528, 'sheet', 'heart_full.png').setOrigin(0,0) 
         }
         else {
-          this.heart1.emptyHeart()
-        }
+          this.add.image(205 + 26, 528, 'sheet', 'heart_empty.png').setOrigin(0,0) 
+        }*/
 
         const HeartText = i18n.createTranslatedText(this, width/2, 528 + 166 - 20, `life_count`, {heart : this.heart_count})
             .setColor("#DD2E05")
@@ -47,7 +45,17 @@ export default class LifeCountScene extends Phaser.Scene{
             .setAlign("center")
             .setOrigin(0.5,0)
 
-        const self = this
+
+        this.heart1 = new Heart(this, width/2 - 24 - 46, 528, 1)
+        this.heart2 = new Heart(this, width/2 + 24 + 46, 528, 2)
+
+        if (this.heart2.getIsRecharged()) {
+          this.heart2.emptyHeart()
+        }
+        else {
+          this.heart1.emptyHeart()
+        }
+            
 
         WebFont.load({
             google: {
@@ -55,12 +63,10 @@ export default class LifeCountScene extends Phaser.Scene{
             },
             active: function() {
               const menuUiStyle = {
-                fontFamily: 'Jua',
+                fontFamily: 'Jua'
               }
-              self.heart1.initFontStyle()
-              self.heart2.initFontStyle()
+
               HeartText.setStyle(menuUiStyle)
-              
             }
           });
     }

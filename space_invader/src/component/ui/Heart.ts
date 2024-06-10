@@ -84,7 +84,6 @@ export default class Heart {
 			duration: 1000,
 			onComplete: (_, targets) => {
 				targets[0].setTexture('heart_spritesheet', 'heart_empty.png')
-				targets[0].postFX.clear()
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
@@ -101,8 +100,7 @@ export default class Heart {
 			alpha: 0,
 			duration: 1000,
 			onComplete: (_, targets) => {
-				targets[0].setTexture('heart_spritesheet', 'heart_full.png')
-				targets[0].postFX.addGlow(0xFFFFFF,1,0,false,0.1,40)
+				targets[0].setTexture('sheet', 'heart_full.png')
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
