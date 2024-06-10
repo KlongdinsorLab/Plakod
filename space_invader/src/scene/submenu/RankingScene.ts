@@ -150,8 +150,9 @@ export default class RankingScene extends Phaser.Scene {
                          fontFamily: 'Mali',
                     }
                     allText.forEach( text => {
-                              text.setStyle(menuUiStyle)
+                              text.setStyle(menuUiStyle);
                               text.setPadding(0,20,0,10);
+                              text.setVisible(true);
                          }
                     );
                }
@@ -395,7 +396,7 @@ export default class RankingScene extends Phaser.Scene {
                          fontSize: '32px', 
                          color: '#57453B' 
                     }
-               );
+               ).setVisible(false);
 
                // text postfix
                const tpo = this.add.text(
@@ -406,7 +407,7 @@ export default class RankingScene extends Phaser.Scene {
                          fontSize: '32px', 
                          color: '#57453B',
                     }
-               ).setOrigin(1, 0);
+               ).setOrigin(1, 0).setVisible(false);
 
                this.textsInSlot.push(tpr);
                this.textsInSlot.push(tpo);
@@ -495,7 +496,7 @@ export default class RankingScene extends Phaser.Scene {
                          fontSize: '28px', 
                          color: '#ffffff' 
                     }
-               );
+               ).setVisible(false);
 
                if (index == 0) {
                     // rank 1 text
@@ -535,6 +536,7 @@ export default class RankingScene extends Phaser.Scene {
                          y += slotHeight + 16;
                     })
                
+               // TODO delete this code when change ui
                // my slot rank
                const textPrefix = this.myData.name;
                const textPostfix = this.onScorePage ? String(this.myData.score) : String(this.myData.played);
@@ -547,6 +549,13 @@ export default class RankingScene extends Phaser.Scene {
           // draw slot
           createStackOfSlot(72 , 456);
           
+          // TODO my slot rank change ui
+          /*// my slot rank
+          const textPrefix = this.myData.name;
+          const textPostfix = this.onScorePage ? String(this.myData.score) : String(this.myData.played);
+          const index = data.findIndex(player => player.id == this.myPlayerID);
+          
+          createSlot(x, rby + 656, textPrefix, textPostfix, index, true);*/
 
           // event
           // button score
