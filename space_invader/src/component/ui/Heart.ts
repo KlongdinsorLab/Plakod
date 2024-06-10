@@ -30,10 +30,6 @@ export default class Heart {
 			.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
 			.setOrigin(0.5, 0)
 
-		if(this.isHeartRecharged) {
-			this.heart.postFX?.addGlow(0xFFFFFF,1,0,false,0.1,50)
-		}
-
 		this.heartCountdown = scene.add
 			.text(x, y + 92, ``)
 			.setOrigin(0.5, 0)
