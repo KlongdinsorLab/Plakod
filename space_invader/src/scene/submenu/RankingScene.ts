@@ -50,7 +50,7 @@ export default class RankingScene extends Phaser.Scene {
      private textsInSlot: Phaser.GameObjects.Text[] = [];
     
      constructor() {
-          super({ key: 'RankingScene' });
+          super({ key: 'ranking' });
      }
 
      private loadingData(): void {
@@ -189,20 +189,13 @@ export default class RankingScene extends Phaser.Scene {
           console.log('back to home!')
           // TODO go to home function and less resource
 
-          //remove
-          this.texts.forEach( text => {
-               text.destroy();
-          });
-          this.textsInSlot.forEach( text => {
-               text.destroy();
-          });
-
           // clear the array
           this.texts.length = 0;
           this.textsInSlot.length = 0;
 
           // go to title scene
           this.scene.start('title');
+
      }
 
 

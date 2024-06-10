@@ -65,7 +65,7 @@ export default class TitleScene extends Phaser.Scene {
     this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
     const soundManager = new SoundManager(this)
     soundManager.init()
-    soundManager.play(this.bgm)
+    //soundManager.play(this.bgm)
 
     /* TODO comment just for testing
     const isSetup = localStorage.getItem('setup') ?? false
@@ -101,7 +101,7 @@ export default class TitleScene extends Phaser.Scene {
 
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
-    this.scene.start(import.meta.env.VITE_START_SCENE || 'game')
+    this.scene.start(import.meta.env.VITE_START_SCEN || 'ranking')
     new SoundManager(this).stop(this.bgm!)
   }
 }
