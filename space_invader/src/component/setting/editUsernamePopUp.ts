@@ -82,7 +82,7 @@ export default class editUsernamePopUp {
 
     updateUsername(username : string) : void{
         if(this.getLength(username) > 12) {
-            this.usernameText?.setFontSize(32 - username.length + 9)
+            this.usernameText?.setFontSize(32 - this.getLength(username) + 9)
         }
         else {
             this.usernameText?.setFontSize(32)
