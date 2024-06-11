@@ -6,21 +6,23 @@ export default class Heart {
 	private isHeartRecharged = true
 	private scene: Phaser.Scene
 
-	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number) {
+	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean) {
 		this.scene = scene
 
 		const timeService = new TimeService()
 		// TODO: call api
 		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
 		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
-		if (!this.isHeartRecharged) {
+		if ( !this.isHeartRecharged ) {
 			const interval = setInterval(() => {
 				const timeCoundown = timeService.getTimeCountdown(lastPlayTime)
 				this.heartCountdown.setText(timeCoundown)
 				this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
 				if (this.isHeartRecharged) {
-					this.fillHeart()
-					this.heartCountdown.setText("")
+					if (playFillAnimation ?? true) {
+						this.fillHeart()
+						this.heartCountdown.setText("")
+					}
 					clearInterval(interval)
 				}
 			})
