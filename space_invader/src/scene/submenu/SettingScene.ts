@@ -68,7 +68,6 @@ export default class SettingScene extends Phaser.Scene {
         // Back Button
         this.add.image( MARGIN, MARGIN, 'sheet', "logo_setting_next.png").setOrigin(0,0)
             .setInteractive().on('pointerup', () => {
-                this.scene.stop()
                 this.scene.start(this.returnscene)
             })
 
@@ -132,7 +131,7 @@ export default class SettingScene extends Phaser.Scene {
         const self = this
         WebFont.load({
             google: {
-              families: ['Mali','Sarabun']
+              families: ['Mali:Bold 700','Sarabun:Regular 400']
             },
             active: function() {
               const menuUiStyle = {

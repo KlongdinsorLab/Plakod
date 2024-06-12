@@ -148,6 +148,9 @@ export default class RankingScene extends Phaser.Scene {
                active: () => {
                     const menuUiStyle = {
                          fontFamily: 'Mali',
+                         fontStyle: 'Bold',
+                         fontWeight: 700
+                         
                     }
                     allText.forEach( text => {
                               text.setStyle(menuUiStyle);
@@ -213,7 +216,7 @@ export default class RankingScene extends Phaser.Scene {
           this.textsInSlot.length = 0;
 
           // go to title scene
-          this.scene.start('title');
+          this.scene.start('home');
 
      }
 

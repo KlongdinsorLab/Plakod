@@ -4,9 +4,9 @@ import { Button } from './Button'
 export default class SettingButton extends Button {
 	constructor(scene: Phaser.Scene) {
 		super(scene)
-        this.button = scene.add
-							.nineslice(448, 966,'landing_page', 'button_grey.png', 128, 138, 10, 10, 64, 64)
-							.setOrigin(0,0)
+        	this.button = scene.add
+			.nineslice(448, 966,'landing_page', 'button_grey.png', 128, 138, 10, 10, 64, 64)
+			.setOrigin(0,0)
 		this.buttonLogo = scene.add
 			.image(448 + 64, 966 + 48, 'landing_page', 'logo_button_setting.png')
 			.setOrigin(0.5, 0.5)
@@ -16,8 +16,7 @@ export default class SettingButton extends Button {
 			.setOrigin(0.5, 0)
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			this.scene.scene.stop()
-			this.scene.scene.launch('setting', { returnscene : this.scene.scene.key })
+			this.scene.scene.start('setting', { returnscene : this.scene.scene.key })
 		})
 	}
 
