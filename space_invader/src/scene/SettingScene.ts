@@ -28,8 +28,17 @@ export default class SettingScene extends Phaser.Scene {
     private difficultyText : Phaser.GameObjects.Text | undefined
     private difficultySelectUi : difficultySelectUi | undefined
 
+    //Return Scene
+    private returnscene = 'home'
+
     constructor() {
         super('setting')
+    }
+
+    init({ returnscene } : { returnscene : string }){
+        if(returnscene) {
+            this.returnscene = returnscene
+        }
     }
 
     preload(){
@@ -55,6 +64,13 @@ export default class SettingScene extends Phaser.Scene {
         const i18n = I18nSingleton.getInstance()
         
         this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+
+        // Back Button
+        this.add.image( MARGIN, MARGIN, 'sheet', "logo_setting_next.png").setOrigin(0,0)
+            .setInteractive().on('pointerup', () => {
+                this.scene.stop()
+                this.scene.start(this.returnscene)
+            })
 
         // Headings
         this.add.image( width/2 , MARGIN, 'sheet', "logo_heading_setting.png" ).setOrigin(0.5,0)
@@ -116,11 +132,13 @@ export default class SettingScene extends Phaser.Scene {
         const self = this
         WebFont.load({
             google: {
-              families: ['Mali:Bold 700','Sarabun:Regular 400']
+              families: ['Mali','Sarabun']
             },
             active: function() {
               const menuUiStyle = {
-                fontFamily: 'Mali'
+                fontFamily: 'Mali',
+                fontStyle: "Bold",
+                fontWeight: 700
               }
 
               self.setAllText(menuUiStyle)

@@ -88,8 +88,6 @@ export default class editUsernamePopUp {
             this.usernameText?.setFontSize(32)
         }
 
-        console.log(this.getLength(username))
-
         this.usernameText?.setText(username)
         this.username = username
     }

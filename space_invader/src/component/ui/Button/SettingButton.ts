@@ -16,7 +16,8 @@ export default class SettingButton extends Button {
 			.setOrigin(0.5, 0)
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			// TODO: Link to setting
+			this.scene.scene.stop()
+			this.scene.scene.launch('setting', { returnscene : this.scene.scene.key })
 		})
 	}
 

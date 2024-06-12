@@ -58,6 +58,7 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	create() {
+
 		const { width, height } = this.scale
 		this.timeService = new TimeService()
 		
