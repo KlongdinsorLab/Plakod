@@ -27,6 +27,7 @@ import HomeScene from 'scene/HomeScene'
 import RandomBossCutScene from 'scene/cutscene/RandomBossCutscene'
 import Cutscene1 from 'scene/cutscene/Cutscene1'
 import Cutscene2 from 'scene/cutscene/Cutscene2'
+import SettingScene from 'scene/SettingScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -74,6 +75,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		BossCutSceneEscape,
 		BossCutSceneEscape2,
 		PauseScene,
+		SettingScene
 	],
 }
 
