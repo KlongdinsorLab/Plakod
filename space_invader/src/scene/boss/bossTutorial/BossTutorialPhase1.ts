@@ -1,5 +1,5 @@
 import { Boss, BossTutorialScene } from 'component/enemy/boss/Boss'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { BOSS_TUTORIAL_DELAY_MS } from 'config'
 
 export default class BossTutorialPhase1 extends Phaser.Scene {
@@ -18,13 +18,16 @@ export default class BossTutorialPhase1 extends Phaser.Scene {
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
-		this.load.audio('bossAttack', 'sound/boss-attack.mp3')
+		// this.load.audio('bossAttack', 'sound/boss-attack.mp3')
 	}
 
 	create() {
-		const soundManager = new SoundManager(this)
-		const bossAttack = this.sound.add('bossAttack')
-		soundManager.play(bossAttack, false)
+		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+		tutorialSound.play('boss-attack')
+
+		// const soundManager = new SoundManager(this)
+		// const bossAttack = this.sound.add('bossAttack')
+		// soundManager.play(bossAttack, false)
 		
 		this.boss.getVersion().playTutorialPhase1(this)
 

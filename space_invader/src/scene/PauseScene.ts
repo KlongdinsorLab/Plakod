@@ -7,6 +7,7 @@ import {
   MODAL_BACKGROUND_COLOR,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
+import TimeService from 'services/timeService'
 
 export type Menu = {
   menu: Phaser.GameObjects.Image
@@ -14,6 +15,8 @@ export type Menu = {
 export default class PauseScene extends Phaser.Scene {
   private menu!: Phaser.GameObjects.Image
   private sceneName!: string
+  private timeService!: TimeService
+  private playCount!: number
 
   constructor() {
     super('pause')
@@ -32,6 +35,9 @@ export default class PauseScene extends Phaser.Scene {
   create() {
     const soundManager = new SoundManager(this)
     soundManager.pauseAll()
+    this.timeService = new TimeService()
+    // TODO: call api
+		this.playCount = Number(localStorage.getItem('playCount') ?? '')
 
     const { width, height } = this.scale
 
@@ -110,12 +116,15 @@ export default class PauseScene extends Phaser.Scene {
         0x999999,
       )
       .setOrigin(0.5, 0.5)
+      .setVisible(this.playCount % 2 == 1)
     i18n
       .createTranslatedText(this, restart.x, restart.y, 'restart')
       .setFontSize(MEDIUM_FONT_SIZE)
       .setOrigin(0.5, 0.5)
+      .setVisible(this.playCount % 2 == 1)
     restart.setInteractive()
     restart.on('pointerup', () => {
+      this.timeService.saveLastPlayTime()
       this.scene.stop()
       this.scene.stop(this.sceneName)
       i18n.destroyEmitter()
