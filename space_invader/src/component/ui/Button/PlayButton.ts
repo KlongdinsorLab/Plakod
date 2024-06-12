@@ -1,13 +1,13 @@
 import I18nSingleton from 'i18n/I18nSingleton'
-import TimeService from 'services/timeService'
+//import TimeService from 'services/timeService'
 import { Button } from './Button'
 
 export default class PlayButton extends Button {
-	private timeService!: TimeService
+	//private timeService!: TimeService
 
 	constructor(scene: Phaser.Scene, bgm: any) {
 		super(scene)
-		this.timeService = new TimeService()
+		//this.timeService = new TimeService()
 
        	this.button = scene.add.nineslice(144, 772,'landing_page', 'button_red.png', 432, 170, 32, 32, 64, 64)
 			                        .setOrigin(0,0)
@@ -22,9 +22,10 @@ export default class PlayButton extends Button {
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
 			
-			this.timeService.saveLastPlayTime()
+			//this.timeService.saveLastPlayTime()
 
-			scene.scene.start('cutscene1', { bgm: bgm })
+			//scene.scene.start('cutscene1', { bgm: bgm })
+			scene.scene.start('life_count', { bgm : bgm })
 		})
 	}
 

@@ -53,11 +53,18 @@ export default class HomeScene extends Phaser.Scene {
 			'assets/ui/landing_page_spritesheet.png',
 			'assets/ui/landing_page_spritesheet.json',
 		)
+		this.load.atlas(
+			'heart_spritesheet', 
+			'assets/heart_spritesheet/heart_spritesheet.png', 
+			'assets/heart_spritesheet/heart_spritesheet.json'
+		)
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
 	}
 
 	create() {
+		//localStorage.setItem("lastPlayTime1", '')
+		//localStorage.setItem("lastPlayTime2", '')
 
 		const { width, height } = this.scale
 		this.timeService = new TimeService()

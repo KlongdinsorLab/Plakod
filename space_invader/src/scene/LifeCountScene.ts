@@ -2,15 +2,25 @@ import Phaser from "phaser";
 import Heart from "component/ui/Heart";
 import WebFont from 'webfontloader'
 import I18nSingleton from "i18n/I18nSingleton";
+import TimeService from 'services/timeService'
 
 export default class LifeCountScene extends Phaser.Scene{
+    private bgm?: Phaser.Sound.BaseSound
     private heart1 !: Heart
     private heart2 !: Heart
 
     private heart_count = 7 // from backend
 
+    private timeService!: TimeService
+
+  
+
     constructor() {
         super('life_count')
+    }
+
+    init({ bgm } : { bgm : any}){
+      this.bgm = bgm
     }
 
     preload() {
@@ -41,12 +51,17 @@ export default class LifeCountScene extends Phaser.Scene{
         this.heart1 = new Heart(this, width/2 + 24 + 46, 528, 1, false)
         this.heart2 = new Heart(this, width/2 - 24 - 46, 528, 2, false)
 
-        if (this.heart2.getIsRecharged()) {
-          this.heart2.emptyHeart()
-        }
-        else {
+        this.timeService = new TimeService()
+        
+        if (this.heart1.getIsRecharged()) {
           this.heart1.emptyHeart()
         }
+        else {
+          this.heart2.emptyHeart()
+
+        }
+        this.timeService.saveLastPlayTime()
+        this.time.delayedCall(2000,() => { this.startGame() })
             
         const self = this
         WebFont.load({
@@ -63,5 +78,13 @@ export default class LifeCountScene extends Phaser.Scene{
               self.heart2.initFontStyle()
             }
           });
+    }
+
+    update(){
+      
+    }
+
+    startGame(){
+      this.scene.start('cutscene1', { bgm: this.bgm })
     }
 }
