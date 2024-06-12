@@ -72,7 +72,6 @@
   "accumulate_score": "Score",
   "accumulate_play": "Play",
   "slime_boss_name_version2": "Slime King\n2nd Form",
-  "player_name": "Nong Pid",
   "home_reminder_first_play": "Don't forget to recheck airflow\nbefore start game",
   "home_reminder_play_tomorrow": "Come back tomorrow!",
   "home_reminder_empty_heart": "Come back when heart refilled!",
@@ -87,7 +86,6 @@
   "endgame_complete": "Congratulations\nYou played all 10 times today.",
   "cutscene1_dialog": "One morning at the house on the mountain top",
   "cutscene2_dialog": "When I wake up \n{{username, string}}'s pet has disappeared again!!!",
-  "player_name": "Nong Pid",
   "setting_title" : "Setting",
   "airflow_volume" : "Airflow Volume",
   "doctor_advice_airflow" : "*Only change when instructed by a doctor*",
@@ -112,6 +110,6 @@
   "edit_airflow5_advice_bottom" : "before playing.",
   "successfully_edited" : "Successfully Edited",
   "changed_airflow_to" : "Changed airflow to",
-  "successfully" : "successfully"
+  "successfully" : "successfully",
   "life_count" : "You have {{heart, number}} heart(s) left."
 }
