@@ -56,3 +56,4 @@ export default class TimeService {
 		return diff >= 1 && this.playCount != 10
 	}
 }
+

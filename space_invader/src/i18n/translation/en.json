@@ -113,4 +113,5 @@
   "successfully_edited" : "Successfully Edited",
   "changed_airflow_to" : "Changed airflow to",
   "successfully" : "successfully"
+  "life_count" : "You have {{heart, number}} heart(s) left."
 }

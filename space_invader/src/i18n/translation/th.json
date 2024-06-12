@@ -113,4 +113,5 @@
   "successfully_edited" : "เปลี่ยนแปลงสำเร็จ",
   "changed_airflow_to" : "ปรับปริมาณอากาศเป็น",
   "successfully" : "สำเร็จ"
+  "life_count" : "หัวใจเหลือ {{heart, number}} ดวง"
 }

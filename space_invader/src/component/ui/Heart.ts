@@ -6,33 +6,49 @@ export default class Heart {
 	private isHeartRecharged = true
 	private scene: Phaser.Scene
 
-	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number) {
+	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean) {
 		this.scene = scene
 
 		const timeService = new TimeService()
 		// TODO: call api
 		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
 		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
-		if (!this.isHeartRecharged) {
+
+		if ( !this.isHeartRecharged ) {
 			const interval = setInterval(() => {
 				const timeCoundown = timeService.getTimeCountdown(lastPlayTime)
 				this.heartCountdown.setText(timeCoundown)
 				this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
 				if (this.isHeartRecharged) {
-					this.fillHeart()
-					this.heartCountdown.setText("")
+					if (playFillAnimation ?? true) {
+						this.fillHeart()
+						this.heartCountdown.setText("")
+					}
 					clearInterval(interval)
 				}
 			})
 		}
 
 		this.heart = scene.add
-			.image(x, y, 'landing_page', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
+			.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
 			.setOrigin(0.5, 0)
+
 		this.heartCountdown = scene.add
 			.text(x, y + 92, ``)
 			.setOrigin(0.5, 0)
 			// .setVisible(!this.isHeartRecharged)
+
+		// For animation testing
+		/*this.heart.setInteractive().on('pointerup', () => {
+			if (this.isHeartRecharged) {
+				this.emptyHeart()
+				this.isHeartRecharged = false
+			}
+			else {
+				this.fillHeart()
+				this.isHeartRecharged = true
+			}
+		})*/
 	}
 
 	getBody(): Phaser.GameObjects.Image {
@@ -66,7 +82,7 @@ export default class Heart {
 			alpha: 0,
 			duration: 1000,
 			onComplete: (_, targets) => {
-				targets[0].setTexture('landing_page', 'heart_empty.png')
+				targets[0].setTexture('heart_spritesheet', 'heart_empty.png')
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
@@ -82,7 +98,7 @@ export default class Heart {
 			alpha: 0,
 			duration: 1000,
 			onComplete: (_, targets) => {
-				targets[0].setTexture('landing_page', 'heart_full.png')
+				targets[0].setTexture('heart_spritesheet', 'heart_full.png')
 				this.scene.tweens.add({
 					targets: targets[0],
 					alpha: 1,
@@ -91,4 +107,5 @@ export default class Heart {
 			},
 		})
 	}
+
 }
