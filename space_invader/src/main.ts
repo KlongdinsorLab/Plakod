@@ -23,6 +23,7 @@ import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
 import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
+import RankingScene from 'scene/submenu/RankingScene'
 import HomeScene from 'scene/HomeScene'
 import RandomBossCutScene from 'scene/cutscene/RandomBossCutscene'
 import Cutscene1 from 'scene/cutscene/Cutscene1'
@@ -75,7 +76,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		BossCutSceneEscape,
 		BossCutSceneEscape2,
 		PauseScene,
-		SettingScene
+		RankingScene,
+		SettingScene,
 	],
 }
 
