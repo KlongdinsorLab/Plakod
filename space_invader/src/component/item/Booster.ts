@@ -5,13 +5,12 @@ import { BULLET_SPEED, MARGIN } from 'config'
 import { Item } from './Item'
 import InhaleGauge from 'component/ui/InhaleGauge'
 
-const boosterList = [
+export const boosterList = [
 	'booster_3waybullet.png',
 	'booster_heal.png',
 	'booster_scoreX2.png',
 	'booster_speedbullet.png',
 	'booster_strongbullet.png',
-	"booster_random.png"
 ]
 
 export class Booster extends Item {

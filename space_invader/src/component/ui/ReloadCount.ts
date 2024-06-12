@@ -1,4 +1,4 @@
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import {
   BOSS_MULTIPLE_COUNT,
   DARK_BROWN,
@@ -11,8 +11,9 @@ export default class ReloadCount {
   private reloadCount = RELOAD_COUNT
   private body: Phaser.GameObjects.Text
   private layer: Phaser.GameObjects.Layer
-  private soundManager: SoundManager
-  private lapChangedSound!: Phaser.Sound.BaseSound
+  // private soundManager: SoundManager
+  // private lapChangedSound!: Phaser.Sound.BaseSound
+  private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     const { width } = scene.scale
@@ -44,8 +45,9 @@ export default class ReloadCount {
       .setFontSize(MEDIUM_FONT_SIZE)
     this.layer.add(this.body)
 
-    this.soundManager = new SoundManager(scene)
-    this.lapChangedSound = scene.sound.add('lapChangedSound')
+    // this.soundManager = new SoundManager(scene)
+    // this.lapChangedSound = scene.sound.add('lapChangedSound')
+    this.soundEffect = scene.sound.addAudioSprite('mcSound')
   }
 
   getBody(): Phaser.GameObjects.Text {
@@ -66,7 +68,8 @@ export default class ReloadCount {
 
   setCount(count: number): void {
     if(this.reloadCount === count) {
-      this.soundManager.play(this.lapChangedSound!, true)
+      this.soundEffect.play("count-round")
+      // this.soundManager.play(this.lapChangedSound!, true)
     }
     this.reloadCount = count
     this.body.setText(this.getCountText(count))

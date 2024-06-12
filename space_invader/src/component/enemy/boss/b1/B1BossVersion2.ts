@@ -6,7 +6,7 @@ import {
 } from 'config'
 import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
@@ -200,8 +200,9 @@ export class B1BossVersion2 extends BossVersion {
 
 	playEscapePhase1(scene: Phaser.Scene): void {
 		const { width } = scene.scale
-		const soundManager = new SoundManager(scene)
-		const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
+		const bossSound = scene.sound.addAudioSprite('bossSound')
+		// const soundManager = new SoundManager(scene)
+		// const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, width / 2, 600, 'boss_escape')
 			.setOrigin(0.5, 1)
@@ -234,7 +235,8 @@ export class B1BossVersion2 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			soundManager.play(bossEscapeVoice, false)
+			bossSound.play("b1-escape-voice")
+			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
 		setTimeout(() => {
@@ -467,5 +469,9 @@ export class B1BossVersion2 extends BossVersion {
 			avoidText.setVisible(false)
 			bulletText.setVisible(false)
 		}, 2000)
+	}
+
+	playRandomScene(_: Phaser.Scene, __: Player): void {
+		
 	}
 }

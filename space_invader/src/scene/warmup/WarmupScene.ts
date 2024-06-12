@@ -3,7 +3,7 @@ import { DARK_ORANGE, LARGE_FONT_SIZE, MARGIN, TUTORIAL_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 
 export enum Step {
   EXHALE = 0,
@@ -23,9 +23,9 @@ export default class WarmupScene extends Phaser.Scene {
   preload() {
     this.load.atlas('warmup', 'assets/sprites/warmup/warmup_spritesheet.png', 'assets/sprites/warmup/warmup_spritesheet.json');
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-    this.load.audio('warmupExhale', 'sound/warmup-exhale.mp3')
-    this.load.audio('warmupHold', 'sound/warmup-hold.mp3')
-    this.load.audio('warmupInhale', 'sound/warmup-inhale.mp3')
+    // this.load.audio('warmupExhale', 'sound/warmup-exhale.mp3')
+    // this.load.audio('warmupHold', 'sound/warmup-hold.mp3')
+    // this.load.audio('warmupInhale', 'sound/warmup-inhale.mp3')
   }
 
   init({ event }: { event: EventEmitter }) {
@@ -33,7 +33,8 @@ export default class WarmupScene extends Phaser.Scene {
   }
 
   create() {
-    const soundManager = new SoundManager(this)
+    // const soundManager = new SoundManager(this)
+    const warmupSound = this.sound.addAudioSprite('tutorialWarmupSound')
     const self = this
     WebFont.load({
       google: {
@@ -103,14 +104,18 @@ export default class WarmupScene extends Phaser.Scene {
 
         exhale.setVisible(false)
 
-        const warmupHold = self.sound.add('warmupHold')
-        const warmupInhale = self.sound.add('warmupInhale')
-        const warmupExhale = self.sound.add('warmupExhale')
+        // const warmupHold = self.sound.add('warmupHold')
+        // const warmupInhale = self.sound.add('warmupInhale')
+        // const warmupExhale = self.sound.add('warmupExhale')
 
-        soundManager.play(warmupHold, false)
+        // soundManager.play(warmupHold, false)
+        warmupSound.play('warmup-hold')
+        
+       
 
         setTimeout(() => {
-          soundManager.play(warmupExhale, false)
+          // soundManager.play(warmupExhale, false)
+          warmupSound.play('warmup-exhale')
           exhaleSprite.setVisible(false)
           i18n.setTranslatedText(description, 'warmup_exhale')
 
@@ -132,7 +137,8 @@ export default class WarmupScene extends Phaser.Scene {
               description.setVisible(false)
               self.scene.resume('game')
               self.exhaleSprite.setVisible(false)
-              soundManager.play(warmupInhale, false)
+              warmupSound.play('warmup-inhale')
+              // soundManager.play(warmupInhale, false)
 
               i18n.setTranslatedText(exhale, 'inhale')
               tween.restart()
