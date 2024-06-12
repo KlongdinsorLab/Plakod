@@ -60,13 +60,13 @@ export default class RankingScene extends Phaser.Scene {
           const fakeData = [
                { 
                     id: '1', 
-                    name: 'พีซZA55555555555555555555', 
+                    name: 'พีซZA5555555555555555', 
                     score: 100000 , 
                     played: 50
                },
                { 
                     id: '2', 
-                    name: 'ไจ๋จจจจจจจจจจจจจจจจจจจจจ', 
+                    name: 'ญญญญญญญญญญญญญญญญญญญญ', 
                     score: 9999999999 , 
                     played: 60
                },
@@ -159,32 +159,50 @@ export default class RankingScene extends Phaser.Scene {
           });
      }
 
-     private formatTextInSlot(str: string, n: number, isNumber: boolean): string {
-          let fstr = '';
-          let strNo = 0;
-          let notCnt = 0;
+     private lengthOfString(username: string): {length: number, noCnt: number} {
+          let length = username.length;
+          let noCnt = 0;
           const pattern = /[่้๊๋ิี็ํูืฺุ]/;
 
-          if (isNumber) {
-               str = str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-               strNo = str.length;
-          } else {
-               for (let char of str) {
-                    if (pattern.test(char)) {
-                         notCnt++;
-                    }
+          for (let char of username) {
+               if (pattern.test(char)) {
+                    noCnt++;
                }
-               strNo = str.length - notCnt;
           }
 
-          if (strNo > n) {
-               fstr = str.substring(0, n + notCnt) + '...';
+          length = length - noCnt;
+
+
+          return {length, noCnt};
+     }
+
+     private formatTextNumberSlot(str: string, n: number): string {
+          let fstr = '';
+          
+          str = str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+          if (str.length > n) {
+               fstr = str.substring(0, n) + '...';
           } else {
                fstr = str;
           }
 
           return fstr;
      }
+
+     private formatTextNameSlot(str: string, n: number): string {
+          let fstr = '';
+          const { length, noCnt } = this.lengthOfString(str);
+ 
+          if (length > n) {
+               fstr = str.substring(0, n + noCnt) + '...';
+          } else {
+               fstr = str;
+          }
+
+          return fstr;
+     }
+
 
      private goToHome(): void {
           console.log('back to home!')
@@ -391,18 +409,23 @@ export default class RankingScene extends Phaser.Scene {
                const tpr = this.add.text(
                     x + 96, 
                     y + 10, 
-                    this.formatTextInSlot(textPrefix, 10, false), 
+                    this.formatTextNameSlot(textPrefix, 7), 
                     { 
                          fontSize: '32px', 
                          color: '#57453B' 
                     }
-               ).setVisible(false);
+               ).setVisible(false);     // will add visible when webFont was loaded
+               // format username by size
+               // let textPrefixLength = this.lengthOfString(textPrefix).length;
+               // if (textPrefixLength > 10) {
+               //      tpr.setFontSize(32 - textPrefixLength + 5);
+               // }
 
                // text postfix
                const tpo = this.add.text(
                     x + 550, 
                     y + 10, 
-                    this.formatTextInSlot(textPostfix, 10, true), 
+                    this.formatTextNumberSlot(textPostfix, 10), 
                     { 
                          fontSize: '32px', 
                          color: '#57453B',
