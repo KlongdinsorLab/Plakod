@@ -1,10 +1,9 @@
 import { METEOR_FREQUENCY_MS } from 'config'
-import { EnemyFactory } from '../../EnemyFactory'
 import { B1BossObstacle } from './B1BossObstacle'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
-export class B1BossObstacleFactory extends EnemyFactory {
+export class B1BossObstacleFactory {
 	private obstacles: B1BossObstacle[] = []
 	private meteorTimer = 0
 

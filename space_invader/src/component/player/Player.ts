@@ -1,4 +1,4 @@
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import {
 	COLLECT_BULLET_COUNT,
 	FULLCHARGE_ANIMATION_MS,
@@ -22,14 +22,16 @@ export default class Player {
 	private bullet: number = 0
 	private isBulletFull: boolean = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
-	private soundManager: SoundManager
-	private playerHitSounds!: (Phaser.Sound.NoAudioSound
-		| Phaser.Sound.WebAudioSound
-		| Phaser.Sound.HTML5AudioSound)[]
+	// private soundManager: SoundManager
+	// private playerHitSounds!: (Phaser.Sound.NoAudioSound
+	// 	| Phaser.Sound.WebAudioSound
+	// 	| Phaser.Sound.HTML5AudioSound)[]
+	private playerSound!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
 	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
-		this.soundManager = new SoundManager(scene)
+		// this.soundManager = new SoundManager(scene)
+		this.playerSound = scene.sound.addAudioSprite('mcSound')
 		const { width, height } = this.scene.scale
 		//		this.player = this.scene.physics.add.image(
 		//			width / 2,
@@ -45,9 +47,10 @@ export default class Player {
 
 		gameLayer.add(this.player)
 
-		this.playerHitSounds = [...Array(3)].map((_, i) =>
-			this.scene.sound.add(`mcHit${i+1}`),
-		)
+		// this.playerHitSounds = [...Array(3)].map((_, i) =>
+		// 	this.scene.sound.add(`mcHit${i+1}`),
+		// )
+
 		//		this.scene.anims.create({
 		//			key: 'run',
 		//			frames: this.scene.anims.generateFrameNames('player', {
@@ -179,7 +182,8 @@ export default class Player {
 	}
 
 	damaged(): void {
-	  this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
+		this.playerSound.play(`mc1-hit${Math.floor(Math.random() * 3) + 1}`)
+	//   this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
@@ -297,9 +301,10 @@ export default class Player {
   }
 
   playVsScene(scene: Phaser.Scene): void{
-	const mc1Vs = scene.sound.add('mc1Vs')
+	// const mc1Vs = scene.sound.add('mc1Vs')
 		setTimeout(() => {
-			this.soundManager.play(mc1Vs, false)
+			this.playerSound.play("mc1-vs")
+			// this.soundManager.play(mc1Vs, false)
 		}, 2000)
 		
     const playerImage = scene.add.image(850, 1200, 'player', 'mc_attack_00001.png').setOrigin(0.5, 1).setScale(2.5);

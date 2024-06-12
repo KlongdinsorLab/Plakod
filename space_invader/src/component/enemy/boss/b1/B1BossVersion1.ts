@@ -7,17 +7,17 @@ import {
 } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
-import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Score from 'component/ui/Score'
+import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 
 export class B1BossVersion1 extends BossVersion {
-	private meteorFactory!: MeteorFactory
+	private obstacleFactory!: B1BossObstacleFactory
 	constructor(){
 		super()
-		this.meteorFactory = new MeteorFactory()
+		this.obstacleFactory = new B1BossObstacleFactory()
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -92,7 +92,7 @@ export class B1BossVersion1 extends BossVersion {
 	useSkill(): void {}
 
 	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
-		this.meteorFactory.createByTime(scene, player, score, delta)
+		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
 	getDurationPhase1(): number {
@@ -110,12 +110,6 @@ export class B1BossVersion1 extends BossVersion {
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
-
-		const soundManager = new SoundManager(scene)
-		const bossB1 = scene.sound.add('bossB1')
-		setTimeout(() => {
-			soundManager.play(bossB1, false)
-		}, 500)
 
 		const rectangleBox = scene.add.rectangle(
 			width / 2,
@@ -173,8 +167,9 @@ export class B1BossVersion1 extends BossVersion {
 
 	playEscapePhase1(scene: Phaser.Scene): void {
 		const { width } = scene.scale
-		const soundManager = new SoundManager(scene)
-		const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
+		const bossSound = scene.sound.addAudioSprite('bossSound')
+		// const soundManager = new SoundManager(scene)
+		// const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, width / 2, 600, 'boss_escape')
 			.setOrigin(0.5, 1)
@@ -207,7 +202,8 @@ export class B1BossVersion1 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			soundManager.play(bossEscapeVoice, false)
+			bossSound.play("b1-escape-voice")
+			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
 		setTimeout(() => {
@@ -358,6 +354,7 @@ export class B1BossVersion1 extends BossVersion {
 
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
+
 		const avoidText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)

@@ -1,0 +1,12 @@
+{
+	"spritemap": {
+		"mc1-hit1": { "start": 0.004, "end": 0.209, "loop": false },
+		"rock-destroy": { "start": 1.034, "end": 2.179, "loop": false },
+		"charge-up": { "start": 3.964, "end": 5.204, "loop": false },
+		"mc1-hit3": { "start": 0.459, "end": 0.684, "loop": false },
+		"mc1-vs": { "start": 0.719, "end": 1.008, "loop": false },
+		"mc1-hit2": { "start": 0.234, "end": 0.433, "loop": false },
+		"count-round": { "start": 5.389, "end": 5.973, "loop": false },
+		"shooting": { "start": 5.249, "end": 5.364, "loop": false }
+	}
+}

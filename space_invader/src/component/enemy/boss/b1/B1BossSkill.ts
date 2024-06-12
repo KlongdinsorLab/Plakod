@@ -12,6 +12,7 @@ export class B1BossSkill extends BossSkill{
 	){
         super(scene, boss, player)
         this.skill = this.scene.physics.add.image(0, 0, 'bossSkill_Shield').setOrigin(0.5, 0.5).setAlpha(0)
+        this.skill.setAlpha(0)
         this.isActive = false
     }
 

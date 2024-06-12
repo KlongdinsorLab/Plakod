@@ -31,16 +31,18 @@ export default class TutorialControllerScene extends Phaser.Scene {
       'assets/character/player/mc1_spritesheet.png',
       'assets/character/player/mc1_spritesheet.json',
     );
-    this.load.audio('tutorialDirection', 'sound/tutorial-direction.mp3')
+    // this.load.audio('tutorialDirection', 'sound/tutorial-direction.mp3')
   }
 
   create() {
     const soundManager = new SoundManager(this)
     const isMute = soundManager.isMute()
     // soundManager.mute()
+    const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+    tutorialSound.play('tutorial-direction')
 
-    const tutorialDirection = this.sound.add('tutorialDirection')
-    soundManager.play(tutorialDirection, false)
+    // const tutorialDirection = this.sound.add('tutorialDirection')
+    // soundManager.play(tutorialDirection, false)
 
     const { width, height } = this.scale
     this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
