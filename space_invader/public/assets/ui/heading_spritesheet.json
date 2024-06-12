@@ -1,0 +1,99 @@
+{
+	"frames": [
+		{
+			"filename": "heading_green.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 528,
+				"h": 129
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 528,
+				"h": 129
+			},
+			"sourceSize": {
+				"w": 528,
+				"h": 129
+			}
+		},
+		{
+			"filename": "heading_purple.png",
+			"frame": {
+				"x": 1,
+				"y": 132,
+				"w": 560,
+				"h": 160
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 560,
+				"h": 160
+			},
+			"sourceSize": {
+				"w": 560,
+				"h": 160
+			}
+		},
+		{
+			"filename": "heading_red.png",
+			"frame": {
+				"x": 1,
+				"y": 294,
+				"w": 528,
+				"h": 129
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 528,
+				"h": 129
+			},
+			"sourceSize": {
+				"w": 528,
+				"h": 129
+			}
+		},
+		{
+			"filename": "heading_red mission.png",
+			"frame": {
+				"x": 563,
+				"y": 1,
+				"w": 563,
+				"h": 160
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 563,
+				"h": 160
+			},
+			"sourceSize": {
+				"w": 563,
+				"h": 160
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 1127,
+			"h": 424
+		},
+		"scale": "1"
+	}
+}
