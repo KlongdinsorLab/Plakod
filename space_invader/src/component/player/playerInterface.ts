@@ -1,5 +1,7 @@
 import Player from "./Player";
 
 export const PlayerByName = {
-	"MC1": Player
+	"mc1": Player,
+	"mc2": Player,
+	"mc3": Player,
 }

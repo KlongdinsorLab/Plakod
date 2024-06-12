@@ -11,13 +11,12 @@ import {
 import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
 import { BossSkill } from '../BossSkill'
-import { B1BossSkill } from './B1BossSkill'
-import { B1BossVersion1 } from './B1BossVersion1'
-import { B1BossVersion2 } from './B1BossVersion2'
+import { B2BossVersion1 } from './B2BossVersion1'
+import { B2BossVersion2 } from './B2BossVersion2'
 
 let isHit = false
 
-export class B1Boss extends Boss {
+export class B2Boss extends Boss {
 	// private soundManager: SoundManager
 	private phaseCount!: number
 	private bossTimer = 0
@@ -55,12 +54,8 @@ export class B1Boss extends Boss {
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
 
-		// this.bossHitSounds = [...Array(4)].map((_, i) =>
-		// 	this.scene.sound.add(`bossHit${i+1}`),
-		// )
-
-		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
-		this.scene.physics.world.enable(this.bossSkill.getBody())
+		// this.bossSkill = new B1BossSkill(this.scene, this, this.player)
+		// this.scene.physics.world.enable(this.bossSkill.getBody())
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -96,7 +91,7 @@ export class B1Boss extends Boss {
 		// TODO fixes me
 		// const randomSoundIndex = Math.floor(Math.random() * 4)
 		// this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
-		this.bossSound.play(`b1-hit${Math.floor(Math.random() * 4) + 1}`)
+		this.bossSound.play(`b2-hit${Math.floor(Math.random() * 4) + 1}`)
 
 		this.enemy.stop()
 		// this.enemy.setTexture('boss')
@@ -187,7 +182,7 @@ export class B1Boss extends Boss {
 
 	setVersion(lap: number): BossVersion {
 		const version = Math.floor((10 - lap) / BOSS_MULTIPLE_COUNT)
-		const bossVersions = [B1BossVersion1, B1BossVersion2]
+		const bossVersions = [B2BossVersion1, B2BossVersion2]
 		this.bossVersion = new bossVersions[version]()
 
 		this.scene.anims.remove('boss-move')

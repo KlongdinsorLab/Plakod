@@ -1,6 +1,7 @@
 import { Boss, BossName } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
+import { B2Boss } from 'component/enemy/boss/b2/B2Boss'
 
 export interface BossInterface {
 	  name: BossName,
@@ -12,6 +13,7 @@ export interface BossInterface {
 }
 
 export const BossByName = {
-	"B1": B1Boss
+	"B1": B1Boss,
+	"B2": B2Boss
 }
 

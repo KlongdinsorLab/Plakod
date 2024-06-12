@@ -21,8 +21,9 @@ import WebFont from 'webfontloader'
 // import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
-import { BossCutScene, BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossCutScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
+import { BossByName } from './boss/bossInterface'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -47,6 +48,7 @@ export default class GameScene extends Phaser.Scene {
   private isCompleteWarmup = false
   private isCompleteBoss = false
   private menu!: Menu
+  private bossName!: keyof typeof BossByName
 
   private event!: EventEmitter
   private gameLayer!: Phaser.GameObjects.Layer
@@ -103,13 +105,14 @@ export default class GameScene extends Phaser.Scene {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
 
-  init({ score, reloadCount, isCompleteBoss }: { score: number, reloadCount: number, isCompleteBoss: boolean }) {
+  init({ score, reloadCount, isCompleteBoss, bossName }: { score: number, reloadCount: number, isCompleteBoss: boolean, bossName: keyof typeof BossByName }) {
     if(score)
       this.scoreNumber = score
     if(reloadCount)
       this.reloadCountNumber = reloadCount
     if(isCompleteBoss !== undefined)
       this.isCompleteBoss = isCompleteBoss
+    this.bossName = bossName
     this.soundManager.unmute()
 	}
 
@@ -242,8 +245,11 @@ export default class GameScene extends Phaser.Scene {
 
       this.tutorial.launchTutorial(Step.CONTROLLER, delta, {
         player: this.player,
+        event: this.event
       })
     }
+
+    this.event.once("completeWarmup", () => this.isCompleteWarmup = true)
 
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
       this.scene.pause()
@@ -258,7 +264,7 @@ export default class GameScene extends Phaser.Scene {
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (!this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
+    if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
       gauge.hold(delta)
     } else if (this.controller1?.buttons.B4 > 0) {
       gauge.setStep(1)
@@ -317,7 +323,7 @@ export default class GameScene extends Phaser.Scene {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
         this.scene.launch(BossCutScene.VS, {
-          name: BossName.B1,
+          name: this.bossName,
           score: this.score.getScore(),
           playerX: this.player.getBody().x,
           reloadCount: this.reloadCount.getCount(),

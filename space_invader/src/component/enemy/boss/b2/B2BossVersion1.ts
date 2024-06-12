@@ -11,13 +11,10 @@ import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
 import Score from 'component/ui/Score'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 
-export class B1BossVersion1 extends BossVersion {
-	private obstacleFactory!: B1BossObstacleFactory
+export class B2BossVersion1 extends BossVersion {
 	constructor() {
 		super()
-		this.obstacleFactory = new B1BossObstacleFactory()
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -26,8 +23,8 @@ export class B1BossVersion1 extends BossVersion {
 		scene.anims.remove('boss-hit')
 		scene.anims.create({
 			key: 'boss-move',
-			frames: scene.anims.generateFrameNames('b1v1', {
-				prefix: 'b1v1_attack_',
+			frames: scene.anims.generateFrameNames('b2v1', {
+				prefix: 'b2v1_attack_',
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -39,8 +36,8 @@ export class B1BossVersion1 extends BossVersion {
 
 		scene.anims.create({
 			key: 'boss-hit',
-			frames: scene.anims.generateFrameNames('b1v1', {
-				prefix: 'b1v1_hurt_',
+			frames: scene.anims.generateFrameNames('b2v1', {
+				prefix: 'b2v1_hurt_',
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -50,7 +47,7 @@ export class B1BossVersion1 extends BossVersion {
 			repeat: -1,
 		})
 
-		return scene.add.follower(path, width / 2, -140, 'b1v1').setOrigin(0.5)
+		return scene.add.follower(path, width / 2, -140, 'b2v1').setOrigin(0.5)
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
@@ -97,7 +94,7 @@ export class B1BossVersion1 extends BossVersion {
 		score: Score,
 		delta: number,
 	): void {
-		this.obstacleFactory.createByTime(scene, player, score, delta)
+        console.log(scene, player, score, delta)
 	}
 
 	getDurationPhase1(): number {
@@ -126,7 +123,7 @@ export class B1BossVersion1 extends BossVersion {
 		rectangleBox.angle = -30
 
 		const bossImage = scene.add
-			.image(-350, 500, 'b1v1', 'b1v1_attack_00000.png')
+			.image(-350, 500, 'b2v1', 'b2v1_attack_00000.png')
 			.setOrigin(0.5, 1)
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
@@ -203,7 +200,7 @@ export class B1BossVersion1 extends BossVersion {
 		const path = new Phaser.Curves.Path(0, 0)
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
-		const boss = scene.add.follower(path, width / 2, 300, 'b1v1').setOrigin(0.5)
+		const boss = scene.add.follower(path, width / 2, 300, 'b2v1').setOrigin(0.5)
 		boss.play('boss-hit')
 
 		setTimeout(() => {
@@ -253,7 +250,7 @@ export class B1BossVersion1 extends BossVersion {
 		})
 
 		const path = new Phaser.Curves.Path(0, 0)
-		const boss = scene.add.follower(path, width / 2, 300, 'b1v1').setOrigin(0.5)
+		const boss = scene.add.follower(path, width / 2, 300, 'b2v1').setOrigin(0.5)
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {
@@ -275,7 +272,7 @@ export class B1BossVersion1 extends BossVersion {
 			.setFontSize(LARGE_FONT_SIZE)
 			.setAlpha(0)
 
-		const bossImage = scene.add.image(width / 2, -140, 'b1v1').setOrigin(0.5, 1)
+		const bossImage = scene.add.image(width / 2, -140, 'b2v1').setOrigin(0.5, 1)
 
 		WebFont.load({
 			google: {
@@ -320,7 +317,7 @@ export class B1BossVersion1 extends BossVersion {
 			.setFontSize(LARGE_FONT_SIZE)
 			.setAlpha(0)
 
-		const bossImage = scene.add.image(width / 2, -140, 'b1v1').setOrigin(0.5, 1)
+		const bossImage = scene.add.image(width / 2, -140, 'b2v1').setOrigin(0.5, 1)
 
 		WebFont.load({
 			google: {
@@ -358,79 +355,18 @@ export class B1BossVersion1 extends BossVersion {
 	}
 
 	playItemTutorial(scene: Phaser.Scene): void {
-		const { width, height } = scene.scale
-
-		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'avoid_poison')
-			.setOrigin(0.5, 0)
-		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'collect_bullet')
-			.setOrigin(0.5, 0)
-
-		const poison = scene.add
-			.image(width / 2, 9 * MARGIN, 'bossAsset', 'item_poison.png')
-			.setOrigin(0.5, 1)
-		const bullet = scene.add
-			.image(width / 2, 17 * MARGIN, 'bossAsset', 'item_bullet.png')
-			.setOrigin(0.5, 1)
-
-		const poisonBox = scene.add
-			.graphics()
-			.lineStyle(8, 0xfb511c, 1)
-			.strokeRoundedRect(width / 3, 6 * MARGIN + 8, width / 3, height / 8, 32)
-		const bulletBox = scene.add
-			.graphics()
-			.lineStyle(8, 0x7eaf08, 1)
-			.strokeRoundedRect(width / 3, 14 * MARGIN + 8, width / 3, height / 8, 32)
-
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				avoidText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-					})
-					.setFontSize('6em')
-					.setStroke('#FB511C', 12)
-
-				bulletText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-					})
-					.setFontSize('6em')
-					.setStroke('#7EAF08', 12)
-			},
-		})
-
-		setTimeout(() => {
-			poison.setVisible(false)
-			bullet.setVisible(false)
-			poisonBox.setVisible(false)
-			bulletBox.setVisible(false)
-			avoidText.setVisible(false)
-			bulletText.setVisible(false)
-		}, 2000)
+		console.log(scene)
 	}
 
 	playRandomScene(scene: Phaser.Scene, player: Player): void {
 		const { width, height } = scene.scale
 
 		const bg = scene.add
-			.tileSprite(0, 0, width, height, 'boss1_background')
+			.tileSprite(0, 0, width, height, 'boss2_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 			
-		const bossImage = scene.add.image(870, height - 275, 'b1v1', "b1v1_attack_00005.png").setOrigin(0.5, 1).setScale(2.5)
+		const bossImage = scene.add.image(870, height - 275, 'b2v1', "b2v1_attack_00001.png").setOrigin(0.5, 1).setScale(2.5)
 		const polygon = scene.add
 					.polygon(width, 0, [48, 622, 668, 484, 668, 910, 48, 910], 0xFFFFFF, 0)
 					.setStrokeStyle(5, 0x000000, 1)
@@ -444,7 +380,7 @@ export class B1BossVersion1 extends BossVersion {
 		player.playRandomBossScene(scene)
 		
 		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width, 780, 'alien_boss_name')
+			.createTranslatedText(scene, width, 780, 'slime_boss_name')
 			.setOrigin(0, 0)
 
 		WebFont.load({
