@@ -1,0 +1,330 @@
+{
+	"frames": [
+		{
+			"filename": "bar_airflow.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 75,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 75,
+				"h": 56
+			},
+			"sourceSize": {
+				"w": 75,
+				"h": 56
+			}
+		},
+		{
+			"filename": "bar_difficulty.png",
+			"frame": {
+				"x": 78,
+				"y": 1,
+				"w": 58,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 58,
+				"h": 56
+			},
+			"sourceSize": {
+				"w": 58,
+				"h": 56
+			}
+		},
+		{
+			"filename": "button_grey.png",
+			"frame": {
+				"x": 138,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "button_red.png",
+			"frame": {
+				"x": 236,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "heart_empty.png",
+			"frame": {
+				"x": 1,
+				"y": 99,
+				"w": 94,
+				"h": 84
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 84
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 84
+			}
+		},
+		{
+			"filename": "heart_full.png",
+			"frame": {
+				"x": 97,
+				"y": 99,
+				"w": 94,
+				"h": 84
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 84
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 84
+			}
+		},
+		{
+			"filename": "logo_breathbuddy.png",
+			"frame": {
+				"x": 334,
+				"y": 1,
+				"w": 383,
+				"h": 224
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 383,
+				"h": 224
+			},
+			"sourceSize": {
+				"w": 383,
+				"h": 224
+			}
+		},
+		{
+			"filename": "logo_button_achievement.png",
+			"frame": {
+				"x": 719,
+				"y": 1,
+				"w": 54,
+				"h": 52
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 54,
+				"h": 52
+			},
+			"sourceSize": {
+				"w": 54,
+				"h": 52
+			}
+		},
+		{
+			"filename": "logo_button_instruction.png",
+			"frame": {
+				"x": 719,
+				"y": 55,
+				"w": 39,
+				"h": 48
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 48
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 48
+			}
+		},
+		{
+			"filename": "logo_button_play.png",
+			"frame": {
+				"x": 193,
+				"y": 105,
+				"w": 62,
+				"h": 68
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 62,
+				"h": 68
+			},
+			"sourceSize": {
+				"w": 62,
+				"h": 68
+			}
+		},
+		{
+			"filename": "logo_button_ranking.png",
+			"frame": {
+				"x": 257,
+				"y": 105,
+				"w": 64,
+				"h": 52
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 64,
+				"h": 52
+			},
+			"sourceSize": {
+				"w": 64,
+				"h": 52
+			}
+		},
+		{
+			"filename": "logo_button_setting.png",
+			"frame": {
+				"x": 719,
+				"y": 105,
+				"w": 48,
+				"h": 52
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 48,
+				"h": 52
+			},
+			"sourceSize": {
+				"w": 48,
+				"h": 52
+			}
+		},
+		{
+			"filename": "logo_level.png",
+			"frame": {
+				"x": 1,
+				"y": 227,
+				"w": 97,
+				"h": 88
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 97,
+				"h": 88
+			},
+			"sourceSize": {
+				"w": 97,
+				"h": 88
+			}
+		},
+		{
+			"filename": "logo_volumn_off.png",
+			"frame": {
+				"x": 257,
+				"y": 159,
+				"w": 52,
+				"h": 54
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 52,
+				"h": 54
+			},
+			"sourceSize": {
+				"w": 52,
+				"h": 54
+			}
+		},
+		{
+			"filename": "logo_volumn_on.png",
+			"frame": {
+				"x": 719,
+				"y": 159,
+				"w": 61,
+				"h": 49
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 61,
+				"h": 49
+			},
+			"sourceSize": {
+				"w": 61,
+				"h": 49
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 781,
+			"h": 316
+		},
+		"scale": "1"
+	}
+}

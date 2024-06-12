@@ -1,0 +1,57 @@
+{
+	"frames": [
+		{
+			"filename": "heart_empty.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 105,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 105,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 105,
+				"h": 96
+			}
+		},
+		{
+			"filename": "heart_full.png",
+			"frame": {
+				"x": 108,
+				"y": 1,
+				"w": 105,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 105,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 105,
+				"h": 96
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 214,
+			"h": 98
+		},
+		"scale": "1"
+	}
+}
