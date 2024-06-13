@@ -5,6 +5,7 @@ import i18next from 'i18next';
 
 export default class boosterBar{
     private scene: Phaser.Scene | undefined;
+    private loader!: Phaser.Loader.LoaderPlugin;
 
     private selectedBooster: string[] = [];
     private maxSelectableBoosters: number = 1;
@@ -48,6 +49,10 @@ export default class boosterBar{
     
     constructor(scene: Phaser.Scene){
         this.scene = scene;
+
+        this.loader = new Phaser.Loader.LoaderPlugin(scene);
+        this.loader.atlas('dropItem', 'assets/dropItem/dropItem_spritesheet.png', 'assets/dropItem/dropItem_spritesheet.json')
+        
                 
         //first line
         this.scene.add.image(
