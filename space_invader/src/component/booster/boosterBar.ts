@@ -32,7 +32,6 @@ export default class boosterBar{
     private countdownText : Phaser.GameObjects.Text[]=[];
     private countdownIndex : number[]=[0,0,0,0,0,0,0,0];
     private countdownTime: Map<string, Phaser.GameObjects.Text> = new Map();
-    private Mark: Phaser.GameObjects.Text[] = [];
     
     //from database
     private boosterJSON = {
@@ -232,9 +231,7 @@ export default class boosterBar{
 
     IsSelected(scene: Phaser.Scene, booster: { name: string } | undefined, x: number, y: number, index:number): void {
         let state = this.getBoosterState(booster!,index);
-        console.log('IsSelected',booster!.name, state);
         if (!booster) {
-            console.error('Booster not found');
             return;
         }
     
@@ -259,14 +256,12 @@ export default class boosterBar{
             const selectedMark = this.boosterGraphics.get(booster.name);
             if (selectedMark) {
                 selectedMark.destroy();
-                console.log('Booster deselected',selectedMark);
                 this.boosterGraphics.delete(booster.name);
             }
 
             const boosterMark = this.boosterMark.get(booster.name);
             if (boosterMark) {
                 boosterMark.destroy();
-                console.log('Booster deselected', boosterMark);
                 this.boosterMark.delete(booster.name);
             }
             
@@ -310,10 +305,8 @@ export default class boosterBar{
             if(booster.name === 'booster_rare1' || booster.name === 'booster_rare2'){
                 frame = "booster_"+fname+".png";
             }
-            console.log(frame)
-            const descriptionImage = this.descriptionImage.get(booster!.name);
-            
 
+            const descriptionImage = this.descriptionImage.get(booster!.name);
             if (descriptionImage) {
                 descriptionImage.destroy();
                 this.descriptionImage.delete(booster!.name);
@@ -415,16 +408,15 @@ export default class boosterBar{
         console.log('initBooster',booster.name, state);
         if(state === 'limitedTime'){
             this.setTimeout(scene,booster,(this.boosterJSON as any)[booster.name].duration, x, y, index);
-            this.setMark(scene, x, y, booster.name, index);
+            this.setMark(scene, x, y, booster.name);
         }else if(state === 'none'){
             this.setUnAvailable(scene,booster.name, x, y, index);
         }else{
-            this.setMark(scene, x, y, booster.name, index);
+            this.setMark(scene, x, y, booster.name);
         }
     }
 
     setTimeout(scene:Phaser.Scene, booster: { name: string }, durationArray:string[], x:number, y:number, index:number): void {
-        console.log('setTimeout',booster.name);
         const duration = durationArray[this.countdownIndex[index-1]];
         const durationInSecond = this.timeService.parseDuration(duration);
 
@@ -452,7 +444,6 @@ export default class boosterBar{
                     const time = this.countdownTime.get(booster.name);
                     if (time) {
                         time.destroy();
-                        console.log('time destroy',time);
                         this.countdownTime.delete(booster.name);
                     }
                     const state = this.getBoosterState(booster, index);
@@ -468,41 +459,33 @@ export default class boosterBar{
     }
     
     setUnAvailable(scene:Phaser.Scene, name:string, x:number, y:number, index:number): void {
-        console.log('setUnAvailable',name);
         if(this.selectedBooster.includes(name)){
             this.setDeselectBooster(scene,this.getBoosterByName(name)!, index)
         }
         const markBg = this.markCircle.get(name);
         if (markBg) {
             markBg.destroy();
-            console.log('markBG deselected',markBg);
             this.markCircle.delete(name);
         }
 
         const markText = this.markText.get(name);
         if (markText) {
             markText.destroy();
-            console.log('markText destroy',markText);
             this.markText.delete(name);
         }
         scene.add.circle(x, y, 48, 0x000000, 0.6).setOrigin(0, 0);
     }
 
-    setMark(scene: Phaser.Scene, x: number, y: number, name: string, index: number): void {
-        if(this.Mark[index]){
-            this.Mark[index].destroy();
-        }       
+    setMark(scene: Phaser.Scene, x: number, y: number, name: string): void {     
         const markBg = this.markCircle.get(name);
         if (markBg) {
             markBg.destroy();
-            console.log('markBG deselected',markBg);
             this.markCircle.delete(name);
         }
 
         const markText = this.markText.get(name);
         if (markText) {
             markText.destroy();
-            console.log('markText destroy',markText);
             this.markText.delete(name);
         }
 
@@ -510,7 +493,7 @@ export default class boosterBar{
         const bg = scene.add.circle(x + 104, y, 16, 0xD35E24).setOrigin(1, 0);
         const amount = (this.boosterJSON as any)[name]?.amount ?? undefined;
         const mark = scene.add.text(x + 88, y + 2, amount).setOrigin(0.5, 0);
-        this.Mark[index] = mark;
+
         this.markCircle.set(name, bg);
         this.markText.set(name, mark);
 
@@ -535,16 +518,18 @@ export default class boosterBar{
                 color: '#D35E24'
             });
         }
-        console.log('deselect')
 
-        this.Mark.forEach((text) => {
+        this.markText.forEach((text) => {
             text.setStyle({
                 fontFamily: 'Jua',
                 fontWeight: 400,
                 fontSize: '20px',
                 color: '#57453B',
             }).setStroke('#ffffff', 6);
+            
         });
+        
+    
     }
     
 }
