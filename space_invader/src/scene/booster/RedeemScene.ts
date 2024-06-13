@@ -113,6 +113,11 @@ export default class RedeemScene extends Phaser.Scene {
             20,20,20,30
         )
         .setOrigin(0, 0)
+        .setInteractive().on('pointerup', () => {
+            this.scene.stop();
+            console.log('landing page');
+            //this.scene.start();
+        })
 
         this.add.image(
             MARGIN*2+64, 
@@ -133,7 +138,8 @@ export default class RedeemScene extends Phaser.Scene {
         .setOrigin(0, 0)
         .setInteractive().on('pointerup', () => {
             this.scene.stop();
-            this.scene.start('gameGameScene');
+            console.log('life count')
+            //this.scene.start();
         })
 
         this.buttonText = I18nSingleton.getInstance()
@@ -145,6 +151,7 @@ export default class RedeemScene extends Phaser.Scene {
             )
             .setAlign('center')
             .setOrigin(0.5, 0.5)
+            
 
         WebFont.load({
                 google:{
