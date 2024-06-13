@@ -50,7 +50,7 @@ export default class boosterBar{
         this.scene = scene;
                 
         //first line
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2/3, 
             this.position.y, 
             'dropItem',
@@ -65,7 +65,7 @@ export default class boosterBar{
             1
         ));
 
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width, 
             this.position.y, 
             'dropItem',
@@ -81,7 +81,7 @@ export default class boosterBar{
             2
         ));
         
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width*2, 
             this.position.y, 
             'dropItem',
@@ -96,7 +96,7 @@ export default class boosterBar{
             3
         ));
         
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width*3, 
             this.position.y, 
             'dropItem',
@@ -113,7 +113,7 @@ export default class boosterBar{
        
 
         //second line
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -129,11 +129,11 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2+ this.gapSize.width, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
-            'booster rare1.png',
+            'booster_rare1.png',
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
@@ -145,11 +145,11 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.nineslice(
+        this.scene.add.image(
             this.position.x+MARGIN*2+ this.gapSize.width*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
-            'booster rare2.png',
+            'booster_rare2.png',
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
@@ -308,7 +308,7 @@ export default class boosterBar{
             const fname = name.split('_')[1];
             let frame = "booster"+fname+".png";
             if(booster.name === 'booster_rare1' || booster.name === 'booster_rare2'){
-                frame = "booster "+fname+".png";
+                frame = "booster_"+fname+".png";
             }
             console.log(frame)
             const descriptionImage = this.descriptionImage.get(booster!.name);
@@ -351,10 +351,11 @@ export default class boosterBar{
     }
 
     setDescriptionAmount(scene:Phaser.Scene, booster: { name: string } ,state:string, index:number): void{
-        const [hours, minutes, seconds] = this.timeText[index].split(':').map(Number);
+        
         let text : string;
         
         if (state === 'limitedTime') {
+            const [hours, minutes, seconds] = this.timeText[index].split(':').map(Number);
             if(hours == 0 && minutes == 0 && seconds > 0){
                 text = i18next.t('booster_description_expire_seconds');
             }else{
