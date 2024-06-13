@@ -33,7 +33,6 @@ export default class RedeemScene extends Phaser.Scene {
     }
     create(){
         const {width, height} = this.scale;
-        const i18n = I18nSingleton.getInstance();
         const self = this;
 
        
@@ -132,6 +131,10 @@ export default class RedeemScene extends Phaser.Scene {
             20,20,20,30
         )
         .setOrigin(0, 0)
+        .setInteractive().on('pointerup', () => {
+            this.scene.stop();
+            this.scene.start('gameGameScene');
+        })
 
         this.buttonText = I18nSingleton.getInstance()
             .createTranslatedText(
@@ -143,7 +146,7 @@ export default class RedeemScene extends Phaser.Scene {
             .setAlign('center')
             .setOrigin(0.5, 0.5)
 
-            WebFont.load({
+        WebFont.load({
                 google:{
                     families: ['Mali:500,600,700','Jua'],
                 },
@@ -186,7 +189,7 @@ export default class RedeemScene extends Phaser.Scene {
 
                     
                 },
-            });
+        });
     
         
 

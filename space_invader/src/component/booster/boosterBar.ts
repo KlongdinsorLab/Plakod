@@ -19,8 +19,8 @@ export default class boosterBar{
     private descriptionBg: Map<string, Phaser.GameObjects.Graphics> = new Map();
     private descriptionText: Phaser.GameObjects.Text | undefined;
     private descriptionAmount: Phaser.GameObjects.Text | undefined;
-    private descriptionHours : number | undefined;
-    private descriptionMinutes : number | undefined;
+    //private descriptionHours : number | undefined;
+    //private descriptionMinutes : number | undefined;
 
     private position = {x: MARGIN*2, y: SCREEN_HEIGHT/2 - MARGIN*2};
     private boosterSize = {width: 96 , height: 96};
@@ -437,13 +437,11 @@ export default class boosterBar{
 
         this.countdownText[index-1] = countdown;
         this.countdownTime.set(booster.name, countdown);
-        let count = 0;
         
 
         const timerEvent = scene.time.addEvent({
             delay: 1000,
             callback: () => {
-                count++;
                 const timeCount = this.timeService.getDurationTime(durationInSecond ,this.startTime);
                 if (timeCount === 'timeout') {
                     console.log('timeout',booster.name);
