@@ -64,5 +64,21 @@
   "collect_item": "เก็บ",
   "alien_boss_name": "เอเลี่ยนซ่า",
   "alien_boss_name_version2": "เอเลี่ยนซ่า\nร่าง 2",
-  "player_name": "น้องปิ๊ด"
+  "player_name": "น้องปิ๊ด",
+  "redeem_title":"ภารกิจ",
+  "redeem_mission_description":"เอาชนะบอสผ่านการต่อสู้\nและพาสัตว์เลี้ยงกลับบ้าน",
+  "redeem_booster_text":"เลือกบูสเตอร์ของคุณ",
+  "redeem_button_text":"เริ่มเกม",
+  "booster_description_1":"ป้องกันการโจมตี 5 ครั้ง\nในช่วงโจมตีบอส",
+  "booster_description_2":"ลดคะแนนบาดเจ็บจาก\nการถูกโจมตีลง50%",
+  "booster_description_3":"เกราะป้องกัน 15 วินาที\nเมื่อโดนโจมตีครั้งแรก",
+  "booster_description_4":"ปล่อยกระสุนไวขึ้น +20%\nเพิ่มจำนวนกระสุน +20%",
+  "booster_description_5":"เพิ่มคะแนนกระสุน +10%",
+  "booster_description_rare1":"เปลี่่ยนรูปแบบการปล่อยกระสุน\nเป็นแบบกระจาย 2 ทาง",
+  "booster_description_rare2":"เพิ่มคะแนนรวม 50%",
+  "booster_description_unlimited":"แบบไม่จำกัด",
+  "booster_description_default":"เลือกบูสเตอร์ได้สูงสุด 2 อัน",
+  "booster_description_expire":"หมดอายุ {{hours, number}} ชม. {{minutes, number}} นาที",
+  "booster_description_expire_seconds":"จะหมดอายุแล้ว!",
+  "booster_description_amount":"มีอยู่ {{amount, number}} อัน"
 }

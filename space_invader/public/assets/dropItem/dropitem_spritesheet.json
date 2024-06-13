@@ -1,0 +1,225 @@
+{
+	"frames": [
+		{
+			"filename": "booster random.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster rare1.png",
+			"frame": {
+				"x": 99,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster rare2.png",
+			"frame": {
+				"x": 197,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster1.png",
+			"frame": {
+				"x": 1,
+				"y": 99,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster2.png",
+			"frame": {
+				"x": 99,
+				"y": 99,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster3.png",
+			"frame": {
+				"x": 197,
+				"y": 99,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster4.png",
+			"frame": {
+				"x": 1,
+				"y": 197,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster5.png",
+			"frame": {
+				"x": 99,
+				"y": 197,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "item_bullet.png",
+			"frame": {
+				"x": 197,
+				"y": 197,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "item_poison.png",
+			"frame": {
+				"x": 295,
+				"y": 1,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 392,
+			"h": 294
+		},
+		"scale": "1"
+	}
+}
