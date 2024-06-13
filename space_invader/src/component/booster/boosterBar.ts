@@ -50,7 +50,7 @@ export default class boosterBar{
         this.scene = scene;
                 
         //first line
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2/3, 
             this.position.y, 
             'dropItem',
@@ -65,7 +65,7 @@ export default class boosterBar{
             1
         ));
 
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2/3+ this.gapSize.width, 
             this.position.y, 
             'dropItem',
@@ -81,7 +81,7 @@ export default class boosterBar{
             2
         ));
         
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2/3+ this.gapSize.width*2, 
             this.position.y, 
             'dropItem',
@@ -96,7 +96,7 @@ export default class boosterBar{
             3
         ));
         
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2/3+ this.gapSize.width*3, 
             this.position.y, 
             'dropItem',
@@ -113,7 +113,7 @@ export default class boosterBar{
        
 
         //second line
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -129,7 +129,7 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2+ this.gapSize.width, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -145,7 +145,7 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.image(
+        this.scene.add.nineslice(
             this.position.x+MARGIN*2+ this.gapSize.width*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
