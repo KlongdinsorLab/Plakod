@@ -28,7 +28,7 @@ export default class RedeemScene extends Phaser.Scene {
 
         //booster
         this.load.image('booster_selectedMark', 'assets/dropItem/selectedMark.png')
-        this.load.atlas('dropItem', 'assets/dropItem/dropItem_spritesheet.png', 'assets/dropItem/dropItem_spritesheet.json')
+        this.load.atlas('dropItem', 'assets/dropItem/dropitem_spritesheet.png', 'assets/dropItem/dropitem_spritesheet.json')
         
     }
     create(){

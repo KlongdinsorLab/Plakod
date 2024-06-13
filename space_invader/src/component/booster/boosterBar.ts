@@ -53,8 +53,8 @@ export default class boosterBar{
         scene.add.image(
             this.position.x+MARGIN*2/3, 
             this.position.y, 
-            'dropItem',
-            'booster1.png',
+            "dropItem",
+            "booster1.png",
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
