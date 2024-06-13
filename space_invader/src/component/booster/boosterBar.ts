@@ -4,8 +4,7 @@ import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
 export default class boosterBar{
-    private scene: Phaser.Scene | undefined;
-    private loader!: Phaser.Loader.LoaderPlugin;
+    private scene: Phaser.Scene;
 
     private selectedBooster: string[] = [];
     private maxSelectableBoosters: number = 1;
@@ -49,13 +48,9 @@ export default class boosterBar{
     
     constructor(scene: Phaser.Scene){
         this.scene = scene;
-
-        this.loader = new Phaser.Loader.LoaderPlugin(scene);
-        this.loader.atlas('dropItem', 'assets/dropItem/dropItem_spritesheet.png', 'assets/dropItem/dropItem_spritesheet.json')
-        
                 
         //first line
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2/3, 
             this.position.y, 
             'dropItem',
@@ -70,7 +65,7 @@ export default class boosterBar{
             1
         ));
 
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width, 
             this.position.y, 
             'dropItem',
@@ -86,7 +81,7 @@ export default class boosterBar{
             2
         ));
         
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width*2, 
             this.position.y, 
             'dropItem',
@@ -101,7 +96,7 @@ export default class boosterBar{
             3
         ));
         
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2/3+ this.gapSize.width*3, 
             this.position.y, 
             'dropItem',
@@ -118,7 +113,7 @@ export default class boosterBar{
        
 
         //second line
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -126,7 +121,7 @@ export default class boosterBar{
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
-            this.scene!, 
+            scene, 
             this.getBoosterByName('booster_5'), 
             this.position.x+MARGIN*2, 
             this.position.y + this.gapSize.height,
@@ -134,7 +129,7 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2+ this.gapSize.width, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -142,7 +137,7 @@ export default class boosterBar{
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
-            this.scene!, 
+            scene, 
             this.getBoosterByName('booster_rare1'), 
             this.position.x+MARGIN*2+ this.gapSize.width, 
             this.position.y + this.gapSize.height,
@@ -150,7 +145,7 @@ export default class boosterBar{
         ));
         
         
-        this.scene.add.image(
+        scene.add.image(
             this.position.x+MARGIN*2+ this.gapSize.width*2, 
             this.position.y+ this.gapSize.height, 
             'dropItem',
@@ -158,7 +153,7 @@ export default class boosterBar{
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         .setInteractive().on('pointerup', () => this.IsSelected(
-            this.scene!, 
+            scene, 
             this.getBoosterByName('booster_rare2'), 
             this.position.x+MARGIN*2+ this.gapSize.width*2, 
             this.position.y + this.gapSize.height,
@@ -167,7 +162,7 @@ export default class boosterBar{
        
         //first line
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_1')!,
             this.position.x+MARGIN*2/3, 
             this.position.y, 
@@ -175,7 +170,7 @@ export default class boosterBar{
             1
         );
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_2')!,
             this.position.x+MARGIN*2/3+ this.gapSize.width, 
             this.position.y, 
@@ -183,7 +178,7 @@ export default class boosterBar{
             2
         );
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_3')!,
             this.position.x+MARGIN*2/3+ this.gapSize.width*2, 
             this.position.y, 
@@ -191,7 +186,7 @@ export default class boosterBar{
             3
         );
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_4')!,
             this.position.x+MARGIN*2/3+ this.gapSize.width*3, 
             this.position.y, 
@@ -202,7 +197,7 @@ export default class boosterBar{
 
         //second line
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_5')!,
             this.position.x+MARGIN*2, 
             this.position.y+ this.gapSize.height, 
@@ -210,7 +205,7 @@ export default class boosterBar{
             5
         );
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_rare1')!,
             this.position.x+MARGIN*2+ this.gapSize.width, 
             this.position.y+ this.gapSize.height, 
@@ -218,7 +213,7 @@ export default class boosterBar{
             6
         );
         this.initBooster(
-            this.scene, 
+            scene, 
             this.getBoosterByName('booster_rare2')!,
             this.position.x+MARGIN*2+ this.gapSize.width*2, 
             this.position.y+ this.gapSize.height, 
