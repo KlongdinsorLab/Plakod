@@ -16,7 +16,7 @@ import OtpScene from './scene/auth/OtpScene'
 import RegisterScene from './scene/auth/RegisterScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
-import BossScene from 'scene/boss/BossScene'
+import BossGameplayScene from 'scene/boss/BossGameplayScene'
 import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
 import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
 import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
@@ -30,6 +30,7 @@ import Cutscene1 from 'scene/cutscene/Cutscene1'
 import Cutscene2 from 'scene/cutscene/Cutscene2'
 import SettingScene from 'scene/submenu/SettingScene'
 import LifeCountScene from 'scene/LifeCountScene'
+import BossScene from 'scene/boss/BossScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -69,7 +70,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		TutorialControllerScene,
 		WarmupGaugeScene,
 		WarmupScene,
-		BossScene,
+		BossGameplayScene,
 		BossItemTutorial,
 		BossTutorialPhase1,
 		BossTutorialPhase2,
@@ -79,7 +80,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		PauseScene,
 		RankingScene,
 		SettingScene,
-		LifeCountScene
+		LifeCountScene,
+		BossScene
 	],
 }
 

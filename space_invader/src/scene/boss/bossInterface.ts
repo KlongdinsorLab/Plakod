@@ -1,7 +1,9 @@
-import { Boss, BossName } from 'component/enemy/boss/Boss'
+import { Boss, BossName, BossState } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
 import { B2Boss } from 'component/enemy/boss/b2/B2Boss'
+import Player from 'component/player/Player'
+import Score from 'component/ui/Score'
 
 export interface BossInterface {
 	  name: BossName,
@@ -10,6 +12,10 @@ export interface BossInterface {
 		score: number,
 		playerX: number,
 		reloadCount: number, // TODO change name and class to lap
+
+		player: Player,
+		state : BossState
+		scoreObj : Score
 }
 
 export const BossByName = {

@@ -4,6 +4,7 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import { BossCutScene } from 'component/enemy/boss/Boss'
 
 export default class TitleScene extends Phaser.Scene {
   //	private background!: Phaser.GameObjects.TileSprite
@@ -114,8 +115,13 @@ export default class TitleScene extends Phaser.Scene {
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
 
-    this.scene.start(import.meta.env.VITE_START_SCEN || 'home', { bgm: this.bgm })
-    //this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
+    /*this.scene.start(import.meta.env.VITE_START_SCEN || "bossScene", {
+      name: "B1",
+      score: 0,
+      playerX: 360,
+      reloadCount: 10,
+    })*/
+    this.scene.start(import.meta.env.VITE_START_SCEN || 'bossMaster', {})
     // import.meta.env.VITE_START_SCENE && new SoundManager(this).stop(this.bgm!)
 
   }

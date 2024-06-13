@@ -75,4 +75,10 @@ export default class Score {
     this.scoreLogo.setVisible(false)
     this.scoreBackground.setVisible(false)
   }
+
+  show() : void {
+    this.scoreText.setVisible(true)
+    this.scoreLogo.setVisible(true)
+    this.scoreBackground.setVisible(true)
+  }
 }

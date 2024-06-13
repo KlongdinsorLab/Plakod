@@ -38,6 +38,13 @@ export enum BossName {
 	B1 = 'B1',
 }
 
+export enum BossStateName {
+	CUTSCENEVS,
+	TUTORIAL,
+	GAMEPLAY,
+	PAUSE,
+}
+
 interface Constructable<T> {
 	new (...args: any[]): T
 }
@@ -48,6 +55,22 @@ export async function importClassByName<T>(
 	const module = await import(`./${className}`)
 	const classRef = module[className] as Constructable<T>
 	return classRef
+}
+
+export class BossState {
+	private state !: BossStateName
+
+	constructor(state : BossStateName) {
+		this.state = state
+	}
+
+	getState() : BossStateName {
+		return this.state
+	}
+
+	setState(state : BossStateName) {
+		this.state = state
+	}
 }
 
 export abstract class Boss extends Enemy {

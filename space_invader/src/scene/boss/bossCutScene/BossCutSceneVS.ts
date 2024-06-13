@@ -1,4 +1,4 @@
-import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene, BossState, BossStateName } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from '../bossInterface'
 // import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
@@ -10,6 +10,9 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	private props!: BossInterface
 	private bossVersion!: BossVersion
 	private boss!: Boss
+	
+	private state !: BossState
+	private isAnimStart : boolean = false
 
 	constructor() {
 		super({ key: BossCutScene.VS })
@@ -55,7 +58,9 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	}
 
 	create() {
-		const { name, score, playerX, reloadCount } = this.props
+		const { name, reloadCount, state } = this.props
+		this.state = state
+
 		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
 		const bossSound = this.sound.addAudioSprite('bossSound')
 		tutorialSound.play('boss-vs')
@@ -89,17 +94,20 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			},
 			active: function () {
 				self.bossVersion.playVsScene(self, player)
+				self.isAnimStart = true
 			},
 		})
 
-		setTimeout(() => {
-			this.scene.stop()
-			this.scene.start('bossScene', {
-				name: name,
-				score: score,
-				playerX: playerX,
-				reloadCount: reloadCount,
-			})
-		}, 3000)
+		
+	}
+
+	update(){
+		if(this.isAnimStart && this.state.getState() === BossStateName.CUTSCENEVS) {
+			setTimeout(() => {
+				this.state.setState(BossStateName.GAMEPLAY)
+				this.scene.stop()
+			
+			}, 3000)
+		}
 	}
 }
