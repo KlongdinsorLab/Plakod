@@ -53,6 +53,7 @@ export default class RankingScene extends Phaser.Scene {
           super({ key: 'ranking' });
      }
 
+     // first loading (constructor ?)
      private loadingData(): void {
 
           // fetch data
@@ -114,6 +115,8 @@ export default class RankingScene extends Phaser.Scene {
           this.allData = fakeData;
 
           // initial my data
+          this.onScorePage = true;
+          
           // TODO myPlayerID define
           const temp = this.allData.find(
                player => player.id === this.myPlayerID
@@ -121,6 +124,8 @@ export default class RankingScene extends Phaser.Scene {
 
           if (temp) this.myData = temp
           else console.log('my data is empty');
+
+
      }
 
      private sortScore(): void {
