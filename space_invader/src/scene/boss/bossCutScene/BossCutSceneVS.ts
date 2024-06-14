@@ -103,6 +103,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 	update(){
 		if(this.isAnimStart && this.state.getState() === BossStateName.CUTSCENEVS) {
+			// TODO Try Time Event
 			setTimeout(() => {
 				this.state.setState(BossStateName.GAMEPLAY)
 				this.scene.stop()

@@ -18,13 +18,18 @@ export default class PauseScene extends Phaser.Scene {
   private timeService!: TimeService
   private playCount!: number
 
+  private subSceneKeys ?: string[]
+
   constructor() {
     super('pause')
   }
 
-  init({ menu, sceneName }:{menu: Phaser.GameObjects.Image, sceneName: string}) {
+  init({ menu, sceneName, subSceneKeys }:{menu: Phaser.GameObjects.Image, sceneName: string, subSceneKeys: string[]}) {
     this.menu = menu
     this.sceneName = sceneName
+    if(subSceneKeys) {
+      this.subSceneKeys = subSceneKeys
+    }
   }
 
   preload() {
@@ -104,6 +109,11 @@ export default class PauseScene extends Phaser.Scene {
       soundManager.resumeAll()
       this.menu.setTexture('ui', 'pause.png')
       this.scene.resume(this.sceneName)
+      if(this.subSceneKeys) {
+        for(let i = 0; i<this.subSceneKeys.length; i++) {
+          this.scene.resume(this.subSceneKeys[i])
+        }
+      }
       this.scene.stop()
     })
 

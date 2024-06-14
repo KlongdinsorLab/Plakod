@@ -47,7 +47,7 @@ export default class BossGameplayScene extends Phaser.Scene {
 	private boss!: Boss
 	private bossVersion!: BossVersion
 
-	private bossLayer!: Phaser.GameObjects.Layer
+	// private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
 	private bulletText!: Phaser.GameObjects.Text
 
@@ -147,7 +147,7 @@ export default class BossGameplayScene extends Phaser.Scene {
 		this.soundManager.init()
 		this.soundManager.play(this.bgm)
 
-		this.bossLayer = this.add.layer()
+		// this.bossLayer = this.add.layer()
 
 		this.player = player
 
