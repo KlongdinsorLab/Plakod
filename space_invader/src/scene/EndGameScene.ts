@@ -1,11 +1,12 @@
 import Phaser from 'phaser'
-import { MARGIN } from 'config'
+import { MARGIN, VAS_COUNT, MAX_PLAYED } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Heart from 'component/ui/Heart'
 import RewardDialog from 'component/ui/RewardDialog'
 import RestartButton from 'component/ui/Button/RestartButton'
 import HomeButton from 'component/ui/Button/HomeButton'
+import vas from 'component/ui/Vas'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -16,11 +17,15 @@ export default class EndGameScene extends Phaser.Scene {
 	private rewardDialog!: RewardDialog
 	private restartButton!: RestartButton
 	private homeButton!: HomeButton
-	private playCount!: number
+	//private playCount!: number
 	private victoryText!: Phaser.GameObjects.Text
 	private highScoreText!: Phaser.GameObjects.Text
 	private scoreText!: Phaser.GameObjects.Text
 	private completeText!: Phaser.GameObjects.Text
+
+	private vas!: vas
+
+	private playerJson = {"totalPlayed" : 20, "todayPlayed" : 9}
 
 	constructor() {
 		super('end game')
@@ -58,6 +63,24 @@ export default class EndGameScene extends Phaser.Scene {
 			'assets/sprites/boss/asset_boss.png',
 			'assets/sprites/boss/asset_boss.json',
 		)
+
+		this.load.atlas(
+			'heart_spritesheet',
+			'assets/heart_spritesheet/heart_spritesheet.png',
+			'assets/heart_spritesheet/heart_spritesheet.json'
+		)
+
+		this.load.atlas(
+			'vas',
+			'assets/vas/vas_spritesheet.png',
+			'assets/vas/vas_spritesheet.json'
+		)
+
+		this.load.atlas(
+			'button',
+			'assets/button/button_spritesheet.png',
+			'assets/button/button_spritesheet.json'
+		)
 	}
 
 	create() {
@@ -65,7 +88,7 @@ export default class EndGameScene extends Phaser.Scene {
 		const i18n = I18nSingleton.getInstance()
 		// TODO: call api
 		
-		this.playCount = Number(localStorage.getItem('playCount') ?? '')
+		//this.playCount = Number(localStorage.getItem('playCount') ?? '')
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
 			.setOrigin(0)
@@ -107,15 +130,25 @@ export default class EndGameScene extends Phaser.Scene {
 		this.restartButton = new RestartButton(this)
 		this.homeButton = new HomeButton(this)
 
-		if (this.playCount >= 10) {
+		if(this.playerJson.totalPlayed % VAS_COUNT == 0){
+			this.homeButton.disable()
+			this.homeButton.hide()
+			this.restartButton.disable()
 			this.restartButton.hide()
 			this.rewardDialog.hide()
-			this.completeText.setVisible(true)
+			this.completeText.setVisible(false)
+
+			this.heart1.getBody().setVisible(false)
+			this.heart2.getBody().setVisible(false)
+			
+			this.vas = new vas(this)
 		}
 
 		if(this.isHeartEmpty){
 			this.restartButton.hide()
 		}
+
+		
 
 		const self = this
 		WebFont.load({
@@ -131,7 +164,7 @@ export default class EndGameScene extends Phaser.Scene {
 				const juaFontStyle = {
 					fontFamily: 'Jua',
 				}
-
+				self.vas.initFontStyle()
 				self.rewardDialog.initFontStyle()
 				self.heart1.initFontStyle()
 				self.heart2.initFontStyle()
@@ -178,5 +211,31 @@ export default class EndGameScene extends Phaser.Scene {
 		if(!this.isHeartEmpty){
 			this.restartButton.show()
 		}
+		if(this.vas.getIsCompleteVas()){
+			this.ShowUI();
+		}
+
+	}
+
+	ShowUI():void{ 
+		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED){
+			this.restartButton.show()
+			this.restartButton.activate()
+		}else{
+			this.restartButton.hide()
+		}
+
+		if(this.playerJson.todayPlayed == 10){
+			this.completeText.setVisible(true)
+			this.rewardDialog.hide()
+		}else{
+			this.rewardDialog.show()
+		}
+		this.homeButton.show()
+		this.homeButton.activate()
+		
+		this.heart1.getBody().setVisible(true)
+		this.heart2.getBody().setVisible(true)
 	}
 }

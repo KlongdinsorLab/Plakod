@@ -74,4 +74,10 @@ export default class RewardDialog {
 		this.rewardText.setVisible(false)
 		this.rewardReceived.setVisible(false)
 	}
+	show(){
+		this.dialog.setVisible(true)
+		this.rewardDescriptionText.setVisible(true)
+		this.rewardText.setVisible(true)
+		this.rewardReceived.setVisible(true)
+	}
 }
