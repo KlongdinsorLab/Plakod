@@ -36,7 +36,7 @@ export default class TitleScene extends Phaser.Scene {
     this.load.audioSprite('mcSound', 'sound/audio_sprites/mc1-sound.json', [
     'sound/audio_sprites/mc1-sound.mp3'
     ]);
-    
+
 		this.load.audioSprite('bossSound', 'sound/audio_sprites/b1-sound.json', [
 			'sound/audio_sprites/b1-sound.mp3',
 		])
@@ -104,7 +104,7 @@ export default class TitleScene extends Phaser.Scene {
       this.hasController &&
       (this.controller1?.direction.LEFT ||
         this.controller1?.direction.RIGHT ||
-        this.controller1?.buttons.B9 > 0 ||
+        this.controller1?.buttons.B7 > 0 ||
         this.input.pointer1.isDown)
     ) {
       this.startGame()
