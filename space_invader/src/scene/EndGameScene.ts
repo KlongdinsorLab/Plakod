@@ -221,6 +221,7 @@ export default class EndGameScene extends Phaser.Scene {
 		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED){
 			this.restartButton.show()
+			this.restartButton.activate()
 		}else{
 			this.restartButton.hide()
 		}
@@ -232,6 +233,7 @@ export default class EndGameScene extends Phaser.Scene {
 			this.rewardDialog.show()
 		}
 		this.homeButton.show()
+		this.homeButton.activate()
 		
 		this.heart1.getBody().setVisible(true)
 		this.heart2.getBody().setVisible(true)
