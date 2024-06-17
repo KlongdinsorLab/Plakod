@@ -4,29 +4,22 @@ export default class Heart {
 	private heart: Phaser.GameObjects.Image
 	private heartCountdown: Phaser.GameObjects.Text
 	private isHeartRecharged = true
+	private isHeartStartRecharged: boolean;
 	private scene: Phaser.Scene
+	private timerEvent: Phaser.Time.TimerEvent
 
 	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean) {
 		this.scene = scene
-
+		
 		const timeService = new TimeService()
 		// TODO: call api
 		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
-		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
 
-		if ( !this.isHeartRecharged ) {
-			const interval = setInterval(() => {
-				const timeCoundown = timeService.getTimeCountdown(lastPlayTime)
-				this.heartCountdown.setText(timeCoundown)
-				this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
-				if (this.isHeartRecharged) {
-					if (playFillAnimation ?? true) {
-						this.fillHeart()
-						this.heartCountdown.setText("")
-					}
-					clearInterval(interval)
-				}
-			})
+		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
+		if (this.isHeartRecharged) {
+			this.isHeartStartRecharged = true;
+		} else {
+			this.isHeartStartRecharged = false;
 		}
 
 		this.heart = scene.add
@@ -37,6 +30,47 @@ export default class Heart {
 			.text(x, y + 92, ``)
 			.setOrigin(0.5, 0)
 			// .setVisible(!this.isHeartRecharged)
+		
+		
+		this.timerEvent = scene.time.addEvent({
+			delay: 1000,
+			callback: () => {
+				
+				// event when heart is recharged finish
+				this.isHeartRecharged = timeService.isRecharged(lastPlayTime);
+				if (this.isHeartRecharged) {
+					if ((playFillAnimation ?? true) && !this.isHeartStartRecharged) {
+						this.fillHeart();
+						this.heartCountdown.setText('');
+					}
+					
+					this.timerEvent.remove();
+					return
+				}
+
+				// set countdown text
+				const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
+				this.heartCountdown.setText(timeCountdown);
+
+			},
+			callbackScope: scene,
+			loop: true
+		})
+
+		// const interval = setInterval(() => {
+		// 	const timeCoundown = timeService.getTimeCountdown(lastPlayTime)
+		// 	this.heartCountdown.setText(timeCoundown)
+		// 	this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
+		// 	if (this.isHeartRecharged) {
+		// 		if (playFillAnimation ?? true) {
+		// 			this.fillHeart()
+		// 			this.heartCountdown.setText("")
+		// 		}
+		// 		clearInterval(interval)
+		// 	}
+		// })
+		
+
 
 		// For animation testing
 		/*this.heart.setInteractive().on('pointerup', () => {
