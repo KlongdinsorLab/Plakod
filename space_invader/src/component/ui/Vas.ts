@@ -72,6 +72,9 @@ export default class vas {
         ).setOrigin(0,0)
         .setInteractive()
         .on('pointerup', () => {
+            if(this.score == 0){
+                return;
+            }
            if(this.score >= 7 && !this.isConfirm){
             this.isConfirm = true;
             this.buttonText.forEach((text) => {

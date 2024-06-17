@@ -131,7 +131,9 @@ export default class EndGameScene extends Phaser.Scene {
 		this.homeButton = new HomeButton(this)
 
 		if(this.playerJson.totalPlayed % VAS_COUNT == 0){
+			this.homeButton.disable()
 			this.homeButton.hide()
+			this.restartButton.disable()
 			this.restartButton.hide()
 			this.rewardDialog.hide()
 			this.completeText.setVisible(false)
