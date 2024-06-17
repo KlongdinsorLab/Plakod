@@ -79,4 +79,11 @@ export default class HomeButton extends Button {
 		this.buttonText.setVisible(false)
 		this.isActive = false
 	}
+
+	show(): void{
+		this.button.setVisible(true)
+		this.buttonLogo.setVisible(true)
+		this.buttonText.setVisible(true)
+		this.isActive = true
+	}
 }

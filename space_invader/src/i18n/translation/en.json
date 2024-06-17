@@ -111,5 +111,13 @@
   "successfully_edited" : "Successfully Edited",
   "changed_airflow_to" : "Changed airflow to",
   "successfully" : "successfully",
-  "life_count" : "You have {{heart, number}} heart(s) left."
+  "life_count" : "You have {{heart, number}} heart(s) left.",
+  "vas_box_text" : "Rate your tiredness",
+  "vas_box_rest" : "You're too tired.\nPlease take a rest.",
+  "vas_box_confirm" : "confirm",
+  "vas_box_text1" : "it's all right ",
+  "vas_box_text2" : "just a little tired",
+  "vas_box_text3" : "I'm tired",
+  "vas_box_text4" : "I'm very tired",
+  "vas_box_text5" : "I'm exhausted."
 }

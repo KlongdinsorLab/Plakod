@@ -111,5 +111,13 @@
   "successfully_edited" : "เปลี่ยนแปลงสำเร็จ",
   "changed_airflow_to" : "ปรับปริมาณอากาศเป็น",
   "successfully" : "สำเร็จ",
-  "life_count" : "หัวใจเหลือ {{heart, number}} ดวง"
+  "life_count" : "หัวใจเหลือ {{heart, number}} ดวง",
+  "vas_box_text" : "ให้คะแนนความเหนื่อย",
+  "vas_box_rest" : "เหนื่อยเกินไปแล้วนะ\nพักผ่อนซักหน่อย",
+  "vas_box_confirm" : "ยืนยัน",
+  "vas_box_text1" : "สบายมาก",
+  "vas_box_text2" : "เหนื่อยเล็กน้อย",
+  "vas_box_text3" : "ค่อนข้างเหนื่อย",
+  "vas_box_text4" : "เหนื่อยมาก",
+  "vas_box_text5" : "เหนื่อยมากที่สุด"
 }
