@@ -53,7 +53,7 @@ export default class TimeService {
 			return true
 		}
 		const diff = (new Date().getTime() - lastPlayTime.getTime()) / 36e5
-		return diff >= 1 && this.playCount != 10
+		return diff >= 1 && this.playCount < 10
 	}
 }
 
