@@ -340,12 +340,17 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) {
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) { // Fully Reloaded
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
-      setTimeout(() => {
-        this.reloadCount.decrementCount()
-        this.isCompleteBoss = false
-      }, LASER_FREQUENCY_MS * BULLET_COUNT)
+
+      this.time.addEvent({
+        delay : LASER_FREQUENCY_MS * BULLET_COUNT,
+        callback : () => {
+          this.reloadCount.decrementCount()
+          this.isCompleteBoss = false
+        },
+        loop : false,
+      })
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(ShootingPhase.NORMAL)
@@ -355,10 +360,14 @@ export default class GameScene extends Phaser.Scene {
       }
 
       if (this.reloadCount.isDepleted()) {
-        setTimeout(() => {
-          this.scene.pause()
-          this.scene.launch('end game', { score: this.score.getScore() })
-        }, LASER_FREQUENCY_MS * BULLET_COUNT)
+        this.time.addEvent({
+          delay : LASER_FREQUENCY_MS * BULLET_COUNT,
+          callback : () => {
+            this.scene.pause()
+            this.scene.launch('end game', { score: this.score.getScore() })
+          },
+          loop : false,
+        })
       }
     }
 
