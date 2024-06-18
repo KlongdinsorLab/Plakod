@@ -8,30 +8,39 @@ export default class Heart {
 	private scene: Phaser.Scene
 	private timerEvent: Phaser.Time.TimerEvent
 
-	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean) {
+	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean, hasText: boolean = true) {
 		this.scene = scene
 		
 		const timeService = new TimeService()
+		
 		// TODO: call api
 		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
-
 		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
+
+		this.heart = scene.add
+		.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
+		.setOrigin(0.5, 0)
+		
+		this.heartCountdown = scene.add
+		.text(x, y + 92, ``)
+		.setOrigin(0.5, 0)
+		// .setVisible(!this.isHeartRecharged)
+		
+		
+		// before loop
 		if (this.isHeartRecharged) {
 			this.isHeartStartRecharged = true;
 		} else {
 			this.isHeartStartRecharged = false;
+
+			if(hasText) {
+				// set countdown text
+				const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
+				this.heartCountdown.setText(timeCountdown)
+			} 
 		}
 
-		this.heart = scene.add
-			.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
-			.setOrigin(0.5, 0)
-
-		this.heartCountdown = scene.add
-			.text(x, y + 92, ``)
-			.setOrigin(0.5, 0)
-			// .setVisible(!this.isHeartRecharged)
-		
-		
+		// loop time event
 		this.timerEvent = scene.time.addEvent({
 			delay: 1000,
 			callback: () => {
@@ -48,9 +57,11 @@ export default class Heart {
 					return
 				}
 
-				// set countdown text
-				const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
-				this.heartCountdown.setText(timeCountdown);
+				if(hasText) {
+					// set countdown text
+					const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
+					this.heartCountdown.setText(timeCountdown)
+				} 
 
 			},
 			callbackScope: scene,
