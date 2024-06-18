@@ -1,13 +1,11 @@
-import { MARGIN,SCREEN_HEIGHT } from "config";
+import { MARGIN,SCREEN_HEIGHT,MAX_SELECTED_BOOSTER } from "config";
 import TimeService from 'services/timeService';
 import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
 export default class boosterBar{
     private scene: Phaser.Scene;
-
     private selectedBooster: string[] = [];
-    private maxSelectableBoosters: number = 1;
 
     private boosterGraphics: Map<string, Phaser.GameObjects.Graphics> = new Map();
     private boosterMark: Map<string, Phaser.GameObjects.Image> = new Map();
@@ -27,7 +25,7 @@ export default class boosterBar{
     private gapSize = {width:120, height: 140};
 
     private timeService = new TimeService();
-    private startTime: Date = new Date();
+    private startTime: Date = new Date(Date.now());
     private timeText: string[] = [];
     private countdownText : Phaser.GameObjects.Text[]=[];
     private countdownIndex : number[]=[0,0,0,0,0,0,0,0];
@@ -35,19 +33,19 @@ export default class boosterBar{
     
     //from database
     private boosterJSON = {
-            "booster_1":          {"duration": ["00:00:10","00:00:15"],    "amount" : 3,},
-            "booster_2":          {"duration": ["00:00:10","00:00:15","00:01:00"],    "amount" : 3,},
-            "booster_3":          {"duration": ["09:00:00",],              "amount" : 7,},
-            "booster_4":          {"duration": ["12:00:00",],              "amount" : 2,},
-            "booster_5":          {"duration": [], "amount" : 0,},
-            "booster_rare1":      {"duration": [], "amount" : 0,},
-            "booster_rare2":      {"duration": [], "amount" : 1,},          
+            "booster_1":          {"expire_date": ["2024-06-19T12:00:00.000Z","2024-06-19T08:01:00.000Z"],    "amount" : 3,},
+            "booster_2":          {"expire_date": ["2024-06-19T09:00:00.000Z","2024-06-19T08:01:00.000Z"],    "amount" : 2,},
+            "booster_3":          {"expire_date": [], "amount" : 30,},
+            "booster_4":          {"expire_date": [], "amount" : 0,},
+            "booster_5":          {"expire_date": [], "amount" : 1,},
+            "booster_rare1":      {"expire_date": [], "amount" : 1,},
+            "booster_rare2":      {"expire_date": [], "amount" : 1,},          
         
     };
     
     constructor(scene: Phaser.Scene){
         this.scene = scene;
-                
+        
         //first line
         scene.add.image(
             this.position.x+MARGIN*2/3, 
@@ -240,7 +238,7 @@ export default class boosterBar{
             return;
         }
     
-        if (this.selectedBooster.length >= this.maxSelectableBoosters) {
+        if (this.selectedBooster.length >= MAX_SELECTED_BOOSTER) {
             console.log('Maximum selectable boosters reached');
             return;
         }
@@ -382,7 +380,7 @@ export default class boosterBar{
     
     getBoosterState(booster: { name: string }, index?:number): string {
         //check if booster is limitedTime
-        const isLimitedTime = (this.boosterJSON as any)[booster.name].duration.length;
+        const isLimitedTime = (this.boosterJSON as any)[booster.name].expire_date.length;
         if (isLimitedTime > 0) {
             if(index && this.countdownIndex[index-1] > isLimitedTime-1){
                 const amount = (this.boosterJSON as any)[booster.name]?.amount ?? undefined;
@@ -407,7 +405,7 @@ export default class boosterBar{
     initBooster(scene: Phaser.Scene, booster: { name: string }, x:number, y:number, state: string, index:number): void {
         console.log('initBooster',booster.name, state);
         if(state === 'limitedTime'){
-            this.setTimeout(scene,booster,(this.boosterJSON as any)[booster.name].duration, x, y, index);
+            this.setTimeout(scene,booster,(this.boosterJSON as any)[booster.name].expire_date, x, y, index);
             this.setMark(scene, x, y, booster.name);
         }else if(state === 'none'){
             this.setUnAvailable(scene,booster.name, x, y, index);
@@ -416,9 +414,9 @@ export default class boosterBar{
         }
     }
 
-    setTimeout(scene:Phaser.Scene, booster: { name: string }, durationArray:string[], x:number, y:number, index:number): void {
-        const duration = durationArray[this.countdownIndex[index-1]];
-        const durationInSecond = this.timeService.parseDuration(duration);
+    setTimeout(scene:Phaser.Scene, booster: { name: string }, expireDate:string[], x:number, y:number, index:number): void {
+        const expire = expireDate[this.countdownIndex[index-1]];
+        let dateObject: Date = new Date(expire);
 
         const countdown = scene.add.text(x, y + 104, '', { fontSize: '20px', color: '#111111' }).setOrigin(0, 0);
         countdown.setStyle({
@@ -435,7 +433,7 @@ export default class boosterBar{
         const timerEvent = scene.time.addEvent({
             delay: 1000,
             callback: () => {
-                const timeCount = this.timeService.getDurationTime(durationInSecond ,this.startTime);
+                const timeCount = this.timeService.getDurationTime(dateObject ,this.startTime);
                 if (timeCount === 'timeout') {
                     console.log('timeout',booster.name);
                     this.countdownIndex[index-1]++;

@@ -6,12 +6,14 @@ export abstract class Booster {
     protected scene: Phaser.Scene;
     protected name: string;
 
-    constructor(scene: Phaser.Scene, name: string) {
+    protected constructor(scene: Phaser.Scene, name: string) {
         this.scene = scene;
         this.name = name;
     }
 
-    // Abstract method to apply booster 
+    abstract setState(): void
     abstract applyBooster(): void;
+    abstract getBody(): Phaser.GameObjects.Image;
+
     
 }

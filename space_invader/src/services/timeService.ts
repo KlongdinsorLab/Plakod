@@ -48,17 +48,13 @@ export default class TimeService {
 		return timeText
 	}
 
-	parseDuration(durationStr: string): number {
-		const [hours, minutes, seconds] = durationStr.split(':').map(Number);
-		return (hours * 3600) + (minutes * 60) + seconds;
-	}
 	
 
-	getDurationTime(endTimeInSeconds: number, startTime: Date): string {
-		const startTimeInSeconds = Math.floor(startTime.getTime() / 1000);
+	getDurationTime(endTime: Date, startTime: Date): string {
+		const endTimeInSeconds = Math.floor(endTime.getTime() / 1000);
 		const currentSeconds = Math.floor(Date.now() / 1000);
-		const startSeconds = currentSeconds - startTimeInSeconds;
-		let remainingSeconds = endTimeInSeconds - startSeconds;
+	
+		let remainingSeconds = endTimeInSeconds - currentSeconds;
 	
 		if (remainingSeconds <= 0) return 'timeout';
 	
@@ -69,6 +65,7 @@ export default class TimeService {
 	
 		return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 	}
+	
 	
 	
 	isRecharged(lastPlayTime: Date): boolean {
