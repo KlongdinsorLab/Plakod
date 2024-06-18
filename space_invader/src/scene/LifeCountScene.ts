@@ -48,8 +48,8 @@ export default class LifeCountScene extends Phaser.Scene{
             .setOrigin(0.5,0)
 
 
-        this.heart1 = new Heart(this, width/2 + 24 + 46, 528, 1, false)
-        this.heart2 = new Heart(this, width/2 - 24 - 46, 528, 2, false)
+        this.heart1 = new Heart(this, width/2 + 24 + 46, 528, 1, false, false)
+        this.heart2 = new Heart(this, width/2 - 24 - 46, 528, 2, false, false)
 
         this.timeService = new TimeService()
         
