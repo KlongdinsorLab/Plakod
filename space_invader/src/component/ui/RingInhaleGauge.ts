@@ -172,13 +172,14 @@ export default class RingInhaleGauge extends InhaleGauge {
 //		this.holdButtonDuration = 0
 		isReloading = true
 		this.isHoldbarReducing = true
-		setTimeout(
-			() => {
+		this.scene.time.addEvent({
+			delay : LASER_FREQUENCY_MS * bulletCount,
+			callback : () => {
 				this.holdButtonDuration = 0
 				isReloading = false
 			},
-			LASER_FREQUENCY_MS * bulletCount,
-		)
+			loop : false
+		})
 	}
 
 	resetting() {

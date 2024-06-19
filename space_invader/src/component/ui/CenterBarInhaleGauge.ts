@@ -119,16 +119,17 @@ export default class CenterBarInhaleGauge extends InhaleGauge {
         bulletText.setText(`⚡️: ${currentBulletCount}`)
         this.gauge.setVisible(false)
         rectanglesBackground.map(r => r.setVisible(false))
-        setTimeout(
-            () => {
+        this.scene.time.addEvent({
+            delay : LASER_FREQUENCY_MS,
+            callback : () => {
                 rectanglesBackground.map(r => r.setVisible(true))
                 this.gauge.setVisible(true)
                 bulletText.setVisible(false)
                 this.holdButtonDuration = 0
                 isReloading = false
             },
-            LASER_FREQUENCY_MS * bulletCount,
-        )
+            loop : false
+        })
 
 
         this.setIntervalTimes(()=> {

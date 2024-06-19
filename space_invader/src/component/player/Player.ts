@@ -244,10 +244,15 @@ export default class Player {
 		this.isAttacking = true
 		this.isReload = false
 		this.chargeEmitter.stop()
-		setTimeout(() => {
-			this.isAttacking = false
-			this.player.play('run', true)
-		}, LASER_FREQUENCY_MS * bulletCount)
+
+		this.scene.time.addEvent({
+			delay : LASER_FREQUENCY_MS * bulletCount,
+			callback : () => {
+				this.isAttacking = false
+				this.player.play('run', true)
+			},
+			loop : false
+		})
 	}
 
 	attack(): void {
@@ -304,9 +309,13 @@ export default class Player {
 	}
 
 	playVsScene(scene: Phaser.Scene): void {
-		setTimeout(() => {
-			this.playerSound.play('mc1-vs')
-		}, 2000)
+		this.scene.time.addEvent({
+			delay : 2000,
+			callback : () => {
+				this.playerSound.play('mc1-vs')
+			},
+			loop : false
+		})
 
 		const playerImage = scene.add
 			.image(850, 1200, 'player', 'mc_attack_00001.png')

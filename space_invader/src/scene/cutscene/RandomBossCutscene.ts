@@ -127,10 +127,14 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			},
 		})
 
-		setTimeout(() => {
-			this.scene.start('game', { bossName: "B1" })
-			new SoundManager(this).stop(this.bgm!)
-		}, 3000)
+		this.time.addEvent({
+			delay : 3000,
+			callback : () => {
+				this.scene.start('game', { bossName: "B1" })
+				new SoundManager(this).stop(this.bgm!)
+			},
+			loop : false
+		})
 	}
 
 	randomBoss(): keyof typeof BossByName {

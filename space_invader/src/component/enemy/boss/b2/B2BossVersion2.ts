@@ -187,10 +187,15 @@ export class B2BossVersion2 extends BossVersion {
 					zeroPad: 5,
 				})
 				b2v1.addFrame(newFrames)
-				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4*MARGIN)
-					group.scaleXY(1.25)
-				},1000)
+
+				scene.time.addEvent({
+					delay : 1000,
+					callback : () => {
+						group.setXY(width / 2, height / 2 + 4*MARGIN)
+						group.scaleXY(1.25)
+					},
+					loop : false
+				})
 			}
 		})
 	}
@@ -231,22 +236,35 @@ export class B2BossVersion2 extends BossVersion {
 		const boss = scene.add.follower(path, width / 2, 300, 'b2v2').setOrigin(0.5)
 		boss.play('boss-hit')
 
-		setTimeout(() => {
-			bossSound.play("b2-escape-voice")
-			// soundManager.play(bossEscapeVoice, false)
-		}, 500)
+		scene.time.addEvent({
+			delay : 500,
+			callback : () => {
+				bossSound.play("b2-escape-voice")
+				// soundManager.play(bossEscapeVoice, false)
+			},
+			loop : false
+		})
 
-		setTimeout(() => {
-			boss.setPath(path2).startFollow({ duration: 1500 })
-		}, 1000)
+		scene.time.addEvent({
+			delay : 1000,
+			callback : () => {
+				boss.setPath(path2).startFollow({ duration: 1500 })
+			},
+			loop : false
+		})
 
-		setTimeout(() => {
-			scene.tweens.add({
-				targets: bossText,
-				duration: 200,
-				alpha: 1,
-			})
-		}, 1500)
+		scene.time.addEvent({
+			delay : 1500,
+			callback : () => {
+				scene.tweens.add({
+					targets: bossText,
+					duration: 200,
+					alpha: 1,
+				})
+			},
+			loop : false
+		})
+
 	}
 
 	playEscapePhase2(scene: Phaser.Scene): void {
@@ -282,15 +300,19 @@ export class B2BossVersion2 extends BossVersion {
 		const boss = scene.add.follower(path, width / 2, 300, 'b2v2').setOrigin(0.5)
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
-		setTimeout(() => {
-			boss.play('boss-hit')
-			boss.setPath(path2).startFollow({ duration: 1000 })
-			scene.tweens.add({
-				targets: bossText,
-				duration: 200,
-				alpha: 1,
-			})
-		}, 1000)
+		scene.time.addEvent({
+			delay : 1000,
+			callback : () => {
+				boss.play('boss-hit')
+				boss.setPath(path2).startFollow({ duration: 1000 })
+				scene.tweens.add({
+					targets: bossText,
+					duration: 200,
+					alpha: 1,
+				})
+			},
+			loop : false
+		})
 	}
 
 	playTutorialPhase1(scene: Phaser.Scene): void {
@@ -456,16 +478,20 @@ export class B2BossVersion2 extends BossVersion {
 			},
 		})
 
-		setTimeout(() => {
-			meteor.setVisible(false)
-			poison.setVisible(false)
-			bullet.setVisible(false)
-			booster.setVisible(false)
-			poisonBox.setVisible(false)
-			bulletBox.setVisible(false)
-			avoidText.setVisible(false)
-			bulletText.setVisible(false)
-		}, 2000)
+		scene.time.addEvent({
+			delay : 2000,
+			callback : () => {
+				meteor.setVisible(false)
+				poison.setVisible(false)
+				bullet.setVisible(false)
+				booster.setVisible(false)
+				poisonBox.setVisible(false)
+				bulletBox.setVisible(false)
+				avoidText.setVisible(false)
+				bulletText.setVisible(false)
+			},
+			loop : false
+		})
 	}
 
 	playRandomScene(_: Phaser.Scene, __: Player): void {

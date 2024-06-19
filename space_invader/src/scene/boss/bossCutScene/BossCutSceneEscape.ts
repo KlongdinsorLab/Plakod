@@ -34,10 +34,14 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 
 		this.boss.getVersion().playEscapePhase1(this)
 
-		setTimeout(() => {
-			this.scene.stop()
-			this.scene.launch(BossTutorialScene.COLLECT_ITEM, this.boss)
-			this.scene.resume('bossScene')
-		}, BOSS_CUTSCENE_DELAY_MS)
+		this.time.addEvent({
+			delay : BOSS_CUTSCENE_DELAY_MS,
+			callback : () => {
+				this.scene.stop()
+				this.scene.launch(BossTutorialScene.COLLECT_ITEM, this.boss)
+				this.scene.resume('bossScene')
+			},
+			loop : false
+		})
 	}
 }

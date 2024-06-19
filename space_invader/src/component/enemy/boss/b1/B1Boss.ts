@@ -17,6 +17,8 @@ import { B1BossVersion2 } from './B1BossVersion2'
 
 let isHit = false
 
+// Bug Here
+
 export class B1Boss extends Boss {
 	// private soundManager: SoundManager
 	private phaseCount!: number
@@ -104,13 +106,26 @@ export class B1Boss extends Boss {
 
 		isHit = true
 		this.enemy.setAlpha(0.75)
-		setTimeout(() => {
+		/*setTimeout(() => {
 			isHit = false
 			this.enemy.setAlpha(1)
 			this.enemy.stop()
 			// this.enemy.setTexture('boss')
 			this.enemy.play('boss-move')
-		}, BOSS_HIT_DELAY_MS)
+		}, BOSS_HIT_DELAY_MS)*/
+
+		this.scene.time.addEvent({
+			delay : BOSS_HIT_DELAY_MS,
+			callback : () => {
+				isHit = false
+				this.enemy.setAlpha(1)
+				this.enemy.stop()
+				// this.enemy.setTexture('boss')
+				this.enemy.play('boss-move')
+			},
+			loop : false
+		})
+
 		// this.soundManager.play(this.enermyDestroyedSound!, true)
 		this.score.add(DESTROY_METEOR_SCORE)
 	}
@@ -141,14 +156,27 @@ export class B1Boss extends Boss {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
 		this.isStartAttack = true
-		setTimeout(() => {
+		/*setTimeout(() => {
 			this.isAttackPhase = true
 			this.isItemPhase = false
 			this.bossRemoved = false
 			this.bossTimer = 0
 			this.move()
 			this.player.startReload()
-		}, BOSS_TUTORIAL_DELAY_MS)
+		}, BOSS_TUTORIAL_DELAY_MS)*/
+
+		this.scene.time.addEvent({
+			delay : BOSS_TUTORIAL_DELAY_MS,
+			callback : () => {
+				this.isAttackPhase = true
+				this.isItemPhase = false
+				this.bossRemoved = false
+				this.bossTimer = 0
+				this.move()
+				this.player.startReload()
+			},
+			loop : false
+		})
 	}
 
 	endAttackPhase(): void {

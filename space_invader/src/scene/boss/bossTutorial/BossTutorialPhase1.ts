@@ -31,8 +31,12 @@ export default class BossTutorialPhase1 extends Phaser.Scene {
 		
 		this.boss.getVersion().playTutorialPhase1(this)
 
-		setTimeout(() => {
-			this.scene.stop()
-		}, BOSS_TUTORIAL_DELAY_MS)
+		this.time.addEvent({
+			delay : BOSS_TUTORIAL_DELAY_MS,
+			callback : () => {
+				this.scene.stop()
+			},
+			loop : false
+		})
 	}
 }

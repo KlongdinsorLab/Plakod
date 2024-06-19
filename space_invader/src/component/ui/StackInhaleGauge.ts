@@ -131,8 +131,10 @@ export default class StackInhaleGauge extends InhaleGauge {
         this.gauge.setVisible(false)
         chargeBorder.setVisible(false)
         rectanglesBackground.map(r => r.setVisible(false))
-        setTimeout(
-            () => {
+
+        this.scene.time.addEvent({
+            delay : LASER_FREQUENCY_MS * bulletCount,
+            callback : () => {
                 rectanglesBackground.map(r => r.setVisible(true))
                 this.gauge.setVisible(true)
                 bulletText.setVisible(false)
@@ -140,8 +142,8 @@ export default class StackInhaleGauge extends InhaleGauge {
                 this.holdButtonDuration = 0
                 isReloading = false
             },
-            LASER_FREQUENCY_MS * bulletCount,
-            )
+            loop : false
+        })
 
 
         this.setIntervalTimes(()=> {

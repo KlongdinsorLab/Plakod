@@ -176,20 +176,25 @@ export default class TutorialCharacterScene extends Phaser.Scene {
     });
 
     const self = this
-    setTimeout(() => {
-      pressAnim.play()
-      self.input.once(
-        'pointerdown',
-        () => {
-          self.gameLayer.add(player)
-          self.gameLayer.add(meteor)
-          self.scene.resume('game')
-          isMute ? soundManager.mute() : soundManager.unmute()
-          i18n.removeAllListeners(self)
-          self.scene.stop()
-        },
-        this,
-      )
-    }, 2000)
+
+    this.time.addEvent({
+      delay : 2000,
+      callback : () => {
+        pressAnim.play()
+        self.input.once(
+          'pointerdown',
+          () => {
+            self.gameLayer.add(player)
+            self.gameLayer.add(meteor)
+            self.scene.resume('game')
+            isMute ? soundManager.mute() : soundManager.unmute()
+            i18n.removeAllListeners(self)
+            self.scene.stop()
+          },
+          this,
+        )
+      },
+      loop : false
+    })
   }
 }

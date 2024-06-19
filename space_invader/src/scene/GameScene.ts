@@ -117,6 +117,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
   create() {
+
     const { width, height } = this.scale
     // const queryString = window.location.search;
     // const urlParams = new URLSearchParams(queryString);

@@ -232,26 +232,31 @@ export default class TutorialHudScene extends Phaser.Scene {
     });
 
     const self = this
-    setTimeout(() => {
-      pressAnim.resume()
-      self.input.once(
-        'pointerdown',
-        () => {
-          scoreLayer.getAll().forEach(
-            layer => this.score.getLayer().add(layer)
-          )
-          reloadLayer.getAll().forEach(
-            layer => this.reloadCount.getLayer().add(layer)
-          )
-          this.menu.getLayer().add(menu)
-          self.scene.resume('game')
-          isMute ? soundManager.mute() : soundManager.unmute()
-          i18n.removeAllListeners(self)
-          self.scene.stop()
-        },
-        this,
-      )
-    }, 2000)
+
+    this.time.addEvent({
+      delay : 2000,
+      callback : () => {
+        pressAnim.resume()
+        self.input.once(
+          'pointerdown',
+         () => {
+            scoreLayer.getAll().forEach(
+             layer => this.score.getLayer().add(layer)
+            )
+            reloadLayer.getAll().forEach(
+              layer => this.reloadCount.getLayer().add(layer)
+           )
+            this.menu.getLayer().add(menu)
+           self.scene.resume('game')
+            isMute ? soundManager.mute() : soundManager.unmute()
+            i18n.removeAllListeners(self)
+            self.scene.stop()
+          },
+          this,
+        )
+      },
+      loop : false
+    })
   }
 
 }

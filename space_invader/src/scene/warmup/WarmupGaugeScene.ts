@@ -88,12 +88,16 @@ export default class WarmupScene extends Phaser.Scene {
       arrow.setVisible(true)
       arrow.setDepth(1)
 
-      setTimeout(()=> {
-        arrow.setVisible(false)
-        blackBackground.setVisible(false)
-        inhaleText1.setVisible(false)
-        inhaleText2.setVisible(false)
-      }, TUTORIAL_DELAY_MS)
+      this.time.addEvent({
+        delay : TUTORIAL_DELAY_MS,
+        callback : () => {
+          arrow.setVisible(false)
+          blackBackground.setVisible(false)
+          inhaleText1.setVisible(false)
+          inhaleText2.setVisible(false)
+        },
+        loop : false
+      })
 
       // setTimeout(()=> {
       //   inhaleText1.setVisible(true)

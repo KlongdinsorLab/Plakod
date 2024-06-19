@@ -154,10 +154,14 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_COLOR, 1)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 		this.holdButtonDuration = 0
-		setTimeout(
-			() => (this.holdButtonDuration = 0),
-			LASER_FREQUENCY_MS * bulletCount,
-		)
+
+		this.scene.time.addEvent({
+			delay : LASER_FREQUENCY_MS * bulletCount,
+			callback : () => {
+				this.holdButtonDuration = 0
+			},
+			loop : false
+		})
 	}
 
 	resetting() {

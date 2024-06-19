@@ -151,10 +151,14 @@ export default class TutorialControllerScene extends Phaser.Scene {
         this.scene.launch('warmup', { event: this.event })
         this.event.emit('completeWarmup')
         this.scene.stop()
-        setTimeout(
-          () => localStorage.setItem('tutorial', 'true'),
-          TUTORIAL_DELAY_MS,
-        )
+
+        this.time.addEvent({
+          delay : TUTORIAL_DELAY_MS,
+          callback : () => {
+            localStorage.setItem('tutorial', 'true')
+          },
+          loop : false
+        })
       },
       this,
     )

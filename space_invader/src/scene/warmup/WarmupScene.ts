@@ -112,46 +112,48 @@ export default class WarmupScene extends Phaser.Scene {
         warmupSound.play('warmup-hold')
         
        
+        self.time.addEvent({
+          delay : TUTORIAL_DELAY_MS,
+          callback : () => {
+            // soundManager.play(warmupExhale, false)
+           warmupSound.play('warmup-exhale')
+           exhaleSprite.setVisible(false)
+            i18n.setTranslatedText(description, 'warmup_exhale')
 
-        setTimeout(() => {
-          // soundManager.play(warmupExhale, false)
-          warmupSound.play('warmup-exhale')
-          exhaleSprite.setVisible(false)
-          i18n.setTranslatedText(description, 'warmup_exhale')
+            self.exhaleSprite = self.add.sprite(spriteX, spriteY, 'release')
+            self.exhaleSprite.play('exhale-animation')
+            self.exhaleSprite.setDepth(1)
+            self.step = Step.RELEASE
+            exhale.setVisible(true)
 
-          self.exhaleSprite = self.add.sprite(spriteX, spriteY, 'release')
-          self.exhaleSprite.play('exhale-animation')
-          self.exhaleSprite.setDepth(1)
-          self.step = Step.RELEASE
-          exhale.setVisible(true)
+            self.tweens.add({
+              targets: exhale,
+              scale: 3,
+              startDelay: 2000,
+              duration: TUTORIAL_DELAY_MS,
+              ease: 'Sine.inOut',
+              onComplete: (tween) => {
+                if (self.step === Step.INHALE) return
+                (tween.targets[0] as Phaser.GameObjects.Text).setVisible(false)
+                description.setVisible(false)
+                self.scene.resume('game')
+                self.exhaleSprite.setVisible(false)
+                warmupSound.play('warmup-inhale')
+                // soundManager.play(warmupInhale, false)
 
-          self.tweens.add({
-            targets: exhale,
-            scale: 3,
-            startDelay: 2000,
-            duration: TUTORIAL_DELAY_MS,
-            ease: 'Sine.inOut',
-            onComplete: (tween) => {
-              if (self.step === Step.INHALE) return
-              (tween.targets[0] as Phaser.GameObjects.Text).setVisible(false)
-              description.setVisible(false)
-              self.scene.resume('game')
-              self.exhaleSprite.setVisible(false)
-              warmupSound.play('warmup-inhale')
-              // soundManager.play(warmupInhale, false)
+                i18n.setTranslatedText(exhale, 'inhale')
+                tween.restart()
+                exhale.setVisible(true)
 
-              i18n.setTranslatedText(exhale, 'inhale')
-              tween.restart()
-              exhale.setVisible(true)
-
-              const inhaleSprite = self.add.sprite(spriteX, spriteY, 'inhale')
-              inhaleSprite.play('inhale-animation')
-              inhaleSprite.setDepth(1)
-              self.step = Step.INHALE
-            },
-          })
-        }, TUTORIAL_DELAY_MS)
-
+                const inhaleSprite = self.add.sprite(spriteX, spriteY, 'inhale')
+                inhaleSprite.play('inhale-animation')
+                inhaleSprite.setDepth(1)
+                self.step = Step.INHALE
+              },
+            })
+          },
+          loop : false
+        })
 
         const warmupUiStyle = {
           fontFamily: 'Mali'
