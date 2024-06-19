@@ -57,6 +57,8 @@ export default class GameScene extends Phaser.Scene {
   private soundManager: SoundManager
   private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
+  private subScenes!: string[]
+
   constructor() {
     super({ key: 'game' })
     this.soundManager = new SoundManager(this)
@@ -174,7 +176,8 @@ export default class GameScene extends Phaser.Scene {
     this.singleLaserFactory = new SingleLaserFactory()
     this.tutorial = new Tutorial(this)
 
-    this.menu = new Menu(this)
+    this.subScenes = ['warmup','warmupGauge','tutorial HUD','tutorial controller','tutorial character']
+    this.menu = new Menu(this,this.subScenes)
 
     if (!this.isCompleteTutorial()) {
       this.tutorialMeteor = this.meteorFactory.create(
@@ -210,6 +213,7 @@ export default class GameScene extends Phaser.Scene {
     this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
   update(_: number, delta: number) {
+    console.log(this.scene.isActive('warmup'))
     //        if (this.input.gamepad.total === 0) {
     //            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
     //            text.x = width / 2 - text.width / 2
@@ -254,6 +258,7 @@ export default class GameScene extends Phaser.Scene {
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
       this.scene.pause()
       this.isCompleteWarmup = true
+
       this.scene.launch('warmup', { event: this.event })
     }
 
@@ -314,11 +319,14 @@ export default class GameScene extends Phaser.Scene {
 
     if (
       gauge.getDuratation() > HOLD_DURATION_MS &&
-      this.controller1?.buttons.B16 > 0
+      this.controller1?.buttons.B12 > 0
     ) {
       this.player.startReload()
       gauge.setFullCharge()
       this.event.emit('fullInhale')
+
+      //remove from array
+
       if(this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
@@ -332,7 +340,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B16 > 0 &&
+      this.controller1?.buttons.B12 > 0 &&
       !this.player.getIsAttacking()
     ) {
       this.player.charge()
@@ -340,7 +348,7 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) { // Fully Reloaded
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B12 > 0)) { // Fully Reloaded
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
 
       this.time.addEvent({
@@ -371,7 +379,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    if (this.player.getIsReloading() && !(this.controller1?.buttons.B16 > 0)) {
+    if (this.player.getIsReloading() && !(this.controller1?.buttons.B12 > 0)) {
       this.player.reloadResetting()
       gauge.resetting()
     }
