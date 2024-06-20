@@ -324,8 +324,6 @@ export default class GameScene extends Phaser.Scene {
       gauge.setFullCharge()
       this.event.emit('fullInhale')
 
-      //remove from array
-
       if(this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
@@ -386,6 +384,8 @@ export default class GameScene extends Phaser.Scene {
     if (gauge.isReducing()) {
       gauge.release(delta)
     }
+
+    // console.log(gauge.getDuratation())
   }
 }
 
