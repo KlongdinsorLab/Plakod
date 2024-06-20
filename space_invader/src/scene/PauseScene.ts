@@ -153,7 +153,6 @@ export default class PauseScene extends Phaser.Scene {
       this.scene.stop()
       i18n.destroyEmitter()
       this.scene.start('title')
-      console.log("Kakangku")
     })
   }
 
