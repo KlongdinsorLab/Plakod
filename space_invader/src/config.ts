@@ -68,3 +68,7 @@ export const GREEN = 0x05FF00
 
 export const VAS_COUNT = 10
 export const MAX_PLAYED = 10
+
+const env = await import.meta.env;
+export const FIREBASE_API_KEY = (env.VITE_FIREBASE_API_KEY);
+export const FIREBASE_PROJECT_ID = (env.VITE_FIREBASE_PROJECT_ID);

@@ -1,0 +1,109 @@
+# # Example schema for simple email app
+#  type User @table(key: "uid") {
+#  	uid: String!
+#  	name: String!
+#  	address: String!
+#  }
+
+#  type Email @table {
+#  	subject: String!
+#  	sent: Date!
+#  	text: String!
+#  	from: User!
+#  }
+
+#  type Recipient @table(key: ["email", "user"]) {
+#  	email: Email!
+#  	user: User!
+#  }
+
+#  type EmailMeta @table(key: ["user", "email"]) {
+#  	user: User!
+#  	email: Email!
+#  	labels: [String]
+#  	read: Boolean!
+#  	starred: Boolean!
+#  	muted: Boolean!
+#  	snoozed: Date
+#  }
+
+type Player @table(key: "id") {
+     id: String!
+     tel: String!
+     username: String
+     gender: String
+     birthYear: Int
+     airflow: Int
+     totalScore: Int!
+     lastPlayedAt: Date!
+     usingCharacterId: String
+}
+
+type Achievement @table(key: "id") {
+     id: String!
+     name: String!
+     detail: String
+}
+
+type Character @table(key: "id") {
+     id: String!
+     name: String!
+     detail: String
+}
+
+type Booster @table(key: "id") {
+     id: String!
+     name: String!
+     detail: String
+}
+
+type PlayerAchievement @table(key: ["playerId", "achievementId" ]) {
+     playerId: Player!
+     achievementId: Achievement!
+}
+
+type PlayerCharacter @table(key: ["playerId", "characterId"]) {
+     playerId: Player!
+     characterId: Character!
+}
+
+type PlayerBooster @table(key: ["playerId", "boosterId"]) {
+     playerId: Player!
+     boosterId: Booster!
+     expireAt: Date
+     createAt: Date!
+     status: String
+}
+
+type Vas @table(key: ["id", "playerId"]) {
+     id: String!
+     playerId: Player!
+     vasScore: Int
+     createAt: Date!
+}
+
+type Level @table(key: "id") {
+     id: String!
+     level: Int!
+     scoreRequire: Int!
+}
+
+type Difficulty @table(key: "id") {
+     id: String!
+     name: String!
+     inhaleSecond: Float!
+     breakSecond: Float!
+}
+
+type GameSession @table(key: ["id", "playerId", "difficultId"]) {
+     id: String!
+     playerId: Player!
+     difficultId: Difficulty!
+     bossId: String!
+     score: Int!
+     lap: Int!
+     startAt: Date!
+     updateAt: Date
+     endAt: Date
+     status: String
+}

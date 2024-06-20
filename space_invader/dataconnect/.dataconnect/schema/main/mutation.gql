@@ -1,0 +1,266 @@
+extend type Mutation {
+  """
+  Insert a single Achievement into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  achievement_insert(data: Achievement_Data!): Achievement_Key!
+  """
+  Insert a single Booster into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  booster_insert(data: Booster_Data!): Booster_Key!
+  """
+  Insert a single Character into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  character_insert(data: Character_Data!): Character_Key!
+  """
+  Insert a single Difficulty into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  difficulty_insert(data: Difficulty_Data!): Difficulty_Key!
+  """
+  Insert a single GameSession into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  gameSession_insert(data: GameSession_Data!): GameSession_Key!
+  """
+  Insert a single Level into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  level_insert(data: Level_Data!): Level_Key!
+  """
+  Insert a single Player into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  player_insert(data: Player_Data!): Player_Key!
+  """
+  Insert a single PlayerAchievement into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  playerAchievement_insert(data: PlayerAchievement_Data!): PlayerAchievement_Key!
+  """
+  Insert a single PlayerBooster into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  playerBooster_insert(data: PlayerBooster_Data!): PlayerBooster_Key!
+  """
+  Insert a single PlayerCharacter into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  playerCharacter_insert(data: PlayerCharacter_Data!): PlayerCharacter_Key!
+  """
+  Insert a single Vas into the table. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  vas_insert(data: Vas_Data!): Vas_Key!
+  """
+  Insert or update a single Achievement into the table, based on the primary key. Returns the key of the newly inserted Achievement.
+  """
+  achievement_upsert(data: Achievement_Data!): Achievement_Key!
+  """
+  Insert or update a single Booster into the table, based on the primary key. Returns the key of the newly inserted Booster.
+  """
+  booster_upsert(data: Booster_Data!): Booster_Key!
+  """
+  Insert or update a single Character into the table, based on the primary key. Returns the key of the newly inserted Character.
+  """
+  character_upsert(data: Character_Data!): Character_Key!
+  """
+  Insert or update a single Difficulty into the table, based on the primary key. Returns the key of the newly inserted Difficulty.
+  """
+  difficulty_upsert(data: Difficulty_Data!): Difficulty_Key!
+  """
+  Insert or update a single GameSession into the table, based on the primary key. Returns the key of the newly inserted GameSession.
+  """
+  gameSession_upsert(data: GameSession_Data!): GameSession_Key!
+  """
+  Insert or update a single Level into the table, based on the primary key. Returns the key of the newly inserted Level.
+  """
+  level_upsert(data: Level_Data!): Level_Key!
+  """
+  Insert or update a single Player into the table, based on the primary key. Returns the key of the newly inserted Player.
+  """
+  player_upsert(data: Player_Data!): Player_Key!
+  """
+  Insert or update a single PlayerAchievement into the table, based on the primary key. Returns the key of the newly inserted PlayerAchievement.
+  """
+  playerAchievement_upsert(data: PlayerAchievement_Data!): PlayerAchievement_Key!
+  """
+  Insert or update a single PlayerBooster into the table, based on the primary key. Returns the key of the newly inserted PlayerBooster.
+  """
+  playerBooster_upsert(data: PlayerBooster_Data!): PlayerBooster_Key!
+  """
+  Insert or update a single PlayerCharacter into the table, based on the primary key. Returns the key of the newly inserted PlayerCharacter.
+  """
+  playerCharacter_upsert(data: PlayerCharacter_Data!): PlayerCharacter_Key!
+  """
+  Insert or update a single Vas into the table, based on the primary key. Returns the key of the newly inserted Vas.
+  """
+  vas_upsert(data: Vas_Data!): Vas_Key!
+  """
+  Update a single Achievement based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  achievement_update(id: String, id_expr: String_Expr, key: Achievement_Key, data: Achievement_Data!): Achievement_Key
+  """
+  Update a single Booster based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  booster_update(id: String, id_expr: String_Expr, key: Booster_Key, data: Booster_Data!): Booster_Key
+  """
+  Update a single Character based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  character_update(id: String, id_expr: String_Expr, key: Character_Key, data: Character_Data!): Character_Key
+  """
+  Update a single Difficulty based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  difficulty_update(id: String, id_expr: String_Expr, key: Difficulty_Key, data: Difficulty_Data!): Difficulty_Key
+  """
+  Update a single GameSession based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  gameSession_update(key: GameSession_Key, data: GameSession_Data!): GameSession_Key
+  """
+  Update a single Level based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  level_update(id: String, id_expr: String_Expr, key: Level_Key, data: Level_Data!): Level_Key
+  """
+  Update a single Player based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  player_update(id: String, id_expr: String_Expr, key: Player_Key, data: Player_Data!): Player_Key
+  """
+  Update a single PlayerAchievement based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  playerAchievement_update(key: PlayerAchievement_Key, data: PlayerAchievement_Data!): PlayerAchievement_Key
+  """
+  Update a single PlayerBooster based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  playerBooster_update(key: PlayerBooster_Key, data: PlayerBooster_Data!): PlayerBooster_Key
+  """
+  Update a single PlayerCharacter based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  playerCharacter_update(key: PlayerCharacter_Key, data: PlayerCharacter_Data!): PlayerCharacter_Key
+  """
+  Update a single Vas based on `id` or `key`, setting columns specified in `data`. Returns `null` if not found.
+  """
+  vas_update(key: Vas_Key, data: Vas_Data!): Vas_Key
+  """
+  Update Achievement entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  achievement_updateMany(where: Achievement_Filter, all: Boolean = false, data: Achievement_Data!): Int!
+  """
+  Update Booster entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  booster_updateMany(where: Booster_Filter, all: Boolean = false, data: Booster_Data!): Int!
+  """
+  Update Character entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  character_updateMany(where: Character_Filter, all: Boolean = false, data: Character_Data!): Int!
+  """
+  Update Difficulty entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  difficulty_updateMany(where: Difficulty_Filter, all: Boolean = false, data: Difficulty_Data!): Int!
+  """
+  Update GameSession entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  gameSession_updateMany(where: GameSession_Filter, all: Boolean = false, data: GameSession_Data!): Int!
+  """
+  Update Level entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  level_updateMany(where: Level_Filter, all: Boolean = false, data: Level_Data!): Int!
+  """
+  Update Player entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  player_updateMany(where: Player_Filter, all: Boolean = false, data: Player_Data!): Int!
+  """
+  Update PlayerAchievement entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  playerAchievement_updateMany(where: PlayerAchievement_Filter, all: Boolean = false, data: PlayerAchievement_Data!): Int!
+  """
+  Update PlayerBooster entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  playerBooster_updateMany(where: PlayerBooster_Filter, all: Boolean = false, data: PlayerBooster_Data!): Int!
+  """
+  Update PlayerCharacter entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  playerCharacter_updateMany(where: PlayerCharacter_Filter, all: Boolean = false, data: PlayerCharacter_Data!): Int!
+  """
+  Update Vas entries matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  vas_updateMany(where: Vas_Filter, all: Boolean = false, data: Vas_Data!): Int!
+  """
+  Delete a single Achievement based on `id` or `key` and return its key (or `null` if not found).
+  """
+  achievement_delete(id: String, id_expr: String_Expr, key: Achievement_Key): Achievement_Key
+  """
+  Delete a single Booster based on `id` or `key` and return its key (or `null` if not found).
+  """
+  booster_delete(id: String, id_expr: String_Expr, key: Booster_Key): Booster_Key
+  """
+  Delete a single Character based on `id` or `key` and return its key (or `null` if not found).
+  """
+  character_delete(id: String, id_expr: String_Expr, key: Character_Key): Character_Key
+  """
+  Delete a single Difficulty based on `id` or `key` and return its key (or `null` if not found).
+  """
+  difficulty_delete(id: String, id_expr: String_Expr, key: Difficulty_Key): Difficulty_Key
+  """
+  Delete a single GameSession based on `id` or `key` and return its key (or `null` if not found).
+  """
+  gameSession_delete(key: GameSession_Key): GameSession_Key
+  """
+  Delete a single Level based on `id` or `key` and return its key (or `null` if not found).
+  """
+  level_delete(id: String, id_expr: String_Expr, key: Level_Key): Level_Key
+  """
+  Delete a single Player based on `id` or `key` and return its key (or `null` if not found).
+  """
+  player_delete(id: String, id_expr: String_Expr, key: Player_Key): Player_Key
+  """
+  Delete a single PlayerAchievement based on `id` or `key` and return its key (or `null` if not found).
+  """
+  playerAchievement_delete(key: PlayerAchievement_Key): PlayerAchievement_Key
+  """
+  Delete a single PlayerBooster based on `id` or `key` and return its key (or `null` if not found).
+  """
+  playerBooster_delete(key: PlayerBooster_Key): PlayerBooster_Key
+  """
+  Delete a single PlayerCharacter based on `id` or `key` and return its key (or `null` if not found).
+  """
+  playerCharacter_delete(key: PlayerCharacter_Key): PlayerCharacter_Key
+  """
+  Delete a single Vas based on `id` or `key` and return its key (or `null` if not found).
+  """
+  vas_delete(key: Vas_Key): Vas_Key
+  """
+  Delete Achievement entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  achievement_deleteMany(where: Achievement_Filter, all: Boolean = false): Int!
+  """
+  Delete Booster entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  booster_deleteMany(where: Booster_Filter, all: Boolean = false): Int!
+  """
+  Delete Character entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  character_deleteMany(where: Character_Filter, all: Boolean = false): Int!
+  """
+  Delete Difficulty entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  difficulty_deleteMany(where: Difficulty_Filter, all: Boolean = false): Int!
+  """
+  Delete GameSession entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  gameSession_deleteMany(where: GameSession_Filter, all: Boolean = false): Int!
+  """
+  Delete Level entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  level_deleteMany(where: Level_Filter, all: Boolean = false): Int!
+  """
+  Delete Player entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  player_deleteMany(where: Player_Filter, all: Boolean = false): Int!
+  """
+  Delete PlayerAchievement entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  playerAchievement_deleteMany(where: PlayerAchievement_Filter, all: Boolean = false): Int!
+  """
+  Delete PlayerBooster entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  playerBooster_deleteMany(where: PlayerBooster_Filter, all: Boolean = false): Int!
+  """
+  Delete PlayerCharacter entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  playerCharacter_deleteMany(where: PlayerCharacter_Filter, all: Boolean = false): Int!
+  """
+  Delete Vas entries matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  vas_deleteMany(where: Vas_Filter, all: Boolean = false): Int!
+}

@@ -1,0 +1,19 @@
+extend type GameSession {
+  playerIdId: String!
+  difficultIdId: String!
+}
+extend type PlayerAchievement {
+  playerIdId: String!
+  achievementIdId: String!
+}
+extend type PlayerBooster {
+  playerIdId: String!
+  boosterIdId: String!
+}
+extend type PlayerCharacter {
+  playerIdId: String!
+  characterIdId: String!
+}
+extend type Vas {
+  playerIdId: String!
+}

@@ -1,0 +1,7 @@
+connectorId: "default-connector"
+authMode: "PUBLIC" 
+generate:
+  javascriptSdk:
+    outputDir: "../../js-breathBuddy-sdk"
+    package: "@breathBuddy-manager"
+    packageJsonDir: "../../"

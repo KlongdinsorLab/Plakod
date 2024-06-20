@@ -43,6 +43,17 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
+
+    // TEST dataConnect
+    // const { listPlayers } = require("@breathBuddy-manager");
+    // listPlayers().then((res: { data: any }) => {
+    //   console.log(res.data);
+    //   process.exit(0);
+    // });
+    // TEST dataConnect
+
+
+
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     this.hasController = urlParams.get('controller') === 'true'

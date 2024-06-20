@@ -1,0 +1,90 @@
+extend type Query {
+  """
+  Look up a single Achievement based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  achievement(id: String, id_expr: String_Expr, key: Achievement_Key): Achievement
+  """
+  Look up a single Booster based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  booster(id: String, id_expr: String_Expr, key: Booster_Key): Booster
+  """
+  Look up a single Character based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  character(id: String, id_expr: String_Expr, key: Character_Key): Character
+  """
+  Look up a single Difficulty based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  difficulty(id: String, id_expr: String_Expr, key: Difficulty_Key): Difficulty
+  """
+  Look up a single GameSession based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  gameSession(key: GameSession_Key): GameSession
+  """
+  Look up a single Level based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  level(id: String, id_expr: String_Expr, key: Level_Key): Level
+  """
+  Look up a single Player based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  player(id: String, id_expr: String_Expr, key: Player_Key): Player
+  """
+  Look up a single PlayerAchievement based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  playerAchievement(key: PlayerAchievement_Key): PlayerAchievement
+  """
+  Look up a single PlayerBooster based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  playerBooster(key: PlayerBooster_Key): PlayerBooster
+  """
+  Look up a single PlayerCharacter based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  playerCharacter(key: PlayerCharacter_Key): PlayerCharacter
+  """
+  Look up a single Vas based on `id` or `key` and return selected fields (or `null` if not found).
+  """
+  vas(key: Vas_Key): Vas
+  """
+  List Achievement entries in the table, optionally filtered by `where` conditions.
+  """
+  achievements(where: Achievement_Filter, orderBy: [Achievement_Order!], limit: Int = 100): [Achievement!]!
+  """
+  List Booster entries in the table, optionally filtered by `where` conditions.
+  """
+  boosters(where: Booster_Filter, orderBy: [Booster_Order!], limit: Int = 100): [Booster!]!
+  """
+  List Character entries in the table, optionally filtered by `where` conditions.
+  """
+  characters(where: Character_Filter, orderBy: [Character_Order!], limit: Int = 100): [Character!]!
+  """
+  List Difficulty entries in the table, optionally filtered by `where` conditions.
+  """
+  difficulties(where: Difficulty_Filter, orderBy: [Difficulty_Order!], limit: Int = 100): [Difficulty!]!
+  """
+  List GameSession entries in the table, optionally filtered by `where` conditions.
+  """
+  gameSessions(where: GameSession_Filter, orderBy: [GameSession_Order!], limit: Int = 100): [GameSession!]!
+  """
+  List Level entries in the table, optionally filtered by `where` conditions.
+  """
+  levels(where: Level_Filter, orderBy: [Level_Order!], limit: Int = 100): [Level!]!
+  """
+  List Player entries in the table, optionally filtered by `where` conditions.
+  """
+  players(where: Player_Filter, orderBy: [Player_Order!], limit: Int = 100): [Player!]!
+  """
+  List PlayerAchievement entries in the table, optionally filtered by `where` conditions.
+  """
+  playerAchievements(where: PlayerAchievement_Filter, orderBy: [PlayerAchievement_Order!], limit: Int = 100): [PlayerAchievement!]!
+  """
+  List PlayerBooster entries in the table, optionally filtered by `where` conditions.
+  """
+  playerBoosters(where: PlayerBooster_Filter, orderBy: [PlayerBooster_Order!], limit: Int = 100): [PlayerBooster!]!
+  """
+  List PlayerCharacter entries in the table, optionally filtered by `where` conditions.
+  """
+  playerCharacters(where: PlayerCharacter_Filter, orderBy: [PlayerCharacter_Order!], limit: Int = 100): [PlayerCharacter!]!
+  """
+  List Vas entries in the table, optionally filtered by `where` conditions.
+  """
+  vass(where: Vas_Filter, orderBy: [Vas_Order!], limit: Int = 100): [Vas!]!
+}

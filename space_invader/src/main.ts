@@ -30,6 +30,29 @@ import Cutscene1 from 'scene/cutscene/Cutscene1'
 import Cutscene2 from 'scene/cutscene/Cutscene2'
 import SettingScene from 'scene/submenu/SettingScene'
 import LifeCountScene from 'scene/LifeCountScene'
+import { initializeApp } from "firebase/app";
+import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
+
+const {
+	connectDataConnectEmulator,
+	getDataConnect,
+   } = require("firebase/data-connect");
+const { connectorConfig } = require("@breathBuddy-manager");
+
+console.log(FIREBASE_API_KEY)
+const firebaseConfig = {
+	apiKey: FIREBASE_API_KEY,
+	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
+//	databaseURL: "https://DATABASE_NAME.firebaseio.com",
+	projectId: FIREBASE_PROJECT_ID,
+};
+
+console.log(firebaseConfig)
+const app = initializeApp(firebaseConfig);
+const dc = getDataConnect(app, connectorConfig);
+
+// Remove the following line to connect directly to production
+connectDataConnectEmulator(dc, "localhost", 9399);
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,

@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "plakod-game"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {
+    "postgres": {
+      "localConnectionString": "postgresql://[username]:[password]@localhost:5432?sslmode=disable"
+    }
   }
 }

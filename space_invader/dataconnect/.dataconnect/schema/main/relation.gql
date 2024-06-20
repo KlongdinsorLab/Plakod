@@ -1,0 +1,70 @@
+extend type Achievement {
+  """
+  ✨ List PlayerAchievement entries in a one-to-many relationship with this object (i.e. where `PlayerAchievement.achievementId` equals this object).
+  """
+  playerAchievements_on_achievementId(where: PlayerAchievement_Filter, orderBy: [PlayerAchievement_Order!], limit: Int = 100): [PlayerAchievement!]!
+  """
+  ✨ List related Player entries using PlayerAchievement as a join table (i.e. where an entry of PlayerAchievement exists whose achievementId == this and playerId == that).
+  """
+  players_via_PlayerAchievement(where: PlayerAchievement_Filter, orderBy: [PlayerAchievement_Order!], limit: Int = 100): [Player!]!
+}
+extend type Booster {
+  """
+  ✨ List PlayerBooster entries in a one-to-many relationship with this object (i.e. where `PlayerBooster.boosterId` equals this object).
+  """
+  playerBoosters_on_boosterId(where: PlayerBooster_Filter, orderBy: [PlayerBooster_Order!], limit: Int = 100): [PlayerBooster!]!
+  """
+  ✨ List related Player entries using PlayerBooster as a join table (i.e. where an entry of PlayerBooster exists whose boosterId == this and playerId == that).
+  """
+  players_via_PlayerBooster(where: PlayerBooster_Filter, orderBy: [PlayerBooster_Order!], limit: Int = 100): [Player!]!
+}
+extend type Character {
+  """
+  ✨ List PlayerCharacter entries in a one-to-many relationship with this object (i.e. where `PlayerCharacter.characterId` equals this object).
+  """
+  playerCharacters_on_characterId(where: PlayerCharacter_Filter, orderBy: [PlayerCharacter_Order!], limit: Int = 100): [PlayerCharacter!]!
+  """
+  ✨ List related Player entries using PlayerCharacter as a join table (i.e. where an entry of PlayerCharacter exists whose characterId == this and playerId == that).
+  """
+  players_via_PlayerCharacter(where: PlayerCharacter_Filter, orderBy: [PlayerCharacter_Order!], limit: Int = 100): [Player!]!
+}
+extend type Difficulty {
+  """
+  ✨ List GameSession entries in a one-to-many relationship with this object (i.e. where `GameSession.difficultId` equals this object).
+  """
+  gameSessions_on_difficultId(where: GameSession_Filter, orderBy: [GameSession_Order!], limit: Int = 100): [GameSession!]!
+}
+extend type Player {
+  """
+  ✨ List GameSession entries in a one-to-many relationship with this object (i.e. where `GameSession.playerId` equals this object).
+  """
+  gameSessions_on_playerId(where: GameSession_Filter, orderBy: [GameSession_Order!], limit: Int = 100): [GameSession!]!
+  """
+  ✨ List PlayerAchievement entries in a one-to-many relationship with this object (i.e. where `PlayerAchievement.playerId` equals this object).
+  """
+  playerAchievements_on_playerId(where: PlayerAchievement_Filter, orderBy: [PlayerAchievement_Order!], limit: Int = 100): [PlayerAchievement!]!
+  """
+  ✨ List PlayerBooster entries in a one-to-many relationship with this object (i.e. where `PlayerBooster.playerId` equals this object).
+  """
+  playerBoosters_on_playerId(where: PlayerBooster_Filter, orderBy: [PlayerBooster_Order!], limit: Int = 100): [PlayerBooster!]!
+  """
+  ✨ List PlayerCharacter entries in a one-to-many relationship with this object (i.e. where `PlayerCharacter.playerId` equals this object).
+  """
+  playerCharacters_on_playerId(where: PlayerCharacter_Filter, orderBy: [PlayerCharacter_Order!], limit: Int = 100): [PlayerCharacter!]!
+  """
+  ✨ List Vas entries in a one-to-many relationship with this object (i.e. where `Vas.playerId` equals this object).
+  """
+  vass_on_playerId(where: Vas_Filter, orderBy: [Vas_Order!], limit: Int = 100): [Vas!]!
+  """
+  ✨ List related Achievement entries using PlayerAchievement as a join table (i.e. where an entry of PlayerAchievement exists whose playerId == this and achievementId == that).
+  """
+  achievements_via_PlayerAchievement(where: PlayerAchievement_Filter, orderBy: [PlayerAchievement_Order!], limit: Int = 100): [Achievement!]!
+  """
+  ✨ List related Booster entries using PlayerBooster as a join table (i.e. where an entry of PlayerBooster exists whose playerId == this and boosterId == that).
+  """
+  boosters_via_PlayerBooster(where: PlayerBooster_Filter, orderBy: [PlayerBooster_Order!], limit: Int = 100): [Booster!]!
+  """
+  ✨ List related Character entries using PlayerCharacter as a join table (i.e. where an entry of PlayerCharacter exists whose playerId == this and characterId == that).
+  """
+  characters_via_PlayerCharacter(where: PlayerCharacter_Filter, orderBy: [PlayerCharacter_Order!], limit: Int = 100): [Character!]!
+}

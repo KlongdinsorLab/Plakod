@@ -12,5 +12,9 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "dataconnect": {
+    "source": "dataconnect",
+    "location": "asia-southeast1"
   }
 }

@@ -1,0 +1,10 @@
+specVersion: "v1alpha"
+serviceId: "breath-buddy"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "breath-buddy"
+      cloudSql:
+        instanceId: "breath-buddy-sql"
+connectorDirs: ["./default-connector"]

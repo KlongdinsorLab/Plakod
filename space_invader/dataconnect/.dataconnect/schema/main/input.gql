@@ -1,0 +1,385 @@
+scalar Achievement_Key
+scalar Booster_Key
+scalar Character_Key
+scalar Difficulty_Key
+scalar GameSession_Key
+scalar Level_Key
+scalar Player_Key
+scalar PlayerAchievement_Key
+scalar PlayerBooster_Key
+scalar PlayerCharacter_Key
+scalar Vas_Key
+input Achievement_Data {
+  id: String
+  id_expr: String_Expr
+  detail: String
+  detail_expr: String_Expr
+  name: String
+  name_expr: String_Expr
+}
+input Achievement_Filter {
+  _and: [Achievement_Filter!]
+  _not: Achievement_Filter
+  _or: [Achievement_Filter!]
+  id: String_Filter
+  detail: String_Filter
+  name: String_Filter
+  playerAchievements_on_achievementId: PlayerAchievement_ListFilter
+  players_via_PlayerAchievement: Player_ListFilter
+}
+input Achievement_ListFilter {
+  count: Int_Filter
+  exist: Achievement_Filter
+}
+input Achievement_Order {
+  id: OrderDirection
+  detail: OrderDirection
+  name: OrderDirection
+}
+input Booster_Data {
+  id: String
+  id_expr: String_Expr
+  detail: String
+  detail_expr: String_Expr
+  name: String
+  name_expr: String_Expr
+}
+input Booster_Filter {
+  _and: [Booster_Filter!]
+  _not: Booster_Filter
+  _or: [Booster_Filter!]
+  id: String_Filter
+  detail: String_Filter
+  name: String_Filter
+  playerBoosters_on_boosterId: PlayerBooster_ListFilter
+  players_via_PlayerBooster: Player_ListFilter
+}
+input Booster_ListFilter {
+  count: Int_Filter
+  exist: Booster_Filter
+}
+input Booster_Order {
+  id: OrderDirection
+  detail: OrderDirection
+  name: OrderDirection
+}
+input Character_Data {
+  id: String
+  id_expr: String_Expr
+  detail: String
+  detail_expr: String_Expr
+  name: String
+  name_expr: String_Expr
+}
+input Character_Filter {
+  _and: [Character_Filter!]
+  _not: Character_Filter
+  _or: [Character_Filter!]
+  id: String_Filter
+  detail: String_Filter
+  name: String_Filter
+  playerCharacters_on_characterId: PlayerCharacter_ListFilter
+  players_via_PlayerCharacter: Player_ListFilter
+}
+input Character_ListFilter {
+  count: Int_Filter
+  exist: Character_Filter
+}
+input Character_Order {
+  id: OrderDirection
+  detail: OrderDirection
+  name: OrderDirection
+}
+input Difficulty_Data {
+  id: String
+  id_expr: String_Expr
+  breakSecond: Float
+  inhaleSecond: Float
+  name: String
+  name_expr: String_Expr
+}
+input Difficulty_Filter {
+  _and: [Difficulty_Filter!]
+  _not: Difficulty_Filter
+  _or: [Difficulty_Filter!]
+  id: String_Filter
+  breakSecond: Float_Filter
+  inhaleSecond: Float_Filter
+  name: String_Filter
+  gameSessions_on_difficultId: GameSession_ListFilter
+}
+input Difficulty_ListFilter {
+  count: Int_Filter
+  exist: Difficulty_Filter
+}
+input Difficulty_Order {
+  id: OrderDirection
+  breakSecond: OrderDirection
+  inhaleSecond: OrderDirection
+  name: OrderDirection
+}
+input GameSession_Data {
+  id: String
+  id_expr: String_Expr
+  playerIdId: String
+  playerIdId_expr: String_Expr
+  difficultIdId: String
+  difficultIdId_expr: String_Expr
+  difficultId: Difficulty_Key
+  playerId: Player_Key
+  bossId: String
+  bossId_expr: String_Expr
+  endAt: Date
+  endAt_date: Date_Relative
+  endAt_expr: Date_Expr
+  lap: Int
+  score: Int
+  startAt: Date
+  startAt_date: Date_Relative
+  startAt_expr: Date_Expr
+  status: String
+  status_expr: String_Expr
+  updateAt: Date
+  updateAt_date: Date_Relative
+  updateAt_expr: Date_Expr
+}
+input GameSession_Filter {
+  _and: [GameSession_Filter!]
+  _not: GameSession_Filter
+  _or: [GameSession_Filter!]
+  id: String_Filter
+  playerIdId: String_Filter
+  difficultIdId: String_Filter
+  difficultId: Difficulty_Filter
+  playerId: Player_Filter
+  bossId: String_Filter
+  endAt: Date_Filter
+  lap: Int_Filter
+  score: Int_Filter
+  startAt: Date_Filter
+  status: String_Filter
+  updateAt: Date_Filter
+}
+input GameSession_ListFilter {
+  count: Int_Filter
+  exist: GameSession_Filter
+}
+input GameSession_Order {
+  id: OrderDirection
+  playerIdId: OrderDirection
+  difficultIdId: OrderDirection
+  difficultId: Difficulty_Order
+  playerId: Player_Order
+  bossId: OrderDirection
+  endAt: OrderDirection
+  lap: OrderDirection
+  score: OrderDirection
+  startAt: OrderDirection
+  status: OrderDirection
+  updateAt: OrderDirection
+}
+input Level_Data {
+  id: String
+  id_expr: String_Expr
+  level: Int
+  scoreRequire: Int
+}
+input Level_Filter {
+  _and: [Level_Filter!]
+  _not: Level_Filter
+  _or: [Level_Filter!]
+  id: String_Filter
+  level: Int_Filter
+  scoreRequire: Int_Filter
+}
+input Level_ListFilter {
+  count: Int_Filter
+  exist: Level_Filter
+}
+input Level_Order {
+  id: OrderDirection
+  level: OrderDirection
+  scoreRequire: OrderDirection
+}
+input Player_Data {
+  id: String
+  id_expr: String_Expr
+  airflow: Int
+  birthYear: Int
+  gender: String
+  gender_expr: String_Expr
+  lastPlayedAt: Date
+  lastPlayedAt_date: Date_Relative
+  lastPlayedAt_expr: Date_Expr
+  tel: String
+  tel_expr: String_Expr
+  totalScore: Int
+  username: String
+  username_expr: String_Expr
+  usingCharacterId: String
+  usingCharacterId_expr: String_Expr
+}
+input Player_Filter {
+  _and: [Player_Filter!]
+  _not: Player_Filter
+  _or: [Player_Filter!]
+  id: String_Filter
+  airflow: Int_Filter
+  birthYear: Int_Filter
+  gender: String_Filter
+  lastPlayedAt: Date_Filter
+  tel: String_Filter
+  totalScore: Int_Filter
+  username: String_Filter
+  usingCharacterId: String_Filter
+  gameSessions_on_playerId: GameSession_ListFilter
+  playerAchievements_on_playerId: PlayerAchievement_ListFilter
+  playerBoosters_on_playerId: PlayerBooster_ListFilter
+  playerCharacters_on_playerId: PlayerCharacter_ListFilter
+  vass_on_playerId: Vas_ListFilter
+  achievements_via_PlayerAchievement: Achievement_ListFilter
+  boosters_via_PlayerBooster: Booster_ListFilter
+  characters_via_PlayerCharacter: Character_ListFilter
+}
+input Player_ListFilter {
+  count: Int_Filter
+  exist: Player_Filter
+}
+input Player_Order {
+  id: OrderDirection
+  airflow: OrderDirection
+  birthYear: OrderDirection
+  gender: OrderDirection
+  lastPlayedAt: OrderDirection
+  tel: OrderDirection
+  totalScore: OrderDirection
+  username: OrderDirection
+  usingCharacterId: OrderDirection
+}
+input PlayerAchievement_Data {
+  playerIdId: String
+  playerIdId_expr: String_Expr
+  achievementIdId: String
+  achievementIdId_expr: String_Expr
+  achievementId: Achievement_Key
+  playerId: Player_Key
+}
+input PlayerAchievement_Filter {
+  _and: [PlayerAchievement_Filter!]
+  _not: PlayerAchievement_Filter
+  _or: [PlayerAchievement_Filter!]
+  playerIdId: String_Filter
+  achievementIdId: String_Filter
+  achievementId: Achievement_Filter
+  playerId: Player_Filter
+}
+input PlayerAchievement_ListFilter {
+  count: Int_Filter
+  exist: PlayerAchievement_Filter
+}
+input PlayerAchievement_Order {
+  playerIdId: OrderDirection
+  achievementIdId: OrderDirection
+  achievementId: Achievement_Order
+  playerId: Player_Order
+}
+input PlayerBooster_Data {
+  playerIdId: String
+  playerIdId_expr: String_Expr
+  boosterIdId: String
+  boosterIdId_expr: String_Expr
+  boosterId: Booster_Key
+  playerId: Player_Key
+  createAt: Date
+  createAt_date: Date_Relative
+  createAt_expr: Date_Expr
+  expireAt: Date
+  expireAt_date: Date_Relative
+  expireAt_expr: Date_Expr
+  status: String
+  status_expr: String_Expr
+}
+input PlayerBooster_Filter {
+  _and: [PlayerBooster_Filter!]
+  _not: PlayerBooster_Filter
+  _or: [PlayerBooster_Filter!]
+  playerIdId: String_Filter
+  boosterIdId: String_Filter
+  boosterId: Booster_Filter
+  playerId: Player_Filter
+  createAt: Date_Filter
+  expireAt: Date_Filter
+  status: String_Filter
+}
+input PlayerBooster_ListFilter {
+  count: Int_Filter
+  exist: PlayerBooster_Filter
+}
+input PlayerBooster_Order {
+  playerIdId: OrderDirection
+  boosterIdId: OrderDirection
+  boosterId: Booster_Order
+  playerId: Player_Order
+  createAt: OrderDirection
+  expireAt: OrderDirection
+  status: OrderDirection
+}
+input PlayerCharacter_Data {
+  playerIdId: String
+  playerIdId_expr: String_Expr
+  characterIdId: String
+  characterIdId_expr: String_Expr
+  characterId: Character_Key
+  playerId: Player_Key
+}
+input PlayerCharacter_Filter {
+  _and: [PlayerCharacter_Filter!]
+  _not: PlayerCharacter_Filter
+  _or: [PlayerCharacter_Filter!]
+  playerIdId: String_Filter
+  characterIdId: String_Filter
+  characterId: Character_Filter
+  playerId: Player_Filter
+}
+input PlayerCharacter_ListFilter {
+  count: Int_Filter
+  exist: PlayerCharacter_Filter
+}
+input PlayerCharacter_Order {
+  playerIdId: OrderDirection
+  characterIdId: OrderDirection
+  characterId: Character_Order
+  playerId: Player_Order
+}
+input Vas_Data {
+  id: String
+  id_expr: String_Expr
+  playerIdId: String
+  playerIdId_expr: String_Expr
+  playerId: Player_Key
+  createAt: Date
+  createAt_date: Date_Relative
+  createAt_expr: Date_Expr
+  vasScore: Int
+}
+input Vas_Filter {
+  _and: [Vas_Filter!]
+  _not: Vas_Filter
+  _or: [Vas_Filter!]
+  id: String_Filter
+  playerIdId: String_Filter
+  playerId: Player_Filter
+  createAt: Date_Filter
+  vasScore: Int_Filter
+}
+input Vas_ListFilter {
+  count: Int_Filter
+  exist: Vas_Filter
+}
+input Vas_Order {
+  id: OrderDirection
+  playerIdId: OrderDirection
+  playerId: Player_Order
+  createAt: OrderDirection
+  vasScore: OrderDirection
+}
