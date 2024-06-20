@@ -64,7 +64,7 @@ export default class Cutscene1 extends Phaser.Scene {
 					() => {
 						this.scene.stop()
 						this.scene.start('cutscene2', { bgm: this.bgm })
-						i18n.removeAllListeners(this)
+						// i18n.removeAllListeners(this)
 					},
 					this,
 				)
