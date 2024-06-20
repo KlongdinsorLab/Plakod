@@ -26,7 +26,8 @@ export default class PauseScene extends Phaser.Scene {
   init({ menu, sceneName, subSceneKeys }:{menu: Phaser.GameObjects.Image, sceneName: string, subSceneKeys : string[]}) {
     this.menu = menu
     this.sceneName = sceneName
-    this.subSceneKeys = subSceneKeys
+    if(subSceneKeys) this.subSceneKeys = subSceneKeys 
+    else this.subSceneKeys = []
   }
 
   preload() {
@@ -105,12 +106,7 @@ export default class PauseScene extends Phaser.Scene {
     resume.on('pointerup', () => {
       soundManager.resumeAll()
       this.menu.setTexture('ui', 'pause.png')
-
-      this.scene.resume(this.sceneName)
-      for(let i = 0; i < this.subSceneKeys.length; i++) {
-        if(this.scene.isPaused(this.subSceneKeys[i])) { this.scene.resume(this.subSceneKeys[i]) }
-      }
-
+      this.resumeAllScenes()
       this.scene.stop()
     })
 
@@ -153,15 +149,23 @@ export default class PauseScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
     home.setInteractive()
     home.on('pointerup', () => {
+      this.stopAllScenes()
       this.scene.stop()
-
-      for(let i = 0; i < this.subSceneKeys.length; i++) {
-        this.scene.stop(this.subSceneKeys[i])
-      }
-      this.scene.stop(this.sceneName)
-
       i18n.destroyEmitter()
       this.scene.start('title')
+      console.log("Kakangku")
     })
+  }
+
+  stopAllScenes() : void{
+    for(let i = 0; i < this.subSceneKeys.length; i++) this.scene.stop(this.subSceneKeys[i])
+    this.scene.stop(this.sceneName)
+  }
+
+  resumeAllScenes() : void{
+    this.scene.resume(this.sceneName)
+    for(let i = 0; i < this.subSceneKeys.length; i++) {
+      if(this.scene.isPaused(this.subSceneKeys[i])) { this.scene.resume(this.subSceneKeys[i]) }
+    }
   }
 }

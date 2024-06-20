@@ -213,7 +213,6 @@ export default class GameScene extends Phaser.Scene {
     this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
   update(_: number, delta: number) {
-    console.log(this.scene.isActive('warmup'))
     //        if (this.input.gamepad.total === 0) {
     //            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
     //            text.x = width / 2 - text.width / 2
