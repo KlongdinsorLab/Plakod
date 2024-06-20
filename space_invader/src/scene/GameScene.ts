@@ -314,7 +314,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (
       gauge.getDuratation() > HOLD_DURATION_MS &&
-      this.controller1?.buttons.B16 > 0
+      this.controller1?.buttons.B12 > 0
     ) {
       this.player.startReload()
       gauge.setFullCharge()
@@ -332,7 +332,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B16 > 0 &&
+      this.controller1?.buttons.B12 > 0 &&
       !this.player.getIsAttacking()
     ) {
       this.player.charge()
@@ -340,7 +340,7 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) { // Fully Reloaded
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B12 > 0)) { // Fully Reloaded
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
 
       this.time.addEvent({
@@ -371,7 +371,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    if (this.player.getIsReloading() && !(this.controller1?.buttons.B16 > 0)) {
+    if (this.player.getIsReloading() && !(this.controller1?.buttons.B12 > 0)) {
       this.player.reloadResetting()
       gauge.resetting()
     }
