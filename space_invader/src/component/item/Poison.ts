@@ -45,6 +45,7 @@ export class Poison extends Item {
 				this.player.setIsHit(true)
 				this.player.damaged()
 				this.score.add(HIT_POISON_SCORE)
+				this.player.reduceBullet()
 				this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
 				poisonCollider.active = false
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {

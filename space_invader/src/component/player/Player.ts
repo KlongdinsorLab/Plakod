@@ -290,6 +290,14 @@ export default class Player {
 		}
 	}
 
+	reduceBullet(): void {
+		if (this.isBulletFull) return
+
+		if(this.bullet <= 0) return
+
+		this.bullet--
+	}
+
 	resetBullet(): void {
 		this.bullet = 0
 		this.isBulletFull = false
