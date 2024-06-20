@@ -142,18 +142,6 @@ export default class editAirflowPopUp {
         const confirmation = <Element> this.editAirflowForm4.getChildByID('confirmation')
         confirmation.textContent = i18next.t('confirmation')
 
-        const changeAirflowConfirm = <Element> this.editAirflowForm4.getChildByID('change_airflow_confirm')
-        changeAirflowConfirm.textContent = i18next.t('airflow_confirm')
-
-        const fromText = <Element> this.editAirflowForm4.getChildByID('from')
-        fromText.textContent = i18next.t('from')
-
-        const toText = <Element> this.editAirflowForm4.getChildByID('to')
-        toText.textContent = i18next.t('to')
-
-        const question = <Element> this.editAirflowForm4.getChildByID('question')
-        question.textContent = i18next.t('question')
-
         const cancel4 = <Element> this.editAirflowForm4.getChildByID('cancel')
         cancel4.textContent = i18next.t('cancel')
 
@@ -183,20 +171,14 @@ export default class editAirflowPopUp {
         const successfullyEdited = <Element> this.editAirflowForm5.getChildByID('successfully_edited')
         successfullyEdited.textContent = i18next.t('successfully_edited')
 
-        const changedAirflowTo = <Element> this.editAirflowForm5.getChildByID('changed_airflow_to')
-        changedAirflowTo.textContent = i18next.t('changed_airflow_to')
+        // const changedAirflowTo = <Element> this.editAirflowForm5.getChildByID('changed_airflow_to')
+        // changedAirflowTo.textContent = i18next.t('changed_airflow_to')
 
-        const successfully = <Element> this.editAirflowForm5.getChildByID('successfully')
-        successfully.textContent = i18next.t('successfully')
+        // const successfully = <Element> this.editAirflowForm5.getChildByID('successfully')
+        // successfully.textContent = i18next.t('successfully')
 
-        const editAirflow5AdviceTop = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_top')
-        editAirflow5AdviceTop.textContent = i18next.t('edit_airflow5_advice_top')
-
-        const editAirflow5AdviceMiddle = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_middle')
-        editAirflow5AdviceMiddle.textContent = i18next.t('edit_airflow5_advice_middle')
-
-        const editAirflow5AdviceBottom = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice_bottom')
-        editAirflow5AdviceBottom.textContent = i18next.t('edit_airflow5_advice_bottom')
+        const editAirflow5AdviceTop = <Element> this.editAirflowForm5.getChildByID('edit_airflow5_advice')
+        editAirflow5AdviceTop.textContent = i18next.t('edit_airflow5_advice')
 
         const submit5 = <Element> this.editAirflowForm5.getChildByID('submit')
         submit5.textContent = i18next.t('submit')
@@ -263,12 +245,8 @@ export default class editAirflowPopUp {
         this.editAirflowForm4?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
-        const currentAirflow = <Element>this.editAirflowForm4?.getChildByID('currentAirflow');
-        currentAirflow.textContent = this.airflow === undefined ? 'xxx' : this.airflow.toString()
-
-        const newAirflow = <Element>this.editAirflowForm4?.getChildByID('newAirflow');
-        newAirflow.textContent = this.airflowInput === undefined ? 'xxx' : this.airflowInput.toString()
-
+        const changeAirflowConfirm = <Element> this.editAirflowForm4.getChildByID('change_airflow_confirm')
+        changeAirflowConfirm.textContent = i18next.t('airflow_confirm',{oldAirflow : this.airflow, newAirflow : this.airflowInput})
     }
 
     closeEditAirflowPopUp4() : void {
@@ -283,8 +261,10 @@ export default class editAirflowPopUp {
         this.editAirflowForm5?.setVisible(true)
         this.blackWindow?.setVisible(true)
 
-        const changedAirflow = <Element>this.editAirflowForm5?.getChildByID('changedAirflow');
-        changedAirflow.textContent = this.airflow === undefined ? 'xxx' : this.airflow.toString()
+        // const changedAirflow = <Element>this.editAirflowForm5?.getChildByID('changedAirflow');
+        // changedAirflow.textContent = this.airflow === undefined ? 'xxx' : this.airflow.toString()
+        const changedAirflowTo = <Element> this.editAirflowForm5.getChildByID('changed_airflow_to')
+        changedAirflowTo.textContent = i18next.t('changed_airflow_to', {newAirflow : this.airflowInput})
     }
 
     closeEditAirflowPopUp5() : void {
