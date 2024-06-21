@@ -129,7 +129,7 @@ export default class PauseScene extends Phaser.Scene {
     restart.on('pointerup', () => {
       this.timeService.saveLastPlayTime()
       this.scene.stop()
-      this.scene.stop(this.sceneName)
+      this.stopAllScenes()
       i18n.destroyEmitter()
       this.scene.start(this.sceneName)
     })
