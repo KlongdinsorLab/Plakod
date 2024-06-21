@@ -34,6 +34,7 @@ export default class boosterBar{
     
 
     constructor(scene: Phaser.Scene){
+        this.selectedBooster.length = 0
         this.scene = scene
         this.boosters[1] = new BoosterUI(
             this.scene,
@@ -281,7 +282,6 @@ export default class boosterBar{
     }
 
     initFontStyle(){
-        
         if (this.descriptionText) {
             this.descriptionText.setStyle({
                 fontFamily: 'Mali',
