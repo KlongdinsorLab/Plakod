@@ -1,23 +1,47 @@
 import { MARGIN } from 'config'
 
 export default class Menu {
-	private menu!: Phaser.GameObjects.Image
+  private menu!: Phaser.GameObjects.Image
+  private layer: Phaser.GameObjects.Layer
 
-	constructor(scene: Phaser.Scene) {
-		const { width } = scene.scale
-		this.menu = scene.add
-			.image(width - MARGIN / 2, MARGIN / 2, 'pause')
-			.setOrigin(1, 0)
-		this.menu.scale = 0.5
-		this.menu.setInteractive()
-		this.menu.on('pointerup', () => {
-			this.menu.setTexture('resume')
-			scene.scene.pause()
-			scene.scene.launch('pause', { menu: this.menu })
-		})
-	}
+  private subSceneKeys !: string[]
 
-	getBody(): Phaser.GameObjects.Image {
-		return this.menu
-	}
+  constructor(scene: Phaser.Scene, subSceneKeys ?: string[]) {
+    if (!subSceneKeys) {
+      this.subSceneKeys = []
+    }
+    else {
+      this.subSceneKeys = subSceneKeys
+    }
+    const { width } = scene.scale
+    this.layer = scene.add.layer()
+    this.menu = scene.add
+      .image(width - MARGIN, MARGIN / 2, 'ui', 'pause.png')
+      .setOrigin(1, 0)
+    this.menu.setInteractive()
+    this.menu.on('pointerup', () => {
+      this.menu.setTexture('ui', 'play.png')
+
+      scene.scene.pause()
+      for (let i = 0; i < this.subSceneKeys.length; i++) {
+        if(scene.scene.isActive(this.subSceneKeys[i])) { scene.scene.pause(this.subSceneKeys[i]) }
+      }
+
+      scene.scene.launch('pause', { menu: this.menu, sceneName: scene.scene.key, subSceneKeys: subSceneKeys })
+    })
+    this.layer.add(this.menu)
+    this.layer.setDepth(10)
+  }
+
+  getBody(): Phaser.GameObjects.Image {
+    return this.menu
+  }
+
+  getLayer(): Phaser.GameObjects.Layer {
+    return this.layer
+  }
+
+  getSubSceneKeys() : string[] {
+    return this.subSceneKeys
+  }
 }
