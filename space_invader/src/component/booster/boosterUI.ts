@@ -15,7 +15,7 @@ export class BoosterUI {
     private unavailableCircle! : Phaser.GameObjects.Arc;
 
     private timeService = new TimeService();
-    private startTime: Date = new Date(Date.now());
+    //private startTime: Date = new Date(Date.now());
     private timeText!: string;
     private countdownIndex : number = 0;
     private countdownTime!: Phaser.GameObjects.Text;
@@ -111,7 +111,7 @@ export class BoosterUI {
         const timerEvent = this.scene.time.addEvent({
             delay: 1000,
             callback: () => {
-                const timeCount = this.timeService.getDurationTime(dateObject ,this.startTime);
+                const timeCount = this.timeService.getDurationTime(dateObject);
                 if (timeCount === 'timeout') {
                     console.log('timeout',this.name);
                     this.countdownIndex++;

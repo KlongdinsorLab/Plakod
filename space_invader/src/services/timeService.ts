@@ -50,7 +50,7 @@ export default class TimeService {
 
 	
 
-	getDurationTime(endTime: Date, startTime: Date): string {
+	getDurationTime(endTime: Date): string {
 		const endTimeInSeconds = Math.floor(endTime.getTime() / 1000);
 		const currentSeconds = Math.floor(Date.now() / 1000);
 	

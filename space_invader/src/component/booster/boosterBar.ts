@@ -118,7 +118,7 @@ export default class boosterBar{
         )
         this.boosters[7].getBody().setInteractive().on('pointerup', () => this.isSelected(7))
 
-        this.boosters.forEach((booster,index) => {
+        this.boosters.forEach((booster) => {
             booster.initBooster()
         })
 
