@@ -48,6 +48,26 @@ export default class TimeService {
 		return timeText
 	}
 
+
+	
+
+	getDurationTime(endTime: Date): string {
+		const endTimeInSeconds = Math.floor(endTime.getTime() / 1000);
+		const currentSeconds = Math.floor(Date.now() / 1000);
+	
+		let remainingSeconds = endTimeInSeconds - currentSeconds;
+	
+		if (remainingSeconds <= 0) return 'timeout';
+	
+		const hours = Math.floor(remainingSeconds / 3600);
+		remainingSeconds %= 3600;
+		const minutes = Math.floor(remainingSeconds / 60);
+		const seconds = remainingSeconds % 60;
+	
+		return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+	}
+	
+
 	isRecharged(lastPlayTime: Date): boolean {
 		if (isNaN(lastPlayTime.getTime())) {
 			return true

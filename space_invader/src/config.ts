@@ -54,6 +54,7 @@ export const POISON_FREQUENCY_MS = 5000
 export const POISON_SPEED = 400
 export const HIT_POISON_SCORE = -400
 export const BOOSTER_FREQUENCT_MS = 25000
+export const MAX_SELECTED_BOOSTER = 1
 
 
 export const GAME_TIME_LIMIT_MS = 160000
