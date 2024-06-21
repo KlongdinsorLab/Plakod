@@ -1,5 +1,5 @@
 import { MARGIN,SCREEN_HEIGHT,MAX_SELECTED_BOOSTER } from "config";
-import { BoosterUI } from "./boosterUI";
+import { BoosterUI, States } from "./boosterUI";
 import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
@@ -147,7 +147,7 @@ export default class boosterBar{
         if(this.selectedBooster.length >= MAX_SELECTED_BOOSTER){
             return;
         }
-        if(this.boosters[index].getState() === 'unavailable'){
+        if(this.boosters[index].getState() === States.UNAVAILABLE){
             return;
         }
         this.setSelect(index);
@@ -245,7 +245,7 @@ export default class boosterBar{
     
     setDescriptionAmount(index:number): void{
         let text : string;
-        if (this.boosters[index].getState() === 'limitedtime') {
+        if (this.boosters[index].getState() === States.LIMITED_TIME) {
             const [hours, minutes, seconds] = this.boosters[index].getTimeText().split(':').map(Number);
             if(hours == 0 && minutes == 0 && seconds > 0){
                 text = i18next.t('booster_description_expire_seconds');

@@ -1,13 +1,19 @@
 import TimeService from "services/timeService";
 
-export enum BoosterName{
-    Booster1,
-    Booster2,
-    Booster3,
-    Booster4,
-    Booster5,
-    BoosterRare1,
-    BoosterRare2,
+export enum BoostersNAME{
+    BOOSTER1,
+    BOOSTER2,
+    BOOSTER3,
+    BOOSTER4,
+    BOOSTER5,
+    BOOSTER_RARE1,
+    BOOSTER_RARE2,
+}
+
+export enum States{
+    PERMANENT,
+    LIMITED_TIME,
+    UNAVAILABLE
 }
 
 export class BoosterUI {
@@ -16,7 +22,7 @@ export class BoosterUI {
     private boosterSize! : {width : number, height : number}
     private boosterImage!: Phaser.GameObjects.Image
     private position!: {x : number, y : number}
-    private state: string = 'unavailable';
+    private state: States = States.UNAVAILABLE;
     private amount:number| undefined;
     private expireDate: Date| undefined;
     private expireArray: string[]= [];
@@ -76,38 +82,38 @@ export class BoosterUI {
 
     setState(): void{
         if(this.expireDate || this.expireArray){
-            this.state = 'limitedtime'
+            this.state = States.LIMITED_TIME
             if(this.countdownIndex > this.expireArray.length-1){
-                this.state = 'permanent'
+                this.state = States.PERMANENT
                 this.isCompleteInit = true
             }
             if(this.amount == 0){
-                this.state = 'unavailable'
+                this.state = States.UNAVAILABLE
             }
             
         }else if(this.amount && this.amount>0){
-            this.state = 'permanent'
+            this.state = States.PERMANENT
             this.isCompleteInit = true
         }
     
     }
 
     initBooster(): void{
-        if(this.state === 'permanent'){
-            this.setMark()
-        }else if(this.state === 'limitedtime'){
+        if(this.state === States.PERMANENT){
+            this.setAmount()
+        }else if(this.state === States.LIMITED_TIME){
             if(this.expireDate){
 
             }else if(this.expireArray){
-                this.setMark()
+                this.setAmount()
                 this.setTimer()
             }
         }else{
-            this.setUnAvailable()
+            this.setUnavailable()
         }
     }
 
-    setMark(){
+    setAmount(){
         if (this.markText) {
             this.markText.setText(this.amount!.toString())
         }else{
@@ -150,7 +156,7 @@ export class BoosterUI {
         });
     }
     
-    setUnAvailable(): void {
+    setUnavailable(): void {
         
         if (this.markCircle) {
             this.markCircle.destroy();
@@ -189,7 +195,7 @@ export class BoosterUI {
         return this.name
     }
 
-    getState():string{
+    getState():States{
         return this.state;
     }
 
