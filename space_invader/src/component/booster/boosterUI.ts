@@ -108,34 +108,40 @@ export class BoosterUI {
     setTimer(): void {
         const expire = this.expireArray[this.countdownIndex];
         let dateObject: Date = new Date(expire);
-
+    
         this.countdownTime = this.scene.add.text(this.position.x, this.position.y + 104, '', { fontSize: '20px', color: '#111111' }).setOrigin(0, 0);
-
+    
+        const updateTimer = () => {
+            const timeCount = this.timeService.getDurationTime(dateObject);
+            if (timeCount === 'timeout') {
+                console.log('timeout', this.name);
+                this.countdownIndex++;
+                this.amount!--;
+    
+                if (this.countdownTime.active) {
+                    this.countdownTime.destroy();
+                }
+                this.isCompleteInit = false;
+                this.setState();
+                this.initBooster();
+                timerEvent.remove();
+            } else {
+                this.countdownTime.setText(timeCount);
+                this.timeText = timeCount;
+                this.isCompleteInit = true;
+            }
+        };
+    
+        // Call the updateTimer function once before starting the loop
+        updateTimer();
+    
         const timerEvent = this.scene.time.addEvent({
             delay: 1000,
-            callback: () => {
-                const timeCount = this.timeService.getDurationTime(dateObject);
-                if (timeCount === 'timeout') {
-                    console.log('timeout',this.name);
-                    this.countdownIndex++;
-                    this.amount!--;
-
-                    if (this.countdownTime.active) {
-                        this.countdownTime.destroy()
-                    }
-                    this.isCompleteInit = false
-                    this.setState()
-                    this.initBooster();
-                    timerEvent.remove();
-                }else{
-                    this.countdownTime.setText(timeCount);
-                    this.timeText = timeCount;
-                    this.isCompleteInit = true
-                }
-            },
+            callback: updateTimer,
             loop: true
         });
     }
+    
     
     setUnAvailable(): void {
         if (this.markCircle) {
