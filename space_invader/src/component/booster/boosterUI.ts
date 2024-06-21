@@ -14,6 +14,8 @@ export class BoosterUI {
     private markText! :Phaser.GameObjects.Text;
     private unavailableCircle! : Phaser.GameObjects.Arc;
 
+    private onSetUnavailableCallback?: () => void;
+
     private timeService = new TimeService();
     //private startTime: Date = new Date(Date.now());
     private timeText!: string;
@@ -149,7 +151,16 @@ export class BoosterUI {
         }
         this.unavailableCircle = this.scene.add.circle(this.position.x, this.position.y, 48, 0x000000, 0.6).setOrigin(0, 0);
         this.isCompleteInit = true
+
+        if (this.onSetUnavailableCallback) {
+            this.onSetUnavailableCallback();
+        }
     }
+
+    onSetUnavailable(callback: () => void): void {
+        this.onSetUnavailableCallback = callback;
+    }
+
 
     
     getBody(): Phaser.GameObjects.Image{
