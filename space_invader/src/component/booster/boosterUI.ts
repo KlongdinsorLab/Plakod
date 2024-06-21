@@ -1,5 +1,15 @@
 import TimeService from "services/timeService";
 
+export enum BoosterName{
+    Booster1,
+    Booster2,
+    Booster3,
+    Booster4,
+    Booster5,
+    BoosterRare1,
+    BoosterRare2,
+}
+
 export class BoosterUI {
     private scene: Phaser.Scene;
     private name: string;
@@ -49,7 +59,7 @@ export class BoosterUI {
                 height: options.height ?? 96
             };
 
-        this.amount = options.amount?? undefined
+        this.amount = options.amount?? 0
         this.expireDate = options.expireDate?? undefined
         this.expireArray = options.expireArray?? []
         this.setState()
