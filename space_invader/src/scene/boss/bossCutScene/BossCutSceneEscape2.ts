@@ -1,5 +1,5 @@
 import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { RELOAD_COUNT } from 'config'
 
 export default class BossEscape2 extends Phaser.Scene {
@@ -31,20 +31,20 @@ export default class BossEscape2 extends Phaser.Scene {
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
 		this.load.image('smoke', 'assets/background/smoke-transition_01.png')
-		this.load.audio('bossEscape', 'sound/boss-escape.mp3')
-		this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
+		// this.load.audio('bossEscape', 'sound/boss-escape.mp3')
+		// this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
 	}
 
 	create() {
 		const { height } = this.scale
 
-		const soundManager = new SoundManager(this)
-		const bossEscape = this.sound.add('bossEscape')
-		const bossEscapeVoice = this.sound.add('bossEscapeVoice')
-		soundManager.play(bossEscape, false)
-		setTimeout(() => {
-			soundManager.play(bossEscapeVoice, false)
-		}, 500)
+		// const soundManager = new SoundManager(this)
+		// const bossEscape = this.sound.add('bossEscape')
+		// const bossEscapeVoice = this.sound.add('bossEscapeVoice')
+		// soundManager.play(bossEscape, false)
+		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+		tutorialSound.play('boss-escape')
+		
 		
 		this.boss.getVersion().playEscapePhase2(this)
 		const smoke = this.add.image(0, height / 2, 'smoke').setOrigin(1, 0.5)

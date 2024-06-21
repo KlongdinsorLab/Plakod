@@ -48,6 +48,7 @@ export default class TimeService {
 		return timeText
 	}
 
+
 	
 
 	getDurationTime(endTime: Date): string {
@@ -66,13 +67,13 @@ export default class TimeService {
 		return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 	}
 	
-	
-	
+
 	isRecharged(lastPlayTime: Date): boolean {
 		if (isNaN(lastPlayTime.getTime())) {
 			return true
 		}
 		const diff = (new Date().getTime() - lastPlayTime.getTime()) / 36e5
-		return diff >= 1 && this.playCount != 10
+		return diff >= 1 && this.playCount < 10
 	}
 }
+

@@ -1,0 +1,44 @@
+{"frames": [
+
+{
+	"filename": "cutscene2_mc1.png",
+	"frame": {"x":0,"y":0,"w":480,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":480,"h":480},
+	"sourceSize": {"w":480,"h":480}
+},
+{
+	"filename": "cutscene2_mc2.png",
+	"frame": {"x":480,"y":0,"w":480,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":480,"h":480},
+	"sourceSize": {"w":480,"h":480}
+},
+{
+	"filename": "cutscene2_mc3.png",
+	"frame": {"x":960,"y":0,"w":480,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":480,"h":480},
+	"sourceSize": {"w":480,"h":480}
+},
+{
+	"filename": "cutscene2_pet.png",
+	"frame": {"x":1440,"y":0,"w":480,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":480,"h":480},
+	"sourceSize": {"w":480,"h":480}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "mc2.png",
+	"format": "RGBA8888",
+	"size": {"w":1920,"h":480},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6d559b810367b8b207660c1f27cd10e3:c6d9057fe09cc8c41de664e3acec1af9:3a6f82111f696750733c4dca8380d1e9$"
+}
+}

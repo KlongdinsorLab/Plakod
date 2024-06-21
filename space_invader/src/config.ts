@@ -66,3 +66,6 @@ export const DARK_BROWN = 0x57453B
 export const DARK_PURPLE = 0x583E7C
 export const DARK_ORANGE = 0xD35E24
 export const GREEN = 0x05FF00
+
+export const VAS_COUNT = 10
+export const MAX_PLAYED = 10

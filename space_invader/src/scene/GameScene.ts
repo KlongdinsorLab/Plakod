@@ -21,8 +21,9 @@ import WebFont from 'webfontloader'
 // import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
-import { BossCutScene, BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossCutScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
+import { BossByName } from './boss/bossInterface'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -47,12 +48,14 @@ export default class GameScene extends Phaser.Scene {
   private isCompleteWarmup = false
   private isCompleteBoss = false
   private menu!: Menu
+  private bossName!: keyof typeof BossByName
 
   private event!: EventEmitter
   private gameLayer!: Phaser.GameObjects.Layer
 
   private bgm!: Phaser.Sound.BaseSound
   private soundManager: SoundManager
+  private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
   constructor() {
     super({ key: 'game' })
@@ -71,13 +74,8 @@ export default class GameScene extends Phaser.Scene {
     this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
     this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
-    this.load.image('fire', 'assets/effect/fire03.png')
     this.load.image('laser', 'assets/effect/mc_bullet.png')
     this.load.image('charge', 'assets/effect/chargeBlue.png')
-    this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
-    this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
-    this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
-    this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
     this.load.image('explosion', 'assets/effect/explosionYellow.png')
     this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
@@ -93,27 +91,28 @@ export default class GameScene extends Phaser.Scene {
     this.load.svg('resume', 'assets/icon/resume.svg')
     this.load.svg('finger press', 'assets/icon/finger-press.svg')
 
-    this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
-    this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
-    this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
+    // this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
+    // this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
+    // this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
-    this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
-    this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
-    this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+    // this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+    // this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+    // this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
 
     this.load.scenePlugin('mergedInput', MergedInput)
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
 
-  init({ score, reloadCount, isCompleteBoss }: { score: number, reloadCount: number, isCompleteBoss: boolean }) {
+  init({ score, reloadCount, isCompleteBoss, bossName }: { score: number, reloadCount: number, isCompleteBoss: boolean, bossName: keyof typeof BossByName }) {
     if(score)
       this.scoreNumber = score
     if(reloadCount)
       this.reloadCountNumber = reloadCount
     if(isCompleteBoss !== undefined)
       this.isCompleteBoss = isCompleteBoss
+    this.bossName = bossName
     this.soundManager.unmute()
 	}
 
@@ -126,7 +125,7 @@ export default class GameScene extends Phaser.Scene {
     this.bgm = this.sound.add('bgm', {volume: 1, loop: true})
     this.soundManager.init()
     this.soundManager.play(this.bgm)
-
+    this.soundEffect = this.sound.addAudioSprite('mcSound')
 
     this.background = this.add
       .tileSprite(0, 0, width, height, 'background')
@@ -139,13 +138,13 @@ export default class GameScene extends Phaser.Scene {
     this.mergedInput
       ?.defineKey(0, 'LEFT', 'LEFT')
       .defineKey(0, 'RIGHT', 'RIGHT')
-      .defineKey(0, 'B16', 'SPACE')
+      .defineKey(0, 'B12', 'SPACE')
       //            .defineKey(0, 'B1', 'CTRL')
       //            .defineKey(0, 'B2', 'ALT')
-      .defineKey(0, 'B6', 'ONE')
-      .defineKey(0, 'B4', 'TWO')
-      .defineKey(0, 'B7', 'THREE')
-      .defineKey(0, 'B5', 'FOUR')
+      .defineKey(0, 'B11', 'ONE')
+      .defineKey(0, 'B9', 'TWO')
+      .defineKey(0, 'B6', 'THREE')
+      .defineKey(0, 'B8', 'FOUR')
 
     this.gameLayer = this.add.layer();
     this.player = new Player(this, this.gameLayer)
@@ -182,6 +181,7 @@ export default class GameScene extends Phaser.Scene {
         this,
         this.player,
         this.score,
+        this.soundEffect,
         true,
       )
       this.gameLayer.add(this.tutorialMeteor.getBody())
@@ -245,8 +245,11 @@ export default class GameScene extends Phaser.Scene {
 
       this.tutorial.launchTutorial(Step.CONTROLLER, delta, {
         player: this.player,
+        event: this.event
       })
     }
+
+    this.event.once("completeWarmup", () => this.isCompleteWarmup = true)
 
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
       this.scene.pause()
@@ -255,21 +258,21 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.isCompleteTutorial() && this.isCompleteWarmup) {
-      this.meteorFactory.createByTime(this, this.player, this.score, delta)
+      this.meteorFactory.createByTime(this, this.player, this.score,this.soundEffect, delta)
     }
 
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (!this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
+    if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B12 > 0) {
       gauge.hold(delta)
-    } else if (this.controller1?.buttons.B4 > 0) {
+    } else if (this.controller1?.buttons.B9 > 0) {
       gauge.setStep(1)
-    } else if (this.controller1?.buttons.B6 > 0) {
+    } else if (this.controller1?.buttons.B11 > 0) {
       gauge.setStep(0)
-    } else if (this.controller1?.buttons.B7 > 0) {
+    } else if (this.controller1?.buttons.B6 > 0) {
       gauge.setStep(2)
-    } else if (this.controller1?.buttons.B5 > 0) {
+    } else if (this.controller1?.buttons.B8 > 0) {
       gauge.setStep(3)
     } else {
       gauge.setVisible(false)
@@ -311,7 +314,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (
       gauge.getDuratation() > HOLD_DURATION_MS &&
-      this.controller1?.buttons.B16 > 0
+      this.controller1?.buttons.B12 > 0
     ) {
       this.player.startReload()
       gauge.setFullCharge()
@@ -320,7 +323,7 @@ export default class GameScene extends Phaser.Scene {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
         this.scene.launch(BossCutScene.VS, {
-          name: BossName.B1,
+          name: this.bossName,
           score: this.score.getScore(),
           playerX: this.player.getBody().x,
           reloadCount: this.reloadCount.getCount(),
@@ -329,7 +332,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B16 > 0 &&
+      this.controller1?.buttons.B12 > 0 &&
       !this.player.getIsAttacking()
     ) {
       this.player.charge()
@@ -337,12 +340,17 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) {
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B12 > 0)) { // Fully Reloaded
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
-      setTimeout(() => {
-        this.reloadCount.decrementCount()
-        this.isCompleteBoss = false
-      }, LASER_FREQUENCY_MS * BULLET_COUNT)
+
+      this.time.addEvent({
+        delay : LASER_FREQUENCY_MS * BULLET_COUNT,
+        callback : () => {
+          this.reloadCount.decrementCount()
+          this.isCompleteBoss = false
+        },
+        loop : false,
+      })
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(ShootingPhase.NORMAL)
@@ -352,14 +360,18 @@ export default class GameScene extends Phaser.Scene {
       }
 
       if (this.reloadCount.isDepleted()) {
-        setTimeout(() => {
-          this.scene.pause()
-          this.scene.launch('end game', { score: this.score.getScore() })
-        }, LASER_FREQUENCY_MS * BULLET_COUNT)
+        this.time.addEvent({
+          delay : LASER_FREQUENCY_MS * BULLET_COUNT,
+          callback : () => {
+            this.scene.pause()
+            this.scene.launch('end game', { score: this.score.getScore() })
+          },
+          loop : false,
+        })
       }
     }
 
-    if (this.player.getIsReloading() && !(this.controller1?.buttons.B16 > 0)) {
+    if (this.player.getIsReloading() && !(this.controller1?.buttons.B12 > 0)) {
       this.player.reloadResetting()
       gauge.resetting()
     }

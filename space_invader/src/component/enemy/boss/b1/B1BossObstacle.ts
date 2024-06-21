@@ -67,7 +67,6 @@ export class B1BossObstacle extends Enemy {
     })
     
     this.explosionEmitter.active = false
-    this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     this.move()
     this.attack()
   }
@@ -82,11 +81,11 @@ export class B1BossObstacle extends Enemy {
     const velocityX = Math.floor(
       Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
     )
-    this.flareEmitter.startFollow(this.enemy)
-    this.flareEmitter.depth = 0
     this.enemy.setVelocityY(this.isInItemPhase ? METEOR_ITEMPHASE_SPEED : METEOR_SPEED)
     this.enemy.setVelocityX(velocityX)
-
+    
+    this.flareEmitter.startFollow(this.enemy)
+    this.flareEmitter.depth = 0
     this.scene.time.delayedCall(5000, () => {
       this.flareEmitter.destroy()
     })
