@@ -56,6 +56,7 @@ export class BoosterUI {
         
         this.scene = scene;
         this.name = name;
+        
         this.position = {
                 x: options.x ?? -1,
                 y: options.y ?? -1
@@ -64,6 +65,8 @@ export class BoosterUI {
                 width: options.width ?? 96,
                 height: options.height ?? 96
             };
+
+        this.isCompleteInit = false;
 
         this.amount = options.amount?? 0
         this.expireDate = options.expireDate?? undefined
