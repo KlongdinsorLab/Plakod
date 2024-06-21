@@ -10,6 +10,10 @@ export default class RedeemScene extends Phaser.Scene {
     private redeemBoosterText!: Phaser.GameObjects.Text;
     private buttonText!: Phaser.GameObjects.Text;
 
+    private buttonIcon!: Phaser.GameObjects.Image;
+    private buttonRed!: Phaser.GameObjects.NineSlice;
+    private buttonGrey!: Phaser.GameObjects.NineSlice;
+    private banner!: Phaser.GameObjects.NineSlice;
     private boosterBar! : boosterBar;
 
 
@@ -53,7 +57,7 @@ export default class RedeemScene extends Phaser.Scene {
         line.fillRoundedRect( MARGIN*2, 426, 527, 6, 3)
 
         //banner
-        this.add
+        this.banner = this.add
             .nineslice( 
                 width/2, 
                 138, 
@@ -103,7 +107,7 @@ export default class RedeemScene extends Phaser.Scene {
         this.boosterBar = new boosterBar(this);
 
         //button
-        this.add.nineslice(
+        this.buttonGrey = this.add.nineslice(
             MARGIN*2, 
             1000, 
             'button', 
@@ -114,19 +118,20 @@ export default class RedeemScene extends Phaser.Scene {
         )
         .setOrigin(0, 0)
         .setInteractive().on('pointerup', () => {
+            this.destroy()
             this.scene.stop();
             console.log('landing page');
             //this.scene.start();
         })
 
-        this.add.image(
+        this.buttonIcon = this.add.image(
             MARGIN*2+64, 
             1000+44,
             'icon',
             'icon_back.png',
         )
 
-        this.add.nineslice(
+        this.buttonRed = this.add.nineslice(
             MARGIN*11/2, 
             1000, 
             'button', 
@@ -137,6 +142,7 @@ export default class RedeemScene extends Phaser.Scene {
         )
         .setOrigin(0, 0)
         .setInteractive().on('pointerup', () => {
+            this.destroy();
             this.scene.stop();
             console.log('life count')
             //this.scene.start();
@@ -154,48 +160,47 @@ export default class RedeemScene extends Phaser.Scene {
             
 
         WebFont.load({
-                google:{
-                    families: ['Mali:500,600,700','Jua'],
-                },
-                active: () =>{
-                    self.boosterBar.initFontStyle();
+            google:{
+                families: ['Mali:500,600,700','Jua'],
+            },
+            active: () =>{
+                self.boosterBar.initFontStyle();
+                self.boosterBar.boosterFontStyle();
 
-                    self.headerText.setStyle({
-                        fontFamily: 'Mali',
-                        fontStyle: 'bold',
-                        color: 'white',
-                    })
-                    .setFontSize(64)
-                    .setStroke('#9E461B', 12)
-                    .setLineSpacing(16);
+                self.headerText.setStyle({
+                    fontFamily: 'Mali',
+                    fontStyle: 'bold',
+                    color: 'white',
+                })
+                .setFontSize(64)
+                .setStroke('#9E461B', 12)
+                .setLineSpacing(16);
     
-                    self.missionDescription.setStyle({
-                        fontFamily: 'Mali',
-                        fontStyle: 'bold',
-                    })
-                    .setFontSize(32)
-                    .setColor('#57453B')
-                    .setLineSpacing(16);
+                self.missionDescription.setStyle({
+                    fontFamily: 'Mali',
+                    fontStyle: 'bold',
+                })
+                .setFontSize(32)
+                .setColor('#57453B')
+                .setLineSpacing(16);
     
-                    self.redeemBoosterText.setStyle({
-                        fontFamily: 'Mali',
-                        fontStyle: 'bold',
-                    })
-                    .setFontSize(32)
-                    .setColor('#D35E24')
-                    .setLineSpacing(16);
+                self.redeemBoosterText.setStyle({
+                    fontFamily: 'Mali',
+                    fontStyle: 'bold',
+                })
+                .setFontSize(32)
+                .setColor('#D35E24')
+                .setLineSpacing(16);
     
-                    self.buttonText.setStyle({
-                        fontFamily: 'Mali',
-                        fontStyle: 'bold',
-                        color: 'white',
-                    })
-                    .setFontSize(32)
-                    .setStroke('#9E461B', 6)
-                    .setLineSpacing(16);
-
-                    
-                },
+                self.buttonText.setStyle({
+                    fontFamily: 'Mali',
+                    fontStyle: 'bold',
+                    color: 'white',
+                })
+                .setFontSize(32)
+                .setStroke('#9E461B', 6)
+                .setLineSpacing(16);   
+            },
         });
     
         
@@ -203,6 +208,18 @@ export default class RedeemScene extends Phaser.Scene {
     }
     update(){
         
+    }
+
+    destroy(){
+        this.boosterBar.destroy()
+        this.buttonText.destroy()
+        this.redeemBoosterText.destroy()
+        this.missionDescription.destroy()
+        this.buttonGrey.destroy()
+        this.buttonRed.destroy()
+        this.buttonIcon.destroy()
+        this.headerText.destroy()
+        this.banner.destroy()
     }
 
 }
