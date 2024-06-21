@@ -264,6 +264,10 @@ export default class boosterBar{
         })
     }
 
+    getBooster(){
+        return this.selectedBooster
+    }
+
     initFontStyle(){
         
         if (this.descriptionText) {

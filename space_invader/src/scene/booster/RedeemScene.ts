@@ -145,6 +145,7 @@ export default class RedeemScene extends Phaser.Scene {
             this.destroy();
             this.scene.stop();
             console.log('life count')
+            console.log(this.boosterBar.getBooster())
             //this.scene.start();
         })
 
