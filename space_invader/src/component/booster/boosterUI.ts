@@ -1,15 +1,5 @@
 import TimeService from "services/timeService";
 
-export enum BoostersNAME{
-    BOOSTER1,
-    BOOSTER2,
-    BOOSTER3,
-    BOOSTER4,
-    BOOSTER5,
-    BOOSTER_RARE1,
-    BOOSTER_RARE2,
-}
-
 export enum States{
     PERMANENT,
     LIMITED_TIME,
@@ -56,7 +46,7 @@ export class BoosterUI {
         
         this.scene = scene;
         this.name = name;
-        
+
         this.position = {
                 x: options.x ?? -1,
                 y: options.y ?? -1
