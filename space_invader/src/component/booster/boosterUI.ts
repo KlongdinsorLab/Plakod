@@ -19,6 +19,7 @@ export class BoosterUI {
     private timeText!: string;
     private countdownIndex : number = 0;
     private countdownTime!: Phaser.GameObjects.Text;
+    private isCompleteInit: boolean = false;
 
     constructor(
         scene: Phaser.Scene, 
@@ -66,6 +67,7 @@ export class BoosterUI {
             this.state = 'limitedtime'
             if(this.countdownIndex > this.expireArray.length-1){
                 this.state = 'permanent'
+                this.isCompleteInit = true
             }
             if(this.amount == 0){
                 this.state = 'unavailable'
@@ -73,6 +75,7 @@ export class BoosterUI {
             
         }else if(this.amount && this.amount>0){
             this.state = 'permanent'
+            this.isCompleteInit = true
         }
     
     }
@@ -120,12 +123,14 @@ export class BoosterUI {
                     if (this.countdownTime.active) {
                         this.countdownTime.destroy()
                     }
+                    this.isCompleteInit = false
                     this.setState()
                     this.initBooster();
                     timerEvent.remove();
                 }else{
                     this.countdownTime.setText(timeCount);
                     this.timeText = timeCount;
+                    this.isCompleteInit = true
                 }
             },
             loop: true
@@ -141,6 +146,7 @@ export class BoosterUI {
             this.markText.destroy();
         }
         this.unavailableCircle = this.scene.add.circle(this.position.x, this.position.y, 48, 0x000000, 0.6).setOrigin(0, 0);
+        this.isCompleteInit = true
     }
 
     
@@ -167,6 +173,10 @@ export class BoosterUI {
 
     getPosition():{x:number, y:number}{
         return this.position
+    }
+
+    getIsCompleteInit(){
+        return this.isCompleteInit
     }
 
     setBoosterWidth(width:number): void{

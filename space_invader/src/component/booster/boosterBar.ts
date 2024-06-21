@@ -19,7 +19,6 @@ export default class boosterBar{
     private descriptionText: Phaser.GameObjects.Text | undefined;
     private descriptionAmount: Phaser.GameObjects.Text | undefined;
 
-
     private boosters: BoosterUI[]=[];
     private boosterJSON = {
         "booster_1":          {"expire_date": ["2024-06-22T12:00:00.000Z","2024-06-22T13:00:00.000Z"],    "amount" : 3,},
@@ -124,9 +123,14 @@ export default class boosterBar{
 
         this.setDescriptionBox()
 
+
+
     }
 
     isSelected(index:number):void{
+        if(!this.boosters[index].getIsCompleteInit()){
+            return;
+        }
         if (this.selectedBooster.includes(this.boosters[index].getName())) {
             this.setDeselect(index);
             return;
@@ -157,7 +161,6 @@ export default class boosterBar{
     }
 
     setDeselect(index: number): void {
-        console.log(`Deselecting booster at index: ${index}`);
         const name = this.boosters[index].getName();
         const selectedMark = this.boosterGraphics.get(name);
         if (selectedMark) {
