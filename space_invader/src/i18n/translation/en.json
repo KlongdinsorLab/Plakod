@@ -77,7 +77,7 @@
   "booster_description_rare1":"(en)เปลี่่ยนรูปแบบการปล่อยกระสุน\nเป็นแบบกระจาย 2 ทาง",
   "booster_description_rare2":"(en)เพิ่มคะแนนรวม 50%",
   "booster_description_unlimited":"unlimited",
-  "booster_description_default":"you can choose up to 2 booster",
+  "booster_description_default":"you can choose up to {{MAX_SELECTED_BOOSTER, number}} booster",
   "booster_description_expire":"expired in {{hours, number}} hours {{minutes, number}} minutes",
   "booster_description_expire_seconds":"will expired in a minute!",
   "booster_description_amount":"amount: {{amount, number}}"

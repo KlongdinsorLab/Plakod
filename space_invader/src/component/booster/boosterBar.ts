@@ -221,7 +221,8 @@ export default class boosterBar{
                     this.scene,
                     this.position.x * 5.6 / 2 - 64,
                     this.position.y + this.gapSize.height * 2 + MARGIN + 8,
-                    'booster_description_default'
+                    i18next.t('booster_description_default',{MAX_SELECTED_BOOSTER})
+
                 )
                 .setAlign('center')
                 .setOrigin(0, 0);
