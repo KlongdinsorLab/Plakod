@@ -12,7 +12,6 @@ export default class RedeemScene extends Phaser.Scene {
     private redeemBoosterText!: Phaser.GameObjects.Text;
     private buttonText!: Phaser.GameObjects.Text;
 
-    private background!: Phaser.GameObjects.Image;
     private buttonIcon!: Phaser.GameObjects.Image;
     private buttonRed!: Phaser.GameObjects.NineSlice;
     private buttonGrey!: Phaser.GameObjects.NineSlice;
