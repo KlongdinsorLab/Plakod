@@ -1,18 +1,18 @@
 import { MARGIN,SCREEN_HEIGHT,MAX_SELECTED_BOOSTER } from "config";
-import { BoosterUI, States } from "./boosterUI";
+import { BoosterUI, BoosterName, States } from "./boosterUI";
 import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
 export default class boosterBar{
     private scene: Phaser.Scene;
-    private selectedBooster: string[] = [];
+    private selectedBooster: BoosterName[] = [];
 
     private position = {x: MARGIN*2, y: SCREEN_HEIGHT/2 - MARGIN*2};
     private boosterSize = {width: 96 , height: 96};
     private gapSize = {width:120, height: 140};
 
-    private boosterGraphics: Map<string, Phaser.GameObjects.Graphics> = new Map();
-    private boosterMark: Map<string, Phaser.GameObjects.Image> = new Map();
+    private boosterGraphics: Map<BoosterName, Phaser.GameObjects.Graphics> = new Map();
+    private boosterMark: Map<BoosterName, Phaser.GameObjects.Image> = new Map();
 
     private descriptionImage!: Phaser.GameObjects.Image;
     private descriptionBg!: Phaser.GameObjects.Graphics
@@ -21,8 +21,8 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
     private boosterJSON = {
-        "booster_1":          {"expire_date": ["2024-06-22T12:00:00.000Z","2024-06-22T13:00:00.000Z"],    "amount" : 3,},
-        "booster_2":          {"expire_date": ["2024-06-23T09:00:00.000Z","2024-06-23T12:00:00.000Z"],    "amount" : 2,},
+        "booster_1":          {"expire_date": ["2024-06-24T12:00:00.000Z","2024-06-24T13:00:00.000Z"],    "amount" : 3,},
+        "booster_2":          {"expire_date": ["2024-06-24T09:00:00.000Z","2024-06-24T12:00:00.000Z"],    "amount" : 2,},
         "booster_3":          {"expire_date": [], "amount" : 30,},
         "booster_4":          {"expire_date": [], "amount" : 0,},
         "booster_5":          {"expire_date": [], "amount" : 1,},
@@ -38,7 +38,7 @@ export default class boosterBar{
         this.scene = scene
         this.boosters[1] = new BoosterUI(
             this.scene,
-            '1',
+            BoosterName.BOOSTER_1,
             {
                 x: this.position.x + MARGIN * 2 / 3,
                 y: this.position.y,
@@ -50,7 +50,7 @@ export default class boosterBar{
 
         this.boosters[2] = new BoosterUI(
             this.scene,
-            '2',
+            BoosterName.BOOSTER_2,
             {
                 x: this.position.x+MARGIN*2/3+ this.gapSize.width*1,
                 y: this.position.y,
@@ -62,7 +62,7 @@ export default class boosterBar{
 
         this.boosters[3] = new BoosterUI(
             this.scene,
-            '3',
+            BoosterName.BOOSTER_3,
             {
                 x: this.position.x+MARGIN*2/3+ this.gapSize.width*2,
                 y: this.position.y,
@@ -74,7 +74,7 @@ export default class boosterBar{
 
         this.boosters[4] = new BoosterUI(
             this.scene,
-            '4',
+            BoosterName.BOOSTER_4,
             {
                 x: this.position.x+MARGIN*2/3+ this.gapSize.width*3,
                 y: this.position.y,
@@ -86,7 +86,7 @@ export default class boosterBar{
 
         this.boosters[5] = new BoosterUI(
             this.scene,
-            '5',
+            BoosterName.BOOSTER_5,
             {
                 x: this.position.x+MARGIN*2,
                 y: this.position.y+ this.gapSize.height,
@@ -98,7 +98,7 @@ export default class boosterBar{
 
         this.boosters[6] = new BoosterUI(
             this.scene,
-            'rare1',
+            BoosterName.BOOSTER_RARE1,
             {
                 x: this.position.x+MARGIN*2+this.gapSize.width,
                 y: this.position.y+ this.gapSize.height,
@@ -110,7 +110,7 @@ export default class boosterBar{
 
         this.boosters[7] = new BoosterUI(
             this.scene,
-            'rare2',
+            BoosterName.BOOSTER_RARE2,
             {
                 x: this.position.x+MARGIN*2+this.gapSize.width*2,
                 y: this.position.y+ this.gapSize.height,
@@ -128,7 +128,7 @@ export default class boosterBar{
 
         this.boosters.forEach((booster, index) => {
             booster.onSetUnavailable(() => {
-                this.setDeselect(index);
+                this.setDeselected(index);
             });
         });
 
@@ -141,7 +141,7 @@ export default class boosterBar{
             return;
         }
         if (this.selectedBooster.includes(this.boosters[index].getName())) {
-            this.setDeselect(index);
+            this.setDeselected(index);
             return;
         }
         
@@ -151,10 +151,10 @@ export default class boosterBar{
         if(this.boosters[index].getState() === States.UNAVAILABLE){
             return;
         }
-        this.setSelect(index);
+        this.setSelected(index);
     }
 
-    setSelect(index:number):void{
+    setSelected(index:number):void{
         const position = this.boosters[index].getPosition()
         const selectedMark = this.scene.add.graphics();
         selectedMark.lineStyle(6, 0x327F76);
@@ -169,7 +169,7 @@ export default class boosterBar{
         this.setDescriptionBox(index)
     }
 
-    setDeselect(index: number): void {
+    setDeselected(index: number): void {
         const name = this.boosters[index].getName();
         const selectedMark = this.boosterGraphics.get(name);
         if (selectedMark) {
@@ -184,7 +184,16 @@ export default class boosterBar{
         }
     
         this.selectedBooster = this.selectedBooster.filter(selected => selected !== name);
-        this.setDescriptionBox();
+        if(this.descriptionText){
+            if(this.descriptionText!.name === index.toString()){
+                this.setDescriptionBox();
+            }else if(index === 6 && this.descriptionText!.name === "rare1" ){
+                this.setDescriptionBox();
+            }else if(index === 7 && this.descriptionText!.name === "rare2"){
+                this.setDescriptionBox();
+            }
+        }
+        
     }
     
 
@@ -201,7 +210,7 @@ export default class boosterBar{
         this.descriptionBg = descriptionBox;
     
         if (index !== undefined) {
-            const name = this.boosters[index].getName();
+            const name = this.boosters[index].getFrame();
             let frame = "booster_" + name + ".png";
     
             if (this.descriptionImage) {
@@ -224,6 +233,9 @@ export default class boosterBar{
                 )
                 .setAlign('start')
                 .setOrigin(0, 0);
+
+            this.descriptionText.name = this.boosters[index].getFrame()
+                
     
             this.setDescriptionAmount(index);
     
@@ -277,7 +289,7 @@ export default class boosterBar{
         })
     }
 
-    getBooster(){
+    getBooster():BoosterName []{
         return this.selectedBooster
     }
 

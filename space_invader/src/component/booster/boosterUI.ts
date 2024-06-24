@@ -6,14 +6,25 @@ export enum States{
     UNAVAILABLE
 }
 
+export enum BoosterName{
+    BOOSTER_1,
+    BOOSTER_2,
+    BOOSTER_3,
+    BOOSTER_4,
+    BOOSTER_5,
+    BOOSTER_RARE1,
+    BOOSTER_RARE2,
+}
+
 export class BoosterUI {
     private scene: Phaser.Scene;
-    private name: string;
+    private name: BoosterName;
     private boosterSize! : {width : number, height : number}
     private boosterImage!: Phaser.GameObjects.Image
     private position!: {x : number, y : number}
     private state: States = States.UNAVAILABLE;
     private amount:number| undefined;
+    private frame!:string;
     private expireDate: Date| undefined;
     private expireArray: string[]= [];
     private markCircle! :Phaser.GameObjects.Arc;
@@ -31,7 +42,7 @@ export class BoosterUI {
 
     constructor(
         scene: Phaser.Scene, 
-        name: string,
+        name: BoosterName,
         options:{
             x:number, 
             y:number, 
@@ -63,11 +74,27 @@ export class BoosterUI {
         this.expireArray = options.expireArray?? []
         this.setState()
 
+        if(name === BoosterName.BOOSTER_1){
+            this.frame = '1'
+        }else if(name === BoosterName.BOOSTER_2){
+            this.frame = '2'
+        }else if(name === BoosterName.BOOSTER_3){
+            this.frame = '3'
+        }else if(name === BoosterName.BOOSTER_4){
+            this.frame = '4'
+        }else if(name === BoosterName.BOOSTER_5){
+            this.frame = '5'
+        }else if(name === BoosterName.BOOSTER_RARE1){
+            this.frame = 'rare1'
+        }else if(name === BoosterName.BOOSTER_RARE2){
+            this.frame = 'rare2'
+        }
+
         this.boosterImage = scene.add.image(
             this.position.x, 
             this.position.y, 
             'dropItem',
-            'booster_'+this.name+'.png',
+            'booster_'+this.frame+'.png',
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
        
@@ -184,7 +211,7 @@ export class BoosterUI {
         return this.amount!
     }
 
-    getName():string{
+    getName():BoosterName{
         return this.name
     }
 
@@ -196,8 +223,12 @@ export class BoosterUI {
         return this.position
     }
 
-    getIsCompleteInit(){
+    getIsCompleteInit():boolean{
         return this.isCompleteInit
+    }
+
+    getFrame():string{
+        return this.frame
     }
 
     setBoosterWidth(width:number): void{

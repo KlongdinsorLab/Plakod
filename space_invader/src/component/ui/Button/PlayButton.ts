@@ -25,10 +25,10 @@ export default class PlayButton extends Button {
 			//this.timeService.saveLastPlayTime()
 
 			//scene.scene.start('cutscene1', { bgm: bgm })
-			scene.scene.start('life_count', { bgm : bgm })
+			scene.scene.start('redeem', { bgm : bgm })
 		})
 	}
-
+ 
 	initFontStyle() {
 		this.buttonText
 			.setStyle({

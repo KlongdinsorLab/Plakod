@@ -4,26 +4,32 @@ import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import boosterBar from "component/booster/boosterBar";
 
+
 export default class RedeemScene extends Phaser.Scene {
+    private bgm?: Phaser.Sound.BaseSound
     private headerText!: Phaser.GameObjects.Text;
     private missionDescription!: Phaser.GameObjects.Text;
     private redeemBoosterText!: Phaser.GameObjects.Text;
     private buttonText!: Phaser.GameObjects.Text;
 
+    private background!: Phaser.GameObjects.Image;
     private buttonIcon!: Phaser.GameObjects.Image;
     private buttonRed!: Phaser.GameObjects.NineSlice;
     private buttonGrey!: Phaser.GameObjects.NineSlice;
     private banner!: Phaser.GameObjects.NineSlice;
     private boosterBar! : boosterBar;
 
+    init({ bgm } : { bgm : any}){
+        this.bgm = bgm
+      }
 
     constructor(){
-        super('RedeemScene');
+        super('redeem');
     
     }
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-        this.load.image('background', 'assets/background/landing_page_bg.jpg');
+        this.load.image('bg', 'assets/background/bg/landing page_bg.png')
 
         //spritesheet
         this.load.atlas('icon', 'assets/icon/icon_spritesheet.png', 'assets/icon/icon_spritesheet.json')
@@ -41,7 +47,7 @@ export default class RedeemScene extends Phaser.Scene {
 
        
         //todo: remove this, load background from other scene
-        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
         this.add.rectangle(width/2, height/2, width, height, 0x303030, 0.6);
 
         //popup box
@@ -106,6 +112,8 @@ export default class RedeemScene extends Phaser.Scene {
         //boosters
         this.boosterBar = new boosterBar(this);
 
+        
+
         //button
         this.buttonGrey = this.add.nineslice(
             MARGIN*2, 
@@ -120,8 +128,7 @@ export default class RedeemScene extends Phaser.Scene {
         .setInteractive().on('pointerup', () => {
             this.destroy()
             this.scene.stop();
-            console.log('landing page');
-            //this.scene.start();
+            this.scene.start('home', { bgm : this.bgm })
         })
 
         this.buttonIcon = this.add.image(
@@ -144,9 +151,8 @@ export default class RedeemScene extends Phaser.Scene {
         .setInteractive().on('pointerup', () => {
             this.destroy();
             this.scene.stop();
-            console.log('life count')
             console.log(this.boosterBar.getBooster())
-            //this.scene.start();
+            this.scene.start('life_count', { bgm : this.bgm });
         })
 
         this.buttonText = I18nSingleton.getInstance()
