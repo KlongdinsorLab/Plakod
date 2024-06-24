@@ -57,6 +57,8 @@ export default class GameScene extends Phaser.Scene {
   private soundManager: SoundManager
   private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
 
+  private subScenes!: string[]
+
   constructor() {
     super({ key: 'game' })
     this.soundManager = new SoundManager(this)
@@ -174,7 +176,8 @@ export default class GameScene extends Phaser.Scene {
     this.singleLaserFactory = new SingleLaserFactory()
     this.tutorial = new Tutorial(this)
 
-    this.menu = new Menu(this)
+    this.subScenes = ['warmup','warmupGauge','tutorial HUD','tutorial controller','tutorial character']
+    this.menu = new Menu(this,this.subScenes)
 
     if (!this.isCompleteTutorial()) {
       this.tutorialMeteor = this.meteorFactory.create(
@@ -254,6 +257,7 @@ export default class GameScene extends Phaser.Scene {
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
       this.scene.pause()
       this.isCompleteWarmup = true
+
       this.scene.launch('warmup', { event: this.event })
     }
 
@@ -319,6 +323,7 @@ export default class GameScene extends Phaser.Scene {
       this.player.startReload()
       gauge.setFullCharge()
       this.event.emit('fullInhale')
+
       if(this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.soundManager.stop(this.bgm)
         this.scene.stop()
@@ -379,6 +384,8 @@ export default class GameScene extends Phaser.Scene {
     if (gauge.isReducing()) {
       gauge.release(delta)
     }
+
+    // console.log(gauge.getDuratation())
   }
 }
 
