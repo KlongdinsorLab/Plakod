@@ -24,6 +24,8 @@ export default class OverlapInhaleGauge extends InhaleGauge {
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
         this.soundManager = new SoundManager(scene)
+
+        isReloading = false
     }
     createGauge(_: number): void {
         const { width } = this.scene.scale
@@ -84,6 +86,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
 
     hold(delta: number) {
         if(isReloading) return
+        
         this.holdButtonDuration += delta
     }
 

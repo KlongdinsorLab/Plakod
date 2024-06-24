@@ -17,14 +17,17 @@ export default class PauseScene extends Phaser.Scene {
   private sceneName!: string
   private timeService!: TimeService
   private playCount!: number
+  private subSceneKeys !: string[]
 
   constructor() {
     super('pause')
   }
 
-  init({ menu, sceneName }:{menu: Phaser.GameObjects.Image, sceneName: string}) {
+  init({ menu, sceneName, subSceneKeys }:{menu: Phaser.GameObjects.Image, sceneName: string, subSceneKeys : string[]}) {
     this.menu = menu
     this.sceneName = sceneName
+    if(subSceneKeys) this.subSceneKeys = subSceneKeys 
+    else this.subSceneKeys = []
   }
 
   preload() {
@@ -103,7 +106,7 @@ export default class PauseScene extends Phaser.Scene {
     resume.on('pointerup', () => {
       soundManager.resumeAll()
       this.menu.setTexture('ui', 'pause.png')
-      this.scene.resume(this.sceneName)
+      this.resumeAllScenes()
       this.scene.stop()
     })
 
@@ -126,7 +129,7 @@ export default class PauseScene extends Phaser.Scene {
     restart.on('pointerup', () => {
       this.timeService.saveLastPlayTime()
       this.scene.stop()
-      this.scene.stop(this.sceneName)
+      this.stopAllScenes()
       i18n.destroyEmitter()
       this.scene.start(this.sceneName)
     })
@@ -146,10 +149,22 @@ export default class PauseScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
     home.setInteractive()
     home.on('pointerup', () => {
+      this.stopAllScenes()
       this.scene.stop()
-      this.scene.stop(this.sceneName)
       i18n.destroyEmitter()
       this.scene.start('title')
     })
+  }
+
+  stopAllScenes() : void{
+    for(let i = 0; i < this.subSceneKeys.length; i++) this.scene.stop(this.subSceneKeys[i])
+    this.scene.stop(this.sceneName)
+  }
+
+  resumeAllScenes() : void{
+    this.scene.resume(this.sceneName)
+    for(let i = 0; i < this.subSceneKeys.length; i++) {
+      if(this.scene.isPaused(this.subSceneKeys[i])) { this.scene.resume(this.subSceneKeys[i]) }
+    }
   }
 }
