@@ -1,7 +1,11 @@
 connectorId: "default-connector"
-authMode: "PUBLIC" 
+authMode: PUBLIC
 generate:
   javascriptSdk:
-    outputDir: "../../js-breathBuddy-sdk"
-    package: "@breathBuddy-manager"
-    packageJsonDir: "../../"
+    # Create a custom package name for your generated SDK
+    package: "@breathBuddy-app"
+    # Tells Data Connect where to store the generated SDK code, this should be in the same
+    # directory as your app code
+    outputDir: "../../breathBuddy-generated"
+    # This property tells Data Connect what directory to install the generated SDK to
+    # packageJsonDir: "../../email-app"

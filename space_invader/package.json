@@ -25,7 +25,8 @@
 	},
 	"dependencies": {
 		"@types/webfontloader": "^1.6.38",
-		"firebase": "^10.12.2",
+		"@breathBuddy-app": "file:breathBuddy-generated",
+		"firebase": "10.12.0-dataconnect-preview.388b61c7e",
 		"i18next": "^23.5.1",
 		"phaser": "^3.60.0",
 		"phaser3-merged-input": "^1.6.1",

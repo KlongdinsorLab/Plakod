@@ -33,11 +33,11 @@ import LifeCountScene from 'scene/LifeCountScene'
 import { initializeApp } from "firebase/app";
 import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
 
-const {
+import {
 	connectDataConnectEmulator,
 	getDataConnect,
-   } = require("firebase/data-connect");
-const { connectorConfig } = require("@breathBuddy-manager");
+   } from "firebase/data-connect";
+import { connectorConfig } from "@breathBuddy-app";
 
 console.log(FIREBASE_API_KEY)
 const firebaseConfig = {
