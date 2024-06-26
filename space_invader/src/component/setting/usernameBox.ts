@@ -34,15 +34,16 @@ export default class usernameBox {
     }
 
     createPopUp(scene : Phaser.Scene){
-        const {width} = scene.scale
+        const { width } = scene.scale
+        const username = scene.registry.get('username')
 
         this.editUsernamePopUp = new editUsernamePopUp(scene, this.usernameText ?? 
-            scene.add.text(width/2, 320+28 , "")
+            scene.add.text(width/2, 320 + 28 , "")
             .setColor("#57453B")
-            .setPadding(0,20,0,10)
+            .setPadding(0, 20, 0, 10)
             .setFontSize(32)
-            .setOrigin(0.5,0.5)
-        ,"ญญญญญญญญญญญญญญญญญญญญ")
+            .setOrigin(0.5, 0.5)
+        , username)
 
     }
 

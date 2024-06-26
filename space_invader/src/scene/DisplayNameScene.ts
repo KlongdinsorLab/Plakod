@@ -5,38 +5,65 @@ import I18nSingleton from "i18n/I18nSingleton";
 export default class DisplayNameScene extends Phaser.Scene{
 
      private texts: Phaser.GameObjects.Text[] = [];
+     private inputHTML: HTMLElement | null = null;
 
-     private usernameBox: Element | null = null;
-     
      constructor() {
-          super('display name')
+          super('display name');
      }
 
-     private loadingFont(texts: Phaser.GameObjects.Text[]) {
-               WebFont.load({
-                    google: {
-                         families: ['Mali:Bold 700','Sarabun:Regular 400']
-                    },
-                    active: () => {
-                         const menuUiStyle = {
-                              fontFamily: 'Mali',
-                              fontStyle: 'Bold',
-                              fontWeight: 700
-                         }
-                         
-                         texts.forEach( text => {
-                              text.setStyle(menuUiStyle);
-                              text.setPadding(0,20,0,10);
-                         }
-                        
-                         // todo font input text
-                    );
+     private loadingFont(texts: Phaser.GameObjects.Text[]): void {
+          WebFont.load({
+               google: {
+                    families: ['Mali:Bold 700','Sarabun:Regular 400']
+               },
+               active: () => {
+                    const menuUiStyle = {
+                         fontFamily: 'Mali',
+                         fontStyle: 'Bold',
+                         fontWeight: 700
                     }
-               });
-          }
+                    
+                    texts.forEach( text => {
+                         text.setStyle(menuUiStyle);
+                         text.setPadding(0,20,0,10);
+                    });
+
+                    // input
+                    if(this.inputHTML) {
+                         this.inputHTML.style.fontFamily = 'Mali';
+                         this.inputHTML.style.fontStyle = 'Bold';
+                         this.inputHTML.style.fontWeight = '700';
+                    }
+               }
+          });
+
+     }
+
+     private handleSubmit(): void {
+
+          // set username
+          if (this.inputHTML) {
+               const inputElement = <HTMLInputElement> this.inputHTML;
+               const username: string = inputElement.value;
+               if (username !== '') {
+                    // TODO submit
+                    this.registry.set('username', username);
+                    this.registry.set('isSetUsername', true);
+
+                    console.log('submit success')
+                    this.scene.start('home') // for test
+                    return;
+               }
+          } 
+          
+          console.log('Please Enter username.')
+          
+     }
 
      init(){
-          
+          // initial instance variables with default value
+          this.texts = [];
+          this.inputHTML = null;
      }
 
      preload() {
@@ -50,7 +77,7 @@ export default class DisplayNameScene extends Phaser.Scene{
           const { width,height } = this.scale
           const i18n = I18nSingleton.getInstance();
 
-          this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0);   // BG image
+          this.add.tileSprite(0, 0, width, height,'bg').setOrigin(0).setScrollFactor(0,0);   // BG image
           this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0,0);     // Black Window
 
           const headingText = i18n.createTranslatedText(this, 231, 364, `display_name_heading`,)
@@ -61,13 +88,15 @@ export default class DisplayNameScene extends Phaser.Scene{
                .setOrigin(0,0)
           this.texts.push(headingText);
 
-
           // input
-          const element = this.add.dom(96, 480).createFromCache('usernameBox');
-          this.usernameBox = element.getChildByName('username');
+          const element = this.add.dom(96, 480)
+               .setOrigin(0)
+               .createFromCache('usernameBox');
+          this.inputHTML = element.getChildByName('username') as HTMLElement;
 
           // submit
-          const buttonSubmit = this.add.nineslice(
+          // button
+          this.add.nineslice(
                     172, 
                     768, 
                     'button', 
@@ -78,12 +107,9 @@ export default class DisplayNameScene extends Phaser.Scene{
                )
                .setOrigin(0, 0)
                .setInteractive().on('pointerup', () => {
-               
-                    // TODO submit function
-                    console.log('submit success')
-               
-               })
-
+                    this.handleSubmit();
+               });
+          // text
           const submitText = i18n.createTranslatedText(this, 313, 774, `submit`,)
                .setColor("#FFFFFF")
                .setStroke("#9E471B", 6)
@@ -92,6 +118,7 @@ export default class DisplayNameScene extends Phaser.Scene{
                .setOrigin(0, 0)
           this.texts.push(submitText);
 
+          // load font
           this.loadingFont(this.texts);
      }
 

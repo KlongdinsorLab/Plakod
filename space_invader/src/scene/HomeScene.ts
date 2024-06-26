@@ -34,11 +34,11 @@ export default class HomeScene extends Phaser.Scene {
 	private reminderText!: Phaser.GameObjects.Text
 
 	constructor() {
-		super('home')
+		super('home');
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
-		this.bgm = bgm
+		this.bgm = bgm;
 	}
 
 	preload() {
