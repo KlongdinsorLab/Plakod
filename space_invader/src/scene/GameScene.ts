@@ -108,12 +108,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init({ score, reloadCount, isCompleteBoss, bossName }: { score: number, reloadCount: number, isCompleteBoss: boolean, bossName: keyof typeof BossByName }) {
-    if(score)
-      this.scoreNumber = score
-    if(reloadCount)
-      this.reloadCountNumber = reloadCount
-    if(isCompleteBoss !== undefined)
-      this.isCompleteBoss = isCompleteBoss
+    this.scoreNumber = score ?? 0
+    this.reloadCountNumber = reloadCount ?? RELOAD_COUNT
+    this.isCompleteBoss = isCompleteBoss ?? false
     this.bossName = bossName
     this.soundManager.unmute()
 	}
