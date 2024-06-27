@@ -137,13 +137,13 @@ export default class GameScene extends Phaser.Scene {
     this.mergedInput
       ?.defineKey(0, 'LEFT', 'LEFT')
       .defineKey(0, 'RIGHT', 'RIGHT')
-      .defineKey(0, 'B12', 'SPACE')
+      .defineKey(0, 'B16', 'SPACE')
       //            .defineKey(0, 'B1', 'CTRL')
       //            .defineKey(0, 'B2', 'ALT')
-      .defineKey(0, 'B11', 'ONE')
-      .defineKey(0, 'B9', 'TWO')
-      .defineKey(0, 'B6', 'THREE')
-      .defineKey(0, 'B8', 'FOUR')
+      .defineKey(0, 'B6', 'ONE')
+      .defineKey(0, 'B4', 'TWO')
+      .defineKey(0, 'B7', 'THREE')
+      .defineKey(0, 'B5', 'FOUR')
 
     this.gameLayer = this.add.layer();
     this.player = new Player(this, this.gameLayer)
@@ -265,15 +265,15 @@ export default class GameScene extends Phaser.Scene {
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B12 > 0) {
+    if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
       gauge.hold(delta)
-    } else if (this.controller1?.buttons.B9 > 0) {
+    } else if (this.controller1?.buttons.B4 > 0) {
       gauge.setStep(1)
-    } else if (this.controller1?.buttons.B11 > 0) {
-      gauge.setStep(0)
     } else if (this.controller1?.buttons.B6 > 0) {
+      gauge.setStep(0)
+    } else if (this.controller1?.buttons.B7 > 0) {
       gauge.setStep(2)
-    } else if (this.controller1?.buttons.B8 > 0) {
+    } else if (this.controller1?.buttons.B5 > 0) {
       gauge.setStep(3)
     } else {
       gauge.setVisible(false)
@@ -315,7 +315,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (
       gauge.getDuratation() > HOLD_DURATION_MS &&
-      this.controller1?.buttons.B12 > 0
+      this.controller1?.buttons.B16 > 0
     ) {
       this.player.startReload()
       gauge.setFullCharge()
@@ -334,7 +334,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B12 > 0 &&
+      this.controller1?.buttons.B16 > 0 &&
       !this.player.getIsAttacking()
     ) {
       this.player.charge()
@@ -342,7 +342,7 @@ export default class GameScene extends Phaser.Scene {
       this.event.emit('inhale')
     }
 
-    if (this.player.getIsReload() && !(this.controller1?.buttons.B12 > 0)) { // Fully Reloaded
+    if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) { // Fully Reloaded
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
 
       this.time.addEvent({
@@ -373,7 +373,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    if (this.player.getIsReloading() && !(this.controller1?.buttons.B12 > 0)) {
+    if (this.player.getIsReloading() && !(this.controller1?.buttons.B16 > 0)) {
       this.player.reloadResetting()
       gauge.resetting()
     }
