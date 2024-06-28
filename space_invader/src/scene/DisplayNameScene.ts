@@ -85,14 +85,14 @@ export default class DisplayNameScene extends Phaser.Scene{
                .setStroke("#D35E24", 12)
                .setFontSize(40)
                .setPadding(0, 20, 0, 10)
-               .setOrigin(0,0)
+               .setOrigin(0, 0)
           this.texts.push(headingText);
 
           // input
           const element = this.add.dom(96, 480)
                .setOrigin(0)
                .createFromCache('usernameBox');
-          this.inputHTML = element.getChildByName('username') as HTMLElement;
+          this.inputHTML = element.getChildByName('display-name-username') as HTMLElement;
 
           // submit
           // button
