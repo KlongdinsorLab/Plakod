@@ -26,8 +26,8 @@ export default class PlayButton extends Button {
 
 			//scene.scene.start('cutscene1', { bgm: bgm })
 
-			const isSetUsername = scene.registry.get('isSetUsername');
-			if (isSetUsername) {
+			const username = scene.registry.get('username');
+			if (username) {
 				scene.scene.start('redeem', { bgm : bgm })
 			} else {
 				scene.scene.start('display name', { bgm : bgm })
