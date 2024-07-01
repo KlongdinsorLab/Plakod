@@ -140,10 +140,10 @@ export default class GameScene extends Phaser.Scene {
       .defineKey(0, 'B16', 'SPACE')
       //            .defineKey(0, 'B1', 'CTRL')
       //            .defineKey(0, 'B2', 'ALT')
-      .defineKey(0, 'B6', 'ONE')
-      .defineKey(0, 'B4', 'TWO')
-      .defineKey(0, 'B7', 'THREE')
-      .defineKey(0, 'B5', 'FOUR')
+      .defineKey(0, 'B5', 'ONE')
+      .defineKey(0, 'B7', 'TWO')
+      .defineKey(0, 'B4', 'THREE')
+      .defineKey(0, 'B6', 'FOUR')
 
     this.gameLayer = this.add.layer();
     this.player = new Player(this, this.gameLayer)
@@ -267,13 +267,13 @@ export default class GameScene extends Phaser.Scene {
     // Must be in this order if B3 press with B6, B3 will be activated
     if (this.isCompleteTutorial() && !this.player.getIsAttacking() && this.controller1?.buttons.B16 > 0) {
       gauge.hold(delta)
-    } else if (this.controller1?.buttons.B4 > 0) {
-      gauge.setStep(1)
-    } else if (this.controller1?.buttons.B6 > 0) {
-      gauge.setStep(0)
     } else if (this.controller1?.buttons.B7 > 0) {
-      gauge.setStep(2)
+      gauge.setStep(1)
     } else if (this.controller1?.buttons.B5 > 0) {
+      gauge.setStep(0)
+    } else if (this.controller1?.buttons.B4 > 0) {
+      gauge.setStep(2)
+    } else if (this.controller1?.buttons.B6 > 0) {
       gauge.setStep(3)
     } else {
       gauge.setVisible(false)
