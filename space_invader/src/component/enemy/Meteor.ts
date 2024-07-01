@@ -12,11 +12,20 @@ import {
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
 
+import { boosters } from 'scene/booster/RedeemScene'
+import { Booster3 } from 'component/booster/boosterList/booster_3'
+import { Booster5 } from 'component/booster/boosterList/booster_5'
+import { BoosterName } from 'component/booster/booster'
 export class Meteor extends Enemy {
   // private soundManager: SoundManager
   private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private flareEmitter: Phaser.GameObjects.Particles.ParticleEmitter
   private soundEffect!: Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound
+  private hitMeteorScore!: number
+  private destroyMeteorScore!: number
+
+  private booster3?: Booster3
+  private booster5?: Booster5
 
   constructor(
     scene: Phaser.Scene,
@@ -47,6 +56,19 @@ export class Meteor extends Enemy {
     this.explosionEmitter.active = false
     // this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     
+    this.hitMeteorScore = HIT_METEOR_SCORE
+    this.destroyMeteorScore = DESTROY_METEOR_SCORE
+    if(boosters.includes(BoosterName.BOOSTER_3)){
+      this.booster3 = new Booster3()
+      this.hitMeteorScore = this.booster3.applyBooster(HIT_METEOR_SCORE)
+    }
+    if(boosters.includes(BoosterName.BOOSTER_5)){
+      this.booster5 = new Booster5()
+      this.destroyMeteorScore = this.booster5.applyBooster(DESTROY_METEOR_SCORE)
+    }
+
+    
+    
     this.move()
     this.attack()
   }
@@ -66,7 +88,7 @@ export class Meteor extends Enemy {
         if (this.player.getIsHit()) return
         this.player.setIsHit(true)
         this.player.damaged()
-        this.score.add(HIT_METEOR_SCORE)
+        this.score.add(this.hitMeteorScore)
         this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
           this.player.setIsHit(false)
           this.player.recovered()
@@ -126,7 +148,7 @@ export class Meteor extends Enemy {
     this.flareEmitter.destroy()
     // this.soundManager.play(this.enermyDestroyedSound!, true)
     this.soundEffect.play("rock-destroy")
-    this.score.add(DESTROY_METEOR_SCORE)
+    this.score.add(this.destroyMeteorScore)
   }
 
   getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {

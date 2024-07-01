@@ -12,6 +12,8 @@ import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 
+import { boosters } from './booster/RedeemScene'
+
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
 	heartEmpty: 'home_reminder_empty_heart',
@@ -116,6 +118,9 @@ export default class HomeScene extends Phaser.Scene {
 		this.instructionButton = new InstructionButton(this)
 		this.achievementButton = new AchievementButton(this)
 		this.settingButton = new SettingButton(this)
+
+		//clear boosters
+		boosters.length = 0
 		
 		const self = this
 		WebFont.load({

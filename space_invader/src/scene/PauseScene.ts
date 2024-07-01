@@ -8,6 +8,7 @@ import {
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import TimeService from 'services/timeService'
+import { boosters } from './booster/RedeemScene'
 
 export type Menu = {
   menu: Phaser.GameObjects.Image
@@ -131,7 +132,8 @@ export default class PauseScene extends Phaser.Scene {
       this.scene.stop()
       this.stopAllScenes()
       i18n.destroyEmitter()
-      this.scene.start(this.sceneName)
+      boosters.length = 0
+      this.scene.start('redeem')
     })
 
     const home = this.add

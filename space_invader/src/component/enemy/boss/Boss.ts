@@ -1,20 +1,8 @@
-import {
-	BULLET_COUNT,
-	BOSS_PHASE1_BULLET_COUNT,
-	BOSSV1_PHASE2_BULLET_COUNT,
-	BOSSV2_PHASE2_BULLET_COUNT,
-} from 'config'
 import { Enemy } from '../Enemy'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 import { BossVersion } from './BossVersion'
 
-export enum ShootingPhase {
-	NORMAL = BULLET_COUNT,
-	BOSS_PHASE_1 = BOSS_PHASE1_BULLET_COUNT,
-	BOSSV1_PHASE_2 = BOSSV1_PHASE2_BULLET_COUNT,
-	BOSSV2_PHASE_2 = BOSSV2_PHASE2_BULLET_COUNT,
-}
 
 export enum BossPhase {
 	PHASE_1 = 'b1v1',

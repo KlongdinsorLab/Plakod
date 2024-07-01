@@ -1,19 +1,10 @@
 import TimeService from "services/timeService";
+import { BoosterName } from "./booster";
 
 export enum States{
     PERMANENT,
     LIMITED_TIME,
     UNAVAILABLE
-}
-
-export enum BoosterName{
-    BOOSTER_1,
-    BOOSTER_2,
-    BOOSTER_3,
-    BOOSTER_4,
-    BOOSTER_5,
-    BOOSTER_RARE1,
-    BOOSTER_RARE2,
 }
 
 export class BoosterUI {
@@ -43,9 +34,9 @@ export class BoosterUI {
     constructor(
         scene: Phaser.Scene, 
         name: BoosterName,
-        options:{
-            x:number, 
-            y:number, 
+        options?:{
+            x?:number, 
+            y?:number, 
             width?: number,
             height?:number,
             amount?:number, 
@@ -59,45 +50,49 @@ export class BoosterUI {
         this.name = name;
 
         this.position = {
-                x: options.x ?? -1,
-                y: options.y ?? -1
-            };
-            this.boosterSize = {
-                width: options.width ?? 96,
-                height: options.height ?? 96
-            };
+            x: options?.x ?? -1,
+            y: options?.y ?? -1
+        };
+        this.boosterSize = {
+            width: options?.width ?? 96,
+            height: options?.height ?? 96
+        };
 
         this.isCompleteInit = false;
 
-        this.amount = options.amount?? 0
-        this.expireDate = options.expireDate?? undefined
-        this.expireArray = options.expireArray?? []
+        this.amount = options?.amount?? 0
+        this.expireDate = options?.expireDate?? undefined
+        this.expireArray = options?.expireArray?? []
         this.setState()
 
-        if(name === BoosterName.BOOSTER_1){
+       
+       
+    }
+    create(): void{
+        if(this.name === BoosterName.BOOSTER_1){
             this.frame = '1'
-        }else if(name === BoosterName.BOOSTER_2){
+        }else if(this.name === BoosterName.BOOSTER_2){
             this.frame = '2'
-        }else if(name === BoosterName.BOOSTER_3){
+        }else if(this.name === BoosterName.BOOSTER_3){
             this.frame = '3'
-        }else if(name === BoosterName.BOOSTER_4){
+        }else if(this.name === BoosterName.BOOSTER_4){
             this.frame = '4'
-        }else if(name === BoosterName.BOOSTER_5){
+        }else if(this.name === BoosterName.BOOSTER_5){
             this.frame = '5'
-        }else if(name === BoosterName.BOOSTER_RARE1){
+        }else if(this.name === BoosterName.BOOSTER_RARE1){
             this.frame = 'rare1'
-        }else if(name === BoosterName.BOOSTER_RARE2){
+        }else if(this.name === BoosterName.BOOSTER_RARE2){
             this.frame = 'rare2'
         }
 
-        this.boosterImage = scene.add.image(
+        this.boosterImage = this.scene.add.image(
             this.position.x, 
             this.position.y, 
             'dropItem',
             'booster_'+this.frame+'.png',
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
-       
+        
     }
 
     setState(): void{

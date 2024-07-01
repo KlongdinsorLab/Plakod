@@ -1,19 +1,22 @@
 //todo: booster
 import Phaser from "phaser";
+export enum BoosterName{
+    NONE,
+    BOOSTER_1,
+    BOOSTER_2,
+    BOOSTER_3,
+    BOOSTER_4,
+    BOOSTER_5,
+    BOOSTER_RARE1,
+    BOOSTER_RARE2,
+}
+
 
 // Abstract Booster class
 export abstract class Booster {
-    protected scene: Phaser.Scene;
-    protected name: string;
+    protected name: BoosterName;
 
-    protected constructor(scene: Phaser.Scene, name: string) {
-        this.scene = scene;
+    protected constructor(name: BoosterName) {
         this.name = name;
     }
-
-    abstract setState(): void
-    abstract applyBooster(): void;
-    abstract getBody(): Phaser.GameObjects.Image;
-
-    
 }

@@ -7,9 +7,20 @@ import {
 	MARGIN,
 	PLAYER_SPEED,
 	PLAYER_START_MARGIN,
+	BULLET_COUNT,
+	BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE2_BULLET_COUNT,
 } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 // import WebFont from 'webfontloader'
+
+export enum ShootingPhase {
+	NORMAL = BULLET_COUNT,
+	BOSS_PHASE_1 = BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE_2 = BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE_2 = BOSSV2_PHASE2_BULLET_COUNT,
+}
 
 export default class Player {
 	private scene: Phaser.Scene

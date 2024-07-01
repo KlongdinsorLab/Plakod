@@ -3,7 +3,9 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import boosterBar from "component/booster/boosterBar";
+import { BoosterName } from "component/booster/booster";
 
+export let boosters: BoosterName[] = [];
 
 export default class RedeemScene extends Phaser.Scene {
     private bgm?: Phaser.Sound.BaseSound
@@ -150,7 +152,7 @@ export default class RedeemScene extends Phaser.Scene {
         .setInteractive().on('pointerup', () => {
             this.destroy();
             this.scene.stop();
-            console.log(this.boosterBar.getBooster())
+            boosters = this.boosterBar.getBooster();
             this.scene.start('life_count', { bgm : this.bgm });
         })
 
