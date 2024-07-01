@@ -1,7 +1,8 @@
 import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
-import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
+import { LaserFactory } from 'component/weapon/LaserFactory'
+import { LaserFactoryByName } from 'component/weapon/LaserFactoryByName'
 import {
 	LASER_FREQUENCY_MS,
 	COLLECT_BULLET_COUNT,
@@ -64,9 +65,10 @@ export default class BossScene extends Phaser.Scene {
 	private shootingPhase1!: ShootingPhase
 	private shootingPhase2!: ShootingPhase
 	private laserFrequency!: number
-	private bulletCount!: number
+	//private bulletCount!: number
+	
 	private booster4!: Booster4
-
+	private boosterRare1!: BoosterRare1
 
 	constructor() {
 		super({ key: 'bossScene' })

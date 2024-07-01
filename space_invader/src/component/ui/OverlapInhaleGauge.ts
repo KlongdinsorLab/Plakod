@@ -11,10 +11,6 @@ import {
 import InhaleGauge from './InhaleGauge'
 import SoundManager from 'component/sound/SoundManager'
 
-import { boosters } from 'scene/booster/RedeemScene'
-import { BoosterName } from 'component/booster/booster'
-import { Booster4 } from 'component/booster/boosterList/booster_4'
-
 let isReloading = false
 let rectanglesBackground: Phaser.GameObjects.Rectangle[] = []
 let stepBar!: Phaser.GameObjects.Rectangle

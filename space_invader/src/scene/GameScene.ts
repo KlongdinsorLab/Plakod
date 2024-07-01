@@ -30,6 +30,7 @@ import {Booster4} from 'component/booster/boosterList/booster_4'
 import { BoosterName } from 'component/booster/booster'
 import { LaserFactoryByName } from 'component/weapon/LaserFactoryByName'
 import { LaserFactory } from 'component/weapon/LaserFactory'
+import { BoosterRare1 } from 'component/booster/boosterList/booster_rare1'
 
 
 export default class GameScene extends Phaser.Scene {
@@ -230,7 +231,8 @@ export default class GameScene extends Phaser.Scene {
       this.shootingPhase = boosterEffect.shootingPhase
     }
     if(boosters.includes(BoosterName.BOOSTER_RARE1)){
-      this.laserFactoryName = 'triple';
+      this.boosterRare1 = new BoosterRare1()
+      this.laserFactoryName = this.boosterRare1.applyBooster()
     }
     this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
 

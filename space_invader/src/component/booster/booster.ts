@@ -1,5 +1,3 @@
-//todo: booster
-import Phaser from "phaser";
 export enum BoosterName{
     NONE,
     BOOSTER_1,
