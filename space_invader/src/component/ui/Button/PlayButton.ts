@@ -20,12 +20,18 @@ export default class PlayButton extends Button {
 			.setOrigin(0.5, 0.5)
 
 		this.button.setInteractive()
-		this.button.on('pointerdown', () => {
+		this.button.on('pointerup', () => {
 			
 			//this.timeService.saveLastPlayTime()
 
 			//scene.scene.start('cutscene1', { bgm: bgm })
-			scene.scene.start('redeem', { bgm : bgm })
+
+			const isSetUsername = scene.registry.get('isSetUsername');
+			if (isSetUsername) {
+				scene.scene.start('redeem', { bgm : bgm })
+			} else {
+				scene.scene.start('display name', { bgm : bgm })
+			}
 		})
 	}
  

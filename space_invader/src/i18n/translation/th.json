@@ -135,5 +135,6 @@
   "vas_box_text2" : "เหนื่อยเล็กน้อย",
   "vas_box_text3" : "ค่อนข้างเหนื่อย",
   "vas_box_text4" : "เหนื่อยมาก",
-  "vas_box_text5" : "เหนื่อยมากที่สุด"
+  "vas_box_text5" : "เหนื่อยมากที่สุด",
+  "display_name_heading" : "ชื่อนักผจญภัย"
 }
