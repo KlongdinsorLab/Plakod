@@ -1,46 +1,46 @@
-interface Player {
+export interface PlayerDTO {
      playerId: string;
      username: string;
      playerLevel: number;
      airflow: number;
      playCount: number;
      playToday: Date[];
-     difficult: Difficult[];
+     difficult: DifficultDTO;
      usingCharacter: string;
 }
 
-interface Rank {
+export interface RankDTO {
      playerId: string;
      username: string;
      accumulatedScore: number;
      accumulatedPlay: number;
 }
 
-interface Level {
+export interface LevelDTO {
      level: number;
-     boosters: Booster;
+     boosters: BoosterDTO;
 }
 
-interface Achievement {
+export interface AchievementDTO {
      achievementId: string;
      name: string;
      detail: string
 }
 
-interface Character {
+export interface CharacterDTO {
      characterId: string;
      name: string;
      detail: string;
 }
 
-interface Booster {
+export interface BoosterDTO {
      [key: string]: {
-          expireDate: Date[];
+          expireAt: Date[];
           amount: number
      };
 }
 
-interface Difficult {
+export interface DifficultDTO {
      difficultId: string;
      name: string;
      inhaleSecond: number;
@@ -70,32 +70,34 @@ export default abstract class AbstractAPIService {
           difficultId: string,
      ): Promise<any>
 
-     abstract updateUsername(): Promise<any>
+     abstract updatePlayerUsername(newUsername: string): Promise<any>
 
-     abstract updateDifficult(): Promise<any>
+     abstract updatePlayerDifficult(newDifficultId: string): Promise<any>
 
-     abstract updateAirflow(): Promise<any>
+     abstract updatePlayerAirflow(newAirflow: number): Promise<any>
 
-     abstract updateUsingCharacter(): Promise<any>
+     abstract updatePlayerUsingCharacter(newCharacterId: string): Promise<any>
 
-     abstract getPlayerInLandingPage(): Promise<Player>;
+     abstract addPlayerCharacter(characterId: string): Promise<any>
 
-     abstract getRanking(): Promise<Rank>
+     abstract getPlayer(): Promise<PlayerDTO>;
 
-     abstract applyBooster(): Promise<any>
+     abstract getRanking(): Promise<RankDTO[]>
+
+     abstract applyBooster(boostersId: string[]): Promise<any>
 
      abstract createGameSession(): Promise<any>
 
      abstract updateGameSession(): Promise<any>
 
-     abstract getLevelUp(): Promise<Level>
+     abstract getLevelUp(): Promise<LevelDTO>
 
-     abstract getBooster(): Promise<Booster[]>
+     abstract getBooster(): Promise<BoosterDTO>
      
      abstract addBooster(): Promise<any>
 
-     abstract getAchievement(): Promise<Achievement[]>
+     abstract getAchievement(): Promise<AchievementDTO[]>
 
-     abstract getCharacter(): Promise<Character>
+     abstract getCharacter(): Promise<CharacterDTO>
 
 }

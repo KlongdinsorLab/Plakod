@@ -1,10 +1,98 @@
-export const Players = [
+import { 
+     Gender,
+     Airflow,
+     StatusGameSession,
+     StatusBooster,
+     VasScore
+ } from "services/enumService";
+
+export interface PlayerSchema {
+     id: string
+     difficult_id: string;
+     tel: string;
+     username: string;
+     gender: Gender;
+     birth_year: number;
+     airflow: Airflow;
+     last_played_at: Date;
+     using_character_id: string;
+}
+
+export interface DifficultSchema {
+     id: string;
+     name: string;
+     inhale_second: number;    
+}
+
+export interface LevelSchema {
+     id: string;
+     level: number;
+     score_require: number;
+}
+
+export interface GameSessionSchema {
+     id: string;
+     player_id: string;
+     difficult_id: string;
+     boss_id: string;
+     score: number;
+     lap: number;
+     start_at: Date;
+     update_at: Date;
+     end_at: Date;
+     status: StatusGameSession;
+}
+
+export interface CharacterSchema {
+     id: string;
+     name: string;
+     detail: string;
+}
+
+export interface AchievementSchema {
+     id: string;
+     name: string;
+     detail: string;
+}
+
+export interface BoosterSchema {
+     id: string;
+     name: string;
+     detail: string;
+}
+
+export interface PlayerCharacterSchema {
+     player_id: string;
+     character_id: string;
+}
+
+export interface PlayerAchievementSchema {
+     player_id: string;
+     achievement_id: string;
+}
+
+export interface PlayerBoosterSchema {
+     player_id: string;
+     booster_id: string;
+     expire_at: Date | null;
+     create_at: Date;
+     status: StatusBooster;
+}
+
+export interface VasSchema {
+     id: string;
+     player_id: string;
+     vas_score: VasScore;
+     create_at: Date;
+}
+
+export const Players: PlayerSchema[] = [
      {
           id: "001",
           difficult_id: "1",
           tel: "0958927518",
           username: "tirawich",
-          gender: "M",
+          gender: Gender.Male,
           birth_year: 2003,
           airflow: 600,
           last_played_at: new Date(),
@@ -15,15 +103,15 @@ export const Players = [
           difficult_id: "1",
           tel: "0958927515",
           username: "Peace",
-          gender: "M",
+          gender: Gender.Male,
           birth_year: 2003,
-          airflow: 600,
+          airflow: 500,
           last_played_at: new Date(),
           using_character_id: "01",
      },
 ]
 
-export const Difficulties = [ 
+export const Difficulties: DifficultSchema[] = [ 
      {
           id: "01",
           name: "easy",
@@ -41,7 +129,7 @@ export const Difficulties = [
      }
 ]
 
-export const Levels = [
+export const Levels: LevelSchema[] = [
      {
           id: "01",
           level: 1,
@@ -94,7 +182,7 @@ export const Levels = [
      },
 ]
 
-export const GameSessions = [
+export const GameSessions: GameSessionSchema[] = [
      {
           id: "0001",
           player_id: "01",
@@ -105,7 +193,7 @@ export const GameSessions = [
           start_at: new Date(),
           update_at: new Date(Date.now() + 900000),
           end_at: new Date(Date.now() + 900000),
-          status: "ACTIVE",
+          status: StatusGameSession.Active,
      },
      {
           id: "0002",
@@ -117,7 +205,7 @@ export const GameSessions = [
           start_at: new Date(),
           update_at: new Date(Date.now() + 600000),
           end_at: new Date(Date.now() + 600000),
-          status: "ACTIVE",
+          status: StatusGameSession.Active,
      },
      {
           id: "0003",
@@ -129,7 +217,7 @@ export const GameSessions = [
           start_at: new Date(Date.now() - 10000000),
           update_at: new Date(),
           end_at: new Date(),
-          status: "ACTIVE",
+          status: StatusGameSession.Active,
      },
      {
           id: "0004",
@@ -141,11 +229,11 @@ export const GameSessions = [
           start_at: new Date(Date.now() - 6000000),
           update_at: new Date(),
           end_at: new Date(),
-          status: "ACTIVE",
+          status: StatusGameSession.Active,
      },
 ]
 
-export const Characters = [
+export const Characters: CharacterSchema[] = [
      {
           id: "01",
           name: "mc1",
@@ -163,7 +251,7 @@ export const Characters = [
      }
 ]
 
-export const Achievements = [
+export const Achievements: AchievementSchema[] = [
      {
           id: "001",
           name: "achievement1",
@@ -252,7 +340,7 @@ export const Achievements = [
 
 ]
 
-export const Boosters = [
+export const Boosters: BoosterSchema[] = [
      {
           id: "01",
           name: "booster1",
@@ -290,7 +378,7 @@ export const Boosters = [
      }
 ]
 
-export const Player_Characters = [
+export const Player_Characters: PlayerCharacterSchema[] = [
      {
           player_id: "001",
           character_id: "01"
@@ -305,7 +393,7 @@ export const Player_Characters = [
      }
 ]
 
-export const Player_Achievements = [
+export const Player_Achievements: PlayerAchievementSchema[] = [
      {
           player_id: "001",
           achievement_id: "001",
@@ -316,73 +404,73 @@ export const Player_Achievements = [
      }
 ]
 
-export const Player_Boosters = [
+export const Player_Boosters: PlayerBoosterSchema[] = [
      {
           player_id: "001",
           booster_id: "02",
           expire_at: new Date(Date.now() - 10800000),
           create_at: new Date(),
-          status: "EXPIRE"
+          status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "01",
           expire_at: new Date(),
           create_at: new Date(Date.now() + 10800000),
-          status: "AVAILABLE"
+          status: StatusBooster.Available
      },
      {
           player_id: "001",
           booster_id: "03",
           expire_at: new Date(),
           create_at: new Date(),
-          status: "EXPIRE"
+          status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "04",
           expire_at: new Date(),
           create_at: new Date(),
-          status: "EXPIRE"
+          status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "05",
           expire_at: new Date(),
           create_at: new Date(),
-          status: "EXPIRE"
+          status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "06",
           expire_at: new Date(),
           create_at: new Date(),
-          status: "EXPIRE"
+          status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "01",
           expire_at: null,
           create_at: new Date(),
-          status: "AVAILABLE"
+          status: StatusBooster.Available
      },
      {
           player_id: "001",
           booster_id: "02",
           expire_at: null,
           create_at: new Date(),
-          status: "AVAILABLE"
+          status: StatusBooster.Available
      },
      {
           player_id: "001",
           booster_id: "03",
           expire_at: null,
           create_at: new Date(),
-          status: "AVAILABLE"
+          status: StatusBooster.Available
      },
 ]
 
-export const Vas = [
+export const Vas: VasSchema[] = [
      {
           id: "0001",
           player_id: "001",
