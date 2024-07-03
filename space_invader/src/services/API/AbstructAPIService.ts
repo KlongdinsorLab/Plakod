@@ -75,31 +75,51 @@ export default abstract class AbstractAPIService {
           difficultId: string,
      ): Promise<any>
 
-     abstract updatePlayerUsername(newUsername: string): Promise<any>
+     abstract updatePlayerUsername(
+          newUsername: string
+     ): Promise<any>
 
-     abstract updatePlayerDifficult(newDifficultId: string): Promise<any>
+     abstract updatePlayerDifficult(
+          newDifficultId: string
+     ): Promise<any>
 
-     abstract updatePlayerAirflow(newAirflow: number): Promise<any>
+     abstract updatePlayerAirflow(
+          newAirflow: number
+     ): Promise<any>
 
-     abstract updatePlayerUsingCharacter(newCharacterId: string): Promise<any>
+     abstract updatePlayerUsingCharacter(
+          newCharacterId: string
+     ): Promise<any>
 
-     abstract addPlayerCharacter(characterId: string): Promise<any>
+     abstract addPlayerCharacter(
+          characterId: string
+     ): Promise<any>
 
      abstract getPlayer(): Promise<PlayerDTO>;
 
      abstract getRankings(): Promise<RankDTO[]>
 
-     abstract applyPlayerBooster(boostersId: string[]): Promise<any>
+     abstract applyPlayerBooster(
+          boostersId: string[]
+     ): Promise<any>
 
-     abstract createGameSession(): Promise<any>
+     abstract createGameSession(
+          boosId: string
+     ): Promise<any>
 
-     abstract updateGameSession(): Promise<any>
+     abstract updateGameSession(
+          gameSessionId: string, 
+          score: number, 
+          lap: number
+     ): Promise<any>
 
      abstract getPlayerLevelUp(): Promise<LevelDTO>
 
      abstract getPlayerBooster(): Promise<BoosterDTO>
      
-     abstract addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any>
+     abstract addPlayerBoosters(
+          boosters: BoosterAddDTO[]
+     ): Promise<any>
 
      abstract getPlayerAchievements(): Promise<AchievementDTO[]>
 

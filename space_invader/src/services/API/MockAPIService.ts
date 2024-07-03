@@ -1,6 +1,7 @@
 import { 
      Gender, 
-     StatusBooster
+     StatusBooster,
+     StatusGameSession
 } from "services/enumService";
 
 import { 
@@ -79,7 +80,8 @@ export default class MockAPIService extends AbstractAPIService {
                this.isLogin = true;
 
                // TODO create token
-               this.token = "tHiSiSToKen";
+               // this is example of token
+               this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
                
                resolve(this.token);
           });
@@ -153,6 +155,7 @@ export default class MockAPIService extends AbstractAPIService {
      
                const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
                     game => game.player_id === this.playerId
+                         && game.status === StatusGameSession.End
                );
      
                const playerAccumulatedScore: number = playerGameSessions.reduce(
@@ -518,7 +521,7 @@ export default class MockAPIService extends AbstractAPIService {
                     let expireAt: Date | null = null
                     if (duration === -1 || duration === null) {   // -1 is permanent booster
                          expireAt = null;
-                    } else if (duration > 0){
+                    } else if (duration > 0 && duration < 128){  // 128 cap
                          const timeToExpire = now.getTime() + (duration * 3600000);
                          expireAt = new Date(timeToExpire);
                     } else {
@@ -552,12 +555,72 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     createGameSession(): Promise<any> {
-          throw new Error("Method not implemented.");
+     // TODO check gameSession that not have endAt in (x hours) will be status "Cancel"
+     createGameSession(bossId: string): Promise<any> {
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const id: string = String(GameSessions.length).padStart(4, "0");
+               const playerFound = Players.find( 
+                    player => player.id === this.playerId
+               );
+               if (!playerFound) {
+                    reject('Can not find player.');
+               }
+               const player: PlayerSchema = playerFound as PlayerSchema;
+               const now: Date = new Date();
+
+               const GameSessionsDTO: GameSessionSchema = {
+                    id: id,
+                    player_id: this.playerId,
+                    difficult_id: player.difficult_id, // TODO check with design
+                    boss_id: bossId,
+                    score: 0,
+                    lap: 0,
+                    start_at: now,
+                    update_at: now,
+                    end_at: null,
+                    status: StatusGameSession.Active
+               }
+
+               // add to database
+               GameSessions.push(GameSessionsDTO);
+
+               resolve({message: 'OK', gameSessionId: id});
+          });
      }
 
-     updateGameSession(): Promise<any> {
-          throw new Error("Method not implemented.");
+     // TODO check that gameSession is expire?
+     updateGameSession(gameSessionId: string, score: number, lap: number): Promise<any> {
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const IndexFound = GameSessions.findIndex( gs =>
+                    gs.id === gameSessionId
+               );
+               if (IndexFound === -1) {
+                    reject(`Can't found index of gameSession's id: ${gameSessionId}`);
+               }
+               
+               // update
+               const now = new Date();
+               GameSessions[IndexFound].score = score;
+               GameSessions[IndexFound].lap = lap;
+               GameSessions[IndexFound].update_at = now;
+
+               // end gameSession
+               if (lap >= 10) {
+                    GameSessions[IndexFound].end_at = now;
+               }
+
+               resolve({message: 'OK'});
+          });
      }
 
      getPlayerLevelUp(): Promise<LevelDTO> {

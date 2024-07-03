@@ -39,7 +39,7 @@ export interface GameSessionSchema {
      lap: number;
      start_at: Date;
      update_at: Date;
-     end_at: Date;
+     end_at: Date | null;
      status: StatusGameSession;
 }
 
@@ -193,7 +193,7 @@ export const GameSessions: GameSessionSchema[] = [
           start_at: new Date(),
           update_at: new Date(Date.now() + 900000),
           end_at: new Date(Date.now() + 900000),
-          status: StatusGameSession.Active,
+          status: StatusGameSession.End,
      },
      {
           id: "0002",
@@ -205,7 +205,7 @@ export const GameSessions: GameSessionSchema[] = [
           start_at: new Date(),
           update_at: new Date(Date.now() + 600000),
           end_at: new Date(Date.now() + 600000),
-          status: StatusGameSession.Active,
+          status: StatusGameSession.End,
      },
      {
           id: "0003",
@@ -217,7 +217,7 @@ export const GameSessions: GameSessionSchema[] = [
           start_at: new Date(Date.now() - 10000000),
           update_at: new Date(),
           end_at: new Date(),
-          status: StatusGameSession.Active,
+          status: StatusGameSession.End,
      },
      {
           id: "0004",
@@ -229,7 +229,7 @@ export const GameSessions: GameSessionSchema[] = [
           start_at: new Date(Date.now() - 6000000),
           update_at: new Date(),
           end_at: new Date(),
-          status: StatusGameSession.Active,
+          status: StatusGameSession.End,
      },
 ]
 

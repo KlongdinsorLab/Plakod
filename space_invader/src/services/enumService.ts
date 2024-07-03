@@ -14,7 +14,8 @@ export enum Airflow {
 
 export enum StatusGameSession {
      Active = "ACTIVE",
-     Cancel = "CANCEL"
+     Cancel = "CANCEL",
+     End = "END"
 }
 
 export enum StatusBooster {
