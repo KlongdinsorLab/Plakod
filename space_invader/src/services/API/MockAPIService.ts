@@ -19,13 +19,15 @@ import {
      PlayerSchema,
      PlayerCharacterSchema,
      GameSessionSchema,
-     PlayerBoosterSchema
+     PlayerBoosterSchema,
+     AchievementSchema,
+     CharacterSchema,
+     VasSchema,
 } from "./fakeDatabase";
 
 import AbstractAPIService, {
      PlayerDTO,
      RankDTO,
-     LevelDTO,
      AchievementDTO,
      CharacterDTO,
      BoosterDTO,
@@ -46,17 +48,19 @@ export default class MockAPIService extends AbstractAPIService {
           this.isLogin = false;
      }
 
+     // TODO make it to Singleton?
+
      private findPlayerLevel(playerAccumulatedScore: number): number {
           
           if (playerAccumulatedScore < 0) {
                throw new Error('Score can not be negative number.')
           }
 
-          let i = 1;
-          const n = Levels.length;
+          let i: number = 1;
+          const n: number = Levels.length;
           while(i < n) {
-               const scoreRequire = Levels[i].score_require;
-               const isNextLevel = playerAccumulatedScore > scoreRequire;
+               const scoreRequire: number = Levels[i].score_require;
+               const isNextLevel: boolean = playerAccumulatedScore > scoreRequire;
        
                if (isNextLevel) {
                     i++; // level up
@@ -69,7 +73,7 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      login(tel: string): Promise<any> {
-          return new Promise<string>((resolve, reject) => {
+          return new Promise<any>((resolve, reject) => {
                const player = Players.find( player => player.tel === tel);
                if (player) {
                     this.playerId = player.id;
@@ -83,7 +87,7 @@ export default class MockAPIService extends AbstractAPIService {
                // this is example of token
                this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
                
-               resolve(this.token);
+               resolve({message: 'Ok', token: this.token});
           });
      }
 
@@ -170,8 +174,8 @@ export default class MockAPIService extends AbstractAPIService {
                const playToday: Date[] = playerGameSessions
                     .filter(
                          game => {
-                              const now = new Date().setHours(0, 0, 0, 0);
-                              return game.start_at.getTime() > now;
+                              const today = new Date().setHours(0, 0, 0, 0);
+                              return game.start_at.getTime() > today;
                     })
                     .map(
                          game => game.start_at
@@ -212,7 +216,7 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const index = Players.findIndex( 
+               const index: number = Players.findIndex( 
                     player => player.id === this.playerId
                );
                if (index === -1) {
@@ -234,7 +238,7 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const index = Players.findIndex( 
+               const index: number = Players.findIndex( 
                     player => player.id === this.playerId
                );
                if (index === -1) {
@@ -256,7 +260,7 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const index = Players.findIndex( 
+               const index: number = Players.findIndex( 
                     player => player.id === this.playerId
                );
                if (index === -1) {
@@ -278,7 +282,7 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const index = Players.findIndex( 
+               const index: number = Players.findIndex( 
                     player => player.id === this.playerId
                );
                if (index === -1) {
@@ -387,10 +391,10 @@ export default class MockAPIService extends AbstractAPIService {
                          }
                     });
 
-                    const playerBooster = playerBoosters[0];     // get booster that will expire first
+                    const playerBooster: PlayerBoosterSchema = playerBoosters[0];     // get booster that will expire first
                     
                     // prepare for update booster's status
-                    const index = Player_Boosters.findIndex(pb =>
+                    const index: number = Player_Boosters.findIndex(pb =>
                          pb === playerBooster
                     );
                     resolveIndex.push(index);
@@ -398,7 +402,7 @@ export default class MockAPIService extends AbstractAPIService {
                     // check booster that expire before function
                     if (playerBooster.expire_at) {
                          const boosterExpireAt: Date = playerBooster.expire_at as Date;
-                         const isExpire = Date.now() > boosterExpireAt.getTime();
+                         const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
                          if (isExpire) {
                               Player_Boosters[index].status = StatusBooster.Expire;
                               reject(`this booster [${boosterId}] is expire before.`)
@@ -407,7 +411,7 @@ export default class MockAPIService extends AbstractAPIService {
 
                });
 
-               // update all booster was applied successfully
+               // update all booster when they were applied successfully
                resolveIndex.forEach(
                     index => Player_Boosters[index].status = StatusBooster.Expire
                );
@@ -426,14 +430,14 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const playerBoosters = Player_Boosters.filter(
+               const playerBoosters: PlayerBoosterSchema[] = Player_Boosters.filter(
                     booster => booster.player_id === this.playerId
                );
 
                // sort booster's id
-               const boosters = []; 
+               const boosters: PlayerBoosterSchema[][] = []; 
                for (let i = 0; i < 7; i++) {
-                    const booster = playerBoosters.filter(
+                    const booster: PlayerBoosterSchema[] = playerBoosters.filter(
                          b => b.booster_id === `0${i + 1}`  
                     );
                     boosters.push(booster);
@@ -457,13 +461,13 @@ export default class MockAPIService extends AbstractAPIService {
                     // player can see this booster before
                     // compound booster that permanent and limited time and available
                     // filter booster that expire before function
-                    const boosterAvailable = booster.filter(b => {
+                    const boosterAvailable: PlayerBoosterSchema[] = booster.filter(b => {
                          if(b.expire_at) {
                               const boosterExpireAt: Date = b.expire_at as Date;
-                              const isExpire = Date.now() > boosterExpireAt.getTime();
+                              const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
                               if (isExpire) {
                                    // delete expire booster
-                                   const expireIndex = Player_Boosters.findIndex(pb =>
+                                   const expireIndex: number = Player_Boosters.findIndex(pb =>
                                         pb === b
                                    );
                                    Player_Boosters[expireIndex].status = StatusBooster.Expire;
@@ -487,7 +491,7 @@ export default class MockAPIService extends AbstractAPIService {
                          }
                     });
                     
-                    let boosterProperty = ''
+                    let boosterProperty: string = ''
                     if (index < 5) {
                          boosterProperty = `booster${index + 1}`;
                     } else {
@@ -516,13 +520,13 @@ export default class MockAPIService extends AbstractAPIService {
                const playerBoosters: PlayerBoosterSchema[] = []
                boosters.forEach((boosterAdd) => {
                     const { boosterId, duration } = boosterAdd;
-                    const now = new Date();
+                    const now: Date = new Date();
                     
                     let expireAt: Date | null = null
                     if (duration === -1 || duration === null) {   // -1 is permanent booster
                          expireAt = null;
                     } else if (duration > 0 && duration < 128){  // 128 cap
-                         const timeToExpire = now.getTime() + (duration * 3600000);
+                         const timeToExpire: number = now.getTime() + (duration * 3600000);
                          expireAt = new Date(timeToExpire);
                     } else {
                          reject(`Invalid duration : ${duration}`);
@@ -542,6 +546,8 @@ export default class MockAPIService extends AbstractAPIService {
                          create_at: now,
                          status: StatusBooster.Available
                     }
+
+                    // add to database
                     playerBoosters.push(playerBooster);
                });
 
@@ -555,7 +561,7 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     // TODO check gameSession that not have endAt in (x hours) will be status "Cancel"
+     // TODO check the last gameSession that not have endAt in 30 minutes will be status "Cancel"
      createGameSession(bossId: string): Promise<any> {
           return new Promise<any>((resolve, reject) => {
                // auth
@@ -593,7 +599,6 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     // TODO check that gameSession is expire?
      updateGameSession(gameSessionId: string, score: number, lap: number): Promise<any> {
           return new Promise<any>((resolve, reject) => {
                // auth
@@ -601,15 +606,24 @@ export default class MockAPIService extends AbstractAPIService {
                     reject('Please Log in.');
                }
 
-               const IndexFound = GameSessions.findIndex( gs =>
+               const IndexFound: number = GameSessions.findIndex( gs =>
                     gs.id === gameSessionId
                );
                if (IndexFound === -1) {
                     reject(`Can't found index of gameSession's id: ${gameSessionId}`);
                }
+
+               // check expire of gameSession
+               // expire in 30 minutes
+               const now: Date = new Date();
+               const timeStartAt: number = GameSessions[IndexFound].start_at.getTime();
+               const isExpire: boolean = now.getTime() > timeStartAt + 1800000;
+               if (isExpire) {
+                    this.cancelGameSession(gameSessionId);
+                    reject({message: "this game session have time more that 30 minutes", isExpire: true})
+               }
                
                // update
-               const now = new Date();
                GameSessions[IndexFound].score = score;
                GameSessions[IndexFound].lap = lap;
                GameSessions[IndexFound].update_at = now;
@@ -617,23 +631,172 @@ export default class MockAPIService extends AbstractAPIService {
                // end gameSession
                if (lap >= 10) {
                     GameSessions[IndexFound].end_at = now;
+                    GameSessions[IndexFound].status = StatusGameSession.End;
                }
+
+               resolve({message: 'OK', isExpire: false});
+          });
+     }
+
+     cancelGameSession(gameSessionId: string): Promise<any> {
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const IndexFound: number = GameSessions.findIndex( gs =>
+                    gs.id === gameSessionId
+               );
+               if (IndexFound === -1) {
+                    reject(`Can't found index of gameSession's id: ${gameSessionId}`);
+               }
+               
+               // update
+               const now: Date = new Date();
+               GameSessions[IndexFound].status = StatusGameSession.Cancel;
+               GameSessions[IndexFound].update_at = now;
+
 
                resolve({message: 'OK'});
           });
      }
 
-     getPlayerLevelUp(): Promise<LevelDTO> {
-          throw new Error("Method not implemented.");
-          // TODO add booster from condition
+     getPlayerLevel(): Promise<any> {
+          
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
+                    game => game.player_id === this.playerId
+                         && game.status === StatusGameSession.End
+               );
+
+               const playerAccumulatedScore: number = playerGameSessions.reduce(
+                    (accumulator, game) => accumulator + game.score,
+                    0,
+               );
+     
+               const playerLevel: number = this.findPlayerLevel(playerAccumulatedScore);
+
+               // TODO add booster from condition?
+
+               resolve({message: 'OK', playerLevel: playerLevel});
+          });
      }
 
      getPlayerAchievements(): Promise<AchievementDTO[]> {
-          throw new Error("Method not implemented.");
-          // TODO add new player's achievement by examine data in database
+          return new Promise<AchievementDTO[]>((resolve, reject) => {
+               // TODO add new player's achievement by examine data in database
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const playerAchievementsId: string[] = Player_Achievements
+                    .filter(
+                         a => a.player_id === this.playerId
+                    )
+                    .map(
+                         a => a.achievement_id
+                    );
+               
+               const playerAchievements: AchievementSchema[] = [];
+               playerAchievementsId.forEach( aId => {
+                    const achievementFound = Achievements.find(
+                         a => a.id === aId
+                    );
+                    if (!achievementFound) {
+                         reject(`Can't found achievement's id: ${aId}`);
+                    }
+                    const achievement: AchievementSchema = achievementFound as AchievementSchema;
+
+                    playerAchievements.push(achievement);
+               });
+
+               const achievementsDTO: AchievementDTO[] = []
+               playerAchievements.forEach( pa => {
+                    const achievementDTO: AchievementDTO = {
+                         achievementId: pa.id,
+                         name: pa.name,
+                         detail: pa.detail
+                    }
+
+                    achievementsDTO.push(achievementDTO);
+               });
+
+               resolve(achievementsDTO);
+          });      
      }
 
-     getPlayerCharacters(): Promise<CharacterDTO> {
-          throw new Error("Method not implemented.");
+     getPlayerCharacters(): Promise<CharacterDTO[]> {
+          return new Promise<CharacterDTO[]>((resolve, reject) => {
+               // TODO add unlock character by examine data in database
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const playerCharactersId: string[] = Player_Characters
+                    .filter(
+                         c => c.player_id === this.playerId
+                    )
+                    .map(
+                         c => c.character_id
+                    );
+               
+               const playerCharacters: CharacterSchema[] = [];
+               playerCharactersId.forEach( cId => {
+                    const characterFound = Achievements.find(
+                         c => c.id === cId
+                    );
+                    if (!characterFound) {
+                         reject(`Can't found character's id: ${cId}`);
+                    }
+                    const character: CharacterSchema = characterFound as CharacterSchema;
+
+                    playerCharacters.push(character);
+               });
+
+               const charactersDTO: CharacterDTO[] = []
+               playerCharacters.forEach( pc => {
+                    const characterDTO: CharacterDTO = {
+                         characterId: pc.id,
+                         name: pc.name,
+                         detail: pc.detail
+                    }
+
+                    charactersDTO.push(characterDTO);
+               });
+
+               resolve(charactersDTO);
+          });
+     }
+ 
+     addVas(vasScore: number): Promise<any> {
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const id: string = String(Vas.length).padStart(4, "0");
+               const now: Date = new Date();
+
+               const vasDTO: VasSchema = {
+                    id: id,
+                    player_id: this.playerId,
+                    vas_score: vasScore,
+                    create_at: now
+               }
+
+               // add to database
+               Vas.push(vasDTO);
+
+               resolve({message: 'OK', vasId: id});
+          });
      }
 }

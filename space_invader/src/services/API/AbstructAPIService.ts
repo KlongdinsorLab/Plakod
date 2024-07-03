@@ -16,11 +16,6 @@ export interface RankDTO {
      accumulatedPlay: number;
 }
 
-export interface LevelDTO {
-     level: number;
-     boosters: BoosterDTO;
-}
-
 export interface AchievementDTO {
      achievementId: string;
      name: string;
@@ -113,7 +108,11 @@ export default abstract class AbstractAPIService {
           lap: number
      ): Promise<any>
 
-     abstract getPlayerLevelUp(): Promise<LevelDTO>
+     abstract cancelGameSession(
+          gameSessionId: string
+     ): Promise<any>
+
+     abstract getPlayerLevel(): Promise<any>
 
      abstract getPlayerBooster(): Promise<BoosterDTO>
      
@@ -123,6 +122,8 @@ export default abstract class AbstractAPIService {
 
      abstract getPlayerAchievements(): Promise<AchievementDTO[]>
 
-     abstract getPlayerCharacters(): Promise<CharacterDTO>
+     abstract getPlayerCharacters(): Promise<CharacterDTO[]>
+
+     abstract addVas(vasScore: number): Promise<any>
 
 }
