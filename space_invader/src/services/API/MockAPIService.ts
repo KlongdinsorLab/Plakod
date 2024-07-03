@@ -315,7 +315,7 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     getRanking(): Promise<RankDTO[]> {
+     getRankings(): Promise<RankDTO[]> {
           return new Promise<any>((resolve, reject) => {
                // auth
                if (!this.isLogin) {
@@ -351,7 +351,7 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     applyBooster(boostersId: string[]): Promise<any> {
+     applyPlayerBooster(boostersId: string[]): Promise<any> {
           return new Promise<any>((resolve, reject) => {
                // auth
                if (!this.isLogin) {
@@ -415,7 +415,7 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     getBooster(): Promise<BoosterDTO> {
+     getPlayerBooster(): Promise<BoosterDTO> {
           return new Promise<BoosterDTO>((resolve, reject) => {
                // auth
                if (!this.isLogin) {
@@ -514,15 +514,15 @@ export default class MockAPIService extends AbstractAPIService {
           throw new Error("Method not implemented.");
      }
 
-     getLevelUp(): Promise<LevelDTO> {
+     getPlayerLevelUp(): Promise<LevelDTO> {
           throw new Error("Method not implemented.");
      }
 
-     getAchievement(): Promise<AchievementDTO[]> {
+     getPlayerAchievement(): Promise<AchievementDTO[]> {
           throw new Error("Method not implemented.");
      }
 
-     getCharacter(): Promise<CharacterDTO> {
+     getPlayerCharacter(): Promise<CharacterDTO> {
           throw new Error("Method not implemented.");
      }
 }

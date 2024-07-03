@@ -82,22 +82,22 @@ export default abstract class AbstractAPIService {
 
      abstract getPlayer(): Promise<PlayerDTO>;
 
-     abstract getRanking(): Promise<RankDTO[]>
+     abstract getRankings(): Promise<RankDTO[]>
 
-     abstract applyBooster(boostersId: string[]): Promise<any>
+     abstract applyPlayerBooster(boostersId: string[]): Promise<any>
 
      abstract createGameSession(): Promise<any>
 
      abstract updateGameSession(): Promise<any>
 
-     abstract getLevelUp(): Promise<LevelDTO>
+     abstract getPlayerLevelUp(): Promise<LevelDTO>
 
-     abstract getBooster(): Promise<BoosterDTO>
+     abstract getPlayerBooster(): Promise<BoosterDTO>
      
      abstract addBooster(): Promise<any>
 
-     abstract getAchievement(): Promise<AchievementDTO[]>
+     abstract getPlayerAchievement(): Promise<AchievementDTO[]>
 
-     abstract getCharacter(): Promise<CharacterDTO>
+     abstract getPlayerCharacter(): Promise<CharacterDTO>
 
 }
