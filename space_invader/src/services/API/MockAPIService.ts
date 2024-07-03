@@ -28,7 +28,8 @@ import AbstractAPIService, {
      AchievementDTO,
      CharacterDTO,
      BoosterDTO,
-     DifficultDTO
+     DifficultDTO,
+     BoosterAddDTO
 } from "./AbstructAPIService";
 
 
@@ -502,8 +503,53 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     addBooster(): Promise<any> {
-          throw new Error("Method not implemented.");
+     addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any> {
+          return new Promise<any>((resolve, reject) => {
+               // auth
+               if (!this.isLogin) {
+                    reject('Please Log in.');
+               }
+
+               const playerBoosters: PlayerBoosterSchema[] = []
+               boosters.forEach((boosterAdd) => {
+                    const { boosterId, duration } = boosterAdd;
+                    const now = new Date();
+                    
+                    let expireAt: Date | null = null
+                    if (duration === -1 || duration === null) {   // -1 is permanent booster
+                         expireAt = null;
+                    } else if (duration > 0){
+                         const timeToExpire = now.getTime() + (duration * 3600000);
+                         expireAt = new Date(timeToExpire);
+                    } else {
+                         reject(`Invalid duration : ${duration}`);
+                    }
+
+                    const boosterFound = Boosters.find(b =>
+                         b.id === boosterId
+                    );
+                    if (!boosterFound) {
+                         reject(`Can't found booster's id: ${boosterId}`);
+                    }
+                    
+                    const playerBooster: PlayerBoosterSchema = {
+                         player_id: this.playerId,
+                         booster_id: boosterId,
+                         expire_at: expireAt,
+                         create_at: now,
+                         status: StatusBooster.Available
+                    }
+                    playerBoosters.push(playerBooster);
+               });
+
+
+               // success and add to database
+               playerBoosters.forEach( pb => 
+                    Player_Boosters.push(pb)
+               );
+               
+               resolve({message: 'OK', boosters: playerBoosters});
+          });
      }
 
      createGameSession(): Promise<any> {
@@ -516,13 +562,15 @@ export default class MockAPIService extends AbstractAPIService {
 
      getPlayerLevelUp(): Promise<LevelDTO> {
           throw new Error("Method not implemented.");
+          // TODO add booster from condition
      }
 
-     getPlayerAchievement(): Promise<AchievementDTO[]> {
+     getPlayerAchievements(): Promise<AchievementDTO[]> {
           throw new Error("Method not implemented.");
+          // TODO add new player's achievement by examine data in database
      }
 
-     getPlayerCharacter(): Promise<CharacterDTO> {
+     getPlayerCharacters(): Promise<CharacterDTO> {
           throw new Error("Method not implemented.");
      }
 }

@@ -46,6 +46,11 @@ export interface DifficultDTO {
      inhaleSecond: number;
 }
 
+export interface BoosterAddDTO {
+     boosterId: string,
+     duration: number    // hours. if (-1) => isPermanent
+}
+
 
 export default abstract class AbstractAPIService {
      
@@ -94,10 +99,10 @@ export default abstract class AbstractAPIService {
 
      abstract getPlayerBooster(): Promise<BoosterDTO>
      
-     abstract addBooster(): Promise<any>
+     abstract addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any>
 
-     abstract getPlayerAchievement(): Promise<AchievementDTO[]>
+     abstract getPlayerAchievements(): Promise<AchievementDTO[]>
 
-     abstract getPlayerCharacter(): Promise<CharacterDTO>
+     abstract getPlayerCharacters(): Promise<CharacterDTO>
 
 }
