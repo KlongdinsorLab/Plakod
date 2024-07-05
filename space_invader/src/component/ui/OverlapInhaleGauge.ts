@@ -127,7 +127,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    set(bulletCount:number, laserFrequency?:number) {
+    set(bulletCount:number, laserFrequency?:number, releaseBullet?: number) {
         this.laserFrequency = laserFrequency ?? LASER_FREQUENCY_MS
         let currentBulletCount = bulletCount
         isReloading = true
@@ -143,7 +143,11 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             delay: this.laserFrequency,
             callback: () => {
                 if(this.scene.scene.isPaused()) return
-                currentBulletCount--
+                if(releaseBullet){
+                   currentBulletCount -= releaseBullet
+                }else{
+                    currentBulletCount--
+                }
                 bulletText.setText(`⚡️: ${currentBulletCount}`)
 
                 if (currentBulletCount === 0) {

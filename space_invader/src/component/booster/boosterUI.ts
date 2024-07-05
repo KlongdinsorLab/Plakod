@@ -30,6 +30,10 @@ export class BoosterUI {
     private countdownIndex : number = 0;
     private countdownTime!: Phaser.GameObjects.Text;
     private isCompleteInit: boolean = false;
+    //private inGameBooster: boolean = false;
+    //private remainingUses?: number;
+    //private remainingTime?: number;
+    //private remainingText!: Phaser.GameObjects.Text;
 
     constructor(
         scene: Phaser.Scene, 
@@ -43,6 +47,9 @@ export class BoosterUI {
             expireDate?:Date, 
             expireArray?:string[],
             canSelect?:boolean,
+            inGameBooster?:boolean,
+            remainingUses?:number,
+            remainingTime?:number
         }
         ) {
         
@@ -65,8 +72,9 @@ export class BoosterUI {
         this.expireArray = options?.expireArray?? []
         this.setState()
 
-       
-       
+        //this.inGameBooster = options?.inGameBooster ?? false
+        //this.remainingUses = options?.remainingUses ?? undefined
+        //this.remainingTime = options?.remainingTime ?? undefined
     }
     create(): void{
         if(this.name === BoosterName.BOOSTER_1){
@@ -80,16 +88,16 @@ export class BoosterUI {
         }else if(this.name === BoosterName.BOOSTER_5){
             this.frame = '5'
         }else if(this.name === BoosterName.BOOSTER_RARE1){
-            this.frame = 'rare1'
+            this.frame = '_rare1'
         }else if(this.name === BoosterName.BOOSTER_RARE2){
-            this.frame = 'rare2'
+            this.frame = '_rare2'
         }
 
         this.boosterImage = this.scene.add.image(
             this.position.x, 
             this.position.y, 
             'dropItem',
-            'booster_'+this.frame+'.png',
+            'booster'+this.frame+'.png',
         )
         .setOrigin(0,0).setSize(this.boosterSize.width, this.boosterSize.height)
         
@@ -260,7 +268,6 @@ export class BoosterUI {
                 color: '#57453B',
             }).setStroke('#ffffff', 6);
         }
-        
     }
 
 }

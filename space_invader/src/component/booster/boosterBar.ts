@@ -22,8 +22,8 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
     private boosterJSON = {
-        "booster_1":          {"expire_date": ["2024-06-24T12:00:00.000Z","2024-06-24T13:00:00.000Z"],    "amount" : 3,},
-        "booster_2":          {"expire_date": ["2024-06-24T09:00:00.000Z","2024-06-24T12:00:00.000Z"],    "amount" : 2,},
+        "booster_1":          {"expire_date": [],    "amount" : 3,},
+        "booster_2":          {"expire_date": [],    "amount" : 2,},
         "booster_3":          {"expire_date": [], "amount" : 30,},
         "booster_4":          {"expire_date": [], "amount" : 1,},
         "booster_5":          {"expire_date": [], "amount" : 1,},
@@ -219,7 +219,7 @@ export default class boosterBar{
     
         if (index !== undefined) {
             const name = this.boosters[index].getFrame();
-            let frame = "booster_" + name + ".png";
+            let frame = "booster" + name + ".png";
     
             if (this.descriptionImage) {
                 this.descriptionImage.destroy();

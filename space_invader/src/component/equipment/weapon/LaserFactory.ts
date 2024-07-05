@@ -1,8 +1,8 @@
 import { Laser } from './Laser'
-import Player from '../player/Player'
+import Player from '../../player/Player'
 import { LASER_FREQUENCY_MS } from 'config'
 import { Scene } from 'phaser'
-import { Enemy } from '../enemy/Enemy'
+import { Enemy } from '../../enemy/Enemy'
 import { BossSkill } from 'component/enemy/boss/BossSkill'
 
 export abstract class LaserFactory {

@@ -58,6 +58,7 @@ export class Meteor extends Enemy {
     
     this.hitMeteorScore = HIT_METEOR_SCORE
     this.destroyMeteorScore = DESTROY_METEOR_SCORE
+
     if(boosters.includes(BoosterName.BOOSTER_3)){
       this.booster3 = new Booster3()
       this.hitMeteorScore = this.booster3.applyBooster(HIT_METEOR_SCORE)

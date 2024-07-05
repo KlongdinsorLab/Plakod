@@ -1,12 +1,12 @@
 import { Booster, BoosterName } from "../booster";
-import { LaserFactoryByName } from "component/weapon/LaserFactoryByName";
+import { LaserFactoryByName } from "component/equipment/weapon/LaserFactoryByName";
 
 export class BoosterRare1 extends Booster {
     constructor() {
         super(BoosterName.BOOSTER_RARE1);
     }
-    applyBooster():keyof typeof LaserFactoryByName{
-        return 'triple'
+    applyBooster():{laserFactory: keyof typeof LaserFactoryByName, releaseBullet: number}{
+        return {laserFactory:'triple', releaseBullet: 3}
     }
 
         

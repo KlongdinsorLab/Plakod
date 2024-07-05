@@ -28,8 +28,8 @@ import { boosters } from './booster/RedeemScene'
 import { BoosterUI } from 'component/booster/boosterUI'
 import {Booster4} from 'component/booster/boosterList/booster_4'
 import { BoosterName } from 'component/booster/booster'
-import { LaserFactoryByName } from 'component/weapon/LaserFactoryByName'
-import { LaserFactory } from 'component/weapon/LaserFactory'
+import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
+import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
 import { BoosterRare1 } from 'component/booster/boosterList/booster_rare1'
 
 
@@ -72,6 +72,8 @@ export default class GameScene extends Phaser.Scene {
   private laserFactoryName!: keyof typeof LaserFactoryByName
   private laserFactory!: LaserFactory
   private booster4!: Booster4
+  private boosterRare1!: BoosterRare1
+  private releaseBullet!: number
   
 
   constructor() {
@@ -219,6 +221,7 @@ export default class GameScene extends Phaser.Scene {
     this.shootingPhase = ShootingPhase.NORMAL
     this.laserFrequency = LASER_FREQUENCY_MS
     this.bulletCount = BULLET_COUNT
+    this.releaseBullet = 1
 
     this.laserFactoryName = 'single';
 
@@ -232,7 +235,9 @@ export default class GameScene extends Phaser.Scene {
     }
     if(boosters.includes(BoosterName.BOOSTER_RARE1)){
       this.boosterRare1 = new BoosterRare1()
-      this.laserFactoryName = this.boosterRare1.applyBooster()
+      const boosterEffect = this.boosterRare1.applyBooster()
+      this.laserFactoryName = boosterEffect.laserFactory
+      this.releaseBullet = boosterEffect.releaseBullet
     }
     this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
 
@@ -403,7 +408,7 @@ export default class GameScene extends Phaser.Scene {
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(this.shootingPhase)
-        gauge.set(this.shootingPhase, this.laserFrequency)
+        gauge.set(this.shootingPhase, this.laserFrequency, this.releaseBullet)
       } else {
         this.player.attack()
       }
