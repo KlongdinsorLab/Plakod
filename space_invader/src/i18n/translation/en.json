@@ -135,5 +135,6 @@
   "vas_box_text2" : "just a little tired",
   "vas_box_text3" : "I'm tired",
   "vas_box_text4" : "I'm very tired",
-  "vas_box_text5" : "I'm exhausted."
+  "vas_box_text5" : "I'm exhausted.",
+  "display_name_heading" : "Enter your Adventurer's name"
 }

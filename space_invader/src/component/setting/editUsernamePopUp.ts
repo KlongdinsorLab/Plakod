@@ -2,7 +2,7 @@
 import i18next from "i18next"
 
 export default class editUsernamePopUp {
-    private scene : Phaser.Scene | undefined
+    private scene : Phaser.Scene
 
     private username : string | undefined
 
@@ -15,11 +15,10 @@ export default class editUsernamePopUp {
     private special_char = ['ั','็','ิ','ี','ํ','ุ','ู','่','้','๊','๋','์']
 
     constructor(scene : Phaser.Scene, usernameText : Phaser.GameObjects.Text, username?: string) {
-        const { width,height } = scene.scale
+        const { width, height } = scene.scale
+
         this.username = username === undefined ? 'Player' : username
-
         this.scene = scene
-
         this.usernameText = usernameText
 
         // Black Screen When Pop Up
@@ -90,6 +89,7 @@ export default class editUsernamePopUp {
 
         this.usernameText?.setText(username)
         this.username = username
+        this.scene.registry.set('username', username)
     }
 
     getUsername() : string {
