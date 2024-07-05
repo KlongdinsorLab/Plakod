@@ -238,6 +238,7 @@ export default class GameScene extends Phaser.Scene {
       const boosterEffect = this.boosterRare1.applyBooster()
       this.laserFactoryName = boosterEffect.laserFactory
       this.releaseBullet = boosterEffect.releaseBullet
+      this.bulletCount = this.bulletCount*boosterEffect.bulletMultiply
     }
     this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
 
@@ -398,7 +399,7 @@ export default class GameScene extends Phaser.Scene {
       this.laserFactory.set(this.shootingPhase)
 
       this.time.addEvent({
-        delay : this.laserFrequency * this.bulletCount,
+        delay : this.laserFrequency * this.shootingPhase,
         callback : () => {
           this.reloadCount.decrementCount()
           this.isCompleteBoss = false
@@ -408,14 +409,14 @@ export default class GameScene extends Phaser.Scene {
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(this.shootingPhase)
-        gauge.set(this.shootingPhase, this.laserFrequency, this.releaseBullet)
+        gauge.set(this.bulletCount, this.laserFrequency, this.releaseBullet)
       } else {
         this.player.attack()
       }
 
       if (this.reloadCount.isDepleted()) {
         this.time.addEvent({
-          delay : this.laserFrequency * this.bulletCount,
+          delay : this.laserFrequency * this.shootingPhase,
           callback : () => {
             this.scene.pause()
             this.scene.launch('end game', { score: this.score.getScore() })

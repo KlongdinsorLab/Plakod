@@ -231,13 +231,18 @@ export default class boosterBar{
                 "dropItem", 
                 frame
             ).setOrigin(0, 0).setSize(this.boosterSize.width, this.boosterSize.height);
+
+            let text = 'booster_description_' + name
+            if(index === 6 || index === 7){
+                text = 'booster_description' + name
+            }
     
             this.descriptionText = I18nSingleton.getInstance()
                 .createTranslatedText(
                     this.scene,
                     this.position.x + MARGIN * 2 / 3 + 128,
                     this.position.y + this.gapSize.height * 2 + MARGIN / 2.5,
-                    'booster_description_' + name
+                    text
                 )
                 .setAlign('start')
                 .setOrigin(0, 0);
