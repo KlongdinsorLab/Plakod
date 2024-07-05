@@ -399,11 +399,11 @@ export default class BossScene extends Phaser.Scene {
 		if (this.player.getIsReload()) {
 			if (!this.boss.getIsSecondPhase()) {
 				this.laserFactory.set(this.bulletCount1)
-				this.player.reloadSet(this.bulletCount1)
+				this.player.reloadSet(this.bulletCount1, this.laserFrequency)
 				gauge.set(this.shootingPhase1, this.laserFrequency, this.releaseBullet)
 			} else {
 				this.laserFactory.set(this.bulletCount2)
-				this.player.reloadSet(this.bulletCount1)
+				this.player.reloadSet(this.bulletCount2, this.laserFrequency)
 				gauge.set(this.shootingPhase2, this.laserFrequency, this.releaseBullet)
 			}
 		}

@@ -256,7 +256,7 @@ export default class Player {
 		if (this.chargeEmitter) this.chargeEmitter.active = true
 	}
 
-	reloadSet(bulletCount: number): void {
+	reloadSet(bulletCount: number, laserFrequency: number): void {
 		this.player.play('attack', true)
 		this.isAttacking = true
 		this.isReload = false
@@ -264,7 +264,7 @@ export default class Player {
 		setTimeout(() => {
 			this.isAttacking = false
 			this.player.play('run', true)
-		}, LASER_FREQUENCY_MS * bulletCount)
+		}, laserFrequency * bulletCount)
 	}
 
 	attack(): void {

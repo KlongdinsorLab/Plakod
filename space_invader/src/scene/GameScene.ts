@@ -408,7 +408,7 @@ export default class GameScene extends Phaser.Scene {
       })
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
-        this.player.reloadSet(this.shootingPhase)
+        this.player.reloadSet(this.shootingPhase, this.laserFrequency)
         gauge.set(this.bulletCount, this.laserFrequency, this.releaseBullet)
       } else {
         this.player.attack()
