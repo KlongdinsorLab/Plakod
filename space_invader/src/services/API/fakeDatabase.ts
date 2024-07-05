@@ -89,7 +89,7 @@ export interface VasSchema {
 export const Players: PlayerSchema[] = [
      {
           id: "001",
-          difficult_id: "1",
+          difficult_id: "01",
           tel: "0958927518",
           username: "tirawich",
           gender: Gender.Male,
@@ -100,7 +100,7 @@ export const Players: PlayerSchema[] = [
      },
      {
           id: "002",
-          difficult_id: "1",
+          difficult_id: "01",
           tel: "0958927515",
           username: "Peace",
           gender: Gender.Male,
@@ -185,10 +185,10 @@ export const Levels: LevelSchema[] = [
 export const GameSessions: GameSessionSchema[] = [
      {
           id: "0001",
-          player_id: "01",
-          difficult_id: "1",
+          player_id: "001",
+          difficult_id: "01",
           boss_id: "01",
-          score: 5000,
+          score: 50000,
           lap: 10,
           start_at: new Date(),
           update_at: new Date(Date.now() + 900000),
@@ -197,8 +197,8 @@ export const GameSessions: GameSessionSchema[] = [
      },
      {
           id: "0002",
-          player_id: "01",
-          difficult_id: "1",
+          player_id: "001",
+          difficult_id: "01",
           boss_id: "01",
           score: 10000,
           lap: 10,
@@ -209,8 +209,8 @@ export const GameSessions: GameSessionSchema[] = [
      },
      {
           id: "0003",
-          player_id: "01",
-          difficult_id: "1",
+          player_id: "001",
+          difficult_id: "01",
           boss_id: "01",
           score: 15000,
           lap: 10,
@@ -221,10 +221,22 @@ export const GameSessions: GameSessionSchema[] = [
      },
      {
           id: "0004",
-          player_id: "01",
-          difficult_id: "1",
+          player_id: "001",
+          difficult_id: "01",
           boss_id: "01",
           score: 20000,
+          lap: 10,
+          start_at: new Date(Date.now() - 6000000),
+          update_at: new Date(),
+          end_at: new Date(),
+          status: StatusGameSession.End,
+     },
+     {
+          id: "0005",
+          player_id: "002",
+          difficult_id: "01",
+          boss_id: "01",
+          score: 80000,
           lap: 10,
           start_at: new Date(Date.now() - 6000000),
           update_at: new Date(),
@@ -408,15 +420,15 @@ export const Player_Boosters: PlayerBoosterSchema[] = [
      {
           player_id: "001",
           booster_id: "02",
-          expire_at: new Date(Date.now() - 10800000),
-          create_at: new Date(),
+          expire_at: new Date(),
+          create_at: new Date(Date.now() - 10800000),
           status: StatusBooster.Expire
      },
      {
           player_id: "001",
           booster_id: "01",
-          expire_at: new Date(),
-          create_at: new Date(Date.now() + 10800000),
+          expire_at: new Date(Date.now() + 10800000),
+          create_at: new Date(Date.now() - 10800000),
           status: StatusBooster.Available
      },
      {
@@ -465,6 +477,27 @@ export const Player_Boosters: PlayerBoosterSchema[] = [
           player_id: "001",
           booster_id: "03",
           expire_at: null,
+          create_at: new Date(),
+          status: StatusBooster.Available
+     },
+     {
+          player_id: "001",
+          booster_id: "01",
+          expire_at: new Date(Date.now() + 100000000),
+          create_at: new Date(),
+          status: StatusBooster.Available
+     },
+     {
+          player_id: "001",
+          booster_id: "01",
+          expire_at: new Date(),
+          create_at: new Date(),
+          status: StatusBooster.Available
+     },
+     {
+          player_id: "001",
+          booster_id: "01",
+          expire_at: new Date(Date.now() + 12000),
           create_at: new Date(),
           status: StatusBooster.Available
      },

@@ -1,7 +1,9 @@
 import { 
+     Airflow,
      Gender, 
      StatusBooster,
-     StatusGameSession
+     StatusGameSession,
+     VasScore
 } from "services/enumService";
 
 import { 
@@ -56,29 +58,31 @@ export default class MockAPIService extends AbstractAPIService {
                throw new Error('Score can not be negative number.')
           }
 
-          let i: number = 1;
           const n: number = Levels.length;
-          while(i < n) {
-               const scoreRequire: number = Levels[i].score_require;
-               const isNextLevel: boolean = playerAccumulatedScore > scoreRequire;
-       
-               if (isNextLevel) {
-                    i++; // level up
-               } else {
-                    return Levels[i - 1].level; // on level
+          let i: number = 1;
+          let scoreRequire: number = Levels[i].score_require;
+          let isNextLevel: boolean = playerAccumulatedScore >= scoreRequire;
+          while(isNextLevel) {
+               i++; // level up
+
+               if (i >= n) {
+                    break;    // max level
                }
+
+               scoreRequire = Levels[i].score_require;
+               isNextLevel = playerAccumulatedScore >= scoreRequire;
           }
 
-          return Levels[n - 1].level;   // max level
+          return Levels[i - 1].level;
      }
 
      login(tel: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                const player = Players.find( player => player.tel === tel);
                if (player) {
                     this.playerId = player.id;
                } else {
-                    reject("Haven't player with this telephone.");
+                    throw new Error("Haven't player with this telephone.");
                } 
                
                this.isLogin = true;
@@ -87,7 +91,7 @@ export default class MockAPIService extends AbstractAPIService {
                // this is example of token
                this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
                
-               resolve({message: 'Ok', token: this.token});
+               resolve({message: 'OK', token: this.token});
           });
      }
 
@@ -95,27 +99,45 @@ export default class MockAPIService extends AbstractAPIService {
      register(
           tel: string, 
           age: number,
-          gender: string,
-          airflow: number,
+          gender: Gender,
+          airflow: Airflow,
           difficultId: string, 
      ): Promise<any> {   
-          return new Promise<any>( resolve => {
+          return new Promise<any>(resolve => {
                // TODO create new ID
-               const id: string = String(Players.length).padStart(3, "0");
+               const id: string = String(Players.length + 1).padStart(3, "0");
                const username: string = "";
                const birthYear: number = new Date().getFullYear() - age;
                const lastPlayedAt: Date = new Date();
                const usingCharacterId: string = "01";
                
-               switch (gender) {
-                    case "M": 
-                         gender = Gender.Male;
-                         break;
-                    case "F": 
-                         gender = Gender.Female;
-                         break;
-                    default: 
-                         throw new Error("Gender is not consistent of enum Gender.");
+               // switch (gender) {
+               //      case "M": 
+               //           gender = Gender.Male;
+               //           break;
+               //      case "F": 
+               //           gender = Gender.Female;
+               //           break;
+               //      default:
+               //           throw new Error(`The gender's [${gender}] is not consistent of enum Gender ('M' or 'F').`);
+               // }
+
+               const playerFound = Players.find(p =>
+                    p.tel === tel
+               )
+               if (playerFound) {
+                    throw new Error(`Have this player already, tel number: ${tel}`);
+               }
+
+               if(age < 0 || age > 200) {
+                    throw new Error(`Something wrong with age: ${age}`)
+               }
+
+               const diffFound = Difficulties.find(dif =>
+                    dif.id === difficultId
+               )
+               if (!diffFound) {
+                    throw new Error(`Can't found difficult's id: ${difficultId}`)
                }
 
                // create DTO for database
@@ -124,7 +146,7 @@ export default class MockAPIService extends AbstractAPIService {
                     difficult_id: difficultId,
                     tel: tel,
                     username: username,
-                    gender: gender as Gender,
+                    gender: gender,
                     birth_year: birthYear,
                     airflow: airflow,
                     last_played_at: lastPlayedAt,
@@ -133,27 +155,32 @@ export default class MockAPIService extends AbstractAPIService {
 
                // add default character
                const defaultCharacterId: string = "01"
-               this.addPlayerCharacter(defaultCharacterId);
+               //this.addPlayerCharacter(defaultCharacterId);    // can't use this because register has not login yet
+               const playerCharacter: PlayerCharacterSchema = {
+                    player_id: id,
+                    character_id: defaultCharacterId
+               }
                
                // add to database
                Players.push(player);
+               Player_Characters.push(playerCharacter);
 
-               resolve(id);
+               resolve({message: 'OK', playerId: id});
           });
      }
 
      getPlayer(): Promise<PlayerDTO> {
-          return new Promise<PlayerDTO>((resolve, reject) => {
+          return new Promise<PlayerDTO>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerFound = Players.find( 
                     player => player.id === this.playerId
                );
                if (!playerFound) {
-                    reject('Can not find player.');
+                    throw new Error('Can not find player.');
                }
                const player: PlayerSchema = playerFound as PlayerSchema;
      
@@ -166,6 +193,7 @@ export default class MockAPIService extends AbstractAPIService {
                     (accumulator, game) => accumulator + game.score,
                     0,
                );
+               console.log('playerAccumulatedScore:', playerAccumulatedScore)
      
                const playerLevel: number = this.findPlayerLevel(playerAccumulatedScore);
      
@@ -185,7 +213,7 @@ export default class MockAPIService extends AbstractAPIService {
                     dif => dif.id === player.difficult_id
                );
                if (!difficultFound) {
-                    throw new Error("Can't found difficult cause player's difficultId is invalid")
+                    throw new Error("Can't found difficult cause player's difficultId is invalid");
                }
                const difficultDTO: DifficultDTO = {
                     difficultId: difficultFound.id,
@@ -210,10 +238,10 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      updatePlayerUsername(newUsername: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const index: number = Players.findIndex( 
@@ -222,20 +250,21 @@ export default class MockAPIService extends AbstractAPIService {
                if (index === -1) {
                     
                     // not success
-                    reject("Can not find player's id");
+                    throw new Error(`Can not find player's id: ${this.playerId}`);
                }
 
                // update success
                Players[index].username = newUsername;
+               
                resolve(Players[index]);
           });
      }
 
      updatePlayerDifficult(newDifficultId: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const index: number = Players.findIndex( 
@@ -244,20 +273,27 @@ export default class MockAPIService extends AbstractAPIService {
                if (index === -1) {
                     
                     // not success
-                    reject("Can not find player's id");
+                    throw new Error(`Can not find player's id: ${this.playerId}`);
+               }
+               const diffFound = Difficulties.find(dif =>
+                    dif.id === newDifficultId
+               )
+               if (!diffFound) {
+                    throw new Error(`Can't found difficult's id: ${newDifficultId}`)
                }
 
                // update success
                Players[index].difficult_id = newDifficultId;
+               
                resolve(Players[index]);
           });
      }
 
-     updatePlayerAirflow(newAirflow: number): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+     updatePlayerAirflow(newAirflow: Airflow): Promise<any> {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const index: number = Players.findIndex( 
@@ -266,20 +302,21 @@ export default class MockAPIService extends AbstractAPIService {
                if (index === -1) {
                     
                     // not success
-                    reject("Can not find player's id");
+                    throw new Error(`Can not find player's id: ${this.playerId}`);
                }
 
                // update success
                Players[index].airflow = newAirflow;
+               
                resolve(Players[index]);
           });
      }
 
      updatePlayerUsingCharacter(newCharacterId: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const index: number = Players.findIndex( 
@@ -288,7 +325,7 @@ export default class MockAPIService extends AbstractAPIService {
                if (index === -1) {
                     
                     // not success
-                    reject("Can not find player's id");
+                    throw new Error(`Can not find player's id: ${this.playerId}`);
                }
 
                const characterFound = Characters.find(
@@ -300,15 +337,31 @@ export default class MockAPIService extends AbstractAPIService {
 
                // update success
                Players[index].using_character_id = newCharacterId;
+               
                resolve(Players[index]);
           });
      }
 
      addPlayerCharacter(characterId: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
+               }
+
+               const characterFound = Characters.find(
+                    char => char.id === characterId
+               );
+               if (!characterFound) {
+                    throw new Error(`Can't found this ${characterId} in database`);
+               }
+
+               const playerCharacterFound = Player_Characters.find(
+                    char => char.player_id === this.playerId
+                         && char.character_id === characterId
+               )
+               if(playerCharacterFound) {
+                    throw new Error(`Player already have this character's id: ${characterId}`)
                }
 
                const playerCharacter: PlayerCharacterSchema = {
@@ -324,10 +377,10 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      getRankings(): Promise<RankDTO[]> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const ranksDTO: RankDTO[] = [];
@@ -336,8 +389,9 @@ export default class MockAPIService extends AbstractAPIService {
                     
                     const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
                          game => game.player_id === player.id
+                              && game.status === StatusGameSession.End
                     );
-          
+
                     const playerAccumulatedScore: number = playerGameSessions.reduce(
                          (accumulator, game) => accumulator + game.score,
                          0,
@@ -360,10 +414,10 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      applyPlayerBooster(boostersId: string[]): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const resolveIndex: number[] = [];
@@ -375,8 +429,8 @@ export default class MockAPIService extends AbstractAPIService {
                               && booster.status === StatusBooster.Available
                     });
 
-                    if(!playerBoosters) {
-                         reject(`Can't found booster's id: ${boosterId}`);
+                    if(playerBoosters.length === 0) {
+                         throw new Error(`Can't found booster's id: ${boosterId}`);
                     }
 
                     playerBoosters.sort((a, b) => {
@@ -397,6 +451,9 @@ export default class MockAPIService extends AbstractAPIService {
                     const index: number = Player_Boosters.findIndex(pb =>
                          pb === playerBooster
                     );
+                    if (index === -1) {
+                         throw new Error(`Something wrong. Can't found player's booster: ${playerBooster}`)
+                    }
                     resolveIndex.push(index);
                     
                     // check booster that expire before function
@@ -405,7 +462,7 @@ export default class MockAPIService extends AbstractAPIService {
                          const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
                          if (isExpire) {
                               Player_Boosters[index].status = StatusBooster.Expire;
-                              reject(`this booster [${boosterId}] is expire before.`)
+                              throw new Error(`this booster [${boosterId}] is expire before.`)
                          }
                     }
 
@@ -417,17 +474,17 @@ export default class MockAPIService extends AbstractAPIService {
                );
                
                resolve({
-                    message: 'ok',
+                    message: 'OK',
                     boostersId: boostersId
                })
           });
      }
 
      getPlayerBooster(): Promise<BoosterDTO> {
-          return new Promise<BoosterDTO>((resolve, reject) => {
+          return new Promise<BoosterDTO>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerBoosters: PlayerBoosterSchema[] = Player_Boosters.filter(
@@ -455,14 +512,21 @@ export default class MockAPIService extends AbstractAPIService {
                const boosterDTO: BoosterDTO = {}
                
                boosters.forEach((booster, index) => {
+                    
                     // player have never seen this booster
-                    if (!booster) return;
+                    if (booster.length === 0) {
+                         return;
+                    }
 
                     // player can see this booster before
                     // compound booster that permanent and limited time and available
                     // filter booster that expire before function
                     const boosterAvailable: PlayerBoosterSchema[] = booster.filter(b => {
-                         if(b.expire_at) {
+                         if (b.status !== StatusBooster.Available) {
+                              return false;
+                         }
+
+                         if (b.expire_at) {
                               const boosterExpireAt: Date = b.expire_at as Date;
                               const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
                               if (isExpire) {
@@ -470,12 +534,18 @@ export default class MockAPIService extends AbstractAPIService {
                                    const expireIndex: number = Player_Boosters.findIndex(pb =>
                                         pb === b
                                    );
+                                   if (expireIndex === -1) {
+                                        throw new Error(`Something wrong. Can't found player's booster: ${b}`)
+                                   }
+
                                    Player_Boosters[expireIndex].status = StatusBooster.Expire;
+
+                                   console.log(`Booster [${b.booster_id}] is expire.`)
                                    return false;
                               }
                          } 
 
-                         return b.status === StatusBooster.Available;
+                         return true;
                     });
 
                     // sort expire date
@@ -511,10 +581,10 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerBoosters: PlayerBoosterSchema[] = []
@@ -529,14 +599,14 @@ export default class MockAPIService extends AbstractAPIService {
                          const timeToExpire: number = now.getTime() + (duration * 3600000);
                          expireAt = new Date(timeToExpire);
                     } else {
-                         reject(`Invalid duration : ${duration}`);
+                         throw new Error(`Invalid duration : ${duration}`);
                     }
 
                     const boosterFound = Boosters.find(b =>
                          b.id === boosterId
                     );
                     if (!boosterFound) {
-                         reject(`Can't found booster's id: ${boosterId}`);
+                         throw new Error(`Can't found booster's id: ${boosterId}`);
                     }
                     
                     const playerBooster: PlayerBoosterSchema = {
@@ -563,18 +633,18 @@ export default class MockAPIService extends AbstractAPIService {
 
      // TODO check the last gameSession that not have endAt in 30 minutes will be status "Cancel"
      createGameSession(bossId: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
-               const id: string = String(GameSessions.length).padStart(4, "0");
+               const id: string = String(GameSessions.length + 1).padStart(4, "0");
                const playerFound = Players.find( 
                     player => player.id === this.playerId
                );
                if (!playerFound) {
-                    reject('Can not find player.');
+                    throw new Error('Can not find player.');
                }
                const player: PlayerSchema = playerFound as PlayerSchema;
                const now: Date = new Date();
@@ -582,7 +652,7 @@ export default class MockAPIService extends AbstractAPIService {
                const GameSessionsDTO: GameSessionSchema = {
                     id: id,
                     player_id: this.playerId,
-                    difficult_id: player.difficult_id, // TODO check with design
+                    difficult_id: player.difficult_id,
                     boss_id: bossId,
                     score: 0,
                     lap: 0,
@@ -603,14 +673,14 @@ export default class MockAPIService extends AbstractAPIService {
           return new Promise<any>((resolve, reject) => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const IndexFound: number = GameSessions.findIndex( gs =>
                     gs.id === gameSessionId
                );
                if (IndexFound === -1) {
-                    reject(`Can't found index of gameSession's id: ${gameSessionId}`);
+                    throw new Error(`Can't found index of gameSession's id: ${gameSessionId}`);
                }
 
                // check expire of gameSession
@@ -620,7 +690,8 @@ export default class MockAPIService extends AbstractAPIService {
                const isExpire: boolean = now.getTime() > timeStartAt + 1800000;
                if (isExpire) {
                     this.cancelGameSession(gameSessionId);
-                    reject({message: "this game session have time more that 30 minutes", isExpire: true})
+                    reject({message: 'this game session is expire.', isExpire: true});
+                    throw new Error("this game session have time more that 30 minutes.");
                }
                
                // update
@@ -639,17 +710,17 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      cancelGameSession(gameSessionId: string): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const IndexFound: number = GameSessions.findIndex( gs =>
                     gs.id === gameSessionId
                );
                if (IndexFound === -1) {
-                    reject(`Can't found index of gameSession's id: ${gameSessionId}`);
+                    throw new Error(`Can't found index of gameSession's id: ${gameSessionId}`);
                }
                
                // update
@@ -658,16 +729,16 @@ export default class MockAPIService extends AbstractAPIService {
                GameSessions[IndexFound].update_at = now;
 
 
-               resolve({message: 'OK'});
+               resolve({message: 'OK', gameSessionId: gameSessionId});
           });
      }
 
      getPlayerLevel(): Promise<any> {
           
-          return new Promise<any>((resolve, reject) => {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
@@ -689,11 +760,11 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      getPlayerAchievements(): Promise<AchievementDTO[]> {
-          return new Promise<AchievementDTO[]>((resolve, reject) => {
+          return new Promise<AchievementDTO[]>(resolve  => {
                // TODO add new player's achievement by examine data in database
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerAchievementsId: string[] = Player_Achievements
@@ -710,7 +781,7 @@ export default class MockAPIService extends AbstractAPIService {
                          a => a.id === aId
                     );
                     if (!achievementFound) {
-                         reject(`Can't found achievement's id: ${aId}`);
+                         throw new Error(`Can't found achievement's id: ${aId}`);
                     }
                     const achievement: AchievementSchema = achievementFound as AchievementSchema;
 
@@ -733,11 +804,11 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      getPlayerCharacters(): Promise<CharacterDTO[]> {
-          return new Promise<CharacterDTO[]>((resolve, reject) => {
+          return new Promise<CharacterDTO[]>(resolve => {
                // TODO add unlock character by examine data in database
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
                const playerCharactersId: string[] = Player_Characters
@@ -750,11 +821,11 @@ export default class MockAPIService extends AbstractAPIService {
                
                const playerCharacters: CharacterSchema[] = [];
                playerCharactersId.forEach( cId => {
-                    const characterFound = Achievements.find(
+                    const characterFound = Characters.find(
                          c => c.id === cId
                     );
                     if (!characterFound) {
-                         reject(`Can't found character's id: ${cId}`);
+                         throw new Error(`Can't found character's id: ${cId}`);
                     }
                     const character: CharacterSchema = characterFound as CharacterSchema;
 
@@ -776,14 +847,14 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
  
-     addVas(vasScore: number): Promise<any> {
-          return new Promise<any>((resolve, reject) => {
+     addVas(vasScore: VasScore): Promise<any> {
+          return new Promise<any>(resolve => {
                // auth
                if (!this.isLogin) {
-                    reject('Please Log in.');
+                    throw new Error('Please Log in.');
                }
 
-               const id: string = String(Vas.length).padStart(4, "0");
+               const id: string = String(Vas.length + 1).padStart(4, "0");
                const now: Date = new Date();
 
                const vasDTO: VasSchema = {
