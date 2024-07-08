@@ -12,7 +12,6 @@ import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 
-import { boosters } from './booster/RedeemScene'
 
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
