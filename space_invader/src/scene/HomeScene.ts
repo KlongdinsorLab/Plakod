@@ -118,9 +118,6 @@ export default class HomeScene extends Phaser.Scene {
 		this.instructionButton = new InstructionButton(this)
 		this.achievementButton = new AchievementButton(this)
 		this.settingButton = new SettingButton(this)
-
-		//clear boosters
-		boosters.length = 0
 		
 		const self = this
 		WebFont.load({

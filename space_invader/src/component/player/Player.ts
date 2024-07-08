@@ -301,9 +301,6 @@ export default class Player {
 	deactivateShield(): void {
 		this.shield.deactivate()
 	}
-	isHitShield(): void {
-		this.shield.isHit()
-	}
 
 	hide(): void {
 		this.player.setVisible(false)

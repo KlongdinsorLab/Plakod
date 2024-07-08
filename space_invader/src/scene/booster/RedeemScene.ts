@@ -46,6 +46,8 @@ export default class RedeemScene extends Phaser.Scene {
         const {width, height} = this.scale;
         const self = this;
 
+        //clear boosters
+		boosters.length = 0
        
         //todo: remove this, load background from other scene
         this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)

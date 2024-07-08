@@ -77,7 +77,7 @@
   "booster_description_3":"ลดคะแนนบาดเจ็บจาก\nการถูกโจมตีลง50%",
   "booster_description_4":"ปล่อยกระสุนไวขึ้น +20%\nเพิ่มจำนวนกระสุน +20%",
   "booster_description_5":"เพิ่มคะแนนกระสุน +10%",
-  "booster_description_rare1":"เปลี่ยนรูปแบบการปล่อยกระสุน\nเป็นแบบกระจาย 2 ทาง",
+  "booster_description_rare1":"เปลี่ยนรูปแบบการปล่อยกระสุน\nเป็นแบบกระจาย 3 ทาง",
   "booster_description_rare2":"เพิ่มคะแนนรวม 50%",
   "booster_description_unlimited":"แบบไม่จำกัด",
   "booster_description_default":"เลือกบูสเตอร์ได้สูงสุด {{MAX_SELECTED_BOOSTER, number}} อัน",

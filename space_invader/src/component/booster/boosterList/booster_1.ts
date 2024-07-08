@@ -24,7 +24,6 @@ export class Booster1 extends Booster {
         else if(this.remainingUses > 0){
             this.remainingUses--;
             this.player.activateShield();
-            //this.player.isHitShield();
         }
         else if(this.remainingUses === 0){
             this.remainingUses--;

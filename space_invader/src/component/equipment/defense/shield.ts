@@ -39,25 +39,6 @@ export default class Shield extends Equipment{
 		this.shield.setVisible(false)
 	}
 
-    isHit():void{
-        let count = 0;
-        const timeEvent = this.scene.time.addEvent({
-            delay: 500,
-            callback: () => {
-                count++;
-                if(count === 5){
-                    this.activate()
-                    timeEvent.remove();
-                }else if(count % 2 === 0){
-                    this.activate()
-                }else{
-                    this.deactivate()
-                }
-            },
-            loop: true
-        })
-    }
-
 	updatePosition(player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody): void {
 		this.shield.setPosition(player.x, player.y)
 	}

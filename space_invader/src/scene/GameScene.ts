@@ -73,7 +73,7 @@ export default class GameScene extends Phaser.Scene {
   private laserFactory!: LaserFactory
   private booster4!: Booster4
   private boosterRare1!: BoosterRare1
-  private releaseBullet!: number
+  private releasedBullet!: number
   
 
   constructor() {
@@ -218,7 +218,7 @@ export default class GameScene extends Phaser.Scene {
     this.shootingPhase = ShootingPhase.NORMAL
     this.laserFrequency = LASER_FREQUENCY_MS
     this.bulletCount = BULLET_COUNT
-    this.releaseBullet = 1
+    this.releasedBullet = 1
 
     this.laserFactoryName = 'single';
 
@@ -234,7 +234,7 @@ export default class GameScene extends Phaser.Scene {
       this.boosterRare1 = new BoosterRare1()
       const boosterEffect = this.boosterRare1.applyBooster()
       this.laserFactoryName = boosterEffect.laserFactory
-      this.releaseBullet = boosterEffect.releaseBullet
+      this.releasedBullet = boosterEffect.releasedBullet
       this.bulletCount = this.bulletCount*boosterEffect.bulletMultiply
     }
     this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
@@ -407,7 +407,7 @@ export default class GameScene extends Phaser.Scene {
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(this.shootingPhase, this.laserFrequency)
-        gauge.set(this.bulletCount, this.laserFrequency, this.releaseBullet)
+        gauge.set(this.bulletCount, this.laserFrequency, this.releasedBullet)
       } else {
         this.player.attack()
       }
