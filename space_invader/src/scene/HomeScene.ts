@@ -12,6 +12,7 @@ import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 
+
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
 	heartEmpty: 'home_reminder_empty_heart',

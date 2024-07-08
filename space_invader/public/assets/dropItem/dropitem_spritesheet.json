@@ -64,7 +64,7 @@
 			}
 		},
 		{
-			"filename": "booster_1.png",
+			"filename": "booster1.png",
 			"frame": {
 				"x": 1,
 				"y": 99,
@@ -85,7 +85,7 @@
 			}
 		},
 		{
-			"filename": "booster_2.png",
+			"filename": "booster2.png",
 			"frame": {
 				"x": 99,
 				"y": 99,
@@ -106,7 +106,7 @@
 			}
 		},
 		{
-			"filename": "booster_3.png",
+			"filename": "booster3.png",
 			"frame": {
 				"x": 197,
 				"y": 99,
@@ -127,7 +127,7 @@
 			}
 		},
 		{
-			"filename": "booster_4.png",
+			"filename": "booster4.png",
 			"frame": {
 				"x": 1,
 				"y": 197,
@@ -148,7 +148,7 @@
 			}
 		},
 		{
-			"filename": "booster_5.png",
+			"filename": "booster5.png",
 			"frame": {
 				"x": 99,
 				"y": 197,
@@ -209,6 +209,27 @@
 				"w": 96,
 				"h": 96
 			}
+		},
+		{
+			"filename": "mc_shield.png",
+			"frame": {
+				"x": 393,
+				"y": 1,
+				"w": 200,
+				"h": 200
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 200,
+				"h": 200
+			},
+			"sourceSize": {
+				"w": 200,
+				"h": 200
+			}
 		}
 	],
 	"meta": {
@@ -217,7 +238,7 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 392,
+			"w": 594,
 			"h": 294
 		},
 		"scale": "1"

@@ -3,7 +3,9 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import boosterBar from "component/booster/boosterBar";
+import { BoosterName } from "component/booster/booster";
 
+export let boosters: BoosterName[] = [];
 
 export default class RedeemScene extends Phaser.Scene {
     private bgm?: Phaser.Sound.BaseSound
@@ -44,6 +46,8 @@ export default class RedeemScene extends Phaser.Scene {
         const {width, height} = this.scale;
         const self = this;
 
+        //clear boosters
+		boosters.length = 0
        
         //todo: remove this, load background from other scene
         this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
@@ -150,7 +154,7 @@ export default class RedeemScene extends Phaser.Scene {
         .setInteractive().on('pointerup', () => {
             this.destroy();
             this.scene.stop();
-            console.log(this.boosterBar.getBooster())
+            boosters = this.boosterBar.getBooster();
             this.scene.start('life_count', { bgm : this.bgm });
         })
 

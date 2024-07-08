@@ -1,5 +1,6 @@
 import { MARGIN,SCREEN_HEIGHT,MAX_SELECTED_BOOSTER } from "config";
-import { BoosterUI, BoosterName, States } from "./boosterUI";
+import { BoosterUI, States } from "./boosterUI";
+import { BoosterName } from "./booster";
 import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
@@ -21,10 +22,10 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
     private boosterJSON = {
-        "booster_1":          {"expire_date": ["2024-06-24T12:00:00.000Z","2024-06-24T13:00:00.000Z"],    "amount" : 3,},
-        "booster_2":          {"expire_date": ["2024-06-24T09:00:00.000Z","2024-06-24T12:00:00.000Z"],    "amount" : 2,},
+        "booster_1":          {"expire_date": [],    "amount" : 3,},
+        "booster_2":          {"expire_date": [],    "amount" : 2,},
         "booster_3":          {"expire_date": [], "amount" : 30,},
-        "booster_4":          {"expire_date": [], "amount" : 0,},
+        "booster_4":          {"expire_date": [], "amount" : 1,},
         "booster_5":          {"expire_date": [], "amount" : 1,},
         "booster_rare1":      {"expire_date": [], "amount" : 1,},
         "booster_rare2":      {"expire_date": [], "amount" : 1,},          
@@ -46,6 +47,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_1.expire_date
             }
         )
+        this.boosters[1].create()
         this.boosters[1].getBody().setInteractive().on('pointerup', () => this.isSelected(1))
 
         this.boosters[2] = new BoosterUI(
@@ -58,6 +60,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_2.expire_date
             }
         )
+        this.boosters[2].create()
         this.boosters[2].getBody().setInteractive().on('pointerup', () => this.isSelected(2))
 
         this.boosters[3] = new BoosterUI(
@@ -70,6 +73,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_3.expire_date
             }
         )
+        this.boosters[3].create()
         this.boosters[3].getBody().setInteractive().on('pointerup', () => this.isSelected(3))
 
         this.boosters[4] = new BoosterUI(
@@ -82,6 +86,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_4.expire_date
             }
         )
+        this.boosters[4].create()
         this.boosters[4].getBody().setInteractive().on('pointerup', () => this.isSelected(4))
 
         this.boosters[5] = new BoosterUI(
@@ -94,6 +99,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_5.expire_date
             }
         )
+        this.boosters[5].create()
         this.boosters[5].getBody().setInteractive().on('pointerup', () => this.isSelected(5))
 
         this.boosters[6] = new BoosterUI(
@@ -106,6 +112,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_5.expire_date
             }
         )
+        this.boosters[6].create()
         this.boosters[6].getBody().setInteractive().on('pointerup', () => this.isSelected(6))
 
         this.boosters[7] = new BoosterUI(
@@ -118,6 +125,7 @@ export default class boosterBar{
                 expireArray: this.boosterJSON.booster_5.expire_date
             }
         )
+        this.boosters[7].create()
         this.boosters[7].getBody().setInteractive().on('pointerup', () => this.isSelected(7))
 
         this.boosters.forEach((booster) => {
@@ -211,7 +219,7 @@ export default class boosterBar{
     
         if (index !== undefined) {
             const name = this.boosters[index].getFrame();
-            let frame = "booster_" + name + ".png";
+            let frame = "booster" + name + ".png";
     
             if (this.descriptionImage) {
                 this.descriptionImage.destroy();
@@ -223,13 +231,18 @@ export default class boosterBar{
                 "dropItem", 
                 frame
             ).setOrigin(0, 0).setSize(this.boosterSize.width, this.boosterSize.height);
+
+            let text = 'booster_description_' + name
+            if(index === 6 || index === 7){
+                text = 'booster_description' + name
+            }
     
             this.descriptionText = I18nSingleton.getInstance()
                 .createTranslatedText(
                     this.scene,
                     this.position.x + MARGIN * 2 / 3 + 128,
                     this.position.y + this.gapSize.height * 2 + MARGIN / 2.5,
-                    'booster_description_' + name
+                    text
                 )
                 .setAlign('start')
                 .setOrigin(0, 0);

@@ -1,13 +1,14 @@
 import { Laser } from './Laser'
-import Player from '../player/Player'
+import Player from '../../player/Player'
 import { LASER_FREQUENCY_MS } from 'config'
 import { Scene } from 'phaser'
-import { Enemy } from '../enemy/Enemy'
+import { Enemy } from '../../enemy/Enemy'
 import { BossSkill } from 'component/enemy/boss/BossSkill'
 
 export abstract class LaserFactory {
 	protected bulletCount = 0
 	protected timer = 0
+	private laserFrequency!: number
 
 	abstract create(scene: Phaser.Scene, player: Player): Laser
 
@@ -16,16 +17,20 @@ export abstract class LaserFactory {
 		player: Player,
 		enemies: Enemy[],
 		delta: number,
-		bossSkill?: BossSkill,
+		options?: { 
+			bossSkill?: BossSkill 
+			laserFrequency?: number
+		} ,
 	): void {
+		this.laserFrequency = options?.laserFrequency ?? LASER_FREQUENCY_MS
 		this.timer += delta
-		while (this.timer > LASER_FREQUENCY_MS) {
-			this.timer -= LASER_FREQUENCY_MS
+		while (this.timer > this.laserFrequency) {
+			this.timer -= this.laserFrequency
 			if (this.bulletCount <= 0) return
 			const laser = this.create(scene, player)
 			const laserBodies = laser.shoot()
 			this.bulletCount -= 1
-			bossSkill && this.setSkillCollision(scene, laserBodies, bossSkill)
+			options?.bossSkill && this.setSkillCollision(scene, laserBodies, options?.bossSkill)
 			this.setEnemiesCollision(scene, laserBodies, enemies)
 			scene.time.delayedCall(5000, () => {
 				laser.destroy()
@@ -66,3 +71,5 @@ export abstract class LaserFactory {
 		this.bulletCount = bulletCount
 	}
 }
+
+

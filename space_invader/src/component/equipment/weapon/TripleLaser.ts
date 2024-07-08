@@ -9,10 +9,15 @@ export class TripleLaser extends Laser {
 	private laser2!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 	private laser3!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
+	private angularVelocity = [LASER_SPEED / 1, LASER_SPEED / 2, LASER_SPEED / 3, LASER_SPEED / 4, LASER_SPEED / 5, LASER_SPEED / 6, LASER_SPEED / 7, LASER_SPEED / 8]
+	private angularVelocityIndex = 1
+
 	constructor(scene: Phaser.Scene, player: Player) {
 		super()
 		this.scene = scene
 		this.player = player
+
+		this.shuffle(this.angularVelocity)
 	}
 	shoot(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody[] {
 		const { x, y } = this.player.getLaserLocation()
@@ -24,6 +29,11 @@ export class TripleLaser extends Laser {
 		this.laser2.setVelocityX(TRIPLE_LASER_X_SPEED)
 		this.laser3.setVelocityY(-1 * LASER_SPEED)
 		this.laser3.setVelocityX(-1 * TRIPLE_LASER_X_SPEED)
+		this.laser1.setAngularVelocity(this.angularVelocity[this.angularVelocityIndex])
+		this.laser2.setAngularVelocity(this.angularVelocity[this.angularVelocityIndex+1%8])
+		this.laser3.setAngularVelocity(this.angularVelocity[this.angularVelocityIndex+2%8])
+
+		this.angularVelocityIndex = this.angularVelocityIndex+1%8
 
 		return [this.laser1, this.laser2, this.laser3]
 	}
@@ -32,5 +42,22 @@ export class TripleLaser extends Laser {
 		this.laser1?.destroy()
 		this.laser2?.destroy()
 		this.laser3?.destroy()
+	}
+
+	shuffle(array: number[]): void {
+		let currentIndex = array.length,
+			randomIndex
+
+		while (currentIndex != 0) {
+			randomIndex = Math.floor(Math.random() * currentIndex)
+			currentIndex--
+
+			;[array[currentIndex], array[randomIndex]] = [
+				array[randomIndex],
+				array[currentIndex],
+			]
+		}
+
+		
 	}
 }

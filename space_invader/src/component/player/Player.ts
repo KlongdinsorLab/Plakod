@@ -3,13 +3,25 @@ import {
 	COLLECT_BULLET_COUNT,
 	FULLCHARGE_ANIMATION_MS,
 	FULLCHARGE_SCALE,
-	LASER_FREQUENCY_MS,
+	//LASER_FREQUENCY_MS,
 	MARGIN,
 	PLAYER_SPEED,
 	PLAYER_START_MARGIN,
+	BULLET_COUNT,
+	BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE2_BULLET_COUNT,
 } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import Shield from 'component/equipment/defense/shield'
 // import WebFont from 'webfontloader'
+
+export enum ShootingPhase {
+	NORMAL = BULLET_COUNT,
+	BOSS_PHASE_1 = BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE_2 = BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE_2 = BOSSV2_PHASE2_BULLET_COUNT,
+}
 
 export default class Player {
 	private scene: Phaser.Scene
@@ -31,6 +43,7 @@ export default class Player {
 		| Phaser.Sound.WebAudioSound
 		| Phaser.Sound.HTML5AudioSound
 
+	private shield!: Shield
 	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
 		// this.soundManager = new SoundManager(scene)
@@ -49,6 +62,8 @@ export default class Player {
 		)
 
 		gameLayer.add(this.player)
+		
+		this.shield = new Shield(scene, this.player)
 
 		// this.playerHitSounds = [...Array(3)].map((_, i) =>
 		// 	this.scene.sound.add(`mcHit${i+1}`),
@@ -167,10 +182,12 @@ export default class Player {
 
 	moveLeft(delta: number): void {
 		this.player.x = this.player.x - (PLAYER_SPEED * delta) / 1000
+		this.shield.updatePosition(this.player)
 	}
 
 	moveRight(delta: number): void {
 		this.player.x = this.player.x + (PLAYER_SPEED * delta) / 1000
+		this.shield.updatePosition(this.player)
 	}
 
 	getLaserLocation(): { x: number; y: number } {
@@ -239,7 +256,7 @@ export default class Player {
 		if (this.chargeEmitter) this.chargeEmitter.active = true
 	}
 
-	reloadSet(bulletCount: number): void {
+	reloadSet(bulletCount: number, laserFrequency: number): void {
 		this.player.play('attack', true)
 		this.isAttacking = true
 		this.isReload = false
@@ -247,7 +264,7 @@ export default class Player {
 		setTimeout(() => {
 			this.isAttacking = false
 			this.player.play('run', true)
-		}, LASER_FREQUENCY_MS * bulletCount)
+		}, laserFrequency * bulletCount)
 	}
 
 	attack(): void {
@@ -271,6 +288,18 @@ export default class Player {
 
 	getIsAttacking(): boolean {
 		return this.isAttacking
+	}
+
+	activateShield(remainingTime?:number): void {
+		if(remainingTime){
+			this.shield.countDownShield()
+		}else{
+		this.shield.activate()
+		}
+	}
+
+	deactivateShield(): void {
+		this.shield.deactivate()
 	}
 
 	hide(): void {

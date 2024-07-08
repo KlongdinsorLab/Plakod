@@ -77,7 +77,7 @@
   "booster_description_3":"Reduces injury points from\nattacks by 50%.",
   "booster_description_4":"Release bullets faster +20%\nIncrease ammo count +20%",
   "booster_description_5":"Increase ammo score +10%",
-  "booster_description_rare1":"Changed bullet release pattern\nto 2-way spread.",
+  "booster_description_rare1":"Changed bullet release pattern\nto 3-way spread.",
   "booster_description_rare2":"Increase total score by 50%",
   "booster_description_unlimited":"unlimited",
   "booster_description_default":"you can choose up to {{MAX_SELECTED_BOOSTER, number}} booster",

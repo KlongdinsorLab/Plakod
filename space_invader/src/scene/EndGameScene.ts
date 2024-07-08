@@ -7,6 +7,9 @@ import RewardDialog from 'component/ui/RewardDialog'
 import RestartButton from 'component/ui/Button/RestartButton'
 import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
+import { boosters } from './booster/RedeemScene'
+import { BoosterName } from 'component/booster/booster'
+import { BoosterRare2 } from 'component/booster/boosterList/booster_rare2'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -87,6 +90,10 @@ export default class EndGameScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
 		// TODO: call api
+
+		if(boosters.includes(BoosterName.BOOSTER_RARE2)){
+			this.score = new BoosterRare2().applyBooster(this.score)
+		}
 		
 		//this.playCount = Number(localStorage.getItem('playCount') ?? '')
 		this.add
@@ -219,7 +226,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 	ShowUI():void{ 
 		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED){
+		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED && this.vas.getScore()<7){
 			this.restartButton.show()
 			this.restartButton.activate()
 		}else{

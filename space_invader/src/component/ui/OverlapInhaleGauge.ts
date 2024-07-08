@@ -20,6 +20,7 @@ let progressBar: Phaser.GameObjects.Image
 
 export default class OverlapInhaleGauge extends InhaleGauge {
     private soundManager: SoundManager
+    private laserFrequency!: number
 
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
@@ -126,7 +127,8 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    set(bulletCount:number) {
+    set(bulletCount:number, laserFrequency?:number, releasedBullet?: number) {
+        this.laserFrequency = laserFrequency ?? LASER_FREQUENCY_MS
         let currentBulletCount = bulletCount
         isReloading = true
         this.isHoldbarReducing = true
@@ -138,10 +140,14 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         rectanglesBackground.map(r => r.setVisible(false))
 
         const timeEvent = this.scene.time.addEvent({
-            delay: LASER_FREQUENCY_MS,
+            delay: this.laserFrequency,
             callback: () => {
                 if(this.scene.scene.isPaused()) return
-                currentBulletCount--
+                if(releasedBullet){
+                   currentBulletCount -= releasedBullet
+                }else{
+                    currentBulletCount--
+                }
                 bulletText.setText(`⚡️: ${currentBulletCount}`)
 
                 if (currentBulletCount === 0) {
