@@ -21,6 +21,9 @@ export class Bullet extends Item {
     super(scene, player, score, gauge, isTutorial)
     this.move()
     // this.soundManager = new SoundManager(scene)
+    this.scene.time.delayedCall(5000, () => {
+      this.item.destroy()
+    })
   }
 
   create(
