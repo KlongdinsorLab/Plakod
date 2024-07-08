@@ -226,7 +226,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 	ShowUI():void{ 
 		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED){
+		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED && this.vas.getScore()<7){
 			this.restartButton.show()
 			this.restartButton.activate()
 		}else{

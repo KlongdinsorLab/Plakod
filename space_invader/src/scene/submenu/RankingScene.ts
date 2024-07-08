@@ -213,7 +213,7 @@ export default class RankingScene extends Phaser.Scene {
 
 
      private goToHome(): void {
-          console.log('back to home!')
+          //console.log('back to home!')
           // TODO go to home function and less resource
 
           // clear the array
@@ -595,7 +595,7 @@ export default class RankingScene extends Phaser.Scene {
                Phaser.Geom.Rectangle.Contains
           ).on('pointerup', () => {
                if (!this.onScorePage) {
-                    console.log('button score click!');
+                    //console.log('button score click!');
 
                     this.onScorePage = true;
                     drawScoreButtonActive();
@@ -610,7 +610,7 @@ export default class RankingScene extends Phaser.Scene {
                Phaser.Geom.Rectangle.Contains
           ).on('pointerup', () => {
                if (this.onScorePage) {
-                    console.log('button played click!');
+                    //console.log('button played click!');
 
                     this.onScorePage = false;
                     drawPlayedButtonActive();

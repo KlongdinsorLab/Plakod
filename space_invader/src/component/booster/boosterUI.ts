@@ -158,7 +158,7 @@ export class BoosterUI {
             callback: () => {
                 const timeCount = this.timeService.getDurationTime(dateObject);
                 if (timeCount === 'timeout') {
-                    console.log('timeout',this.name);
+                    //console.log('timeout',this.name);
                     this.countdownIndex++;
                     this.amount!--;
 

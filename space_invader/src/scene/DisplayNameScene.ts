@@ -49,14 +49,14 @@ export default class DisplayNameScene extends Phaser.Scene{
                     // TODO submit
                     this.registry.set('username', username);
 
-                    console.log('submit success')
+                    //console.log('submit success')
                     //this.scene.start('home') // for test
                     this.scene.start('redeem')
                     return;
                }
           } 
           
-          console.log('Please Enter username.')
+          //console.log('Please Enter username.')
           
      }
 

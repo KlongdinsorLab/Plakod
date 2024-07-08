@@ -18,7 +18,6 @@ export default class Shield extends Equipment{
         this.timeEvent = this.scene.time.addEvent({
             delay: 1000,
             callback: () => {
-                console.log(booster2.getRemainingTime())
                 booster2.decreaseRemainingTime()
                 if(booster2.getRemainingTime() === 0 || booster2.getIsCompleteBossPhase()){
                     this.timeEvent.remove();
@@ -30,12 +29,10 @@ export default class Shield extends Equipment{
     }
 
 	activate(): void {
-        console.log("shield activated")
 		this.shield.setVisible(true)
 	}
 
 	deactivate(): void {
-        console.log("shield deactivated")
         if(this.timeEvent){
             this.timeEvent.remove();
         }

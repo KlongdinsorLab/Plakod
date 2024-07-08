@@ -56,7 +56,6 @@ export class B1BossObstacle extends Enemy {
         }
         
         if(boosters.includes(BoosterName.BOOSTER_1) && booster1.getRemainingUses()>=0 &&!this.isHit){
-          console.log("booster1", booster1.getRemainingUses())
           booster1.applyBooster()
           this.isHit = true
           return
