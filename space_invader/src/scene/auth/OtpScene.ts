@@ -167,9 +167,10 @@ export default class OtpScene extends Phaser.Scene {
 				this.scene.launch('login')
 				return;
 			}
-			await this.confirmationResult.confirm(code)
-			setCookie('phone', this.phoneNumber, { expires: 7, path: '' });
-			setCookie('scene', 'otpScene', { expires: 7, path: '' });
+			const result = await this.confirmationResult.confirm(code)
+			const user = result.user
+			const idToken = await user.getIdToken(true)
+			setCookie('jwt', idToken, { expires: 7, path: '' });
 			this.scene.stop()
 			this.scene.launch('register')
 		} catch (e){
