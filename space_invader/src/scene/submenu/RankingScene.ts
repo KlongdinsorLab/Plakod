@@ -376,7 +376,7 @@ export default class RankingScene extends Phaser.Scene {
     }
     update(): void {}
 
-    createScoreButton():void{
+    private createScoreButton():void{
         this.scoreButton = this.add.graphics()
         this.scoreButton.fillStyle(0x43A99E)
         this.scoreButton.fillRoundedRect(
@@ -399,7 +399,7 @@ export default class RankingScene extends Phaser.Scene {
         .setOrigin(0.5, 0.5)
     }
 
-    createPlayedButton():void{
+    private createPlayedButton():void{
         this.playedButton = this.add.graphics()
         this.playedButton.fillStyle(0xFFAA04)
         this.playedButton.fillRoundedRect(
@@ -422,7 +422,7 @@ export default class RankingScene extends Phaser.Scene {
         .setOrigin(0.5, 0.5)
     }
 
-    createScoreDisabledButton():void{
+    private createScoreDisabledButton():void{
         this.scoreButtonDisabled = this.add.graphics()
         this.scoreButtonDisabled.fillStyle(0xC7BEAF)
         this.scoreButtonDisabled.fillRoundedRect(
@@ -460,7 +460,7 @@ export default class RankingScene extends Phaser.Scene {
         })
     }
 
-    createPlayedDisabledButton():void{
+    private createPlayedDisabledButton():void{
         this.playedButtonDisabled = this.add.graphics()
         this.playedButtonDisabled.fillStyle(0xC7BEAF)
         this.playedButtonDisabled.fillRoundedRect(
@@ -498,7 +498,7 @@ export default class RankingScene extends Phaser.Scene {
         })
     }
 
-    createOverlayOnButtonLeft():void{
+    private createOverlayOnButtonLeft():void{
         this.OverlayLeftButton = this.add.nineslice(
             720/2+86,  
             1160, 
@@ -514,7 +514,7 @@ export default class RankingScene extends Phaser.Scene {
         .setDepth(1)
     }
 
-    createOverlayOnButtonRight():void{
+    private createOverlayOnButtonRight():void{
         this.OverlayRightButton = this.add.nineslice(
             720/2+214, 
             1160, 
@@ -530,24 +530,24 @@ export default class RankingScene extends Phaser.Scene {
         .setDepth(1)
     }
 
-    setButtonOverlayLeft(isActive:boolean):void{
+    private setButtonOverlayLeft(isActive:boolean):void{
         this.OverlayLeftButton.setVisible(isActive)
         this.OverlayLeftButton.setActive(isActive)
     }
 
-    setButtonOverlayRight(isActive:boolean):void{
+    private setButtonOverlayRight(isActive:boolean):void{
         this.OverlayRightButton.setVisible(isActive)
         this.OverlayRightButton.setActive(isActive)
     }
 
-    setScoreButtonDisabled(isActive:boolean):void{
+    private setScoreButtonDisabled(isActive:boolean):void{
         this.scoreButtonDisabled.setVisible(isActive)
         this.scoreButtonTextDisabled.setVisible(isActive)
         this.scoreButtonDisabled.setActive(isActive)
         this.scoreButtonTextDisabled.setActive(isActive)
     }
 
-    setPlayedButtonDisabled(isActive:boolean):void{
+    private setPlayedButtonDisabled(isActive:boolean):void{
         this.playedButtonDisabled.setVisible(isActive)
         this.playedButtonTextDisabled.setVisible(isActive)
         this.playedButtonDisabled.setActive(isActive)
@@ -555,7 +555,7 @@ export default class RankingScene extends Phaser.Scene {
     }
 
     //todo: fetch data from backend
-    setCurrentPlayerData():{ 
+    private setCurrentPlayerData():{ 
         id: string,
         name: string, 
         score: number, 
@@ -579,7 +579,7 @@ export default class RankingScene extends Phaser.Scene {
         }
     }
 
-    increaseRankingIndex():void{
+    private increaseRankingIndex():void{
         if(this.rankingIndex+this.maxPlayerSlot >= this.totalPlayer) {
             this.setButtonOverlayRight(true)
             return;
@@ -600,7 +600,7 @@ export default class RankingScene extends Phaser.Scene {
         console.log('ranking index',this.rankingIndex)
     }
 
-    decreaseRankingIndex():void{
+    private decreaseRankingIndex():void{
         if(this.rankingIndex <= 0) {
             this.setButtonOverlayLeft(true)
             return;
@@ -623,7 +623,7 @@ export default class RankingScene extends Phaser.Scene {
         console.log('ranking index',this.rankingIndex)
     }
 
-    updateFont():void{
+    private updateFont():void{
         const self = this;
         WebFont.load({
             google:{
