@@ -74,8 +74,6 @@ export class PlayerSlot{
             this.slotBackground.fillRoundedRect( this.position.x, this.position.y, 576, 88, 20)
         }
 
-        console.log('accumulation type',this.badgeKey)
-
         if(this.playerRank <= 3){
             const badge = this.checkBadge();
             const badgeFrame = 'icon_'+this.badgeKey+'_'+badge.badgeName+'.png';
@@ -85,7 +83,6 @@ export class PlayerSlot{
                 'icon', 
                 badgeFrame
             ).setOrigin(0)
-            console.log('badge',badgeFrame)
             this.playerRankText = this.scene.add.text(
                 this.position.x+56+this.textMargin,
                 this.position.y+48,

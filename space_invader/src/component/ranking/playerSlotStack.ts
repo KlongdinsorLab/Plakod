@@ -93,7 +93,6 @@ export class PlayerSlotStack{
             true
         )
         this.currentPlayerSlot.create()
-        console.log('currentPlayerSlot is created')
     }
     nextPage(){
         this.index += this.maxPlayerSlot;

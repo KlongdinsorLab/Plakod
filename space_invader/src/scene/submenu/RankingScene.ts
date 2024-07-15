@@ -592,12 +592,10 @@ export default class RankingScene extends Phaser.Scene {
         }
         if(this.rankingIndex%20 === 0){
             this.currentPlayerJson = this.setCurrentPlayerData()
-            console.log(this.currentPlayerJson)
             this.playerSlotStack.setPlayerData(this.currentPlayerJson)
             return
         }
         this.playerSlotStack.nextPage()
-        console.log('ranking index',this.rankingIndex)
     }
 
     private decreaseRankingIndex():void{
@@ -610,7 +608,6 @@ export default class RankingScene extends Phaser.Scene {
         if(this.rankingIndex%20 <= 0){
             this.rankingIndex -= this.maxPlayerSlot;
             this.currentPlayerJson = this.setCurrentPlayerData()
-            console.log(this.currentPlayerJson)
             this.playerSlotStack.setRank(this.rankingIndex)
             this.playerSlotStack.setPlayerData(this.currentPlayerJson)
             return
@@ -620,7 +617,6 @@ export default class RankingScene extends Phaser.Scene {
             this.setButtonOverlayLeft(true)
         }
         this.playerSlotStack.previousPage()
-        console.log('ranking index',this.rankingIndex)
     }
 
     private updateFont():void{
