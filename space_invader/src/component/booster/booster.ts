@@ -1,5 +1,4 @@
 export enum BoosterName{
-    NONE,
     BOOSTER_1,
     BOOSTER_2,
     BOOSTER_3,
