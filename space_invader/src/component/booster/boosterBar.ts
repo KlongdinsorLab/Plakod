@@ -21,30 +21,43 @@ export default class boosterBar{
     private descriptionAmount: Phaser.GameObjects.Text | undefined;
 
     private boosters: BoosterUI[]=[];
-    private boosterJSON = {
-        "booster_1":          {"expire_date": [],    "amount" : 3,},
-        "booster_2":          {"expire_date": [],    "amount" : 2,},
-        "booster_3":          {"expire_date": [], "amount" : 30,},
-        "booster_4":          {"expire_date": [], "amount" : 1,},
-        "booster_5":          {"expire_date": [], "amount" : 1,},
-        "booster_rare1":      {"expire_date": [], "amount" : 1,},
-        "booster_rare2":      {"expire_date": [], "amount" : 1,},          
-    
-    };
+
+    private boosterJson = [
+        {boosterId: 1,      expireDate: [], amount : 3 },
+        {boosterId: 2 ,     expireDate: [], amount : 2 },
+        {boosterId: 3 ,     expireDate: [], amount : 30},
+        {boosterId: 4 ,     expireDate: [], amount : 1},
+        {boosterId: 5 ,     expireDate: [], amount : 1},
+        {boosterId: 6 ,     expireDate: [], amount : 1},
+        {boosterId: 7 ,     expireDate: [], amount : 2},
+  ]
 
     
 
     constructor(scene: Phaser.Scene){
         this.selectedBooster.length = 0
         this.scene = scene
-        this.boosters[1] = new BoosterUI(
+        this.boosters[0] = new BoosterUI(
             this.scene,
             BoosterName.BOOSTER_1,
             {
                 x: this.position.x + MARGIN * 2 / 3,
                 y: this.position.y,
-                amount: this.boosterJSON.booster_1.amount,
-                expireArray: this.boosterJSON.booster_1.expire_date
+                amount: this.boosterJson[0].amount,
+                expireArray: this.boosterJson[0].expireDate
+            }
+        )
+        this.boosters[0].create()
+        this.boosters[0].getBody().setInteractive().on('pointerup', () => this.isSelected(0))
+
+        this.boosters[1] = new BoosterUI(
+            this.scene,
+            BoosterName.BOOSTER_2,
+            {
+                x: this.position.x+MARGIN*2/3+ this.gapSize.width*1,
+                y: this.position.y,
+                amount: this.boosterJson[1].amount,
+                expireArray: this.boosterJson[1].expireDate
             }
         )
         this.boosters[1].create()
@@ -52,12 +65,12 @@ export default class boosterBar{
 
         this.boosters[2] = new BoosterUI(
             this.scene,
-            BoosterName.BOOSTER_2,
+            BoosterName.BOOSTER_3,
             {
-                x: this.position.x+MARGIN*2/3+ this.gapSize.width*1,
+                x: this.position.x+MARGIN*2/3+ this.gapSize.width*2,
                 y: this.position.y,
-                amount: this.boosterJSON.booster_2.amount,
-                expireArray: this.boosterJSON.booster_2.expire_date
+                amount: this.boosterJson[2].amount,
+                expireArray: this.boosterJson[2].expireDate
             }
         )
         this.boosters[2].create()
@@ -65,12 +78,12 @@ export default class boosterBar{
 
         this.boosters[3] = new BoosterUI(
             this.scene,
-            BoosterName.BOOSTER_3,
+            BoosterName.BOOSTER_4,
             {
-                x: this.position.x+MARGIN*2/3+ this.gapSize.width*2,
+                x: this.position.x+MARGIN*2/3+ this.gapSize.width*3,
                 y: this.position.y,
-                amount: this.boosterJSON.booster_3.amount,
-                expireArray: this.boosterJSON.booster_3.expire_date
+                amount: this.boosterJson[3].amount,
+                expireArray: this.boosterJson[3].expireDate
             }
         )
         this.boosters[3].create()
@@ -78,12 +91,12 @@ export default class boosterBar{
 
         this.boosters[4] = new BoosterUI(
             this.scene,
-            BoosterName.BOOSTER_4,
+            BoosterName.BOOSTER_5,
             {
-                x: this.position.x+MARGIN*2/3+ this.gapSize.width*3,
-                y: this.position.y,
-                amount: this.boosterJSON.booster_4.amount,
-                expireArray: this.boosterJSON.booster_4.expire_date
+                x: this.position.x+MARGIN*2,
+                y: this.position.y+ this.gapSize.height,
+                amount: this.boosterJson[4].amount,
+                expireArray: this.boosterJson[4].expireDate
             }
         )
         this.boosters[4].create()
@@ -91,12 +104,12 @@ export default class boosterBar{
 
         this.boosters[5] = new BoosterUI(
             this.scene,
-            BoosterName.BOOSTER_5,
+            BoosterName.BOOSTER_RARE1,
             {
-                x: this.position.x+MARGIN*2,
+                x: this.position.x+MARGIN*2+this.gapSize.width,
                 y: this.position.y+ this.gapSize.height,
-                amount: this.boosterJSON.booster_5.amount,
-                expireArray: this.boosterJSON.booster_5.expire_date
+                amount: this.boosterJson[5].amount,
+                expireArray: this.boosterJson[5].expireDate
             }
         )
         this.boosters[5].create()
@@ -104,29 +117,16 @@ export default class boosterBar{
 
         this.boosters[6] = new BoosterUI(
             this.scene,
-            BoosterName.BOOSTER_RARE1,
-            {
-                x: this.position.x+MARGIN*2+this.gapSize.width,
-                y: this.position.y+ this.gapSize.height,
-                amount: this.boosterJSON.booster_5.amount,
-                expireArray: this.boosterJSON.booster_5.expire_date
-            }
-        )
-        this.boosters[6].create()
-        this.boosters[6].getBody().setInteractive().on('pointerup', () => this.isSelected(6))
-
-        this.boosters[7] = new BoosterUI(
-            this.scene,
             BoosterName.BOOSTER_RARE2,
             {
                 x: this.position.x+MARGIN*2+this.gapSize.width*2,
                 y: this.position.y+ this.gapSize.height,
-                amount: this.boosterJSON.booster_5.amount,
-                expireArray: this.boosterJSON.booster_5.expire_date
+                amount: this.boosterJson[6].amount,
+                expireArray: this.boosterJson[6].expireDate
             }
         )
-        this.boosters[7].create()
-        this.boosters[7].getBody().setInteractive().on('pointerup', () => this.isSelected(7))
+        this.boosters[6].create()
+        this.boosters[6].getBody().setInteractive().on('pointerup', () => this.isSelected(6))
 
         this.boosters.forEach((booster) => {
             booster.initBooster()
@@ -193,11 +193,11 @@ export default class boosterBar{
     
         this.selectedBooster = this.selectedBooster.filter(selected => selected !== name);
         if(this.descriptionText){
-            if(this.descriptionText!.name === index.toString()){
+            if(this.descriptionText!.name === (index+1).toString()){
                 this.setDescriptionBox();
-            }else if(index === 6 && this.descriptionText!.name === "rare1" ){
+            }else if(index === 5 && this.descriptionText!.name === "_rare1" ){
                 this.setDescriptionBox();
-            }else if(index === 7 && this.descriptionText!.name === "rare2"){
+            }else if(index === 6 && this.descriptionText!.name === "_rare2"){
                 this.setDescriptionBox();
             }
         }
@@ -233,7 +233,7 @@ export default class boosterBar{
             ).setOrigin(0, 0).setSize(this.boosterSize.width, this.boosterSize.height);
 
             let text = 'booster_description_' + name
-            if(index === 6 || index === 7){
+            if(index === 5 || index === 6){
                 text = 'booster_description' + name
             }
     
