@@ -106,7 +106,7 @@ export default abstract class AbstractAPIService {
      //      boosters: BoosterAddDTO[]
      // ): Promise<any>
 
-     //abstract getPlayerCharacters(): Promise<CharacterDTO[]>
+     // abstract getPlayerCharacters(): Promise<CharacterDTO[]>
      
 
 }

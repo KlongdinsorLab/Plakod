@@ -373,40 +373,6 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     // addPlayerCharacter(characterId: string): Promise<any> {
-     //      return new Promise<any>(resolve => {
-     //           // auth
-     //           if (!this.isLogin) {
-     //                throw new Error('Please Log in.');
-     //           }
-
-     //           const characterFound = Characters.find(
-     //                char => char.id === characterId
-     //           );
-     //           if (!characterFound) {
-     //                throw new Error(`Can't found this ${characterId} in database`);
-     //           }
-
-     //           const playerCharacterFound = PlayerCharacters.find(
-     //                char => char.player_id === this.playerId
-     //                     && char.character_id === characterId
-     //           )
-     //           if(playerCharacterFound) {
-     //                throw new Error(`Player already have this character's id: ${characterId}`)
-     //           }
-
-     //           const playerCharacter: PlayerCharacterSchema = {
-     //                player_id: this.playerId,
-     //                character_id: characterId
-     //           }
-
-     //           // add to database
-     //           PlayerCharacters.push(playerCharacter);
-               
-     //           resolve(characterId);
-     //      });
-     // }
-
      getRankings(): Promise<Response<RankDTO[]>> {
           return new Promise<Response<RankDTO[]>>(resolve => {
                // auth
@@ -448,73 +414,6 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     // applyPlayerBooster(boostersId: string[]): Promise<any> {
-     //      return new Promise<any>(resolve => {
-     //           // auth
-     //           if (!this.isLogin) {
-     //                throw new Error('Please Log in.');
-     //           }
-
-     //           const resolveIndex: number[] = [];
-
-     //           boostersId.forEach((boosterId) => {
-     //                const playerBoosters: PlayerBoosterSchema[] = PlayerBoosters.filter(booster => {
-     //                     return booster.player_id === this.playerId
-     //                          && booster.booster_id === boosterId
-     //                          && booster.status === StatusBooster.Available
-     //                });
-
-     //                if(playerBoosters.length === 0) {
-     //                     throw new Error(`Can't found booster's id: ${boosterId}`);
-     //                }
-
-     //                playerBoosters.sort((a, b) => {
-     //                     if (a.expire_at === null && b.expire_at === null) {
-     //                         return 0; // Both dates are null, no preference
-     //                     } else if (a.expire_at === null) {
-     //                         return 1; // a.date is null, so it comes after b.date (not null)
-     //                     } else if (b.expire_at === null) {
-     //                         return -1; // b.date is null, so it comes after a.date (not null)
-     //                     } else {
-     //                         return a.expire_at.getTime() - b.expire_at.getTime(); // Both dates are defined, compare normally
-     //                     }
-     //                });
-
-     //                const playerBooster: PlayerBoosterSchema = playerBoosters[0];     // get booster that will expire first
-                    
-     //                // prepare for update booster's status
-     //                const index: number = PlayerBoosters.findIndex(pb =>
-     //                     pb === playerBooster
-     //                );
-     //                if (index === -1) {
-     //                     throw new Error(`Something wrong. Can't found player's booster: ${playerBooster}`)
-     //                }
-     //                resolveIndex.push(index);
-                    
-     //                // check booster that expire before function
-     //                if (playerBooster.expire_at) {
-     //                     const boosterExpireAt: Date = playerBooster.expire_at as Date;
-     //                     const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
-     //                     if (isExpire) {
-     //                          PlayerBoosters[index].status = StatusBooster.Expire;
-     //                          throw new Error(`this booster [${boosterId}] is expire before.`)
-     //                     }
-     //                }
-
-     //           });
-
-     //           // update all booster when they were applied successfully
-     //           resolveIndex.forEach(
-     //                index => PlayerBoosters[index].status = StatusBooster.Expire
-     //           );
-               
-     //           resolve({
-     //                message: 'OK',
-     //                boostersId: boostersId
-     //           })
-     //      });
-     // }
-
      getPlayerBoosters(): Promise<Response<BoosterDTO[]>> {
           return new Promise<Response<BoosterDTO[]>>(resolve => {
                // auth
@@ -536,13 +435,13 @@ export default class MockAPIService extends AbstractAPIService {
                }
 
                // [
-               //      {boosterId: 1,      expireDate: ["2024-06-24T12:00:00.000Z","2024-06-24T13:00:00.000Z"],    amount : 3 },
+               //      {boosterId: 1,      expireDate: ["2024-06-24T12:00:00.000Z","2024-06-24T13:00:00.000Z", null],    amount : 3 },
                //      {boosterId: 2 ,     expireDate: ["2024-06-24T09:00:00.000Z","2024-06-24T12:00:00.000Z"],    amount : 2 },
-               //      {boosterId: 3 ,     expireDate: [], amount : 30},
-               //      {boosterId: 4 ,     expireDate: [], amount : 1},
-               //      {boosterId: 5 ,     expireDate: [], amount : 1},
-               //      {boosterId: 6 ,     expireDate: [], amount : 1},
-               //      {boosterId: 7 ,     expireDate: [], amount : 0},
+               //      {boosterId: 3 ,     expireDate: [null]},
+               //      {boosterId: 4 ,     expireDate: []},
+               //      {boosterId: 5 ,     expireDate: []},
+               //      {boosterId: 6 ,     expireDate: []},
+               //      {boosterId: 7 ,     expireDate: []},
                // ]
                const boostersDTO: BoosterDTO[] = []
                
@@ -599,10 +498,7 @@ export default class MockAPIService extends AbstractAPIService {
                     
                     const BoosterDTO: BoosterDTO = {
                          boosterId: boosterAvailable[0].booster_id,
-                         expireDate: boosterAvailable
-                              .filter(b => b.expired_at !== null)
-                              .map(b => b.expired_at as Date),
-                         amount: boosterAvailable.length
+                         expireDate: boosterAvailable.map(b => b.expired_at),
                     }
                     boostersDTO.push(BoosterDTO);
                });
@@ -614,95 +510,6 @@ export default class MockAPIService extends AbstractAPIService {
                });
           });
      }
-
-     // addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any> {
-     //      return new Promise<any>(resolve => {
-     //           // auth
-     //           if (!this.isLogin) {
-     //                throw new Error('Please Log in.');
-     //           }
-
-     //           const playerBoosters: PlayerBoosterSchema[] = []
-     //           boosters.forEach((boosterAdd) => {
-     //                const { boosterId, duration } = boosterAdd;
-     //                const now: Date = new Date();
-                    
-     //                let expireAt: Date | null = null
-     //                if (duration === -1 || duration === null) {   // -1 is permanent booster
-     //                     expireAt = null;
-     //                } else if (duration > 0 && duration < 128){  // 128 cap
-     //                     const timeToExpire: number = now.getTime() + (duration * 3600000);
-     //                     expireAt = new Date(timeToExpire);
-     //                } else {
-     //                     throw new Error(`Invalid duration : ${duration}`);
-     //                }
-
-     //                const boosterFound = Boosters.find(b =>
-     //                     b.id === boosterId
-     //                );
-     //                if (!boosterFound) {
-     //                     throw new Error(`Can't found booster's id: ${boosterId}`);
-     //                }
-                    
-     //                const playerBooster: PlayerBoosterSchema = {
-     //                     player_id: this.playerId,
-     //                     booster_id: boosterId,
-     //                     expire_at: expireAt,
-     //                     create_at: now,
-     //                     status: StatusBooster.Available
-     //                }
-
-     //                // add to database
-     //                playerBoosters.push(playerBooster);
-     //           });
-
-
-     //           // success and add to database
-     //           playerBoosters.forEach( pb => 
-     //                PlayerBoosters.push(pb)
-     //           );
-               
-     //           resolve({message: 'OK', boosters: playerBoosters});
-     //      });
-     // }
-
-     // // TODO check the last gameSession that not have endAt in 30 minutes will be status "Cancel"
-     // createGameSession(bossId: string): Promise<any> {
-     //      return new Promise<any>(resolve => {
-     //           // auth
-     //           if (!this.isLogin) {
-     //                throw new Error('Please Log in.');
-     //           }
-
-     //           const id: string = String(GameSessions.length + 1).padStart(4, "0");
-     //           const playerFound = Players.find( 
-     //                player => player.id === this.playerId
-     //           );
-     //           if (!playerFound) {
-     //                throw new Error('Can not find player.');
-     //           }
-     //           const player: PlayerSchema = playerFound as PlayerSchema;
-     //           const now: Date = new Date();
-
-     //           const GameSessionsDTO: GameSessionSchema = {
-     //                id: id,
-     //                player_id: this.playerId,
-     //                difficult_id: player.difficult_id,
-     //                boss_id: bossId,
-     //                score: 0,
-     //                lap: 0,
-     //                start_at: now,
-     //                update_at: now,
-     //                end_at: null,
-     //                status: StatusGameSession.Active
-     //           }
-
-     //           // add to database
-     //           GameSessions.push(GameSessionsDTO);
-
-     //           resolve({message: 'OK', gameSessionId: id});
-     //      });
-     // }
 
      updateGameSession(gameSessionId: number, score: number, lap: number): Promise<Response<void>> {
           return new Promise<Response<void>>((resolve, reject) => {
@@ -853,53 +660,9 @@ export default class MockAPIService extends AbstractAPIService {
                });
           });      
      }
-
-     // getPlayerCharacters(): Promise<CharacterDTO[]> {
-     //      return new Promise<CharacterDTO[]>(resolve => {
-     //           // TODO add unlock character by examine data in database
-     //           // auth
-     //           if (!this.isLogin) {
-     //                throw new Error('Please Log in.');
-     //           }
-
-     //           const playerCharactersId: string[] = PlayerCharacters
-     //                .filter(
-     //                     c => c.player_id === this.playerId
-     //                )
-     //                .map(
-     //                     c => c.character_id
-     //                );
-               
-     //           const playerCharacters: CharacterSchema[] = [];
-     //           playerCharactersId.forEach( cId => {
-     //                const characterFound = Characters.find(
-     //                     c => c.id === cId
-     //                );
-     //                if (!characterFound) {
-     //                     throw new Error(`Can't found character's id: ${cId}`);
-     //                }
-     //                const character: CharacterSchema = characterFound as CharacterSchema;
-
-     //                playerCharacters.push(character);
-     //           });
-
-     //           const charactersDTO: CharacterDTO[] = []
-     //           playerCharacters.forEach( pc => {
-     //                const characterDTO: CharacterDTO = {
-     //                     characterId: pc.id,
-     //                     name: pc.name,
-     //                     detail: pc.detail
-     //                }
-
-     //                charactersDTO.push(characterDTO);
-     //           });
-
-     //           resolve(charactersDTO);
-     //      });
-     // }
  
-     addVas(vasScore: VasScore): Promise<any> {
-          return new Promise<any>(resolve => {
+     addVas(vasScore: VasScore): Promise<Response<void>> {
+          return new Promise<Response<void>>(resolve => {
                // auth
                if (!this.isLogin) {
                     throw new Error('Please Log in.');
@@ -947,4 +710,238 @@ export default class MockAPIService extends AbstractAPIService {
      getBooster(boosterId: number): Promise<Response<BoosterDTO>> {
           throw new Error("Method not implemented. " + boosterId);
      }
+
+     // addPlayerCharacter(characterId: string): Promise<any> {
+     //      return new Promise<any>(resolve => {
+     //           // auth
+     //           if (!this.isLogin) {
+     //                throw new Error('Please Log in.');
+     //           }
+
+     //           const characterFound = Characters.find(
+     //                char => char.id === characterId
+     //           );
+     //           if (!characterFound) {
+     //                throw new Error(`Can't found this ${characterId} in database`);
+     //           }
+
+     //           const playerCharacterFound = PlayerCharacters.find(
+     //                char => char.player_id === this.playerId
+     //                     && char.character_id === characterId
+     //           )
+     //           if(playerCharacterFound) {
+     //                throw new Error(`Player already have this character's id: ${characterId}`)
+     //           }
+
+     //           const playerCharacter: PlayerCharacterSchema = {
+     //                player_id: this.playerId,
+     //                character_id: characterId
+     //           }
+
+     //           // add to database
+     //           PlayerCharacters.push(playerCharacter);
+               
+     //           resolve(characterId);
+     //      });
+     // }
+
+     // applyPlayerBooster(boostersId: string[]): Promise<any> {
+     //      return new Promise<any>(resolve => {
+     //           // auth
+     //           if (!this.isLogin) {
+     //                throw new Error('Please Log in.');
+     //           }
+
+     //           const resolveIndex: number[] = [];
+
+     //           boostersId.forEach((boosterId) => {
+     //                const playerBoosters: PlayerBoosterSchema[] = PlayerBoosters.filter(booster => {
+     //                     return booster.player_id === this.playerId
+     //                          && booster.booster_id === boosterId
+     //                          && booster.status === StatusBooster.Available
+     //                });
+
+     //                if(playerBoosters.length === 0) {
+     //                     throw new Error(`Can't found booster's id: ${boosterId}`);
+     //                }
+
+     //                playerBoosters.sort((a, b) => {
+     //                     if (a.expire_at === null && b.expire_at === null) {
+     //                         return 0; // Both dates are null, no preference
+     //                     } else if (a.expire_at === null) {
+     //                         return 1; // a.date is null, so it comes after b.date (not null)
+     //                     } else if (b.expire_at === null) {
+     //                         return -1; // b.date is null, so it comes after a.date (not null)
+     //                     } else {
+     //                         return a.expire_at.getTime() - b.expire_at.getTime(); // Both dates are defined, compare normally
+     //                     }
+     //                });
+
+     //                const playerBooster: PlayerBoosterSchema = playerBoosters[0];     // get booster that will expire first
+                    
+     //                // prepare for update booster's status
+     //                const index: number = PlayerBoosters.findIndex(pb =>
+     //                     pb === playerBooster
+     //                );
+     //                if (index === -1) {
+     //                     throw new Error(`Something wrong. Can't found player's booster: ${playerBooster}`)
+     //                }
+     //                resolveIndex.push(index);
+                    
+     //                // check booster that expire before function
+     //                if (playerBooster.expire_at) {
+     //                     const boosterExpireAt: Date = playerBooster.expire_at as Date;
+     //                     const isExpire: boolean = Date.now() > boosterExpireAt.getTime();
+     //                     if (isExpire) {
+     //                          PlayerBoosters[index].status = StatusBooster.Expire;
+     //                          throw new Error(`this booster [${boosterId}] is expire before.`)
+     //                     }
+     //                }
+
+     //           });
+
+     //           // update all booster when they were applied successfully
+     //           resolveIndex.forEach(
+     //                index => PlayerBoosters[index].status = StatusBooster.Expire
+     //           );
+               
+     //           resolve({
+     //                message: 'OK',
+     //                boostersId: boostersId
+     //           })
+     //      });
+     // }
+
+     // addPlayerBoosters(boosters: BoosterAddDTO[]): Promise<any> {
+     //      return new Promise<any>(resolve => {
+     //           // auth
+     //           if (!this.isLogin) {
+     //                throw new Error('Please Log in.');
+     //           }
+
+     //           const playerBoosters: PlayerBoosterSchema[] = []
+     //           boosters.forEach((boosterAdd) => {
+     //                const { boosterId, duration } = boosterAdd;
+     //                const now: Date = new Date();
+                    
+     //                let expireAt: Date | null = null
+     //                if (duration === -1 || duration === null) {   // -1 is permanent booster
+     //                     expireAt = null;
+     //                } else if (duration > 0 && duration < 128){  // 128 cap
+     //                     const timeToExpire: number = now.getTime() + (duration * 3600000);
+     //                     expireAt = new Date(timeToExpire);
+     //                } else {
+     //                     throw new Error(`Invalid duration : ${duration}`);
+     //                }
+
+     //                const boosterFound = Boosters.find(b =>
+     //                     b.id === boosterId
+     //                );
+     //                if (!boosterFound) {
+     //                     throw new Error(`Can't found booster's id: ${boosterId}`);
+     //                }
+                    
+     //                const playerBooster: PlayerBoosterSchema = {
+     //                     player_id: this.playerId,
+     //                     booster_id: boosterId,
+     //                     expire_at: expireAt,
+     //                     create_at: now,
+     //                     status: StatusBooster.Available
+     //                }
+
+     //                // add to database
+     //                playerBoosters.push(playerBooster);
+     //           });
+
+
+     //           // success and add to database
+     //           playerBoosters.forEach( pb => 
+     //                PlayerBoosters.push(pb)
+     //           );
+               
+     //           resolve({message: 'OK', boosters: playerBoosters});
+     //      });
+     // }
+
+     // // TODO check the last gameSession that not have endAt in 30 minutes will be status "Cancel"
+     // createGameSession(bossId: string): Promise<any> {
+     //      return new Promise<any>(resolve => {
+     //           // auth
+     //           if (!this.isLogin) {
+     //                throw new Error('Please Log in.');
+     //           }
+
+     //           const id: string = String(GameSessions.length + 1).padStart(4, "0");
+     //           const playerFound = Players.find( 
+     //                player => player.id === this.playerId
+     //           );
+     //           if (!playerFound) {
+     //                throw new Error('Can not find player.');
+     //           }
+     //           const player: PlayerSchema = playerFound as PlayerSchema;
+     //           const now: Date = new Date();
+
+     //           const GameSessionsDTO: GameSessionSchema = {
+     //                id: id,
+     //                player_id: this.playerId,
+     //                difficult_id: player.difficult_id,
+     //                boss_id: bossId,
+     //                score: 0,
+     //                lap: 0,
+     //                start_at: now,
+     //                update_at: now,
+     //                end_at: null,
+     //                status: StatusGameSession.Active
+     //           }
+
+     //           // add to database
+     //           GameSessions.push(GameSessionsDTO);
+
+     //           resolve({message: 'OK', gameSessionId: id});
+     //      });
+     // }
+
+     // getPlayerCharacters(): Promise<CharacterDTO[]> {
+     //      return new Promise<CharacterDTO[]>(resolve => {
+     //           // TODO add unlock character by examine data in database
+     //           // auth
+     //           if (!this.isLogin) {
+     //                throw new Error('Please Log in.');
+     //           }
+
+     //           const playerCharactersId: string[] = PlayerCharacters
+     //                .filter(
+     //                     c => c.player_id === this.playerId
+     //                )
+     //                .map(
+     //                     c => c.character_id
+     //                );
+               
+     //           const playerCharacters: CharacterSchema[] = [];
+     //           playerCharactersId.forEach( cId => {
+     //                const characterFound = Characters.find(
+     //                     c => c.id === cId
+     //                );
+     //                if (!characterFound) {
+     //                     throw new Error(`Can't found character's id: ${cId}`);
+     //                }
+     //                const character: CharacterSchema = characterFound as CharacterSchema;
+
+     //                playerCharacters.push(character);
+     //           });
+
+     //           const charactersDTO: CharacterDTO[] = []
+     //           playerCharacters.forEach( pc => {
+     //                const characterDTO: CharacterDTO = {
+     //                     characterId: pc.id,
+     //                     name: pc.name,
+     //                     detail: pc.detail
+     //                }
+
+     //                charactersDTO.push(characterDTO);
+     //           });
+
+     //           resolve(charactersDTO);
+     //      });
+     // }
 }

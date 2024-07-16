@@ -32,8 +32,7 @@ export interface CharacterDTO {
 
 export interface BoosterDTO {
      boosterId: number;
-     expireDate: Date[];
-     amount: number
+     expireDate: (Date | null)[];
 }
 
 export interface DifficultyDTO {
