@@ -42,7 +42,265 @@ export default class TitleScene extends Phaser.Scene {
 		])
   }
 
-  create() {
+  async create() {
+
+    // // TESTING API
+    // const tirabase = new MockAPIService();
+    // let log: any = ''
+    // let waitTime = 500
+
+    // console.log('Register')
+    // log = await tirabase.register(
+    //   '0958927519',
+    //   21,
+    //   Gender.Male,
+    //   Airflow.SixHundred,
+    //   '01'
+    // )
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Login')
+    // // log = await tirabase.login('0958927519')
+    // log = await tirabase.login('0958927518')
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player')
+    // log = await tirabase.getPlayer()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Update Player Username')
+    // log = await tirabase.updatePlayerUsername('KaTi')
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Update Player Difficult')
+    // log = await tirabase.updatePlayerDifficult('02')
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Update Player Airflow')
+    // log = await tirabase.updatePlayerAirflow(Airflow.FourHundred)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Update Player Using Character')
+    // log = await tirabase.updatePlayerUsingCharacter('03')
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Character')
+    // log = await tirabase.getPlayerCharacters()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // try {
+    //   console.log('Add Player Character')
+    //   log = await tirabase.addPlayerCharacter('01')
+    //   console.log(log)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+    
+    // console.log('Get Player Character')
+    //   log = await tirabase.getPlayerCharacters()
+    //   console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Ranking')
+    // log = await tirabase.getRankings()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Create Game Session')
+    // log = await tirabase.createGameSession("01")
+    // console.log(log)
+    // const gsId = log.gameSessionId
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Ranking')
+    // log = await tirabase.getRankings()
+    // console.log(log)
+    
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Update Game Session')
+    // log = await tirabase.updateGameSession(gsId, 100000000, 10)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Ranking')
+    // log = await tirabase.getRankings()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player')
+    // log = await tirabase.getPlayer()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Level')
+    // log = await tirabase.getPlayerLevel()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Booster')
+    // log = await tirabase.getPlayerBooster()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Add Player Booster')
+    // log = await tirabase.addPlayerBoosters([
+    //   {
+    //     boosterId: '06',
+    //     duration: 10
+    //   },
+    //   {
+    //     boosterId: '07',
+    //     duration: 12
+    //   }
+    // ])
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Booster')
+    // log = await tirabase.getPlayerBooster()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime + 3000)
+    // })
+
+    // console.log(`Apply Player Booster`)
+    // try {
+    //   log = await tirabase.applyPlayerBooster([
+    //     "07",
+    //     "06",
+    //     "01",
+    //   ])
+    //   console.log(log)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Booster')
+    // log = await tirabase.getPlayerBooster()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Cancel Game Session')
+    // log = await tirabase.cancelGameSession(gsId)
+    // console.log(log)
+
+    // console.log('Get Player')
+    // log = await tirabase.getPlayer()
+    // console.log(log)
+
+    // console.log('Get Ranking')
+    // log = await tirabase.getRankings()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Level')
+    // log = await tirabase.getPlayerLevel()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player Achievement')
+    // log = await tirabase.getPlayerAchievements()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Add Vas')
+    // console.log('Vas: ', Vas)
+    
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime + 3000)
+    // })
+
+    // log = await tirabase.addVas(VasScore.Seven)
+    // console.log(log);
+
+    // console.log('Vas: ', Vas)
+    // // TESTING API
+
+
+
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     this.hasController = urlParams.get('controller') === 'true'
