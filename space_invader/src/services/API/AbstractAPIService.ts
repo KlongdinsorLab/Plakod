@@ -63,7 +63,8 @@ export default abstract class AbstractAPIService {
      abstract getMyRanking(): Promise<Response<RankDTO>>
 
      // applyPlayerBooster + createGameSession
-     abstract startGameSession(): Promise<Response<GameSessionDTO>>
+     // return random Boss + random Booster
+     abstract startGameSession(boostersId: number[]): Promise<Response<GameSessionDTO>>
 
      abstract getGameSession(
           gameSessionId: number
@@ -79,11 +80,14 @@ export default abstract class AbstractAPIService {
           gameSessionId: number
      ): Promise<Response<void>>
 
-     // updateGameSession + calculateNewLevel + calculateNewAchievement + addPlayerBooster
+     // updateGameSession + calculateNewLevel + calculateNewAchievement 
+     // + addPlayerAchievement + addPlayerBooster 
+     // + addPlayerBoosterByLevelUp
      abstract finishGameSession(
           gameSessionId: number,
           score: number, 
           lap: number,
+          isReceiveBooster: boolean
      ): Promise<Response<GameSessionFinishedDTO>>
 
      abstract getPlayerLevel(): Promise<Response<number>>
@@ -101,20 +105,4 @@ export default abstract class AbstractAPIService {
      abstract getBoss(bossId: number): Promise<Response<BossDetailDTO>>
 
      abstract addVas(vasScore: number): Promise<Response<void>>
-
-     // abstract applyPlayerBooster(
-     //      boosterId: string[]
-     // ): Promise<any>
-
-     // abstract createGameSession(
-     //      bossId: string
-     // ): Promise<any>
-
-     // abstract addPlayerBoosters(
-     //      boosters: BoosterAddDTO[]
-     // ): Promise<any>
-
-     // abstract getPlayerCharacters(): Promise<CharacterDTO[]>
-     
-
 }

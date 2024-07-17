@@ -55,11 +55,11 @@ export interface DifficultyDTO {
 export interface GameSessionDTO {
      gameSessionId: number;
      bossId: number;
-     booster_drop_id: number;
-     booster_drop_duration: number;
+     boosterDropId: number;
+     boosterDropDuration: number;
      score: number;
      lap: number;
-     started_at: Date;
+     startedAt: Date;
 }
 
 export interface GameSessionFinishedDTO {
