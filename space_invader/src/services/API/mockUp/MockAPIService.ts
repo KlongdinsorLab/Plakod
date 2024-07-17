@@ -261,7 +261,19 @@ export default class MockAPIService extends AbstractAPIService {
                PlayerAchievements.push(mockPlayerAchievement2);
           }
 
-          return [1, 2]
+          const playerAchievementFound3 = PlayerAchievements.find(
+               pa => pa.player_id === this.playerId
+                    && pa.achievement_id === 3
+          )
+          if (!playerAchievementFound3) {
+               const mockPlayerAchievement3 : PlayerAchievementSchema = {
+                    player_id: this.playerId,
+                    achievement_id: 3
+               }
+               PlayerAchievements.push(mockPlayerAchievement3);
+          }
+
+          return [1, 2, 3]
      }
 
      // TODO
@@ -451,6 +463,19 @@ export default class MockAPIService extends AbstractAPIService {
                     .map(
                          c => c.character_id
                     );
+               
+               const playerCharactersDTO: CharacterDetailDTO[] = []
+               playerCharacterId.forEach(pcid => {
+                    const character = Characters.find(c => c.id === pcid);
+                    if (character) {
+                         const characterDTO: CharacterDetailDTO = {
+                              characterId: character.id,
+                              name: character.name,
+                              detail: character.detail
+                         } 
+                         playerCharactersDTO.push(characterDTO);
+                    }
+               })
 
                const playerDTO: PlayerDTO = {
                     playerId: player.id,
@@ -461,7 +486,7 @@ export default class MockAPIService extends AbstractAPIService {
                     playToday: playToday,
                     difficulty: difficultDTO,
                     selectedCharacterId: player.selected_character_id,
-                    playerCharacterId: playerCharacterId
+                    playerCharacter: playerCharactersDTO
                }
      
                resolve({

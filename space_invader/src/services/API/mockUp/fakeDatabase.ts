@@ -186,19 +186,19 @@ export const GameSessions: GameSessionSchema[] = [
 export const Characters: CharacterSchema[] = [
      {
           id: 1,
-          name: "mc1",
+          name: "นักผจญภัย",
           achievement_number_required: 0,
           detail: ""
      },
      {
           id: 2,
-          name: "mc2",
+          name: "นักเวทย์",
           achievement_number_required: 3,
           detail: ""
      },
      {
           id: 3,
-          name: "mc3",
+          name: "จอมโจร",
           achievement_number_required: 5,
           detail: ""
      }
