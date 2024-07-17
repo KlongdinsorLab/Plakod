@@ -4,6 +4,8 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+// import MockAPIService from 'services/API/mockUp/MockAPIService'
+// import { Vas } from 'services/API/mockUp/fakeDatabase'
 
 export default class TitleScene extends Phaser.Scene {
   //	private background!: Phaser.GameObjects.TileSprite
@@ -47,15 +49,15 @@ export default class TitleScene extends Phaser.Scene {
     // // TESTING API
     // const tirabase = new MockAPIService();
     // let log: any = ''
-    // let waitTime = 500
+    // let waitTime = 50
 
     // console.log('Register')
     // log = await tirabase.register(
     //   '0958927519',
     //   21,
-    //   Gender.Male,
-    //   Airflow.SixHundred,
-    //   '01'
+    //   "M",
+    //   600,
+    //   1
     // )
     // console.log(log)
 
@@ -64,8 +66,8 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Login')
-    // // log = await tirabase.login('0958927519')
-    // log = await tirabase.login('0958927518')
+    // log = await tirabase.login('0958927519')
+    // //log = await tirabase.login('0958927518')
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -89,7 +91,7 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Update Player Difficult')
-    // log = await tirabase.updatePlayerDifficult('02')
+    // log = await tirabase.updatePlayerDifficulty(2)
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -97,7 +99,7 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Update Player Airflow')
-    // log = await tirabase.updatePlayerAirflow(Airflow.FourHundred)
+    // log = await tirabase.updatePlayerAirflow(400)
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -105,35 +107,39 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Update Player Using Character')
-    // log = await tirabase.updatePlayerUsingCharacter('03')
-    // console.log(log)
-
-    // await new Promise<void>(resolve => {
-    //   setTimeout(resolve, waitTime)
-    // })
-
-    // console.log('Get Player Character')
-    // log = await tirabase.getPlayerCharacters()
-    // console.log(log)
-
+    // try {
+    //   log = await tirabase.updatePlayerUsingCharacter(3)
+    //   console.log(log)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    
     // await new Promise<void>(resolve => {
     //   setTimeout(resolve, waitTime)
     // })
 
     // try {
     //   console.log('Add Player Character')
-    //   log = await tirabase.addPlayerCharacter('01')
+    //   log = await tirabase.addPlayerCharacter(1)
     //   console.log(log)
     // } catch (error) {
     //   console.log(error)
     // }
 
+    // console.log('Get Player')
+    // log = await tirabase.getPlayer()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
     // await new Promise<void>(resolve => {
     //   setTimeout(resolve, waitTime)
     // })
     
-    // console.log('Get Player Character')
-    //   log = await tirabase.getPlayerCharacters()
+    // console.log('Get my Ranking')
+    //   log = await tirabase.getMyRanking()
     //   console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -148,10 +154,10 @@ export default class TitleScene extends Phaser.Scene {
     //   setTimeout(resolve, waitTime)
     // })
 
-    // console.log('Create Game Session')
-    // log = await tirabase.createGameSession("01")
+    // console.log('Start Game Session')
+    // log = await tirabase.startGameSession([])
     // console.log(log)
-    // const gsId = log.gameSessionId
+    // const gsId = log.response.gameSessionId
 
     // await new Promise<void>(resolve => {
     //   setTimeout(resolve, waitTime)
@@ -167,6 +173,14 @@ export default class TitleScene extends Phaser.Scene {
 
     // console.log('Update Game Session')
     // log = await tirabase.updateGameSession(gsId, 100000000, 10)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Game Session')
+    // log = await tirabase.getGameSession(gsId)
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -198,24 +212,31 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Get Player Booster')
-    // log = await tirabase.getPlayerBooster()
+    // log = await tirabase.getPlayerBoosters()
     // console.log(log)
 
     // await new Promise<void>(resolve => {
     //   setTimeout(resolve, waitTime)
     // })
 
-    // console.log('Add Player Booster')
-    // log = await tirabase.addPlayerBoosters([
-    //   {
-    //     boosterId: '06',
-    //     duration: 10
-    //   },
-    //   {
-    //     boosterId: '07',
-    //     duration: 12
-    //   }
-    // ])
+    // console.log('Get Player Achievement')
+    // log = await tirabase.getPlayerAchievements()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('finishGameSession')
+    // log = await tirabase.finishGameSession(gsId, 10000000000, 10, false)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Player')
+    // log = await tirabase.getPlayer()
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -223,21 +244,28 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Get Player Booster')
-    // log = await tirabase.getPlayerBooster()
+    // log = await tirabase.getPlayerBoosters()
     // console.log(log)
 
     // await new Promise<void>(resolve => {
-    //   setTimeout(resolve, waitTime + 3000)
+    //   setTimeout(resolve, waitTime)
     // })
 
-    // console.log(`Apply Player Booster`)
+    // console.log('Get Player Achievement')
+    // log = await tirabase.getPlayerAchievements()
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log(`Start game with Apply Player Booster`)
+    // let gsId2;
     // try {
-    //   log = await tirabase.applyPlayerBooster([
-    //     "07",
-    //     "06",
-    //     "01",
+    //   log = await tirabase.startGameSession([
+    //     1,
     //   ])
-    //   console.log(log)
+    //   gsId2 = log.response.gameSessionId
     // } catch (error) {
     //   console.log(error)
     // }
@@ -247,7 +275,7 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Get Player Booster')
-    // log = await tirabase.getPlayerBooster()
+    // log = await tirabase.getPlayerBoosters()
     // console.log(log)
 
     // await new Promise<void>(resolve => {
@@ -255,7 +283,7 @@ export default class TitleScene extends Phaser.Scene {
     // })
 
     // console.log('Cancel Game Session')
-    // log = await tirabase.cancelGameSession(gsId)
+    // log = await tirabase.cancelGameSession(gsId2)
     // console.log(log)
 
     // console.log('Get Player')
@@ -293,10 +321,42 @@ export default class TitleScene extends Phaser.Scene {
     //   setTimeout(resolve, waitTime + 3000)
     // })
 
-    // log = await tirabase.addVas(VasScore.Seven)
+    // log = await tirabase.addVas(7)
     // console.log(log);
 
     // console.log('Vas: ', Vas)
+
+    // console.log('Get Achievement')
+    // log = await tirabase.getAchievement(1)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Character')
+    // log = await tirabase.getCharacter(1)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Booster')
+    // log = await tirabase.getBooster(1)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
+
+    // console.log('Get Boss')
+    // log = await tirabase.getBoss(1)
+    // console.log(log)
+
+    // await new Promise<void>(resolve => {
+    //   setTimeout(resolve, waitTime)
+    // })
     // // TESTING API
 
 

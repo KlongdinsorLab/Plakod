@@ -37,7 +37,8 @@ import {
      AchievementSchema,
      VasSchema, 
      CharacterSchema,
-     BoosterSchema
+     BoosterSchema,
+     PlayerAchievementSchema
 } from "../definition/databaseSchema";
 
 import { 
@@ -236,12 +237,35 @@ export default class MockAPIService extends AbstractAPIService {
      private getAchievementUnlock(): number[] {
           // TODO check condition to unlock achievements
           // TODO add to PlayerAchievement
+          const playerAchievementFound1 = PlayerAchievements.find(
+               pa => pa.player_id === this.playerId
+                    && pa.achievement_id === 1
+          )
+          if (!playerAchievementFound1) {
+               const mockPlayerAchievement1 : PlayerAchievementSchema = {
+                    player_id: this.playerId,
+                    achievement_id: 1
+               }
+               PlayerAchievements.push(mockPlayerAchievement1);
+          }
+          
+          const playerAchievementFound2 = PlayerAchievements.find(
+               pa => pa.player_id === this.playerId
+                    && pa.achievement_id === 2
+          )
+          if (!playerAchievementFound2) {
+               const mockPlayerAchievement2 : PlayerAchievementSchema = {
+                    player_id: this.playerId,
+                    achievement_id: 2
+               }
+               PlayerAchievements.push(mockPlayerAchievement2);
+          }
 
           return [1, 2]
      }
 
      // TODO
-     private getBoosterLevelUp(level: number, newLevel: number): number[] {
+     private async getBoosterLevelUp(level: number, newLevel: number): Promise<number[]> {
           const differentLevel = newLevel - level;
           if (differentLevel < 0) {
                throw new Error('New level is more than before level.')
@@ -263,7 +287,7 @@ export default class MockAPIService extends AbstractAPIService {
           ];
 
           try {
-               this.addPlayerBoosters(mockBoosters);
+               await this.addPlayerBoosters(mockBoosters);
           } catch (error) {
                throw error;
           }
@@ -382,18 +406,21 @@ export default class MockAPIService extends AbstractAPIService {
      
                const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
                     game => game.player_id === this.playerId
+               );
+
+               const playerGameSessionsEnd: GameSessionSchema[] = GameSessions.filter(
+                    game => game.player_id === this.playerId
                          && game.status === "END"
                );
      
-               const playerAccumulatedScore: number = playerGameSessions.reduce(
+               const playerAccumulatedScore: number = playerGameSessionsEnd.reduce(
                     (accumulator, game) => accumulator + game.score,
                     0,
                );
-               console.log('playerAccumulatedScore:', playerAccumulatedScore)
      
                const playerLevel: number = this.findPlayerLevel(playerAccumulatedScore);
      
-               const playCount: number = playerGameSessions.length;
+               const playCount: number = playerGameSessionsEnd.length;
      
                const playToday: Date[] = playerGameSessions
                     .filter(
@@ -433,7 +460,7 @@ export default class MockAPIService extends AbstractAPIService {
                     playCount: playCount,
                     playToday: playToday,
                     difficulty: difficultDTO,
-                    usingCharacter: player.selected_character_id,
+                    selectedCharacterId: player.selected_character_id,
                     playerCharacterId: playerCharacterId
                }
      
@@ -549,7 +576,15 @@ export default class MockAPIService extends AbstractAPIService {
                     char => char.id === newCharacterId
                );
                if (!characterFound) {
-                    throw new Error(`Can't found this ${newCharacterId} in database`);
+                    throw new Error(`Can't find this ${newCharacterId} in database`);
+               }
+
+               const playerCharacterFound = PlayerCharacters.find(
+                    pc => pc.player_id === this.playerId
+                         && pc.character_id === newCharacterId
+               )
+               if (!playerCharacterFound) {
+                    throw new Error(`You haven't this character with id: ${newCharacterId}`)
                }
 
                // update success
@@ -615,9 +650,9 @@ export default class MockAPIService extends AbstractAPIService {
 
                // sort booster's id
                const boosters: PlayerBoosterSchema[][] = []; 
-               for (let i = 1; i < PlayerBoosters.length + 1; i++) {
+               for (let i = 0; i < Boosters.length; i++) {
                     const booster: PlayerBoosterSchema[] = playerBoosters.filter(
-                         b => b.booster_id === i + 1  
+                         b => b.booster_id === i + 1
                     );
                     boosters.push(booster);
                }
@@ -683,9 +718,9 @@ export default class MockAPIService extends AbstractAPIService {
                              return a.expired_at.getTime() - b.expired_at.getTime(); // Both dates are defined, compare normally
                          }
                     });
-                    
+
                     const BoosterDTO: BoosterDTO = {
-                         boosterId: boosterAvailable[0].booster_id,
+                         boosterId: booster[0].booster_id,
                          expireDate: boosterAvailable.map(b => b.expired_at),
                     }
                     boostersDTO.push(BoosterDTO);
@@ -1133,7 +1168,7 @@ export default class MockAPIService extends AbstractAPIService {
                }
 
                // return variable
-               const boosterByLevelUpId: number[] = this.getBoosterLevelUp(playerLevel, newPlayerLevel);
+               const boosterByLevelUpId: number[] = await this.getBoosterLevelUp(playerLevel, newPlayerLevel);
                const achievementUnlockedId: number[] = this.getAchievementUnlock();
 
                // add player booster
