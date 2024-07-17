@@ -9,6 +9,7 @@ import {
      PlayerCharacters,
      PlayerAchievements,
      PlayerBoosters,
+     Boosters,
 } from "./fakeDatabase";
 
 import AbstractAPIService from "../AbstractAPIService";
@@ -18,11 +19,13 @@ import {
      RankDTO, 
      GameSessionFinishedDTO, 
      BoosterDTO, 
-     AchievementDTO,
-     CharacterDTO,
+     AchievementDetailDTO,
+     CharacterDetailDTO,
+     BoosterDetailDTO,
      PlayerDTO,
      DifficultyDTO,
-     GameSessionDTO
+     GameSessionDTO,
+     BossDetailDTO
 } from "../definition/responseDTO";
 
 import { 
@@ -31,7 +34,9 @@ import {
      GameSessionSchema, 
      PlayerBoosterSchema, 
      AchievementSchema,
-     VasSchema 
+     VasSchema, 
+     CharacterSchema,
+     BoosterSchema
 } from "../definition/databaseSchema";
 
 import { 
@@ -42,7 +47,6 @@ import {
 
 
 export default class MockAPIService extends AbstractAPIService {
-     
      
      private token!: string;
      private playerId!: number;
@@ -96,7 +100,6 @@ export default class MockAPIService extends AbstractAPIService {
                this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
                
                resolve({
-                    status: 200, 
                     message: 'OK', 
                     response: this.token
                });
@@ -165,7 +168,6 @@ export default class MockAPIService extends AbstractAPIService {
 
 
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -183,7 +185,7 @@ export default class MockAPIService extends AbstractAPIService {
                     player => player.id === this.playerId
                );
                if (!playerFound) {
-                    throw new Error('Can not find player.');
+                    throw new Error(`Can't find player with player's id: ${this.playerId}.`);
                }
                const player: PlayerSchema = playerFound as PlayerSchema;
      
@@ -245,7 +247,6 @@ export default class MockAPIService extends AbstractAPIService {
                }
      
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: playerDTO
                });
@@ -273,7 +274,6 @@ export default class MockAPIService extends AbstractAPIService {
                Players[index].username = newUsername;
                
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -306,7 +306,6 @@ export default class MockAPIService extends AbstractAPIService {
                Players[index].difficulty_id = newDifficultyId;
                
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -333,7 +332,6 @@ export default class MockAPIService extends AbstractAPIService {
                Players[index].airflow = newAirflow;
                
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -367,7 +365,6 @@ export default class MockAPIService extends AbstractAPIService {
                Players[index].selected_character_id = newCharacterId;
                
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -408,7 +405,6 @@ export default class MockAPIService extends AbstractAPIService {
                });
 
                resolve({
-                    status: 200,
                     message: "OK",
                     response: ranksDTO
                });
@@ -505,7 +501,6 @@ export default class MockAPIService extends AbstractAPIService {
                });
 
                resolve({
-                    status: 200,
                     message: "OK",
                     response: boostersDTO
                });
@@ -549,7 +544,6 @@ export default class MockAPIService extends AbstractAPIService {
 
                
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -577,7 +571,6 @@ export default class MockAPIService extends AbstractAPIService {
 
 
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -607,16 +600,15 @@ export default class MockAPIService extends AbstractAPIService {
                // TODO add booster from condition?
 
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: playerLevel
                });
           });
      }
 
-     getPlayerAchievements(): Promise<Response<AchievementDTO[]>> {
-          return new Promise<Response<AchievementDTO[]>>(resolve  => {
-               // TODO add new player's achievement by examine data in database
+     getPlayerAchievements(): Promise<Response<AchievementDetailDTO[]>> {
+          return new Promise<Response<AchievementDetailDTO[]>>(resolve  => {
+               // TODO add new player's achievement by examine data in database?
                // auth
                if (!this.isLogin) {
                     throw new Error('Please Log in.');
@@ -643,9 +635,9 @@ export default class MockAPIService extends AbstractAPIService {
                     playerAchievements.push(achievement);
                });
 
-               const achievementsDTO: AchievementDTO[] = []
+               const achievementsDTO: AchievementDetailDTO[] = []
                playerAchievements.forEach( pa => {     // player achievement
-                    const achievementDTO: AchievementDTO = {
+                    const achievementDTO: AchievementDetailDTO = {
                          achievementId: pa.id,
                          name: pa.name,
                          detail: pa.detail
@@ -655,7 +647,6 @@ export default class MockAPIService extends AbstractAPIService {
                });
 
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: achievementsDTO
                });
@@ -683,7 +674,6 @@ export default class MockAPIService extends AbstractAPIService {
                Vas.push(vasDTO);
 
                resolve({
-                    status: 200,
                     message: 'OK',
                     response: undefined
                });
@@ -691,8 +681,168 @@ export default class MockAPIService extends AbstractAPIService {
      }
 
      getMyRanking(): Promise<Response<RankDTO>> {
-          throw new Error("Method not implemented.");
+          return new Promise<Response<RankDTO>>(resolve => {
+               // auth
+               if (!this.isLogin) {
+                    throw new Error('Please Log in.');
+               }
+
+               const playerFound = Players.find(
+                    player => player.id === this.playerId
+               )
+
+               if (!playerFound) {
+                    throw new Error(`Can't find player with player's id: ${this.playerId}`);
+               }
+
+               const player: PlayerSchema = playerFound as PlayerSchema
+           
+               const playerGameSessions: GameSessionSchema[] = GameSessions.filter(
+                    game => game.player_id === player.id
+                         && game.status === "END"
+               );
+
+               const playerAccumulatedScore: number = playerGameSessions.reduce(
+                    (accumulator, game) => accumulator + game.score,
+                    0,
+               );
+
+               const playCount: number = playerGameSessions.length;
+
+               const rankDTO: RankDTO = {
+                    playerId: player.id,
+                    username: player.username,
+                    accumulatedScore: playerAccumulatedScore,
+                    accumulatedPlay: playCount
+               }
+
+               resolve({
+                    message: "OK",
+                    response: rankDTO
+               });
+          });
      }
+
+     getAchievement(achievementId: number): Promise<Response<AchievementDetailDTO>> {
+          return new Promise<Response<AchievementDetailDTO>>(resolve => {
+               // auth
+               if (!this.isLogin) {
+                    throw new Error('Please Log in.');
+               }
+
+               const achievementFound = Achievements.find(
+                    a => a.id === achievementId
+               )
+
+               if (!achievementFound) {
+                    throw new Error(`Can't find achievement with id: ${achievementId}`)
+               }
+
+               const achievement: AchievementSchema = achievementFound as AchievementSchema
+
+               const achievementDTO: AchievementDetailDTO = {
+                    achievementId: achievement.id,
+                    name: achievement.name,
+                    detail: achievement.detail
+               }
+
+               resolve({
+                    message: "OK",
+                    response: achievementDTO
+               });
+          });
+     }
+
+     getCharacter(characterId: number): Promise<Response<CharacterDetailDTO>> {
+          return new Promise<Response<CharacterDetailDTO>>(resolve => {
+               // auth
+               if (!this.isLogin) {
+                    throw new Error('Please Log in.');
+               }
+
+               const characterFound = Characters.find(
+                    c => c.id === characterId
+               )
+
+               if (!characterFound) {
+                    throw new Error(`Can't find character with id: ${characterId}`)
+               }
+
+               const character: CharacterSchema = characterFound as CharacterSchema
+
+               const characterDTO: CharacterDetailDTO = {
+                    characterId: character.id,
+                    name: character.name,
+                    detail: character.detail
+               }
+
+               resolve({
+                    message: "OK",
+                    response: characterDTO
+               });
+          });
+     }
+
+     getBooster(boosterId: number): Promise<Response<BoosterDetailDTO>> {
+          return new Promise<Response<BoosterDetailDTO>>(resolve => {
+               // auth
+               if (!this.isLogin) {
+                    throw new Error('Please Log in.');
+               }
+
+               const boosterFound = Boosters.find(
+                    b => b.id === boosterId
+               )
+
+               if (!boosterFound) {
+                    throw new Error(`Can't find booster with id: ${boosterId}`)
+               }
+
+               const booster: BoosterSchema = boosterFound as BoosterSchema
+
+               const boosterDTO: BoosterDetailDTO = {
+                    id: booster.id,
+                    name: booster.name,
+                    detail: booster.detail
+               }
+
+               resolve({
+                    message: "OK",
+                    response: boosterDTO
+               });
+          });
+     }
+
+     getBoss(bossId: number): Promise<Response<BossDetailDTO>> {
+          return new Promise<Response<BossDetailDTO>>(resolve => {
+               // auth
+               if (!this.isLogin) {
+                    throw new Error('Please Log in.');
+               }
+
+               const bossFound = Boosters.find(
+                    b => b.id === bossId
+               )
+
+               if (!bossFound) {
+                    throw new Error(`Can't find boss with id: ${bossId}`)
+               }
+
+               const boss: BoosterSchema = bossFound as BoosterSchema
+
+               const bossDTO: BossDetailDTO = {
+                    id: boss.id,
+                    name: boss.name,
+                    detail: boss.detail
+               }
+
+               resolve({
+                    message: "OK",
+                    response: bossDTO
+               });
+          });
+     }
+
      startGameSession(): Promise<Response<GameSessionDTO>> {
           throw new Error("Method not implemented.");
      }
@@ -705,15 +855,7 @@ export default class MockAPIService extends AbstractAPIService {
      addPlayerCharacter(characterId: number): Promise<Response<void>> {
           throw new Error("Method not implemented. " + characterId);
      }
-     getAchievement(achievementId: number): Promise<Response<AchievementDTO>> {
-          throw new Error("Method not implemented. " + achievementId);
-     }
-     getCharacter(characterId: number): Promise<Response<CharacterDTO>> {
-          throw new Error("Method not implemented. " + characterId);
-     }
-     getBooster(boosterId: number): Promise<Response<BoosterDTO>> {
-          throw new Error("Method not implemented. " + boosterId);
-     }
+
 
      // addPlayerCharacter(characterId: string): Promise<any> {
      //      return new Promise<any>(resolve => {

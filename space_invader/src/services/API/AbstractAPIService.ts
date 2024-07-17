@@ -1,7 +1,9 @@
 import {
-     AchievementDTO,
+     AchievementDetailDTO,
+     BoosterDetailDTO,
      BoosterDTO,
-     CharacterDTO,
+     BossDetailDTO,
+     CharacterDetailDTO,
      GameSessionDTO,
      GameSessionFinishedDTO,
      PlayerDTO,
@@ -88,13 +90,15 @@ export default abstract class AbstractAPIService {
 
      abstract getPlayerBoosters(): Promise<Response<BoosterDTO[]>>
      
-     abstract getPlayerAchievements(): Promise<Response<AchievementDTO[]>>
+     abstract getPlayerAchievements(): Promise<Response<AchievementDetailDTO[]>>
 
-     abstract getAchievement(achievementId: number) : Promise<Response<AchievementDTO>>
+     abstract getAchievement(achievementId: number) : Promise<Response<AchievementDetailDTO>>
 
-     abstract getCharacter(characterId: number) : Promise<Response<CharacterDTO>>
+     abstract getCharacter(characterId: number) : Promise<Response<CharacterDetailDTO>>
 
-     abstract getBooster(boosterId: number) : Promise<Response<BoosterDTO>>
+     abstract getBooster(boosterId: number) : Promise<Response<BoosterDetailDTO>>
+
+     abstract getBoss(bossId: number): Promise<Response<BossDetailDTO>>
 
      abstract addVas(vasScore: number): Promise<Response<void>>
 

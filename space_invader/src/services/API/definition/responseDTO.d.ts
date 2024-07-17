@@ -17,18 +17,29 @@ export interface RankDTO {
      accumulatedPlay: number;
 }
 
-export interface AchievementDTO {
+export interface AchievementDetailDTO {
      achievementId: number;
      name: string;
      detail: string
 }
 
-export interface CharacterDTO {
+export interface CharacterDetailDTO {
      characterId: number;
      name: string;
      detail: string;
 }
 
+export interface BoosterDetailDTO {
+     id: number;
+     name: string;
+     detail: string;
+}
+
+export interface BossDetailDTO {
+     id: number;
+     name: string;
+     detail: string;
+}
 
 export interface BoosterDTO {
      boosterId: number;
@@ -59,7 +70,6 @@ export interface GameSessionFinishedDTO {
 
 
 export interface Response<T> {
-     status: number      // 200
      message: string     // ok
      response: T
 }
