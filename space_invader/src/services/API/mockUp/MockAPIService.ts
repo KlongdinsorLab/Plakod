@@ -16,13 +16,13 @@ import AbstractAPIService from "../AbstractAPIService";
 import { 
      Response, 
      RankDTO, 
-     GameSessionStartedDTO, 
      GameSessionFinishedDTO, 
      BoosterDTO, 
      AchievementDTO,
      CharacterDTO,
      PlayerDTO,
-     DifficultyDTO
+     DifficultyDTO,
+     GameSessionDTO
 } from "../definition/responseDTO";
 
 import { 
@@ -42,6 +42,7 @@ import {
 
 
 export default class MockAPIService extends AbstractAPIService {
+     
      
      private token!: string;
      private playerId!: number;
@@ -692,11 +693,14 @@ export default class MockAPIService extends AbstractAPIService {
      getMyRanking(): Promise<Response<RankDTO>> {
           throw new Error("Method not implemented.");
      }
-     startGameSession(): Promise<Response<GameSessionStartedDTO>> {
+     startGameSession(): Promise<Response<GameSessionDTO>> {
           throw new Error("Method not implemented.");
      }
      finishGameSession(gameSessionId: number, score: number, lap: number): Promise<Response<GameSessionFinishedDTO>> {
           throw new Error("Method not implemented. " + gameSessionId + score + lap);
+     }
+     getGameSession(gameSessionId: number): Promise<Response<GameSessionDTO>> {
+          throw new Error("Method not implemented. " + gameSessionId);
      }
      addPlayerCharacter(characterId: number): Promise<Response<void>> {
           throw new Error("Method not implemented. " + characterId);

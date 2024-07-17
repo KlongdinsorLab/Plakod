@@ -41,9 +41,14 @@ export interface DifficultyDTO {
      inhaleSecond: number;
 }
 
-export interface GameSessionStartedDTO {
+export interface GameSessionDTO {
      gameSessionId: number;
      bossId: number;
+     booster_drop_id: number;
+     booster_drop_duration: number;
+     score: number;
+     lap: number;
+     started_at: Date;
 }
 
 export interface GameSessionFinishedDTO {

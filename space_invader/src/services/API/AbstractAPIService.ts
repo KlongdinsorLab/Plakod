@@ -2,8 +2,8 @@ import {
      AchievementDTO,
      BoosterDTO,
      CharacterDTO,
+     GameSessionDTO,
      GameSessionFinishedDTO,
-     GameSessionStartedDTO,
      PlayerDTO,
      RankDTO,
      Response
@@ -61,7 +61,11 @@ export default abstract class AbstractAPIService {
      abstract getMyRanking(): Promise<Response<RankDTO>>
 
      // applyPlayerBooster + createGameSession
-     abstract startGameSession(): Promise<Response<GameSessionStartedDTO>>
+     abstract startGameSession(): Promise<Response<GameSessionDTO>>
+
+     abstract getGameSession(
+          gameSessionId: number
+     ): Promise<Response<GameSessionDTO>>
 
      abstract updateGameSession(
           gameSessionId: number, 
