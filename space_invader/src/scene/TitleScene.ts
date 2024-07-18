@@ -42,7 +42,8 @@ export default class TitleScene extends Phaser.Scene {
 		])
   }
 
-  create() {
+  async create() {
+
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     this.hasController = urlParams.get('controller') === 'true'
