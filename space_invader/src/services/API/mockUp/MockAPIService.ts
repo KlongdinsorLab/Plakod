@@ -49,7 +49,7 @@ import {
 
 
 export default class MockAPIService extends AbstractAPIService {
-     
+       
      private token!: string;
      private playerId!: number;
      private isLogin: boolean;
@@ -442,6 +442,9 @@ export default class MockAPIService extends AbstractAPIService {
                     })
                     .map(
                          game => game.started_at
+                    )
+                    .sort((a, b) => 
+                         a.getTime() - b.getTime() // Both dates are defined, compare normally
                     );
      
                const difficultyFound = Difficulties.find( 
@@ -463,19 +466,6 @@ export default class MockAPIService extends AbstractAPIService {
                     .map(
                          c => c.character_id
                     );
-               
-               const playerCharactersDTO: CharacterDetailDTO[] = []
-               playerCharacterId.forEach(pcid => {
-                    const character = Characters.find(c => c.id === pcid);
-                    if (character) {
-                         const characterDTO: CharacterDetailDTO = {
-                              characterId: character.id,
-                              name: character.name,
-                              detail: character.detail
-                         } 
-                         playerCharactersDTO.push(characterDTO);
-                    }
-               })
 
                const playerDTO: PlayerDTO = {
                     playerId: player.id,
@@ -486,7 +476,7 @@ export default class MockAPIService extends AbstractAPIService {
                     playToday: playToday,
                     difficulty: difficultDTO,
                     selectedCharacterId: player.selected_character_id,
-                    playerCharacter: playerCharactersDTO
+                    playerCharactersId: playerCharacterId
                }
      
                resolve({
@@ -855,8 +845,8 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
-     getPlayerAchievements(): Promise<Response<AchievementDetailDTO[]>> {
-          return new Promise<Response<AchievementDetailDTO[]>>(resolve  => {
+     getPlayerAchievementsId(): Promise<Response<number[]>> {
+          return new Promise<Response<number[]>>(resolve  => {
                // TODO add new player's achievement by examine data in database?
                // auth
                if (!this.isLogin) {
@@ -870,34 +860,10 @@ export default class MockAPIService extends AbstractAPIService {
                     .map(
                          a => a.achievement_id
                     );
-               
-               const playerAchievements: AchievementSchema[] = [];
-               playerAchievementsId.forEach( aId => {  // achievement id
-                    const achievementFound = Achievements.find(
-                         a => a.id === aId
-                    );
-                    if (!achievementFound) {
-                         throw new Error(`Can't found achievement's id: ${aId}`);
-                    }
-                    const achievement: AchievementSchema = achievementFound as AchievementSchema;
-
-                    playerAchievements.push(achievement);
-               });
-
-               const achievementsDTO: AchievementDetailDTO[] = []
-               playerAchievements.forEach( pa => {     // player achievement
-                    const achievementDTO: AchievementDetailDTO = {
-                         achievementId: pa.id,
-                         name: pa.name,
-                         detail: pa.detail
-                    }
-
-                    achievementsDTO.push(achievementDTO);
-               });
 
                resolve({
                     message: 'OK',
-                    response: achievementsDTO
+                    response: playerAchievementsId
                });
           });      
      }
@@ -1050,7 +1016,7 @@ export default class MockAPIService extends AbstractAPIService {
                const booster: BoosterSchema = boosterFound as BoosterSchema
 
                const boosterDTO: BoosterDetailDTO = {
-                    id: booster.id,
+                    boosterId: booster.id,
                     name: booster.name,
                     detail: booster.detail
                }
@@ -1080,7 +1046,7 @@ export default class MockAPIService extends AbstractAPIService {
                const boss: BoosterSchema = bossFound as BoosterSchema
 
                const bossDTO: BossDetailDTO = {
-                    id: boss.id,
+                    bossId: boss.id,
                     name: boss.name,
                     detail: boss.detail
                }
@@ -1310,4 +1276,69 @@ export default class MockAPIService extends AbstractAPIService {
           });
      }
 
+     getAllCharacters(): Promise<Response<CharacterDetailDTO[]>> {
+          return new Promise<Response<CharacterDetailDTO[]>>(resolve => {
+               
+               const charactersDTO: CharacterDetailDTO[] = []
+
+               Characters.forEach(c => {
+                    const characterDTO: CharacterDetailDTO = {
+                         characterId: c.id,
+                         name: c.name,
+                         detail: c.detail
+                    }
+
+                    charactersDTO.push(characterDTO);
+               });
+
+               resolve({
+                    message: "OK",
+                    response: charactersDTO
+               });
+          });
+     }
+
+     getAllBoosters(): Promise<Response<BoosterDetailDTO[]>> {
+          return new Promise<Response<BoosterDetailDTO[]>>(resolve => {
+               
+               const boostersDTO: BoosterDetailDTO[] = []
+
+               Boosters.forEach(b => {
+                    const boosterDTO: BoosterDetailDTO = {
+                         boosterId: b.id,
+                         name: b.name,
+                         detail: b.detail
+                    }
+
+                    boostersDTO.push(boosterDTO);
+               });
+
+               resolve({
+                    message: "OK",
+                    response: boostersDTO
+               });
+          });
+     }
+
+     getAllAchievements(): Promise<Response<AchievementDetailDTO[]>> {
+          return new Promise<Response<AchievementDetailDTO[]>>(resolve => {
+               
+               const achievementsDTO: AchievementDetailDTO[] = []
+
+               Achievements.forEach(a => {
+                    const achievementDTO: AchievementDetailDTO = {
+                         achievementId: a.id,
+                         name: a.name,
+                         detail: a.detail
+                    }
+
+                    achievementsDTO.push(achievementDTO);
+               });
+
+               resolve({
+                    message: "OK",
+                    response: achievementsDTO
+               });
+          });
+     }
 }

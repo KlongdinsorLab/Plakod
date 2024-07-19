@@ -4,6 +4,12 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import MockAPIService from 'services/API/mockUp/MockAPIService'
+
+const tirabase = new MockAPIService();
+// TODO login here
+tirabase.login('0958927518');
+export { tirabase }
 
 export default class TitleScene extends Phaser.Scene {
   //	private background!: Phaser.GameObjects.TileSprite

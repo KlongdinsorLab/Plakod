@@ -1,5 +1,6 @@
 //import { CIRCLE_GAUGE_MARGIN } from "config"
 import i18next from "i18next"
+import { tirabase } from "scene/TitleScene"
 
 export default class editUsernamePopUp {
     private scene : Phaser.Scene
@@ -40,12 +41,12 @@ export default class editUsernamePopUp {
         submitText.textContent = i18next.t('submit_edit')
 
         this.editNameForm.addListener('click')
-        this.editNameForm.on('click', function(event : any) {
+        this.editNameForm.on('click', async function(event : any) {
             if(event.target.name === 'submit') {
                 const inputUsername = <HTMLInputElement>self.editNameForm.getChildByID('namefield')
                 const inputValue = inputUsername.value
                 if (inputValue != ''){
-                    self.updateUsername(inputValue ?? 'Player')
+                    await self.updateUsername(inputValue ?? 'Player')
                 }
                 self.closeEditNamePopUp()
                 self.editNameForm?.setVisible(false)
@@ -58,7 +59,7 @@ export default class editUsernamePopUp {
         })
         this.editNameForm.setVisible(false)
 
-        this.updateUsername(this.username)
+        this.usernameText?.setText(this.username)
     }
 
 
@@ -79,7 +80,7 @@ export default class editUsernamePopUp {
         this.scene?.scene.resume()
     }
 
-    updateUsername(username : string) : void{
+    async updateUsername(username : string) : Promise<void>{
         if(this.getLength(username) > 12) {
             this.usernameText?.setFontSize(32 - this.getLength(username) + 9)
         }
@@ -90,6 +91,9 @@ export default class editUsernamePopUp {
         this.usernameText?.setText(username)
         this.username = username
         this.scene.registry.set('username', username)
+
+        // api
+        await tirabase.updatePlayerUsername(username);
     }
 
     getUsername() : string {

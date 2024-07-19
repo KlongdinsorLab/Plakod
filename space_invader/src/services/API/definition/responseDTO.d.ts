@@ -7,7 +7,7 @@ export interface PlayerDTO {
      playToday: Date[];
      difficulty: DifficultyDTO;
      selectedCharacterId: number;
-     playerCharacter: CharacterDetailDTO[];
+     playerCharactersId: number[];
 }
 
 export interface RankDTO {
@@ -30,13 +30,13 @@ export interface CharacterDetailDTO {
 }
 
 export interface BoosterDetailDTO {
-     id: number;
+     boosterId: number;
      name: string;
      detail: string;
 }
 
 export interface BossDetailDTO {
-     id: number;
+     bossId: number;
      name: string;
      detail: string;
 }

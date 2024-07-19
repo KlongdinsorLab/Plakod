@@ -1,4 +1,5 @@
 import I18nSingleton from "i18n/I18nSingleton"
+import { tirabase } from "scene/TitleScene"
 
 export default class difficultySelectUi {
 
@@ -46,11 +47,11 @@ export default class difficultySelectUi {
 
         // Set button in these gray boxes
         this.disableEasyButton.setInteractive( new Phaser.Geom.Rectangle(120, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerup', () => this.changeDifficulty(0))
+            .on('pointerup', async () => this.handleChangeDifficulty(0))
         this.disableMediumButton.setInteractive( new Phaser.Geom.Rectangle(288, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerup', () => this.changeDifficulty(1))
+            .on('pointerup', async () => this.handleChangeDifficulty(1))
         this.disableHardButton.setInteractive( new Phaser.Geom.Rectangle(456, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerup', () => this.changeDifficulty(2))
+            .on('pointerup', async () => this.handleChangeDifficulty(2))
 
         // Difficulty Texts
         this.easyText = i18n.createTranslatedText( scene, width/2 - 168, 1088 + 40, "difficulty_easy")
@@ -65,6 +66,33 @@ export default class difficultySelectUi {
 
         // Initiate Difficulty
         this.changeDifficulty(this.difficulty)
+    }
+
+    private async handleChangeDifficulty(difficulty: number) {
+    
+        // api
+        let difficultyId = 1;
+        switch(difficulty) {
+            case 0: {
+                // easy
+                difficultyId = 1;
+                break;
+            }
+            case 1: {
+                // medium
+                difficultyId = 2
+                break;
+            }
+            case 2: {
+                //hard
+                difficultyId = 3
+                break;
+            }
+        }
+        await tirabase.updatePlayerDifficulty(difficultyId);
+
+        // change ui
+        this.changeDifficulty(difficulty);
     }
 
     changeDifficulty(difficulty : number) : void {

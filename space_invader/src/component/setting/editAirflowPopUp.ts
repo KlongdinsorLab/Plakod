@@ -1,4 +1,6 @@
 import i18next from "i18next"
+import { tirabase } from "scene/TitleScene"
+import { Airflow } from "services/API/definition/typeProperty"
 
 export default class editAirflowPopUp {
     private scene : Phaser.Scene | undefined
@@ -161,7 +163,7 @@ export default class editAirflowPopUp {
         submit4.textContent = i18next.t('submit_edit')
 
         this.editAirflowForm4.addListener('click')
-        this.editAirflowForm4.on('click', function (event : any) {
+        this.editAirflowForm4.on('click', async function (event : any) {
             if(event.target.name === 'cancel') {
                 self.closeEditAirflowPopUp4()
                 self.editAirflowForm4?.setVisible(false)
@@ -169,7 +171,7 @@ export default class editAirflowPopUp {
             if(event.target.name === 'submit') {
                 self.closeEditAirflowPopUp4()
                 self.editAirflowForm4?.setVisible(false)
-                self.updateAirflow(self.airflowInput === undefined ? 100 : self.airflowInput)
+                await self.updateAirflow(self.airflowInput === undefined ? 100 : self.airflowInput)
                 self.popUpEditAirflow5()
             }
         })
@@ -293,8 +295,12 @@ export default class editAirflowPopUp {
         this.scene?.scene.resume()
     }
 
-    updateAirflow(airflow : number) : void {
+    async updateAirflow(airflow : number) : Promise<void> {
         this.airflow = airflow
+
+        // API
+        await tirabase.updatePlayerAirflow(airflow as Airflow);
+
         this.airflowText?.setText(this.airflow.toString())
     }
 

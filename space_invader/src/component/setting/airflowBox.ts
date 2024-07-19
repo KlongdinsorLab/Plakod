@@ -6,6 +6,7 @@ export default class airflowBox {
     private airflowBox : Phaser.GameObjects.Graphics | undefined
     private airflowText : Phaser.GameObjects.Text | undefined
     private editAirflowPopUp : editAirflowPopUp | undefined
+    private airflowNumber: number;
 
     // private editAirflowIcon : Phaser.GameObjects.Image | undefined
 
@@ -27,22 +28,25 @@ export default class airflowBox {
             .setOrigin(1,0.5) // Guessed the coordinate
 
         // Airflow Number
-        this.airflowText = scene.add.text(width/2, 920 + 28, "")
+        this.airflowNumber = scene.registry.get("airflow");
+        this.airflowText = scene.add.text(width/2, 920 + 28, this.airflowNumber.toString())
             .setFontSize(32)
             .setColor("#57453B")
             .setOrigin(0.5,0.5)
-
-        // Don't forget to initiate airflow text
 
     }
 
     createPopUp(scene : Phaser.Scene){
         const {width} = scene.scale
 
-        this.editAirflowPopUp = new editAirflowPopUp(scene, this.airflowText ?? scene.add.text(width/2, 920 + 28, "")
-        .setFontSize(32)
-        .setColor("#57453B")
-        .setOrigin(0.5,0.5))
+        this.editAirflowPopUp = new editAirflowPopUp(
+            scene, 
+            this.airflowText ?? scene.add.text(width/2, 920 + 28, "")
+                .setFontSize(32)
+                .setColor("#57453B")
+                .setOrigin(0.5,0.5),
+            this.airflowNumber
+            );
 
         this.airflowText?.setText(this.editAirflowPopUp.getAirflow().toString())
     }

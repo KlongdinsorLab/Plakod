@@ -94,15 +94,21 @@ export default abstract class AbstractAPIService {
 
      abstract getPlayerBoosters(): Promise<Response<BoosterDTO[]>>
      
-     abstract getPlayerAchievements(): Promise<Response<AchievementDetailDTO[]>>
+     abstract getPlayerAchievementsId(): Promise<Response<number[]>>
 
-     abstract getAchievement(achievementId: number) : Promise<Response<AchievementDetailDTO>>
+     abstract getAchievement(achievementId: number): Promise<Response<AchievementDetailDTO>>
 
-     abstract getCharacter(characterId: number) : Promise<Response<CharacterDetailDTO>>
+     abstract getCharacter(characterId: number): Promise<Response<CharacterDetailDTO>>
 
-     abstract getBooster(boosterId: number) : Promise<Response<BoosterDetailDTO>>
+     abstract getBooster(boosterId: number): Promise<Response<BoosterDetailDTO>>
 
      abstract getBoss(bossId: number): Promise<Response<BossDetailDTO>>
 
      abstract addVas(vasScore: number): Promise<Response<void>>
+
+     abstract getAllCharacters(): Promise<Response<CharacterDetailDTO[]>>
+     
+     abstract getAllBoosters(): Promise<Response<BoosterDetailDTO[]>>
+     
+     abstract getAllAchievements(): Promise<Response<AchievementDetailDTO[]>>
 }
