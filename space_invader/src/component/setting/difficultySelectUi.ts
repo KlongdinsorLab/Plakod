@@ -47,11 +47,11 @@ export default class difficultySelectUi {
 
         // Set button in these gray boxes
         this.disableEasyButton.setInteractive( new Phaser.Geom.Rectangle(120, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
-            .on('pointerup', async () => this.handleChangeDifficulty(0))
-        this.disableMediumButton.setInteractive( new Phaser.Geom.Rectangle(288, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
             .on('pointerup', async () => this.handleChangeDifficulty(1))
-        this.disableHardButton.setInteractive( new Phaser.Geom.Rectangle(456, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
+        this.disableMediumButton.setInteractive( new Phaser.Geom.Rectangle(288, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
             .on('pointerup', async () => this.handleChangeDifficulty(2))
+        this.disableHardButton.setInteractive( new Phaser.Geom.Rectangle(456, 1088, 144, 80), Phaser.Geom.Rectangle.Contains )
+            .on('pointerup', async () => this.handleChangeDifficulty(3))
 
         // Difficulty Texts
         this.easyText = i18n.createTranslatedText( scene, width/2 - 168, 1088 + 40, "difficulty_easy")
@@ -71,25 +71,7 @@ export default class difficultySelectUi {
     private async handleChangeDifficulty(difficulty: number) {
     
         // api
-        let difficultyId = 1;
-        switch(difficulty) {
-            case 0: {
-                // easy
-                difficultyId = 1;
-                break;
-            }
-            case 1: {
-                // medium
-                difficultyId = 2
-                break;
-            }
-            case 2: {
-                //hard
-                difficultyId = 3
-                break;
-            }
-        }
-        await tirabase.updatePlayerDifficulty(difficultyId);
+        await tirabase.updatePlayerDifficulty(difficulty);
 
         // change ui
         this.changeDifficulty(difficulty);
@@ -98,7 +80,7 @@ export default class difficultySelectUi {
     changeDifficulty(difficulty : number) : void {
         this.difficulty = difficulty
         // Set Difficulty
-        if (this.difficulty === 0) { // Easy
+        if (this.difficulty === 1) { // Easy
             // Set Button
             this.disableEasyButton?.setVisible(false)
             this.disableMediumButton?.setVisible(true)
@@ -109,7 +91,7 @@ export default class difficultySelectUi {
             this.mediumText?.setStroke("#BF7F03", 0)
             this.hardText?.setStroke("#9E461B", 0)
         }
-        if (this.difficulty === 1) { // Medium
+        if (this.difficulty === 2) { // Medium
             this.disableEasyButton?.setVisible(true)
             this.disableMediumButton?.setVisible(false)
             this.disableHardButton?.setVisible(true)
@@ -119,7 +101,7 @@ export default class difficultySelectUi {
             this.mediumText?.setStroke("#BF7F03", 6)
             this.hardText?.setStroke("#9E461B", 0)
         }
-        if (this.difficulty === 2) { // Hard
+        if (this.difficulty === 3) { // Hard
             this.disableEasyButton?.setVisible(true)
             this.disableMediumButton?.setVisible(true)
             this.disableHardButton?.setVisible(false)

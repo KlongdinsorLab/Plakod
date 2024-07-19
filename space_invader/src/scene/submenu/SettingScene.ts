@@ -117,25 +117,7 @@ export default class SettingScene extends Phaser.Scene {
         
         const difficultyDTO: DifficultyDTO = this.registry.get('difficulty');
         const difficultyId: number = difficultyDTO.difficultyId;
-        let difficulty: number = 0;
-        switch(difficultyId) {
-            case 1: {
-                // easy
-                difficulty = 0;
-                break;
-            }
-            case 2: {
-                // medium
-                difficulty = 1
-                break;
-            }
-            case 3: {
-                // hard
-                difficulty = 2
-                break;
-            }
-        }
-        this.difficultySelectUi = new difficultySelectUi(this, difficulty)
+        this.difficultySelectUi = new difficultySelectUi(this, difficultyId)
 
         // Airflow Box
         this.airflowBox = new airflowBox(this)
