@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import WebFont from 'webfontloader'
 import I18nSingleton from "i18n/I18nSingleton";
+import { tirabase } from "./TitleScene";
 
 export default class DisplayNameScene extends Phaser.Scene{
 
@@ -39,15 +40,15 @@ export default class DisplayNameScene extends Phaser.Scene{
 
      }
 
-     private handleSubmit(): void {
+     private async handleSubmit(): Promise<void> {
 
           // set username
           if (this.inputHTML) {
                const inputElement = <HTMLInputElement> this.inputHTML;
                const username: string = inputElement.value;
                if (username !== '') {
-                    // TODO submit
-                    this.registry.set('username', username);
+                    
+                    await tirabase.updatePlayerUsername(username);
 
                     //console.log('submit success')
                     //this.scene.start('home') // for test
@@ -106,8 +107,8 @@ export default class DisplayNameScene extends Phaser.Scene{
                     20,20,20,30
                )
                .setOrigin(0, 0)
-               .setInteractive().on('pointerup', () => {
-                    this.handleSubmit();
+               .setInteractive().on('pointerup', async () => {
+                    await this.handleSubmit();
                });
           // text
           const submitText = i18n.createTranslatedText(this, 313, 774, `submit`,)
