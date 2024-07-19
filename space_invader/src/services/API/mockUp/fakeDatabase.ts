@@ -182,7 +182,6 @@ export const GameSessions: GameSessionSchema[] = [
      },
 ]
 
-// TODO achievement number required's requirement
 export const Characters: CharacterSchema[] = [
      {
           id: 1,
@@ -193,13 +192,13 @@ export const Characters: CharacterSchema[] = [
      {
           id: 2,
           name: "นักเวทย์",
-          achievement_number_required: 3,
+          achievement_number_required: 4,
           detail: ""
      },
      {
           id: 3,
           name: "จอมโจร",
-          achievement_number_required: 5,
+          achievement_number_required: 8,
           detail: ""
      }
 ]
