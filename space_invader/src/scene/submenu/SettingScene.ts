@@ -7,6 +7,7 @@ import characterSelectUi from "component/setting/characterSelectUi"
 import difficultySelectUi from "component/setting/difficultySelectUi";
 import usernameBox from "component/setting/usernameBox";
 import airflowBox from "component/setting/airflowBox";
+import { DifficultyDTO } from "services/API/definition/responseDTO";
 
 export default class SettingScene extends Phaser.Scene {
     // Heading
@@ -113,8 +114,10 @@ export default class SettingScene extends Phaser.Scene {
             .setFontSize( 32 )
             .setColor("#57453B") 
             .setOrigin(0,0)
-
-        this.difficultySelectUi = new difficultySelectUi(this)
+        
+        const difficultyDTO: DifficultyDTO = this.registry.get('difficulty');
+        const difficultyId: number = difficultyDTO.difficultyId;
+        this.difficultySelectUi = new difficultySelectUi(this, difficultyId)
 
         // Airflow Box
         this.airflowBox = new airflowBox(this)

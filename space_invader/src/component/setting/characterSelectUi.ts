@@ -1,22 +1,22 @@
 import I18nSingleton from "i18n/I18nSingleton"
+import { tirabase } from "scene/TitleScene"
 
 export default class characterSelectUi {
     private scene : Phaser.Scene | undefined
     // Characters
     // from database
-    private charactersJSON = '{ "0" : {"name" : "นักผจญภัย", "frame" : "logo_setting_mc1.png", "unlocked" : true},"1" : {"name" : "นักเวทย์", "frame" : "logo_setting_mc2.png", "unlocked" : true },"2" : {"name" : "จอมโจร", "frame" : "logo_setting_mc3.png", "unlocked" : true}}'
-    private characters = JSON.parse(this.charactersJSON)
-    private charactersCount : number = Object.keys(this.characters).length
+    private characters!: {[characterId: number]: {name: string, unlocked: boolean}};
+    private charactersCount! : number;
 
     private prevButton : Phaser.GameObjects.Shape | undefined
     private nextButton : Phaser.GameObjects.Shape | undefined
     
-    private showingCharIndex = 0
+    private showingCharIndex = 1
     // private showingChar= this.characters[this.showingCharIndex]['frame']
     private showingCharImg : Phaser.GameObjects.Image | undefined
     private showingCharText : Phaser.GameObjects.Text | undefined
 
-    private usingCharIndex : number | undefined // from database
+    private usingCharIndex! : number // from database
 
     private characterBox: Phaser.GameObjects.Graphics | undefined
 
@@ -25,12 +25,55 @@ export default class characterSelectUi {
     private useText : Phaser.GameObjects.Text | undefined
     private usingText : Phaser.GameObjects.Text | undefined
 
-    constructor(scene : Phaser.Scene, usingCharIndex?: number) {
+    private getLogoCharacterById(characterId: number) {
+        return `logo_setting_mc${characterId}.png`
+    }
+
+    private async handleCharacterData() {
+        // call api
+        const playerCharactersId: number[] = this.scene?.registry.get('playerCharactersId');
+        const selectedCharacterId = this.scene?.registry.get('selectedCharacterId');
+
+        const response = await tirabase.getAllCharacters();
+        const charactersResponse = response.response;
+
+  
+        const characters: {[characterId: number]: {name: string, unlocked: boolean}} = {};
+        charactersResponse.forEach(characterResponse => {
+            const characterResponseId: number = characterResponse.characterId;
+            const playerCharacterFound: boolean = !!playerCharactersId.find(
+                pc => pc === characterResponseId
+            );
+
+            const character: {name: string, unlocked: boolean} = {
+                name: characterResponse.name,
+                unlocked: playerCharacterFound
+            }
+
+            characters[characterResponseId] = character;
+        });
+
+
+        this.characters = characters;
+        this.charactersCount = charactersResponse.length;
+        this.usingCharIndex = selectedCharacterId;
+        
+    }
+
+    private async handleButtonUseCharacter() {
+        this.useChar();
+        await tirabase.updatePlayerUsingCharacter(this.usingCharIndex);
+    }
+
+    private async createInstance(scene : Phaser.Scene, usingCharIndex?: number) {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
-        const { width } = scene.scale
+        const { width } = scene.scale;
 
-        const i18n = I18nSingleton.getInstance()
+        const i18n = I18nSingleton.getInstance();
+
+        // call api
+        await this.handleCharacterData();
 
         // Character Select Box
         //this.characterBox = this.scene.add.rectangle( width/2, 504, 336, 120, 0x43A99E ).setOrigin(0.5,0) 
@@ -46,9 +89,9 @@ export default class characterSelectUi {
         this.prevButton.setInteractive().on('pointerup', () => this.charShift(-1)) // Make the functional button larger than arrow sprite
         this.nextButton.setInteractive().on('pointerup', () => this.charShift(1))
         // Showing Character
-        this.showingCharImg = this.scene.add.image( width/2, 504, 'sheet', this.characters[this.showingCharIndex]['frame']).setOrigin(0.5,0.5)
+        this.showingCharImg = this.scene.add.image( width/2, 504, 'sheet', this.getLogoCharacterById(this.showingCharIndex)).setOrigin(0.5,0.5)
         // Character Text (Name)
-        this.showingCharText = this.scene.add.text( width/2, 594 , this.characters[this.showingCharIndex]['name'])
+        this.showingCharText = this.scene.add.text( width/2, 594 , this.characters[this.showingCharIndex].name)
             .setColor("#FFFFFF")
             .setStroke("#D35E24", 12)
             .setFontSize(32)
@@ -67,7 +110,11 @@ export default class characterSelectUi {
         this.useButton = this.scene.add.nineslice( width/2 - 168, 640, "sheet", "button_hard.png", 336, 80 ).setOrigin(0,0)
 
         // set Button
-        this.useButton.setInteractive().on('pointerup', () => this.useChar())
+        this.useButton.setInteractive()
+            .on(
+                'pointerup', 
+                async () => await this.handleButtonUseCharacter()
+            )
         this.useText = i18n.createTranslatedText( scene, width/2, 680 -3, "use_button" )
             .setFontSize(32)
             .setPadding(0,20,0,10)
@@ -85,19 +132,24 @@ export default class characterSelectUi {
         this.charShift(0)
     }
 
+    constructor(scene : Phaser.Scene, usingCharIndex?: number) {
+        this.createInstance(scene, usingCharIndex);
+    }
+
+
     charShift(i : number) : void {
-        this.showingCharIndex = (this.showingCharIndex + i + this.charactersCount ) % this.charactersCount // prevent negative number
+        this.showingCharIndex = (this.showingCharIndex + i + this.charactersCount - 1) % this.charactersCount + 1 // prevent negative number
         const { width } = this.scene!.scale
 
         // Set Showing Character
-        if (this.characters[this.showingCharIndex]["unlocked"]) { // Unlocked Character
+        if (this.characters[this.showingCharIndex].unlocked) { // Unlocked Character
             // Character Text (Name)
-            this.showingCharText?.setText(this.characters[this.showingCharIndex]['name'])
+            this.showingCharText?.setText(this.characters[this.showingCharIndex].name)
                 .setStroke("#D35E24", 12)
                 .setFontSize(32)
 
             // Character Img
-            this.showingCharImg?.setTexture("sheet", this.characters[this.showingCharIndex]['frame']).clearTint()
+            this.showingCharImg?.setTexture("sheet", this.getLogoCharacterById(this.showingCharIndex)).clearTint()
             // Character Box
             this.characterBox?.fillStyle(0x43A99E) // Green Box
             this.characterBox?.fillRoundedRect( width/2 -168, 504, 336, 120, 14 )
@@ -114,7 +166,6 @@ export default class characterSelectUi {
             else { // Other Characters
                 this.usingButton?.setVisible(false)
                 this.useButton?.setVisible(true)
-                this.useButton?.setInteractive().on('pointerup', () => this.useChar())
                 this.useText?.setVisible(true)
                 this.usingText?.setVisible(false)
             }
@@ -125,13 +176,12 @@ export default class characterSelectUi {
                 .setStroke("#58595B", 12)
                 .setFontSize(32)
             // Character Img
-            this.showingCharImg?.setTexture("sheet", this.characters[this.showingCharIndex]['frame']).setTintFill(0x000000)
+            this.showingCharImg?.setTexture("sheet", this.getLogoCharacterById(this.showingCharIndex)).setTintFill(0x000000)
             // Character Box
             this.characterBox?.fillStyle(0xACACAC) // Gray Box 
             this.characterBox?.fillRoundedRect( width/2 -168, 504, 336, 120, 14 )
 
             // Set Use Button
-            this.useButton?.setInteractive().off('pointerup')
             this.usingButton?.setVisible(false)
             this.useText?.setVisible(false)
             this.usingText?.setVisible(false)
