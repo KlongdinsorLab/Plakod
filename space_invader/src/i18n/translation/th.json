@@ -136,5 +136,10 @@
   "vas_box_text3" : "ค่อนข้างเหนื่อย",
   "vas_box_text4" : "เหนื่อยมาก",
   "vas_box_text5" : "เหนื่อยมากที่สุด",
-  "display_name_heading" : "ชื่อนักผจญภัย"
+  "display_name_heading" : "ชื่อนักผจญภัย",
+  "mybag_heading":"กระเป๋า",
+  "mybag_booster_slot_button":"บูสเตอร์",
+  "mybag_reward_slot_button":"รางวัล",
+  "mybag_booster_default_text":"คลิกที่บูสเตอร์เพื่ออ่านรายละเอียด",
+  "mybag_booster_total_text":"บูสเตอร์ทั้งหมด    {{total, number}}"
 }

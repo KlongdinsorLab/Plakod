@@ -136,5 +136,10 @@
   "vas_box_text3" : "I'm tired",
   "vas_box_text4" : "I'm very tired",
   "vas_box_text5" : "I'm exhausted.",
-  "display_name_heading" : "Enter your Adventurer's name"
+  "display_name_heading" : "Enter your Adventurer's name",
+  "mybag_heading":"My bag",
+  "mybag_booster_slot_button":"booster",
+  "mybag_reward_slot_button":"reward",
+  "mybag_booster_default_text":"Click on the booster to read details",
+  "mybag_booster_total_text":"Total boosters    {{total, number}}"
 }

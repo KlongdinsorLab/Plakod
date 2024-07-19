@@ -22,7 +22,7 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
     private boosterJSON = {
-        "booster_1":          {"expire_date": [],    "amount" : 3,},
+        "booster_1":          {"expire_date": ["2024-07-20T11:00:00.000Z"],    "amount" : 3,},
         "booster_2":          {"expire_date": [],    "amount" : 2,},
         "booster_3":          {"expire_date": [], "amount" : 30,},
         "booster_4":          {"expire_date": [], "amount" : 1,},
