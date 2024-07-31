@@ -11,6 +11,8 @@ import PlayButton from 'component/ui/Button/PlayButton'
 import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
+import { tirabase } from 'scene/TitleScene'
+import { PlayerDTO } from 'services/API/definition/responseDTO'
 
 
 const ReminderText = {
@@ -33,9 +35,38 @@ export default class HomeScene extends Phaser.Scene {
 	private settingButton!: SettingButton
 	private timeService!: TimeService
 	private reminderText!: Phaser.GameObjects.Text
+	private playerData!: PlayerDTO
 
 	constructor() {
 		super('home');
+	}
+
+	private async handleData() {
+		const response = await tirabase.getPlayer();
+		this.playerData = response.response;
+		const {
+			airflow,
+			difficulty,
+			playCount,
+			playToday,
+			playerCharactersId,
+			playerId,
+			playerLevel,
+			selectedCharacterId,
+			username,
+		} = this.playerData
+		
+		console.log(this.playerData);
+
+		this.scene.scene.registry.set('username', username);
+		this.scene.scene.registry.set('airflow', airflow);
+		this.scene.scene.registry.set('difficulty', difficulty);
+		this.scene.scene.registry.set('playCount', playCount);
+		this.scene.scene.registry.set('playToday', playToday);
+		this.scene.scene.registry.set('playerCharactersId', playerCharactersId);
+		this.scene.scene.registry.set('playerId', playerId);
+		this.scene.scene.registry.set('playerLevel', playerLevel);
+		this.scene.scene.registry.set('selectedCharacterId', selectedCharacterId);
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
@@ -63,10 +94,13 @@ export default class HomeScene extends Phaser.Scene {
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
 	}
 
-	create() {
+	async create() {
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
 
+		// call API
+		await this.handleData();
+		
 		const { width, height } = this.scale
 		this.timeService = new TimeService()
 		
@@ -159,4 +193,5 @@ export default class HomeScene extends Phaser.Scene {
 
 		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
 	}
+
 }
