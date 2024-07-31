@@ -234,7 +234,7 @@ export default class BoosterBag{
             case 5: return BoosterName.BOOSTER_5
             case 6: return BoosterName.BOOSTER_RARE1
             case 7: return BoosterName.BOOSTER_RARE2
-            default: return BoosterName.NONE
+            default: return BoosterName.BOOSTER_1
         }
     }
     getMaxBoosterPerPage():number{

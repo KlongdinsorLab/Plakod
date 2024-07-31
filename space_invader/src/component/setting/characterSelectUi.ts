@@ -30,7 +30,8 @@ export default class characterSelectUi {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
         this.showingCharIndex = showingCharIndex === undefined? 0 : (showingCharIndex)
-        const { width } = scene.scale
+    }
+    
 
     private getLogoCharacterById(characterId: number) {
         return `logo_setting_mc${characterId}.png`
@@ -138,10 +139,6 @@ export default class characterSelectUi {
             .setOrigin(0.5,0.5)
         // Initiate First Character
         this.charShift(0)
-    }
-
-    constructor(scene : Phaser.Scene, usingCharIndex?: number) {
-        this.createInstance(scene, usingCharIndex);
     }
 
 
