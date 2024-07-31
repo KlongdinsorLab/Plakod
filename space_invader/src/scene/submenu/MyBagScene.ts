@@ -3,6 +3,7 @@ import I18nSingleton from "i18n/I18nSingleton";
 import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import BoosterBag from "component/booster/boosterBag";
+import AchievementBag from "component/achievement/achievementBag";
 
 enum SlotType{
     BOOSTER,
@@ -38,19 +39,23 @@ export default class MyBagScene extends Phaser.Scene{
     private disabledBoosterButtonText!: Phaser.GameObjects.Text
     private disabledRewardButtonText!: Phaser.GameObjects.Text
     private descriptionBackground!: Phaser.GameObjects.Graphics
-    private totalBoosterText!: Phaser.GameObjects.Text
 
+    private alert!: Phaser.GameObjects.Image
+
+    private startIndex: number = 0
     private slotType: SlotType = SlotType.BOOSTER
     private boosterBag!: BoosterBag
+    private achievementBag!: AchievementBag
+
 
     private boosterJson = [
-        {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:"2024-07-22T12:00:00.000Z" },{boosterId: 1,  expireDate:"2024-07-20T09:00:00.000Z" },
-        {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:"2024-07-22T10:00:00.000Z" },
-        {boosterId: 3,  expireDate:null }, {boosterId: 3,  expireDate:"2024-07-22T11:00:00.000Z" }, {boosterId: 3,  expireDate:"2024-07-23T11:00:00.000Z" },
-        {boosterId: 4,  expireDate:null }, {boosterId: 4,  expireDate:"2024-07-22T08:00:00.000Z" },
-        {boosterId: 5,  expireDate:null }, {boosterId: 5,  expireDate:"2024-07-22T06:00:00.000Z" },
-        {boosterId: 6,  expireDate:null }, {boosterId: 6,  expireDate:"2024-07-23T06:00:00.000Z" },{boosterId: 6,  expireDate:"2024-07-23T08:00:00.000Z" },
-        {boosterId: 7,  expireDate:null }, {boosterId: 7,  expireDate:"2024-07-23T08:00:00.000Z" },
+        {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:"2024-07-26T12:00:00.000Z" },{boosterId: 1,  expireDate:"2024-07-26T09:00:00.000Z" },
+        {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:"2024-07-26T10:00:00.000Z" },
+        {boosterId: 3,  expireDate:null }, {boosterId: 3,  expireDate:"2024-07-26T11:00:00.000Z" }, {boosterId: 3,  expireDate:"2024-07-27T11:00:00.000Z" },
+        {boosterId: 4,  expireDate:null }, {boosterId: 4,  expireDate:"2024-07-25T08:00:00.000Z" },
+        {boosterId: 5,  expireDate:null }, {boosterId: 5,  expireDate:"2024-07-25T06:00:00.000Z" },
+        {boosterId: 6,  expireDate:null }, {boosterId: 6,  expireDate:"2024-07-27T06:00:00.000Z" },{boosterId: 6,  expireDate:"2024-07-27T08:00:00.000Z" },
+        {boosterId: 7,  expireDate:null }, {boosterId: 7,  expireDate:"2024-07-27T08:00:00.000Z" },
   ]
 
     constructor(){
@@ -82,6 +87,27 @@ export default class MyBagScene extends Phaser.Scene{
             'assets/dropItem/dropitem_spritesheet.png', 
             'assets/dropItem/dropitem_spritesheet.json'
         )
+        this.load.atlas(
+            'achievement',
+            'assets/achievement/achievement_spritesheet.png',
+            'assets/achievement/achievement_spritesheet.json'
+        )
+        this.load.atlas(
+            'mcpreview',
+            'assets/mcpreview/mcpreview_spritesheet.png',
+            'assets/mcpreview/mcpreview_spritesheet.json'
+        )
+        this.load.atlas(
+            'mc2',
+            'assets/character/player/mc2_spritesheet.png',
+            'assets/character/player/mc2_spritesheet.json'
+        )
+        this.load.atlas(
+            'mc3',
+            'assets/character/player/mc3_spritesheet.png',
+            'assets/character/player/mc3_spritesheet.json'
+        )
+        this.load.image('popupAuraEffect', 'assets/effect/popup_aura.png')
     }
     create(){
         const {width,height} = this.scale;
@@ -167,7 +193,9 @@ export default class MyBagScene extends Phaser.Scene{
         this.boosterButtonHitBox.setInteractive().on('pointerup', ()=>{
             this.setBoosterButtonDisabled(false)
             this.setRewardButtonDisabled(true)
-            this.showBoosterBag(this.boosterBag)
+            this.destroyAchievementBag()
+            this.showBoosterBag()
+            this.boosterBag.setStartIndex(this.startIndex)
             this.slotType = SlotType.BOOSTER
             this.setArrowOverlay()
         })
@@ -175,7 +203,9 @@ export default class MyBagScene extends Phaser.Scene{
         this.rewardButtonHitBox.setInteractive().on('pointerup', ()=>{
             this.setBoosterButtonDisabled(true)
             this.setRewardButtonDisabled(false)
-            this.destroyBoosterBag(this.boosterBag)
+            this.startIndex = this.boosterBag.getStartIndex()
+            this.destroyBoosterBag()
+            this.showAchievementBag()
             this.slotType = SlotType.REWARD
             this.setArrowOverlay()
         })
@@ -223,6 +253,12 @@ export default class MyBagScene extends Phaser.Scene{
         this.boosterBag = new BoosterBag(this, this.boosterJson)
         this.boosterBag.create()
         this.boosterBag.createDefaultText()
+
+        this.achievementBag = new AchievementBag(this)
+        const currentUnlockedReward = this.achievementBag.getCurrentUnlockedReward()
+        if(currentUnlockedReward){
+            this.alert = this.add.image(572, 502, 'icon', 'icon_alert.png').setOrigin(0)
+        }
 
         const arrowButtonLeft = this.createArrowButton(
             { x:width/2+86, y: 1152 },
@@ -314,13 +350,23 @@ export default class MyBagScene extends Phaser.Scene{
             this.boosterBag.handleTimeOut()        
         }
     }
-    showBoosterBag(boosterBag:BoosterBag):void{
+    showBoosterBag():void{
         this.boosterBag.setPageIndex(this.boosterBag.getStartIndex())
         this.boosterBag.create()
         this.boosterBag.createDefaultText()
     }
-    destroyBoosterBag(boosterBag:BoosterBag):void{
+    destroyBoosterBag():void{
         this.boosterBag.destroy()
+    }
+    showAchievementBag():void{
+        if(this.alert) this.alert.destroy()
+        this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
+        this.achievementBag.create()
+        this.achievementBag.createDefaultTextDescription()
+        this.achievementBag.createDefaultUI()
+    }
+    destroyAchievementBag():void{
+        this.achievementBag.destroy()
     }
     createSlotButton(
         position:{ x:number, y:number }, 
@@ -419,12 +465,24 @@ export default class MyBagScene extends Phaser.Scene{
         if(this.slotType === SlotType.BOOSTER && this.boosterBag.getPageIndex()+this.boosterBag.getMaxBoosterPerPage() >= this.boosterBag.getTotalBoosterShown()){
             this.setRightArrowOverlay(true)
         }
+        if(this.slotType === SlotType.REWARD && this.achievementBag.getTotalAchievement() < this.achievementBag.getMaxAchievementPerPage()){
+            this.setLeftArrowOverlay(true)
+            this.setRightArrowOverlay(true)
+        }
+        if(this.slotType === SlotType.REWARD && this.achievementBag.getPageIndex() === 0){
+            this.setLeftArrowOverlay(true)
+        }
+        if(this.slotType === SlotType.REWARD && this.achievementBag.getPageIndex()+this.achievementBag.getMaxAchievementPerPage() >= this.achievementBag.getTotalAchievement()){
+            this.setRightArrowOverlay(true)
+        }
     }
     leftArrowInteraction():void{
-        this.boosterBag.previousPage()
+        if(this.slotType === SlotType.BOOSTER){this.boosterBag.previousPage()}
+        if(this.slotType === SlotType.REWARD){this.achievementBag.previousPage()}
     }
     rightArrowInteraction():void{
-        this.boosterBag.nextPage()
+        if(this.slotType === SlotType.BOOSTER){this.boosterBag.nextPage()}
+        if(this.slotType === SlotType.REWARD){this.achievementBag.nextPage()}
     }
     destroy(){}
 }

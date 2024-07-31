@@ -141,5 +141,6 @@
   "mybag_booster_slot_button":"booster",
   "mybag_reward_slot_button":"reward",
   "mybag_booster_default_text":"Click on the booster to read details",
-  "mybag_booster_total_text":"Total boosters    {{total, number}}"
+  "mybag_booster_total_text":"Total boosters    {{total, number}}",
+  "mybag_achievement_unlocked_text":"Unlocked"
 }

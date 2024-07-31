@@ -219,6 +219,9 @@ export default class BoosterBag{
             return dateA - dateB
         })
     }
+    setStartIndex(index: number):void{
+        this.startIndex = index
+    }
     setPageIndex(index: number):void{
         this.pageIndex = index
     }
@@ -256,11 +259,11 @@ export default class BoosterBag{
         return this.boosterUI
     }
     handleTimeOut():void{
-        this.destroy()
+        this.boosterDestroy()
         this.startIndex++
         this.pageIndex++
         this.create()
-        this.initFontStyle()
+        this.boosterFontStyle()
     }
     getTimeOut():boolean{
         let isTimeout = false
@@ -272,18 +275,22 @@ export default class BoosterBag{
         return isTimeout
         
     }
-    initFontStyle():void{
+    boosterFontStyle():void{
         this.boosterUI.forEach((booster)=>{
             booster?.initFontStyle()
         })
-        this.descriptionDefaultText.setStyle({
+    }
+    initFontStyle():void{
+        this.boosterFontStyle()
+        this.descriptionDefaultText?.setStyle({
             fontFamily: 'Mali',
             fontWeight: '500',
         })
         .setFontSize(24)
         .setColor('#57453B')
         .setSize(334, 96)
-        this.totalBoosterText.setStyle({
+        
+        this.totalBoosterText?.setStyle({
             fontFamily: 'Mali',
             fontStyle: 'bold',
         })
@@ -309,6 +316,12 @@ export default class BoosterBag{
             .setFontSize(24)
             .setColor('#D35E24')
         }
+    }
+    boosterDestroy():void{
+        this.boosterUI.forEach((booster)=>{
+            booster?.destroy()
+        })
+        this.boosterUI.length = 0
     }
     destroy():void{
         this.boosterUI?.forEach((booster)=>{

@@ -17,6 +17,8 @@ export default class SettingScene extends Phaser.Scene {
 
     // Character Select
     private characterSelectUi : characterSelectUi | undefined
+    private characterId! : number
+    private usingCharacterId: number = 0
 
     private airflowEditText: Phaser.GameObjects.Text | undefined
     private medicalAdviceText : Phaser.GameObjects.Text | undefined
@@ -35,11 +37,15 @@ export default class SettingScene extends Phaser.Scene {
         super('setting')
     }
 
-    init({ returnscene } : { returnscene : string }){
-        if(returnscene) {
-            this.returnscene = returnscene
+    init({ returnscene, characterId } : { returnscene? : string, characterId? : number }) {
+        if (returnscene) {
+            this.returnscene = returnscene;
+        }
+        if (characterId) {
+            this.characterId = characterId;
         }
     }
+    
 
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
@@ -83,7 +89,7 @@ export default class SettingScene extends Phaser.Scene {
             .setOrigin(0.5,0)
 
         // Character Select
-        this.characterSelectUi = new characterSelectUi(this)
+        this.characterSelectUi = new characterSelectUi(this, this.usingCharacterId, this.characterId)
 
         // Airflow and Difficulty Box
         const bigBox = this.add.graphics()

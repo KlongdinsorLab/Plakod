@@ -25,9 +25,10 @@ export default class characterSelectUi {
     private useText : Phaser.GameObjects.Text | undefined
     private usingText : Phaser.GameObjects.Text | undefined
 
-    constructor(scene : Phaser.Scene, usingCharIndex?: number) {
+    constructor(scene : Phaser.Scene, usingCharIndex?: number, showingCharIndex?:number) {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
+        this.showingCharIndex = showingCharIndex === undefined? 0 : (showingCharIndex-1)
         const { width } = scene.scale
 
         const i18n = I18nSingleton.getInstance()
