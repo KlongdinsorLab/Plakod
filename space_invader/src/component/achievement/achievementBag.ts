@@ -1,6 +1,5 @@
 import { AchievementUI } from "./achievementUI"
 import { RewardPopup } from "component/popup/RewardPopup"
-import i18next from "i18next"
 import I18nSingleton from "i18n/I18nSingleton"
 import { TOTAL_MC } from "config"
 export default class AchievementBag{

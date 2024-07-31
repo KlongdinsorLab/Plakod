@@ -133,6 +133,7 @@ export class RewardPopup extends Popup{
         ).setOrigin(0.5)
         this.rewardPopupButtonToSetting.setInteractive().on('pointerup', () => {
             this.destroy()
+            this.scene.scene.stop()
             this.scene.scene.start('setting', {characterId: this.characterId})
         })
         this.layer.add(this.rewardPopupButtonToSetting)

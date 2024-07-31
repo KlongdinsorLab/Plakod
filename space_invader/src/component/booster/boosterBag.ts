@@ -1,4 +1,4 @@
-import { BoosterUI, States } from "./boosterUI"
+import { BoosterUI } from "./boosterUI"
 import { BoosterName } from "./booster"
 import I18nSingleton from "i18n/I18nSingleton"
 import i18next from "i18next"

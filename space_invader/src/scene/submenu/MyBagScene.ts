@@ -484,5 +484,34 @@ export default class MyBagScene extends Phaser.Scene{
         if(this.slotType === SlotType.BOOSTER){this.boosterBag.nextPage()}
         if(this.slotType === SlotType.REWARD){this.achievementBag.nextPage()}
     }
-    destroy(){}
+    destroy(){
+        this.background?.destroy()
+        this.banner?.destroy()
+        this.myBagIcon?.destroy()
+        this.slotBackground?.destroy()
+        this.boosterButtonBackground?.destroy()
+        this.rewardButtonBackground?.destroy()
+        this.disabledBoosterButtonBackground?.destroy()
+        this.disabledRewardButtonBackground?.destroy()
+        this.boosterButtonHitBox?.destroy()
+        this.rewardButtonHitBox?.destroy()
+        this.redButtonLeft?.destroy()
+        this.redButtonRight?.destroy()
+        this.iconLeft?.destroy()
+        this.iconRight?.destroy()
+        this.leftButtonOverlay?.destroy()
+        this.rightButtonOverlay?.destroy()
+    
+        this.buttonBack?.destroy()
+        this.buttonBackHitBox?.destroy()
+        
+        this.headerText?.destroy()
+        this.boosterButtonText?.destroy()
+        this.rewardButtonText?.destroy()
+        this.disabledBoosterButtonText?.destroy()
+        this.disabledRewardButtonText?.destroy()
+        this.descriptionBackground?.destroy()
+    
+        this.alert?.destroy()
+    }
 }
