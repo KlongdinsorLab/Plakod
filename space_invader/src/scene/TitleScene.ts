@@ -14,7 +14,7 @@ tirabase.register('0958927519',
   600,
   3,
 )
-tirabase.login('0958927519');
+tirabase.login('0958927518');
 export { tirabase }
 
 export default class TitleScene extends Phaser.Scene {

@@ -26,11 +26,12 @@ import { ShootingPhase } from 'component/player/Player'
 
 import { boosters } from './booster/RedeemScene'
 import { BoosterUI } from 'component/booster/boosterUI'
-import {Booster4} from 'component/booster/boosterList/booster_4'
-import { BoosterName } from 'component/booster/booster'
+
+import { boosterByName } from 'component/booster/boosterByName'
+import { Booster, BoosterEffect } from 'component/booster/booster'
 import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
 import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
-import { BoosterRare1 } from 'component/booster/boosterList/booster_rare1'
+
 
 
 export default class GameScene extends Phaser.Scene {
@@ -66,15 +67,11 @@ export default class GameScene extends Phaser.Scene {
 
   private subScenes!: string[]
 
-  private laserFrequency!: number
-  private bulletCount!: number
-  private shootingPhase!: ShootingPhase
-  private laserFactoryName!: keyof typeof LaserFactoryByName
+  private boosterByName!: keyof typeof boosterByName
+  private booster!: Booster
+  private boosterEffect!: BoosterEffect
+
   private laserFactory!: LaserFactory
-  private booster4!: Booster4
-  private boosterRare1!: BoosterRare1
-  private releasedBullet!: number
-  
 
   constructor() {
     super({ key: 'game' })
@@ -214,30 +211,41 @@ export default class GameScene extends Phaser.Scene {
       boosterUI.create()
     })
 
-    //set variable for booster
-    this.shootingPhase = ShootingPhase.NORMAL
-    this.laserFrequency = LASER_FREQUENCY_MS
-    this.bulletCount = BULLET_COUNT
-    this.releasedBullet = 1
-
-    this.laserFactoryName = 'single';
-
-    //set booster effect (booster 4: speed bullet)
-    if(boosters.includes(BoosterName.BOOSTER_4)){
-      this.booster4 = new Booster4()
-      const boosterEffect = this.booster4.applyBooster(this.laserFrequency,this.bulletCount,this.shootingPhase)
-      this.laserFrequency = boosterEffect.laserFrequency
-      this.bulletCount = boosterEffect.bulletCount
-      this.shootingPhase = boosterEffect.shootingPhase
+   if(this.reloadCountNumber > 5) { 
+    this.boosterEffect = {
+      remainingUses: 0,
+      remainingTime: 0,
+      hitMeteorScore: 1,
+      laserFrequency: 1,
+      bulletCount: 1,
+      shootingPhase: 1,
+      destroyMeteorScore: 1,
+      laserFactory: 'single',
+      releasedBullet: 1,
+      bulletMultiply: 1,
+      score: 1,
     }
-    if(boosters.includes(BoosterName.BOOSTER_RARE1)){
-      this.boosterRare1 = new BoosterRare1()
-      const boosterEffect = this.boosterRare1.applyBooster()
-      this.laserFactoryName = boosterEffect.laserFactory
-      this.releasedBullet = boosterEffect.releasedBullet
-      this.bulletCount = this.bulletCount*boosterEffect.bulletMultiply
-    }
-    this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
+    boosters.forEach((booster) => {
+      this.boosterByName = booster;
+      this.booster = new boosterByName[this.boosterByName]();
+      const boosterEffect = this.booster.getBoosterEffect();
+      this.boosterEffect = {
+        remainingUses: this.boosterEffect.remainingUses + boosterEffect.remainingUses,
+        remainingTime: this.boosterEffect.remainingTime + boosterEffect.remainingTime,
+        hitMeteorScore: this.boosterEffect.hitMeteorScore - boosterEffect.hitMeteorScore,
+        laserFrequency: this.boosterEffect.laserFrequency - boosterEffect.laserFrequency,
+        bulletCount: this.boosterEffect.bulletCount + boosterEffect.bulletCount,
+        shootingPhase: this.boosterEffect.shootingPhase + boosterEffect.shootingPhase,
+        destroyMeteorScore: this.boosterEffect.destroyMeteorScore + boosterEffect.destroyMeteorScore,
+        laserFactory: this.boosterEffect.laserFactory === 'triple'? this.boosterEffect.laserFactory : boosterEffect.laserFactory,
+        releasedBullet: this.boosterEffect.releasedBullet + boosterEffect.releasedBullet,
+        bulletMultiply: this.boosterEffect.bulletMultiply + boosterEffect.bulletMultiply,
+        score: this.boosterEffect.score + boosterEffect.score,
+      };
+    })
+    this.scene.scene.registry.set('boosterEffect', this.boosterEffect);
+  }
+    this.laserFactory = new LaserFactoryByName[this.boosterEffect.laserFactory]();
 
     const self = this
     WebFont.load({
@@ -354,7 +362,7 @@ export default class GameScene extends Phaser.Scene {
       this.player,
       [...this.meteorFactory.getMeteors()],
       delta,
-      {laserFrequency: this.laserFrequency}
+      {laserFrequency: LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency}
     )
 
     if (this.reloadCount.isDepleted()) {
@@ -393,11 +401,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.player.getIsReload() && !(this.controller1?.buttons.B16 > 0)) { // Fully Reloaded
-      this.laserFactory.set(this.shootingPhase)
+      this.laserFactory.set(ShootingPhase.NORMAL*this.boosterEffect.shootingPhase)
 
 
       this.time.addEvent({
-        delay : this.laserFrequency * this.shootingPhase,
+        delay : LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency * ShootingPhase.NORMAL*this.boosterEffect.shootingPhase,
         callback : () => {
           this.reloadCount.decrementCount()
           this.isCompleteBoss = false
@@ -406,15 +414,16 @@ export default class GameScene extends Phaser.Scene {
       })
 
       if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
-        this.player.reloadSet(this.shootingPhase, this.laserFrequency)
-        gauge.set(this.bulletCount, this.laserFrequency, this.releasedBullet)
+        this.player.reloadSet(ShootingPhase.NORMAL*this.boosterEffect.shootingPhase, LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency)
+        console.log(this.boosterEffect)
+        gauge.set(BULLET_COUNT*this.boosterEffect.bulletCount*this.boosterEffect.bulletMultiply, LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency, this.boosterEffect.releasedBullet)
       } else {
         this.player.attack()
       }
 
       if (this.reloadCount.isDepleted()) {
         this.time.addEvent({
-          delay : this.laserFrequency * this.shootingPhase,
+          delay : LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency * ShootingPhase.NORMAL*this.boosterEffect.shootingPhase,
           callback : () => {
             this.scene.pause()
             this.scene.launch('end game', { score: this.score.getScore() })

@@ -27,9 +27,7 @@ export default class characterSelectUi {
 
 
     constructor(scene : Phaser.Scene, usingCharIndex?: number, showingCharIndex?:number) {
-        this.scene = scene
-        this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
-        this.showingCharIndex = showingCharIndex === undefined? 0 : (showingCharIndex)
+        this.createInstance(scene, usingCharIndex, showingCharIndex)
     }
     
 
@@ -73,9 +71,10 @@ export default class characterSelectUi {
         await tirabase.updatePlayerUsingCharacter(this.usingCharIndex);
     }
 
-    private async createInstance(scene : Phaser.Scene, usingCharIndex?: number) {
+    private async createInstance(scene : Phaser.Scene, usingCharIndex?: number, showingCharIndex?:number) {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
+        this.showingCharIndex = showingCharIndex === undefined ? 1 : showingCharIndex
         const { width } = scene.scale;
 
         const i18n = I18nSingleton.getInstance();

@@ -352,7 +352,15 @@ export const PlayerAchievements: PlayerAchievementSchema[] = [
      },
      {
           player_id: 1,
-          achievement_id: 6
+          achievement_id: 2
+     },
+     {
+          player_id: 1,
+          achievement_id: 3
+     },
+     {
+          player_id: 1,
+          achievement_id: 4
      }
 ]
 

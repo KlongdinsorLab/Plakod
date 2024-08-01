@@ -34,6 +34,7 @@ export default class Player {
 	private bullet: number = 0
 	private isBulletFull: boolean = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
+	private isUsedShield = false
 	// private soundManager: SoundManager
 	// private playerHitSounds!: (Phaser.Sound.NoAudioSound
 	// 	| Phaser.Sound.WebAudioSound
@@ -291,6 +292,7 @@ export default class Player {
 	}
 
 	activateShield(remainingTime?:number): void {
+		this.isUsedShield = true
 		if(remainingTime){
 			this.shield.countDownShield()
 		}else{
@@ -300,6 +302,9 @@ export default class Player {
 
 	deactivateShield(): void {
 		this.shield.deactivate()
+	}
+	getIsUsedShield(): boolean {
+		return this.isUsedShield
 	}
 
 	hide(): void {
