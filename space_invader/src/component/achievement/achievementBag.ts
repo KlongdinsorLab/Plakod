@@ -2,7 +2,6 @@ import { AchievementUI } from "./achievementUI"
 import { RewardPopup } from "component/popup/RewardPopup"
 import I18nSingleton from "i18n/I18nSingleton"
 import { TOTAL_MC } from "config"
-import { tirabase } from "scene/TitleScene"
 export default class AchievementBag{
     private scene: Phaser.Scene
     private achievementUI: AchievementUI[]
@@ -299,7 +298,6 @@ export default class AchievementBag{
     }
     unlockReward(achievement:number):void {
         const characterId = (achievement/4)+1
-        tirabase.addPlayerCharacter(characterId)
         this.rewardPopup = new RewardPopup(this.scene, characterId)
         this.rewardPopup.create()
         this.initFontStyle()
