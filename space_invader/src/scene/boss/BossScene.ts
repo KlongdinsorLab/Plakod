@@ -34,13 +34,11 @@ import { BoosterFactory } from 'component/item/BoosterFactory'
 import { ShootingPhase } from 'component/player/Player'
 
 import { boosters } from 'scene/booster/RedeemScene'
-import { BoosterName } from 'component/booster/booster'
+import { BoosterEffect } from 'component/booster/booster'
 import { BoosterUI } from 'component/booster/boosterUI'
 
 import { Booster1 } from 'component/booster/boosterList/booster_1'
 import { Booster2 } from 'component/booster/boosterList/booster_2'
-import { Booster4 } from 'component/booster/boosterList/booster_4'
-import { BoosterRare1 } from 'component/booster/boosterList/booster_rare1'
 
 
 export default class BossScene extends Phaser.Scene {
@@ -48,8 +46,6 @@ export default class BossScene extends Phaser.Scene {
 	private player!: Player
 	private gaugeRegistry!: InhaleGaugeRegistry
 	private score!: Score
-
-	private laserFactoryName!: keyof typeof LaserFactoryByName
 
 	private reloadCount!: ReloadCount
 	private laserFactory!: LaserFactory
@@ -71,16 +67,7 @@ export default class BossScene extends Phaser.Scene {
 	private bgm!: Phaser.Sound.BaseSound
 	private soundManager: SoundManager
 
-	private shootingPhase1!: ShootingPhase
-	private shootingPhase2!: ShootingPhase
-	private laserFrequency!: number
-	private releasedBullet!: number
-	private bulletCount1!: number
-	private bulletCount2!: number
-	
-	//private booster1!: Booster1
-	private booster4!: Booster4
-	private boosterRare1!: BoosterRare1
+	private boosterEffect!: BoosterEffect
 
 	constructor() {
 		super({ key: 'bossScene' })
@@ -210,55 +197,19 @@ export default class BossScene extends Phaser.Scene {
 		this.boosterFactory = new BoosterFactory()
 
 		this.isCompleteItemTutorial = false
-
-		//set ui for booster
+		
 		boosters.forEach(booster => {
 			const boosterUI = new BoosterUI(this, booster, {x:594, y:1142})
 			boosterUI.create()
-			
 		})
-		
-		//initialize variables for booster
-		this.shootingPhase1 = ShootingPhase.BOSS_PHASE_1
-		this.shootingPhase2 = ShootingPhase.BOSSV1_PHASE_2
-		this.bulletCount1 = ShootingPhase.BOSS_PHASE_1
-		this.bulletCount2 = ShootingPhase.BOSSV1_PHASE_2
-		this.laserFrequency = LASER_FREQUENCY_MS
-		this.laserFactoryName = 'single'
 
-		if(boosters.includes(BoosterName.BOOSTER_1)){
-			if(booster1 === undefined){
-				booster1 = new Booster1(this.player)
-			}else{
-				booster1.setPlayer(this.player)
-				booster1.setIsCompleteBossPhase(false)
-			}
+		this.boosterEffect = this.scene.scene.registry.get("boosterEffect")
+		
+		if(this.boosterEffect.remainingUses === 0 && this.boosterEffect.remainingTime > 0 && this.boosterEffect.remainingTime < 15){
+			this.player.activateShield(this.boosterEffect.remainingTime)
 		}
-		if(boosters.includes(BoosterName.BOOSTER_2)){
-			if(booster2 === undefined){
-				booster2 = new Booster2(this.player)
-			}else{
-				booster2.setPlayer(this.player)
-				booster2.setIsCompleteBossPhase(false)
-				booster2.applyBooster()
-			}
-		}
-		if(boosters.includes(BoosterName.BOOSTER_4)){
-			this.booster4 = new Booster4()
-			const boosterEffect = this.booster4.applyBooster(LASER_FREQUENCY_MS,this.shootingPhase1,this.shootingPhase2)
-			this.laserFrequency = boosterEffect.laserFrequency
-			this.shootingPhase1 = boosterEffect.bulletCount
-			this.shootingPhase2 = boosterEffect.shootingPhase
-		}
-		if(boosters.includes(BoosterName.BOOSTER_RARE1)){
-			this.boosterRare1 = new BoosterRare1()
-			const boosterEffect = this.boosterRare1.applyBooster()
-			this.laserFactoryName = boosterEffect.laserFactory
-			this.releasedBullet = boosterEffect.releasedBullet
-			this.shootingPhase1 = this.shootingPhase1 * boosterEffect.bulletMultiply
-			this.shootingPhase2 = this.shootingPhase2 * boosterEffect.bulletMultiply
-		  }
-		this.laserFactory = new LaserFactoryByName[this.laserFactoryName]();
+
+		this.laserFactory = new LaserFactoryByName[this.boosterEffect.laserFactory]();
 
 		const self = this
 		WebFont.load({
@@ -358,8 +309,7 @@ export default class BossScene extends Phaser.Scene {
 			!this.boss.getIsAttackPhase() &&
 			!this.boss.getIsItemPhase()
 		) {
-			booster1?.setIsCompleteBossPhase(true)
-			booster2?.setIsCompleteBossPhase(true)
+			if(this.player.getIsUsedShield() && this.boosterEffect.remainingTime > 0) this.player.deactivateShield()
 			this.scene.launch(BossCutScene.ESCAPE2, {
 				score: this.score.getScore(),
 				reloadCount: this.reloadCount.getCount(),
@@ -392,19 +342,27 @@ export default class BossScene extends Phaser.Scene {
 			delta,
 			{
 				bossSkill:this.boss.getSkill(),
-				laserFrequency: this.laserFrequency,
+				laserFrequency: LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
 			},
 		)
 
 		if (this.player.getIsReload()) {
 			if (!this.boss.getIsSecondPhase()) {
-				this.laserFactory.set(this.bulletCount1)
-				this.player.reloadSet(this.bulletCount1, this.laserFrequency)
-				gauge.set(this.shootingPhase1, this.laserFrequency, this.releasedBullet)
+				this.laserFactory.set(ShootingPhase.BOSS_PHASE_1*this.boosterEffect.shootingPhase)
+				this.player.reloadSet(ShootingPhase.BOSS_PHASE_1*this.boosterEffect.shootingPhase, LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency)
+				gauge.set(
+					ShootingPhase.BOSS_PHASE_1 * this.boosterEffect.shootingPhase * this.boosterEffect.bulletMultiply, 
+					LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency, 
+					this.boosterEffect.releasedBullet
+				)
 			} else {
-				this.laserFactory.set(this.bulletCount2)
-				this.player.reloadSet(this.bulletCount2, this.laserFrequency)
-				gauge.set(this.shootingPhase2, this.laserFrequency, this.releasedBullet)
+				this.laserFactory.set(ShootingPhase.BOSSV1_PHASE_2*this.boosterEffect.shootingPhase)
+				this.player.reloadSet(ShootingPhase.BOSSV1_PHASE_2*this.boosterEffect.shootingPhase, LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency)
+				gauge.set(
+					ShootingPhase.BOSSV1_PHASE_2 * this.boosterEffect.shootingPhase * this.boosterEffect.bulletMultiply, 
+					LASER_FREQUENCY_MS*this.boosterEffect.laserFrequency, 
+					this.boosterEffect.releasedBullet
+				)
 			}
 		}
 	}

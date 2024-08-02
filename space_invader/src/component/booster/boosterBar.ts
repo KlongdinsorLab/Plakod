@@ -31,7 +31,6 @@ export default class boosterBar{
         {boosterId: 6 ,     expireDate: [], amount : 1},
         {boosterId: 7 ,     expireDate: [], amount : 2},
   ]
-
     
 
     constructor(scene: Phaser.Scene){

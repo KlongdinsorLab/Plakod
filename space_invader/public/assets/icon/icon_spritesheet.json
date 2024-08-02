@@ -22,7 +22,7 @@
 			}
 		},
 		{
-			"filename": "icon_achievement unlocked.png",
+			"filename": "icon_achievement_unlocked.png",
 			"frame": {
 				"x": 57,
 				"y": 1,
@@ -64,10 +64,31 @@
 			}
 		},
 		{
-			"filename": "icon_back.png",
+			"filename": "icon_alert.png",
 			"frame": {
 				"x": 204,
 				"y": 1,
+				"w": 48,
+				"h": 48
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 48,
+				"h": 48
+			},
+			"sourceSize": {
+				"w": 48,
+				"h": 48
+			}
+		},
+		{
+			"filename": "icon_back.png",
+			"frame": {
+				"x": 204,
+				"y": 51,
 				"w": 61,
 				"h": 54
 			},
@@ -87,7 +108,7 @@
 		{
 			"filename": "icon_backtohome.png",
 			"frame": {
-				"x": 267,
+				"x": 254,
 				"y": 1,
 				"w": 53,
 				"h": 48
@@ -108,8 +129,8 @@
 		{
 			"filename": "icon_badge_bronze.png",
 			"frame": {
-				"x": 267,
-				"y": 51,
+				"x": 1,
+				"y": 107,
 				"w": 64,
 				"h": 73
 			},
@@ -129,8 +150,8 @@
 		{
 			"filename": "icon_badge_gold.png",
 			"frame": {
-				"x": 1,
-				"y": 126,
+				"x": 67,
+				"y": 107,
 				"w": 64,
 				"h": 73
 			},
@@ -150,8 +171,8 @@
 		{
 			"filename": "icon_badge_silver.png",
 			"frame": {
-				"x": 67,
-				"y": 126,
+				"x": 133,
+				"y": 107,
 				"w": 64,
 				"h": 73
 			},
@@ -171,8 +192,8 @@
 		{
 			"filename": "icon_bag.png",
 			"frame": {
-				"x": 133,
-				"y": 126,
+				"x": 267,
+				"y": 51,
 				"w": 43,
 				"h": 52
 			},
@@ -192,8 +213,8 @@
 		{
 			"filename": "icon_battery.png",
 			"frame": {
-				"x": 178,
-				"y": 126,
+				"x": 199,
+				"y": 107,
 				"w": 52,
 				"h": 32
 			},
@@ -213,8 +234,8 @@
 		{
 			"filename": "icon_bluetooth.png",
 			"frame": {
-				"x": 322,
-				"y": 1,
+				"x": 267,
+				"y": 105,
 				"w": 40,
 				"h": 40
 			},
@@ -229,34 +250,13 @@
 			"sourceSize": {
 				"w": 40,
 				"h": 40
-			}
-		},
-		{
-			"filename": "icon_cry.png",
-			"frame": {
-				"x": 232,
-				"y": 126,
-				"w": 112,
-				"h": 112
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 112,
-				"h": 112
-			},
-			"sourceSize": {
-				"w": 112,
-				"h": 112
 			}
 		},
 		{
 			"filename": "icon_difficulty.png",
 			"frame": {
-				"x": 1,
-				"y": 240,
+				"x": 199,
+				"y": 147,
 				"w": 58,
 				"h": 56
 			},
@@ -276,8 +276,8 @@
 		{
 			"filename": "icon_guidebook.png",
 			"frame": {
-				"x": 61,
-				"y": 240,
+				"x": 259,
+				"y": 147,
 				"w": 39,
 				"h": 48
 			},
@@ -297,8 +297,8 @@
 		{
 			"filename": "icon_heart_bronze.png",
 			"frame": {
-				"x": 102,
-				"y": 240,
+				"x": 1,
+				"y": 197,
 				"w": 63,
 				"h": 54
 			},
@@ -318,8 +318,8 @@
 		{
 			"filename": "icon_heart_gold.png",
 			"frame": {
-				"x": 167,
-				"y": 240,
+				"x": 66,
+				"y": 197,
 				"w": 63,
 				"h": 54
 			},
@@ -339,8 +339,8 @@
 		{
 			"filename": "icon_heart_silver.png",
 			"frame": {
-				"x": 232,
-				"y": 240,
+				"x": 131,
+				"y": 197,
 				"w": 63,
 				"h": 54
 			},
@@ -360,8 +360,8 @@
 		{
 			"filename": "icon_level.png",
 			"frame": {
-				"x": 364,
-				"y": 1,
+				"x": 196,
+				"y": 205,
 				"w": 97,
 				"h": 88
 			},
@@ -381,8 +381,8 @@
 		{
 			"filename": "icon_lock.png",
 			"frame": {
-				"x": 346,
-				"y": 91,
+				"x": 312,
+				"y": 1,
 				"w": 80,
 				"h": 82
 			},
@@ -397,55 +397,13 @@
 			"sourceSize": {
 				"w": 80,
 				"h": 82
-			}
-		},
-		{
-			"filename": "icon_open now.png",
-			"frame": {
-				"x": 346,
-				"y": 175,
-				"w": 80,
-				"h": 82
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 80,
-				"h": 82
-			},
-			"sourceSize": {
-				"w": 80,
-				"h": 82
-			}
-		},
-		{
-			"filename": "icon_pause.png",
-			"frame": {
-				"x": 297,
-				"y": 259,
-				"w": 112,
-				"h": 112
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 112,
-				"h": 112
-			},
-			"sourceSize": {
-				"w": 112,
-				"h": 112
 			}
 		},
 		{
 			"filename": "icon_play.png",
 			"frame": {
-				"x": 1,
-				"y": 373,
+				"x": 312,
+				"y": 85,
 				"w": 61,
 				"h": 67
 			},
@@ -465,8 +423,8 @@
 		{
 			"filename": "icon_play again.png",
 			"frame": {
-				"x": 178,
-				"y": 175,
+				"x": 300,
+				"y": 154,
 				"w": 52,
 				"h": 49
 			},
@@ -486,8 +444,8 @@
 		{
 			"filename": "icon_ranking.png",
 			"frame": {
-				"x": 64,
-				"y": 373,
+				"x": 295,
+				"y": 205,
 				"w": 63,
 				"h": 52
 			},
@@ -507,7 +465,7 @@
 		{
 			"filename": "icon_setting.png",
 			"frame": {
-				"x": 411,
+				"x": 1,
 				"y": 259,
 				"w": 48,
 				"h": 52
@@ -528,8 +486,8 @@
 		{
 			"filename": "icon_turnoff.png",
 			"frame": {
-				"x": 1,
-				"y": 313,
+				"x": 51,
+				"y": 259,
 				"w": 42,
 				"h": 46
 			},
@@ -547,31 +505,10 @@
 			}
 		},
 		{
-			"filename": "icon_unlocked.png",
+			"filename": "icon_volumn_off.png",
 			"frame": {
-				"x": 463,
-				"y": 1,
-				"w": 79,
-				"h": 102
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 79,
-				"h": 102
-			},
-			"sourceSize": {
-				"w": 79,
-				"h": 102
-			}
-		},
-		{
-			"filename": "icon_volumn off.png",
-			"frame": {
-				"x": 428,
-				"y": 105,
+				"x": 95,
+				"y": 259,
 				"w": 52,
 				"h": 54
 			},
@@ -589,10 +526,10 @@
 			}
 		},
 		{
-			"filename": "icon_volumn on.png",
+			"filename": "icon_volumn_on.png",
 			"frame": {
-				"x": 482,
-				"y": 105,
+				"x": 295,
+				"y": 259,
 				"w": 61,
 				"h": 49
 			},
@@ -612,8 +549,8 @@
 		{
 			"filename": "icon_white_arrow.png",
 			"frame": {
-				"x": 482,
-				"y": 156,
+				"x": 354,
+				"y": 154,
 				"w": 40,
 				"h": 40
 			},
@@ -637,8 +574,8 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 544,
-			"h": 441
+			"w": 395,
+			"h": 314
 		},
 		"scale": "1"
 	}

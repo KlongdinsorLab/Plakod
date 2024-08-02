@@ -16,7 +16,7 @@ export class BoosterUI {
     private state: States = States.UNAVAILABLE;
     private amount:number| undefined;
     private frame!:string;
-    private expireDate: Date| undefined;
+    private expireDate: string| undefined;
     private expireArray: string[]= [];
     private markCircle! :Phaser.GameObjects.Arc;
     private markText! :Phaser.GameObjects.Text;
@@ -29,11 +29,11 @@ export class BoosterUI {
     private timeText!: string;
     private countdownIndex : number = 0;
     private countdownTime!: Phaser.GameObjects.Text;
+    private timeEvent!: Phaser.Time.TimerEvent;
     private isCompleteInit: boolean = false;
-    //private inGameBooster: boolean = false;
-    //private remainingUses?: number;
-    //private remainingTime?: number;
-    //private remainingText!: Phaser.GameObjects.Text;
+    private isBoosterBag: boolean = false;
+    private isTimeout: boolean = false;
+
 
     constructor(
         scene: Phaser.Scene, 
@@ -44,12 +44,10 @@ export class BoosterUI {
             width?: number,
             height?:number,
             amount?:number, 
-            expireDate?:Date, 
+            expireDate?:string | null, 
             expireArray?:string[],
             canSelect?:boolean,
-            inGameBooster?:boolean,
-            remainingUses?:number,
-            remainingTime?:number
+            isBoosterBag?:boolean,
         }
         ) {
         
@@ -66,15 +64,12 @@ export class BoosterUI {
         };
 
         this.isCompleteInit = false;
-
+        this.isBoosterBag = options?.isBoosterBag?? false
         this.amount = options?.amount?? 0
         this.expireDate = options?.expireDate?? undefined
         this.expireArray = options?.expireArray?? []
         this.setState()
 
-        //this.inGameBooster = options?.inGameBooster ?? false
-        //this.remainingUses = options?.remainingUses ?? undefined
-        //this.remainingTime = options?.remainingTime ?? undefined
     }
     create(): void{
         if(this.name === BoosterName.BOOSTER_1){
@@ -104,7 +99,13 @@ export class BoosterUI {
     }
 
     setState(): void{
-        if(this.expireDate || this.expireArray){
+        if(this.expireDate && this.isBoosterBag){
+            this.state = States.LIMITED_TIME
+        }
+        if(this.expireDate === undefined && this.isBoosterBag){
+            this.state = States.UNAVAILABLE
+        }
+        if(this.expireArray && !this.isBoosterBag){
             this.state = States.LIMITED_TIME
             if(this.countdownIndex > this.expireArray.length-1){
                 this.state = States.PERMANENT
@@ -118,7 +119,7 @@ export class BoosterUI {
             this.state = States.PERMANENT
             this.isCompleteInit = true
         }
-    
+
     }
 
     initBooster(): void{
@@ -126,7 +127,7 @@ export class BoosterUI {
             this.setAmount()
         }else if(this.state === States.LIMITED_TIME){
             if(this.expireDate){
-
+                this.setTimer()
             }else if(this.expireArray){
                 this.setAmount()
                 this.setTimer()
@@ -140,35 +141,45 @@ export class BoosterUI {
         if (this.markText) {
             this.markText.setText(this.amount!.toString())
         }else{
-            this.markCircle = this.scene.add.circle(this.position.x + 104, this.position.y, 16, 0xD35E24).setOrigin(1, 0);
-            this.markText = this.scene.add.text(this.position.x + 88, this.position.y + 2, this.amount!.toString()).setOrigin(0.5, 0);
+            this.markCircle = this.scene.add.circle(this.position.x + 104, this.position.y, 16, 0xD35E24).setOrigin(1, 0).setDepth(1)
+            this.markText = this.scene.add.text(this.position.x + 88, this.position.y + 2, this.amount!.toString()).setOrigin(0.5, 0).setDepth(1)
             this.initFontStyle()
         }
     }
 
     setTimer(): void {
-        const expire = this.expireArray[this.countdownIndex];
-        let dateObject: Date = new Date(expire);
+        let dateObject: Date
+        if(this.expireArray && !this.isBoosterBag){
+            const expire = this.expireArray[this.countdownIndex];
+            dateObject = new Date(expire)
+        }else if(this.expireDate){
+            dateObject = new Date(this.expireDate)
+        }
 
-        this.countdownTime = this.scene.add.text(this.position.x, this.position.y + 104, '', { fontSize: '20px', color: '#111111' }).setOrigin(0, 0);
+        this.countdownTime = this.scene.add.text(this.position.x, this.position.y + 104, '', { fontSize: '20px', color: '#111111' }).setOrigin(0, 0).setColor('#000000')
         this.initFontStyle()
 
-        const timerEvent = this.scene.time.addEvent({
+        this.timeEvent = this.scene.time.addEvent({
             delay: 1000,
             callback: () => {
                 const timeCount = this.timeService.getDurationTime(dateObject);
                 if (timeCount === 'timeout') {
                     //console.log('timeout',this.name);
-                    this.countdownIndex++;
-                    this.amount!--;
-
+                    if(this.expireArray && !this.isBoosterBag){
+                        this.countdownIndex++;
+                        this.amount!--;
+                    }else if(this.expireDate){
+                        this.expireDate = undefined
+                        this.isTimeout = true
+                        this.destroy()
+                    }
                     if (this.countdownTime.active) {
                         this.countdownTime.destroy()
                     }
                     this.isCompleteInit = false
                     this.setState()
                     this.initBooster();
-                    timerEvent.remove();
+                    this.timeEvent.remove();
                 }else{
                     this.countdownTime.setText(timeCount);
                     this.timeText = timeCount;
@@ -181,14 +192,14 @@ export class BoosterUI {
     
     setUnavailable(): void {
         
-        if (this.markCircle) {
+       if(!this.isBoosterBag){ if (this.markCircle) {
             this.markCircle.destroy();
 
         }
         if (this.markText) {
             this.markText.destroy();
         }
-        this.unavailableCircle = this.scene.add.circle(this.position.x, this.position.y, 48, 0x000000, 0.6).setOrigin(0, 0);
+        this.unavailableCircle = this.scene.add.circle(this.position.x, this.position.y, 48, 0x000000, 0.6).setOrigin(0, 0);}
         this.isCompleteInit = true
 
         if (this.onSetUnavailableCallback) {
@@ -196,11 +207,10 @@ export class BoosterUI {
         }
     }
 
+
     onSetUnavailable(callback: () => void): void {
         this.onSetUnavailableCallback = callback;
     }
-
-
     
     getBody(): Phaser.GameObjects.Image{
         return  this.boosterImage
@@ -234,6 +244,10 @@ export class BoosterUI {
         return this.frame
     }
 
+    getIsTimeout():boolean{
+        return this.isTimeout
+    }
+
     setBoosterWidth(width:number): void{
         this.boosterSize.width = width
     }
@@ -246,22 +260,22 @@ export class BoosterUI {
         this.markCircle?.destroy()
         this.markText?.destroy()
         this.countdownTime?.destroy()
+        this.timeEvent?.remove()
         this.unavailableCircle?.destroy()
 
     }
 
     initFontStyle(): void{
         if(this.markText){
-            this.markText.setStyle({
+            this.markText?.setStyle({
                 fontFamily: 'Jua',
                 fontWeight: 400,
                 fontSize: '20px',
                 color: '#57453B',
             }).setStroke('#ffffff', 6);
         }
-        
         if(this.countdownTime){
-            this.countdownTime.setStyle({
+            this.countdownTime?.setStyle({
                 fontFamily: 'Jua',
                 fontWeight: 400,
                 fontSize: '20px',

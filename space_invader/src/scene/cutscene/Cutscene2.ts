@@ -4,6 +4,7 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
+
 export default class Cutscene1 extends Phaser.Scene {
     private mcName!: keyof typeof PlayerByName
 	private bgm?: Phaser.Sound.BaseSound
@@ -47,7 +48,7 @@ export default class Cutscene1 extends Phaser.Scene {
 
 		const cutsceneText = i18n
 			.createTranslatedText(this, width / 2, 1019, 'cutscene2_dialog', {
-				username: 'username',
+				username: this.registry.get('username'),
 			})
 			.setOrigin(0.5, 0)
 			.setAlpha(1)

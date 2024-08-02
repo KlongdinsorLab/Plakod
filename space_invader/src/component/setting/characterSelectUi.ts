@@ -25,6 +25,12 @@ export default class characterSelectUi {
     private useText : Phaser.GameObjects.Text | undefined
     private usingText : Phaser.GameObjects.Text | undefined
 
+
+    constructor(scene : Phaser.Scene, usingCharIndex?: number, showingCharIndex?:number) {
+        this.createInstance(scene, usingCharIndex, showingCharIndex)
+    }
+    
+
     private getLogoCharacterById(characterId: number) {
         return `logo_setting_mc${characterId}.png`
     }
@@ -65,12 +71,14 @@ export default class characterSelectUi {
         await tirabase.updatePlayerUsingCharacter(this.usingCharIndex);
     }
 
-    private async createInstance(scene : Phaser.Scene, usingCharIndex?: number) {
+    private async createInstance(scene : Phaser.Scene, usingCharIndex?: number, showingCharIndex?:number) {
         this.scene = scene
         this.usingCharIndex = usingCharIndex === undefined ? 0 : usingCharIndex
+        this.showingCharIndex = showingCharIndex === undefined ? 1 : showingCharIndex
         const { width } = scene.scale;
 
         const i18n = I18nSingleton.getInstance();
+
 
         // call api
         await this.handleCharacterData();
@@ -130,10 +138,6 @@ export default class characterSelectUi {
             .setOrigin(0.5,0.5)
         // Initiate First Character
         this.charShift(0)
-    }
-
-    constructor(scene : Phaser.Scene, usingCharIndex?: number) {
-        this.createInstance(scene, usingCharIndex);
     }
 
 

@@ -69,3 +69,4 @@ export const GREEN = 0x05FF00
 
 export const VAS_COUNT = 10
 export const MAX_PLAYED = 10
+export const TOTAL_MC = 2

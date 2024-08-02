@@ -7,9 +7,7 @@ import RewardDialog from 'component/ui/RewardDialog'
 import RestartButton from 'component/ui/Button/RestartButton'
 import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
-import { boosters } from './booster/RedeemScene'
-import { BoosterName } from 'component/booster/booster'
-import { BoosterRare2 } from 'component/booster/boosterList/booster_rare2'
+import { BoosterEffect } from 'component/booster/booster'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -26,6 +24,7 @@ export default class EndGameScene extends Phaser.Scene {
 	private scoreText!: Phaser.GameObjects.Text
 	private completeText!: Phaser.GameObjects.Text
 
+	private boosterEffect!: BoosterEffect
 	private vas!: vas
 
 	private playerJson = {"totalPlayed" : 20, "todayPlayed" : 9}
@@ -91,9 +90,8 @@ export default class EndGameScene extends Phaser.Scene {
 		const i18n = I18nSingleton.getInstance()
 		// TODO: call api
 
-		if(boosters.includes(BoosterName.BOOSTER_RARE2)){
-			this.score = new BoosterRare2().applyBooster(this.score)
-		}
+		this.boosterEffect = this.scene.scene.registry.get("boosterEffect")
+		this.score = this.score * this.boosterEffect.score
 		
 		//this.playCount = Number(localStorage.getItem('playCount') ?? '')
 		this.add

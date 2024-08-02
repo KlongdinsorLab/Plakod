@@ -1,48 +1,24 @@
-import { Booster, BoosterName } from "../booster";
-import Player from "component/player/Player";
+import { Booster, BoosterName, BoosterEffect } from "../booster";
 
 export class Booster1 extends Booster {
-    private isActivated: boolean = false;
     private remainingUses: number;
-    private player!: Player;
-    private isCompleteBossPhase: boolean = false;
-    constructor(player: Player) {
+    constructor() {
         super(BoosterName.BOOSTER_1);
         this.remainingUses = 4;
-        this.player = player;
     }
-    applyBooster():void{
-        if(this.isCompleteBossPhase){
-            this.player.deactivateShield();
-            return
-        }
-        if(this.remainingUses === 4){
-            this.isActivated = true;
-            this.remainingUses--;
-            this.player.activateShield();
-        }
-        else if(this.remainingUses > 0){
-            this.remainingUses--;
-            this.player.activateShield();
-        }
-        else if(this.remainingUses === 0){
-            this.remainingUses--;
-            this.player.deactivateShield();
+    getBoosterEffect():BoosterEffect{
+        return {
+            remainingUses: this.remainingUses,
+            remainingTime: 0,
+            hitMeteorScore: 0,
+            laserFrequency: 0,
+            bulletCount: 0,
+            shootingPhase: 0,
+            destroyMeteorScore: 0, 
+            laserFactory: 'single',
+            releasedBullet: 0,
+            bulletMultiply: 0,
+            score: 0,
         }
     }
-    setIsCompleteBossPhase(isCompleteBossPhase: boolean):void{
-        this.isCompleteBossPhase = isCompleteBossPhase;
-        if(this.isCompleteBossPhase){
-            this.applyBooster()
-        }
-    }
-    setPlayer(player: Player):void{
-        this.player = player;
-    }
-    getRemainingUses():number{
-        return this.remainingUses;
-    }
-    getIsActivated():boolean{
-        return this.isActivated;
-    }   
 }

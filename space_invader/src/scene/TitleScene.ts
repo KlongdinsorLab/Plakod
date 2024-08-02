@@ -14,7 +14,7 @@ tirabase.register('0958927519',
   600,
   3,
 )
-tirabase.login('0958927519');
+tirabase.login('0958927518');
 export { tirabase }
 
 export default class TitleScene extends Phaser.Scene {
@@ -127,7 +127,7 @@ export default class TitleScene extends Phaser.Scene {
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
 
-    this.scene.start(import.meta.env.VITE_START_SCEN || 'home', { bgm: this.bgm })
+    this.scene.start(import.meta.env.VITE_START_SCENE || 'home', { bgm: this.bgm })
     //this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
     // import.meta.env.VITE_START_SCENE && new SoundManager(this).stop(this.bgm!)
 

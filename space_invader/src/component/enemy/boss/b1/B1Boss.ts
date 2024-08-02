@@ -15,9 +15,7 @@ import { B1BossSkill } from './B1BossSkill'
 import { B1BossVersion1 } from './B1BossVersion1'
 import { B1BossVersion2 } from './B1BossVersion2'
 
-import { boosters } from 'scene/booster/RedeemScene'
-import { BoosterName } from 'component/booster/booster'
-import { Booster5 } from 'component/booster/boosterList/booster_5'
+import { BoosterEffect } from 'component/booster/booster'
 
 let isHit = false
 
@@ -39,8 +37,7 @@ export class B1Boss extends Boss {
 	| Phaser.Sound.HTML5AudioSound
 	private bossRemoved!: boolean
 
-	private destroyMeteorScore!: number	
-	private booster5?: Booster5
+	private boosterEffect!: BoosterEffect
 
 	constructor(
 		scene: Phaser.Scene,
@@ -69,12 +66,8 @@ export class B1Boss extends Boss {
 		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
 		this.scene.physics.world.enable(this.bossSkill.getBody())
 
-		//set variable for booster (booster 5: destroy meteor score increase by 10%)
-		this.destroyMeteorScore = DESTROY_METEOR_SCORE
-		if(boosters.includes(BoosterName.BOOSTER_5)){
-			this.booster5 = new Booster5()
-			this.destroyMeteorScore = this.booster5.applyBooster(DESTROY_METEOR_SCORE)
-		}
+
+		this.boosterEffect = scene.registry.get("boosterEffect")
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -126,7 +119,7 @@ export class B1Boss extends Boss {
 			this.enemy.play('boss-move')
 		}, BOSS_HIT_DELAY_MS)
 		// this.soundManager.play(this.enermyDestroyedSound!, true)
-		this.score.add(this.destroyMeteorScore)
+		this.score.add(DESTROY_METEOR_SCORE*this.boosterEffect.destroyMeteorScore)
 	}
 
 	destroy() {

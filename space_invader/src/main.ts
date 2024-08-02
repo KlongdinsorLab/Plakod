@@ -32,6 +32,7 @@ import Cutscene2 from 'scene/cutscene/Cutscene2'
 import SettingScene from 'scene/submenu/SettingScene'
 import LifeCountScene from 'scene/LifeCountScene'
 import DisplayNameScene from 'scene/DisplayNameScene'
+import MyBagScene from 'scene/submenu/MyBagScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -84,6 +85,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		SettingScene,
 		LifeCountScene,
 		DisplayNameScene,
+		MyBagScene,
 	],
 }
 
