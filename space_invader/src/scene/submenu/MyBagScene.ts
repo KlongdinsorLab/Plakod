@@ -347,7 +347,8 @@ export default class MyBagScene extends Phaser.Scene{
     }
     update(): void {
         if(this.boosterBag?.getTimeOut()){
-            this.boosterBag.handleTimeOut()        
+            this.boosterBag.handleTimeOut()  
+            this.setArrowOverlay()     
         }
     }
     showBoosterBag():void{
