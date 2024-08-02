@@ -177,6 +177,7 @@ export default class BoosterBag{
         this.updateFont()
     }
     nextPage():void{
+        if(this.getTotalBoosterShown()-this.startIndex < this.maxBoostersPerLine*this.maxLines) return
         if(this.pageIndex+this.maxBoostersPerLine*this.maxLines >= this.sortedBooster.length) return
         this.pageIndex += this.maxBoostersPerLine*this.maxLines
         this.destroy()
@@ -185,6 +186,7 @@ export default class BoosterBag{
         this.createDefaultText()
     }
     previousPage():void{
+        if(this.getTotalBoosterShown()-this.startIndex < this.maxBoostersPerLine*this.maxLines) return
         if(this.pageIndex < this.maxBoostersPerLine*this.maxLines) return
         this.pageIndex -= this.maxBoostersPerLine*this.maxLines
         this.destroy()

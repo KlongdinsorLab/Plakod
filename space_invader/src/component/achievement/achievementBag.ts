@@ -389,6 +389,7 @@ export default class AchievementBag{
         })
     }
     nextPage():void {
+        if(this.getTotalAchievement()-this.startIndex < this.maxAchievementPerLine*this.maxLines) return
         if(this.pageIndex+this.maxAchievementPerLine*this.maxLines >= this.sortedAchievementJson.length) return
         this.pageIndex += this.maxAchievementPerLine*this.maxLines
         this.achievementBarDestroy()
@@ -398,6 +399,7 @@ export default class AchievementBag{
         this.initFontStyle()
     }
     previousPage():void {
+        if(this.getTotalAchievement()-this.startIndex < this.maxAchievementPerLine*this.maxLines) return
         if(this.pageIndex < this.maxAchievementPerLine*this.maxLines) return
         this.pageIndex -= this.maxAchievementPerLine*this.maxLines
         this.achievementBarDestroy()
