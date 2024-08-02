@@ -392,6 +392,7 @@ export default class AchievementBag{
         if(this.pageIndex+this.maxAchievementPerLine*this.maxLines >= this.sortedAchievementJson.length) return
         this.pageIndex += this.maxAchievementPerLine*this.maxLines
         this.achievementBarDestroy()
+        this.destroyProgressBar()
         this.create()
         this.createDefaultTextDescription()
         this.initFontStyle()
@@ -504,17 +505,7 @@ export default class AchievementBag{
         })
         this.achievementUI.length = 0
     }
-    destroy():void {
-        this.descriptionText?.destroy()
-        this.descriptionLockText?.destroy()
-        this.descriptionTitle?.destroy()
-        this.descriptionDefaultText?.destroy()
-        this.descriptionAchievementUI?.destroy()
-        this.selectedCircle?.destroy()
-        this.selectedAchievement?.destroy()
-        this.iconUnlocked?.destroy()
-        this.textUnlocked?.destroy()
-        this.textNumberUnlocked?.destroy()
+    destroyProgressBar():void{
         this.progressBar?.destroy()
         this.progressBarBackground?.destroy()
         this.progressBarLine?.destroy()
@@ -533,6 +524,29 @@ export default class AchievementBag{
         })
         this.rewardAlert.forEach((alert)=>{
             alert?.destroy()
+        })
+    }
+    destroy():void {
+        this.achievementBarDestroy()
+        this.achievementUI.length = 0
+        this.iconUnlocked?.destroy()
+        this.textUnlocked?.destroy()
+        this.textNumberUnlocked?.destroy()
+        this.progressBar?.destroy()
+        this.progressBarBackground?.destroy()
+        this.progressBarLine?.destroy()
+        this.rewardPopup?.destroy()
+        this.rewardIcon.forEach((icon)=>{
+            icon.destroy()
+        })
+        this.rewardText.forEach((text)=>{
+            text.destroy()
+        })
+        this.rewardHitBox.forEach((hitbox)=>{
+            hitbox.destroy()
+        })
+        this.rewardAlert.forEach((alert)=>{
+            alert.destroy()
         })
         this.achievementUI.forEach((achievement)=>{
             achievement.destroy()
