@@ -117,7 +117,6 @@ export default class AchievementBag{
             'mybag_achievement_default_text'
         )
         .setOrigin(0.5)
-        this.createProgressBar()
         this.defaultTextFontStyle()
     }
     createDefaultUI():void {
@@ -393,7 +392,6 @@ export default class AchievementBag{
         if(this.pageIndex+this.maxAchievementPerLine*this.maxLines >= this.sortedAchievementJson.length) return
         this.pageIndex += this.maxAchievementPerLine*this.maxLines
         this.achievementBarDestroy()
-        this.destroyProgressBar()
         this.create()
         this.createDefaultTextDescription()
         this.initFontStyle()
@@ -507,6 +505,55 @@ export default class AchievementBag{
         })
         this.achievementUI.length = 0
     }
+    show():void {
+        this.achievementUI.forEach((achievement)=>{
+            achievement.show()
+        })
+        this.progressBar?.setVisible(true)
+        this.progressBarBackground?.setVisible(true)
+        this.progressBarLine?.setVisible(true)
+        this.iconUnlocked?.setVisible(true)
+        this.textUnlocked?.setVisible(true)
+        this.textNumberUnlocked?.setVisible(true)
+        this.descriptionDefaultText?.setVisible(true)
+        this.rewardIcon.forEach((icon)=>{
+            icon.setVisible(true)
+        })
+        this.rewardText.forEach((text)=>{
+            text.setVisible(true)
+        })
+        this.rewardHitBox.forEach((hitbox)=>{
+            hitbox.setVisible(true)
+        })
+        this.rewardAlert.forEach((alert)=>{
+            alert.setVisible(true)
+        })
+    }
+    hide():void {
+        this.setDeselected()
+        this.achievementUI.forEach((achievement)=>{
+            achievement.hide()
+        })
+        this.progressBar?.setVisible(false)
+        this.progressBarBackground?.setVisible(false)
+        this.progressBarLine?.setVisible(false)
+        this.iconUnlocked?.setVisible(false)
+        this.textUnlocked?.setVisible(false)
+        this.textNumberUnlocked?.setVisible(false)
+        this.descriptionDefaultText?.setVisible(false)
+        this.rewardIcon.forEach((icon)=>{
+            icon.setVisible(false)
+        })
+        this.rewardText.forEach((text)=>{
+            text.setVisible(false)
+        })
+        this.rewardHitBox.forEach((hitbox)=>{
+            hitbox.setVisible(false)
+        })
+        this.rewardAlert.forEach((alert)=>{
+            alert.setVisible(false)
+        })
+    }
     destroyProgressBar():void{
         this.progressBar?.destroy()
         this.progressBarBackground?.destroy()
@@ -524,9 +571,6 @@ export default class AchievementBag{
         this.rewardAlert.forEach((alert)=>{
             alert.destroy()
         })
-        this.rewardAlert.forEach((alert)=>{
-            alert?.destroy()
-        })
     }
     destroy():void {
         this.achievementBarDestroy()
@@ -538,6 +582,7 @@ export default class AchievementBag{
         this.progressBarBackground?.destroy()
         this.progressBarLine?.destroy()
         this.rewardPopup?.destroy()
+        this.descriptionDefaultText?.destroy()
         this.rewardIcon.forEach((icon)=>{
             icon.destroy()
         })

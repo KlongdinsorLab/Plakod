@@ -255,6 +255,22 @@ export class BoosterUI {
         this.boosterSize.height = height
     }
 
+    hide(): void{
+        this.boosterImage.setVisible(false)
+        this.markCircle?.setVisible(false)
+        this.markText?.setVisible(false)
+        this.countdownTime?.setVisible(false)
+        this.unavailableCircle?.setVisible(false)
+    }
+
+    show(): void{
+        this.boosterImage.setVisible(true)
+        this.markCircle?.setVisible(true)
+        this.markText?.setVisible(true)
+        this.countdownTime?.setVisible(true)
+        this.unavailableCircle?.setVisible(true)
+    }
+
     destroy():void{
         this.boosterImage.destroy()
         this.markCircle?.destroy()

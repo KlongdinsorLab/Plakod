@@ -1,5 +1,6 @@
 import { BoosterUI } from "./boosterUI"
 import { BoosterName } from "./booster"
+import { MARGIN } from "config"
 import I18nSingleton from "i18n/I18nSingleton"
 import i18next from "i18next"
 
@@ -23,6 +24,7 @@ export default class BoosterBag{
     private boosterLimitedTime: { boosterId: number, expireDate: string | null }[] = []
     private sortedBooster: { boosterId: number, expireDate?: string | null, amount?:number }[] = []
 
+    private descriptionBackground!: Phaser.GameObjects.Graphics
     private descriptionText!: Phaser.GameObjects.Text
     private descriptionAmount!: Phaser.GameObjects.Text
     private descriptionDefaultText!: Phaser.GameObjects.Text
@@ -32,6 +34,10 @@ export default class BoosterBag{
     private selectedCircle!: Phaser.GameObjects.Graphics
     private selectedBooster!: BoosterUI | undefined
     private totalBoosterText!: Phaser.GameObjects.Text
+
+    private timeEvent!: Phaser.Time.TimerEvent
+
+    private isHide: boolean = false
 
     constructor(scene:Phaser.Scene, boosterJson:{ boosterId: number, expireDate: string | null }[]){
         this.scene = scene
@@ -124,19 +130,66 @@ export default class BoosterBag{
         this.selectedCircle.lineStyle(4, 0x327F76)
         this.selectedCircle.strokeRoundedRect(position.x, position.y, 96, 96, 100)
         this.boosterGraphics.set(boosterUI.getName(), this.selectedCircle)
-
+        this.timeEvent?.remove()
         this.selectedBooster = boosterUI
     }
     setDeselected():void{
         if(this.selectedBooster !== undefined){ 
             this.boosterGraphics.get(this.selectedBooster.getName())?.destroy()
             this.boosterGraphics.delete(this.selectedBooster.getName())
+            this.descriptionBackground?.destroy()
             this.descriptionBoosterUI.destroy()
             this.descriptionText.destroy()
-            this.descriptionAmount.destroy()
+            this.descriptionAmount?.destroy()
             this.descriptionDefaultText?.setVisible(true)
             this.selectedBooster = undefined
         }
+    }
+    setDescriptionTimeout(boosterUI: BoosterUI):void{
+        this.timeEvent = this.scene.time.addEvent({
+            delay: 3000,
+            callback: () => {
+                this.setDeselected()
+            },
+            repeat: -1
+        })
+        this.descriptionBackground = this.scene.add.graphics()
+        this.descriptionBackground.fillStyle(0xFF0000)
+        this.descriptionBackground.fillRoundedRect(
+            MARGIN,
+            962,
+            624,
+            192,
+            {tl:0, tr:0, bl:40, br:40}
+        )
+        this.descriptionBackground.lineStyle(6, 0xD35E24)
+        this.descriptionBackground.strokeRoundedRect(
+            MARGIN,
+            962,
+            624,
+            192,
+            {tl:0, tr:0, bl:40, br:40}
+        )
+        if(this.selectedBooster !== undefined){
+            this.boosterGraphics.get(this.selectedBooster.getName())?.destroy()
+            this.boosterGraphics.delete(this.selectedBooster.getName())
+            this.descriptionBoosterUI.destroy()
+            this.descriptionText.destroy()
+        }
+        this.descriptionBoosterUI = new BoosterUI(this.scene, boosterUI.getName(), {x: 128, y: 986})
+        this.descriptionBoosterUI.create()
+        this.descriptionText = I18nSingleton.getInstance()
+        .createTranslatedText(
+            this.scene, 
+            252, 
+            998, 
+            'booster_timeout'
+        ).setOrigin(0)
+        .setAlign('left')
+        .setSize(334, 96)
+        .setFontSize(24)
+        .setColor('#FFFFFF')
+        this.updateFont()
     }
     setDescription(boosterUI: BoosterUI):void{
         let text;
@@ -154,6 +207,9 @@ export default class BoosterBag{
             text
         ).setOrigin(0)
         .setAlign('left')
+        .setSize(334, 96)
+        .setFontSize(24)
+        .setColor('#57453B')
         let amountText;
         if(boosterUI.getAmount() === 0){
             const [hours, minutes, seconds] = boosterUI.getTimeText().split(':').map(Number)
@@ -174,6 +230,9 @@ export default class BoosterBag{
             amountText
         ).setOrigin(0)
         .setAlign('left')
+        .setSize(334, 96)
+        .setFontSize(24)
+        .setColor('#D35E24')
         this.updateFont()
     }
     nextPage():void{
@@ -261,11 +320,19 @@ export default class BoosterBag{
         return this.boosterUI
     }
     handleTimeOut():void{
+        if(this.selectedBooster !== undefined){
+            this.setDescriptionTimeout(this.selectedBooster)
+        }else{
+            this.setDeselected()
+        }
         this.boosterDestroy()
         this.startIndex++
         this.pageIndex++
-        this.create()
-        this.boosterFontStyle()
+        this.totalBoosterText.setText(i18next.t('mybag_booster_total_text', {total: (this.totalBooster-this.startIndex)}))
+        if(!this.isHide){
+            this.create()
+            this.boosterFontStyle()
+        }
     }
     getTimeOut():boolean{
         let isTimeout = false
@@ -305,19 +372,46 @@ export default class BoosterBag{
                 fontFamily: 'Mali',
                 fontStyle: 'bold',
             })
-            .setSize(334, 96)
-            .setFontSize(24)
-            .setColor('#57453B')
+            
         }
         if(this.descriptionAmount){
             this.descriptionAmount?.setStyle({
                 fontFamily: 'Mali',
                 fontStyle: 'bold',
             })
-            .setSize(334, 96)
-            .setFontSize(24)
-            .setColor('#D35E24')
         }
+    }
+    hide():void{
+        this.boosterUI?.forEach((booster)=>{
+            booster?.hide()
+        })
+        this.setDeselected()
+        this.totalBoosterText.setVisible(false)
+        this.descriptionText?.setVisible(false)
+        this.descriptionAmount?.setVisible(false)
+        this.descriptionDefaultText?.setVisible(false)
+        this.descriptionBoosterUI?.hide()
+        this.selectedCircle?.setVisible(false)
+        this.selectedBooster?.hide()
+        this.isHide = true
+    }
+    show():void{
+        this.pageIndex = this.startIndex
+        if(this.isHide){
+            this.create()
+            this.boosterFontStyle()
+        }
+        this.boosterUI?.forEach((booster)=>{
+            booster?.show()
+        })
+        this.totalBoosterText.setVisible(true)
+        this.descriptionText?.setVisible(true)
+        this.descriptionAmount?.setVisible(true)
+        this.descriptionDefaultText?.setVisible(true)
+        this.descriptionBoosterUI?.show()
+        this.selectedCircle?.setVisible(true)
+        this.selectedBooster?.show()
+        this.isHide = false
     }
     boosterDestroy():void{
         this.boosterUI.forEach((booster)=>{

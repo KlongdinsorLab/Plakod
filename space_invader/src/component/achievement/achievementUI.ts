@@ -65,6 +65,14 @@ export class AchievementUI {
         .setTint(0x000000)
         .setAlpha(0.5)
     }
+    show():void{
+        this.achievementImage.setVisible(true)
+        this.lockedImage?.setVisible(true)
+    }
+    hide():void{
+        this.achievementImage.setVisible(false)
+        this.lockedImage?.setVisible(false)
+    }
     destroy():void{
         this.achievementImage?.destroy()
         this.lockedImage?.destroy()
