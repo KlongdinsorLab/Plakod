@@ -41,13 +41,6 @@ jobs:
           node-version: 18
       - name: install
         run: npm install
-      - name: 'Create env file'
-        run: |
-          touch .env
-          echo VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }} >> .env
-          echo VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }} >> .env
-          echo VITE_URL_PATH='PlakodGames' >> .env
-          cat .env
       - name: Build
         run: npm run build
       - uses: actions/upload-pages-artifact@v1
