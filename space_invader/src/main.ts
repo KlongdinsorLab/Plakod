@@ -30,6 +30,7 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
+console.log('project id', FIREBASE_PROJECT_ID)
 
 
 
