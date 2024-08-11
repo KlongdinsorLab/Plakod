@@ -46,6 +46,7 @@ jobs:
           touch .env
           echo VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }} >> .env
           echo VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }} >> .env
+          echo VITE_URL_PATH=PlakodGames >> .env
           cat .env
       - name: Build
         run: npm run build
