@@ -25,6 +25,8 @@ jobs:
           cat .env
       - name: build
         run: npm run build
+      - name: List build directory
+        run: ls -la ./dist
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
