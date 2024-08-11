@@ -27,8 +27,6 @@ defaults:
 
 env:
   VITE_URL_PATH: PlakodGames
-  VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-  VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
 
 jobs:
   # Build job
@@ -41,7 +39,7 @@ jobs:
           node-version: 18
       - name: install
         run: npm install
-      - name: Build
+      - name: build
         run: npm run build
       - uses: actions/upload-pages-artifact@v1
         with:

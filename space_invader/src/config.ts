@@ -39,6 +39,6 @@ export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
 const env = import.meta.env;
-export const FIREBASE_API_KEY = (env.VITE_FIREBASE_API_KEY);
-export const FIREBASE_PROJECT_ID = (env.VITE_FIREBASE_PROJECT_ID);
+export const FIREBASE_API_KEY = '${{ secrets.VITE_FIREBASE_API_KEY }}';
+export const FIREBASE_PROJECT_ID = '${{ secrets.VITE_FIREBASE_URL_PATH }}';
 export const VITE_URL_PATH = (env.VITE_URL_PATH);
