@@ -11,7 +11,7 @@ import {
 	setPersistence,
 	browserSessionPersistence,
 } from 'firebase/auth'
-
+import { FIREBASE_PROJECT_ID } from 'config'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -29,6 +29,7 @@ export default class LoginScene extends Phaser.Scene {
 	}
 
 	create() {
+		console.log(FIREBASE_PROJECT_ID)
 		const i18n = I18nSingleton.getInstance();
 		
 		WebFont.load({
