@@ -24,9 +24,9 @@ import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
 
 
 const firebaseConfig = {
-	apiKey: FIREBASE_API_KEY,
-	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
-	projectId: FIREBASE_PROJECT_ID,
+	apiKey: process.env.VITE_FIREBASE_API_KEY,
+	authDomain: `${process.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+	projectId: process.env.VITE_FIREBASE_PROJECT_ID,
 };
 
 initializeApp(firebaseConfig);
