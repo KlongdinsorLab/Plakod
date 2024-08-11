@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist",
+    "public": "space_invader/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
