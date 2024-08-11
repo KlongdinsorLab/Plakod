@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
-import { getCookie, setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
 
 import {
@@ -32,26 +31,6 @@ export default class LoginScene extends Phaser.Scene {
 	create() {
 		const i18n = I18nSingleton.getInstance();
 		
-		if (getCookie('phone')) {
-			// Phone number cookie exists, proceed to the register scene
-			const phoneNumberCookie = getCookie('name');
-			console.log('Phone number cookie exists, proceed to the register scene')
-			console.log('Phone:', phoneNumberCookie);
-			//this.scene.stop();
-			//this.scene.launch('register');
-		}
-		if(getCookie('lastScene') === 'otpScene') {
-			// OTP scene was the last scene, proceed to the confirm scene
-			console.log('OTP scene was the last scene, proceed to the register scene')
-			console.log(getCookie('lastScene'));
-			//this.scene.stop();
-			//this.scene.launch('register');
-		}else if(getCookie('lastScene') === 'confirmScene') {
-			// Confirm scene was the last scene, proceed to the register scene
-			console.log('User already completed registration, proceed to the title scene')
-			//this.scene.stop();
-			//this.scene.launch('title');
-		}
 		WebFont.load({
 			google: {
 				families: ['Sarabun:300,400,500']
@@ -144,8 +123,6 @@ export default class LoginScene extends Phaser.Scene {
 
 		try {
 			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
-			setCookie('lastScene', 'otpScene', { expires: 7, path: '' });
-			this.scene.stop()
 			this.scene.launch('otp', {
 				confirmationResult: confirmationResult,
 				data: { phoneNumber: phoneNumber }

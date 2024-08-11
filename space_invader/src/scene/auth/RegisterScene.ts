@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from "i18next";
-//import { getAuth, updateProfile } from 'firebase/auth'
+import { getAuth, updateProfile } from 'firebase/auth'
 import WebFont from 'webfontloader';
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -65,7 +65,6 @@ export default class RegisterScene extends Phaser.Scene {
 			});
 		}
 
-		//const { width, height } = this.scale
 
 		const element = this.add
 			.dom(0,0)
@@ -129,7 +128,7 @@ export default class RegisterScene extends Phaser.Scene {
 		
 
 		
-
+		
 			element.addListener('submit')
 			element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
 				event.preventDefault()
@@ -138,7 +137,7 @@ export default class RegisterScene extends Phaser.Scene {
 				const airflowSelect = document.getElementById('airflow')! as HTMLSelectElement;
 				const difficultySelect = document.getElementById('difficulty')! as HTMLSelectElement;
 				if (event?.target?.id === 'submit-form') {
-					// TODO
+					// todo: send data to database
 					
 					//const selectedAge = ageSelect.options[ageSelect.selectedIndex].value;
 					//const selectedGender = genderSelect.options[genderSelect.selectedIndex].value;		
@@ -155,13 +154,16 @@ export default class RegisterScene extends Phaser.Scene {
 	update() {}
 
 	async updateProfile(age: string, gender: string, airflow: string, difficulty:string) {
+		console.log(age,gender,airflow,difficulty)
 // 		TODO add database
-		//const auth = getAuth()
-		//const user = auth.currentUser;
-//		await updateProfile(user!, {
-//			displayName: "Test User"
-//		})
-		this.scene.stop()
-		this.scene.launch('confirm',{ age: age, gender: gender, airflow: airflow, difficulty: difficulty})
+		const auth = getAuth()
+		const user = auth.currentUser;
+		await updateProfile(user!, {
+			displayName: "Test User"
+		})
+		if(age !== 'ยังไม่ระบุ' && gender !== 'ยังไม่ระบุ' && airflow !== 'ยังไม่ระบุ' && difficulty !== 'ยังไม่ระบุ'){
+			this.scene.stop()
+			this.scene.launch('confirm',{ age: age, gender: gender, airflow: airflow, difficulty: difficulty})
+		}
 	}
 }

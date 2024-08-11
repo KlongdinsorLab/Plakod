@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import i18next from "i18next";
 import I18nSingleton from 'i18n/I18nSingleton'
-import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader';
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -126,10 +125,6 @@ export default class ConfirmScene extends Phaser.Scene {
             difficultyInput.textContent = i18next.t('register_option_hard');
         }
 
-    
-
-        
-
         element.addListener('click')
 		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
@@ -144,7 +139,6 @@ export default class ConfirmScene extends Phaser.Scene {
                     , difficulty: this.selectedData?.difficulty
                     , edit:true})
 			}else if(event?.target?.id === 'confirm-button'){
-                setCookie('scene', 'confirmScene', { expires: 7, path: '' });
                 alert('ลงทะเบียนเสร็จสิ้น');
             }
 		})

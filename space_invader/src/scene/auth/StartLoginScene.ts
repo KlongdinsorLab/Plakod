@@ -1,14 +1,6 @@
-import Phaser, { Scene } from 'phaser';
-import i18next from "i18next";
+import Phaser from 'phaser';
 import I18nSingleton from 'i18n/I18nSingleton'
-import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader';
-import { MARGIN, LARGE_FONT_SIZE } from 'config'
-
-
-interface DOMEvent<T extends EventTarget> extends Event {
-    readonly target: T
-}
 
 export default class StartLoginScene extends Phaser.Scene {
     private Text!: Phaser.GameObjects.Text;
@@ -26,7 +18,7 @@ export default class StartLoginScene extends Phaser.Scene {
 		)
     }
     create() {
-        const i18n = I18nSingleton.getInstance();
+        //const i18n = I18nSingleton.getInstance();
         const self = this;
 
         WebFont.load({
@@ -63,7 +55,15 @@ export default class StartLoginScene extends Phaser.Scene {
         .setPadding(0,20,0,10)
 
         this.add
-        .nineslice(width/2,864,'landing_page','button_red.png',528,96)
+        .nineslice(
+            width/2,
+            864,
+            'landing_page',
+            'button_red.png',
+            528,
+            96,
+            20,20,20,30
+        )
         .setOrigin(0.5,0)
         .setInteractive().on('pointerup', () => {
             this.scene.stop();

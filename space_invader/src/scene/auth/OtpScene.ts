@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
-import {setCookie } from 'typescript-cookie'
 import WebFont from 'webfontloader'
 
 import {
@@ -13,6 +12,7 @@ import {
 	browserSessionPersistence,
 } from 'firebase/auth'
 
+
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
@@ -20,7 +20,7 @@ export default class OtpScene extends Phaser.Scene {
 	private confirmationResult!: ConfirmationResult
 	private phoneNumber!: string;
 	private isTimeout: boolean = false;
-	private isResend: boolean = false;
+	//private isResend: boolean = false;
 	private countdownInterval: number | undefined
 
 
@@ -146,8 +146,6 @@ export default class OtpScene extends Phaser.Scene {
 		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
 			console.log(event.target.id);
 			if(event.target.id === 'resend' || event.target.id === 'resend-text-button'){
-				console.log('Resend');
-				this.isResend = true;
 				this.signIn(this.phoneNumber);
 			}
 		});
@@ -170,7 +168,7 @@ export default class OtpScene extends Phaser.Scene {
 			const result = await this.confirmationResult.confirm(code)
 			const user = result.user
 			const idToken = await user.getIdToken(true)
-			setCookie('jwt', idToken, { expires: 7, path: '' });
+			localStorage.setItem('idToken', idToken)
 			this.scene.stop()
 			this.scene.launch('register')
 		} catch (e){
@@ -194,7 +192,6 @@ export default class OtpScene extends Phaser.Scene {
 
 		try {
 			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
-			setCookie('lastScene', 'otpScene', { expires: 7, path: '' });
 			this.confirmationResult = confirmationResult;
 			this.phoneNumber = phoneNumber;
 			recaptchaVerifier.clear();
