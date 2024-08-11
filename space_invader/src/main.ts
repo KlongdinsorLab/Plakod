@@ -19,7 +19,7 @@ import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
 import { initializeApp } from "firebase/app";
-import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
+//import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
 
 
 
