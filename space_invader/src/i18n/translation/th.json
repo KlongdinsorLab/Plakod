@@ -84,6 +84,7 @@
   "booster_description_expire":"หมดอายุ {{hours, number}} ชม. {{minutes, number}} นาที",
   "booster_description_expire_seconds":"จะหมดอายุแล้ว!",
   "booster_description_amount":"มีอยู่ {{amount, number}} อัน",
+  "booster_timeout":"บูสเตอร์นี้หมดอายุแล้ว\n เลือกอันอื่นแทนนะ",
   "ranking_title": "อันดับ",
   "accumulate_score": "คะแนนสะสม",
   "accumulate_play": "เล่นสะสม",

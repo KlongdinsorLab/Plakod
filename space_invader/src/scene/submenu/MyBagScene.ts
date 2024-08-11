@@ -49,13 +49,13 @@ export default class MyBagScene extends Phaser.Scene{
 
 
     private boosterJson = [
-        {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:"2024-07-26T12:00:00.000Z" },{boosterId: 1,  expireDate:"2024-07-26T09:00:00.000Z" },
-        {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:"2024-07-26T10:00:00.000Z" },
-        {boosterId: 3,  expireDate:null }, {boosterId: 3,  expireDate:"2024-07-26T11:00:00.000Z" }, {boosterId: 3,  expireDate:"2024-07-27T11:00:00.000Z" },
-        {boosterId: 4,  expireDate:null }, {boosterId: 4,  expireDate:"2024-07-25T08:00:00.000Z" },
-        {boosterId: 5,  expireDate:null }, {boosterId: 5,  expireDate:"2024-07-25T06:00:00.000Z" },
-        {boosterId: 6,  expireDate:null }, {boosterId: 6,  expireDate:"2024-07-27T06:00:00.000Z" },{boosterId: 6,  expireDate:"2024-07-27T08:00:00.000Z" },
-        {boosterId: 7,  expireDate:null }, {boosterId: 7,  expireDate:"2024-07-27T08:00:00.000Z" },
+        {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:"2024-08-12T12:00:00.000Z" },{boosterId: 1,  expireDate:"2024-08-12T09:00:00.000Z" },
+        {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:"2024-08-12T10:00:00.000Z" },
+        {boosterId: 3,  expireDate:null }, {boosterId: 3,  expireDate:"2024-08-12T11:00:00.000Z" }, {boosterId: 3,  expireDate:"2024-08-13T11:00:00.000Z" },
+        {boosterId: 4,  expireDate:null }, {boosterId: 4,  expireDate:"2024-08-12T08:00:00.000Z" },
+        {boosterId: 5,  expireDate:null }, {boosterId: 5,  expireDate:"2024-08-12T06:00:00.000Z" },
+        {boosterId: 6,  expireDate:null }, {boosterId: 6,  expireDate:"2024-08-12T06:00:00.000Z" },{boosterId: 6,  expireDate:"2024-08-13T08:00:00.000Z" },
+        {boosterId: 7,  expireDate:null }, {boosterId: 7,  expireDate:"2024-08-10T08:24:00.000Z" },
   ]
 
     constructor(){
@@ -204,7 +204,7 @@ export default class MyBagScene extends Phaser.Scene{
             this.setBoosterButtonDisabled(true)
             this.setRewardButtonDisabled(false)
             this.startIndex = this.boosterBag.getStartIndex()
-            this.destroyBoosterBag()
+            this.hideBoosterBag()
             this.showAchievementBag()
             this.slotType = SlotType.REWARD
             this.setArrowOverlay()
@@ -255,6 +255,12 @@ export default class MyBagScene extends Phaser.Scene{
         this.boosterBag.createDefaultText()
 
         this.achievementBag = new AchievementBag(this)
+        this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
+        this.achievementBag.create()
+        this.achievementBag.createDefaultTextDescription()
+        this.achievementBag.createDefaultUI()
+        this.achievementBag.createProgressBar()
+        this.achievementBag.hide()
         const currentUnlockedReward = this.achievementBag.getCurrentUnlockedReward()
         if(currentUnlockedReward){
             this.alert = this.add.image(572, 502, 'icon', 'icon_alert.png').setOrigin(0)
@@ -347,27 +353,24 @@ export default class MyBagScene extends Phaser.Scene{
     }
     update(): void {
         if(this.boosterBag?.getTimeOut()){
+            this.startIndex++
             this.boosterBag.handleTimeOut()  
             this.setArrowOverlay()     
         }
     }
     showBoosterBag():void{
         this.boosterBag.setPageIndex(this.boosterBag.getStartIndex())
-        this.boosterBag.create()
-        this.boosterBag.createDefaultText()
+        this.boosterBag.show()
     }
-    destroyBoosterBag():void{
-        this.boosterBag.destroy()
+    hideBoosterBag():void{
+        this.boosterBag.hide()
     }
     showAchievementBag():void{
         if(this.alert) this.alert.destroy()
-        this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
-        this.achievementBag.create()
-        this.achievementBag.createDefaultTextDescription()
-        this.achievementBag.createDefaultUI()
+        this.achievementBag.show()
     }
     destroyAchievementBag():void{
-        this.achievementBag.destroy()
+        this.achievementBag.hide()
     }
     createSlotButton(
         position:{ x:number, y:number }, 

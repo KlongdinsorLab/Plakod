@@ -84,6 +84,7 @@
   "booster_description_expire":"expired in {{hours, number}} hours {{minutes, number}} minutes",
   "booster_description_expire_seconds":"will expired in a minute!",
   "booster_description_amount":"amount: {{amount, number}}",
+  "booster_timeout":"this booster is timeout\n select another one",
   "ranking_title": "Rank",
   "accumulate_score": "Score",
   "accumulate_play": "Play",

@@ -139,6 +139,7 @@ export class PlayerSlotStack{
         this.rank = 0;
         this.playerSlots.forEach(playerSlot => { playerSlot.destroy()});
         this.playerSlots.length = 0;
+        this.currentPlayerSlot?.destroy()
     }
 
     initFontStyle(){
@@ -150,8 +151,8 @@ export class PlayerSlotStack{
 
     destroy(): void{
         this.playerSlots.forEach(playerSlot => { playerSlot.destroy()});
-        this.currentPlayerSlot?.destroy()
         this.playerSlots.length = 0;
+        this.currentPlayerSlot?.destroy()
     }
 
 }
