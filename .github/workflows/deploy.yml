@@ -27,8 +27,8 @@ defaults:
 
 env:
   VITE_URL_PATH: PlakodGames
-  VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-  VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+  VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+  VITE_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
 jobs:
   # Build job
