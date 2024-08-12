@@ -38,7 +38,7 @@ export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
-//const env = import.meta.env;
-export const FIREBASE_API_KEY = (process.env.VITE_FIREBASE_API_KEY);
-export const FIREBASE_PROJECT_ID = (process.env.VITE_FIREBASE_PROJECT_ID);
-export const VITE_URL_PATH = (process.env.VITE_URL_PATH);
+const env = import.meta.env;
+export const FIREBASE_API_KEY = '${{ secrets.VITE_FIREBASE_API_KEY }}';
+export const FIREBASE_PROJECT_ID = '${{ secrets.VITE_FIREBASE_PROJECT_ID }}';
+export const VITE_URL_PATH = (env.VITE_URL_PATH);
