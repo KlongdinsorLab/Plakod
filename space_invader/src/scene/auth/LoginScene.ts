@@ -11,7 +11,7 @@ import {
 	setPersistence,
 	browserSessionPersistence,
 } from 'firebase/auth'
-import { FIREBASE_PROJECT_ID, VITE_URL_PATH } from 'config'
+
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
