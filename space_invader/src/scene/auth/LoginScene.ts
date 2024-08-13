@@ -29,7 +29,6 @@ export default class LoginScene extends Phaser.Scene {
 	}
 
 	create() {
-		console.log(FIREBASE_PROJECT_ID, VITE_URL_PATH)
 		const i18n = I18nSingleton.getInstance();
 		
 		WebFont.load({
