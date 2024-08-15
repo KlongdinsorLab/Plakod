@@ -139,7 +139,9 @@ export default class ConfirmScene extends Phaser.Scene {
                     , difficulty: this.selectedData?.difficulty
                     , edit:true})
 			}else if(event?.target?.id === 'confirm-button'){
-                alert('ลงทะเบียนเสร็จสิ้น');
+                // alert('ลงทะเบียนเสร็จสิ้น');
+                element.destroy()
+                this.scene.launch('home')
             }
 		})
 

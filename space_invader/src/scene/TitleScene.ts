@@ -3,7 +3,6 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 //import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE } from 'config'
 import {
 	browserSessionPersistence,
 	getAuth,

@@ -17,6 +17,7 @@ interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
 export default class LoginScene extends Phaser.Scene {
+	private element!: Phaser.GameObjects.DOMElement
 
 
 	constructor() {
@@ -62,7 +63,7 @@ export default class LoginScene extends Phaser.Scene {
 
 		//const { width, height } = this.scale
 
-		const element = this.add
+		this.element = this.add
 			.dom(0, 0)
 			.createFromCache('loginForm')
 			.setOrigin(0,0)
@@ -75,12 +76,12 @@ export default class LoginScene extends Phaser.Scene {
             .setOrigin(0.5,0.5)
             .setVisible(false)
 
-		element.addListener('submit')
+		this.element.addListener('submit')
 
-		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
+		this.element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
-				const phoneInput = <HTMLInputElement>element.getChildByID('phoneNumber-input')
+				const phoneInput = <HTMLInputElement>this.element.getChildByID('phoneNumber-input')
 				const phoneNumber = this.getPhoneNumber(phoneInput.value.trim())
 				this.signIn(phoneNumber)
 			}
@@ -94,7 +95,7 @@ export default class LoginScene extends Phaser.Scene {
 		];
 		
 		textElementIds.forEach((id, index) => {
-			const textElement = <Element>element.getChildByID(id);
+			const textElement = <Element>this.element.getChildByID(id);
 			textElement.textContent = i18next.t(textElementKeys[index]);
 		});
 		
@@ -123,6 +124,7 @@ export default class LoginScene extends Phaser.Scene {
 
 		try {
 			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
+			this.element.destroy()
 			this.scene.launch('otp', {
 				confirmationResult: confirmationResult,
 				data: { phoneNumber: phoneNumber }

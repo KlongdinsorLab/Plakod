@@ -22,6 +22,7 @@ export default class OtpScene extends Phaser.Scene {
 	private isTimeout: boolean = false;
 	//private isResend: boolean = false;
 	private countdownInterval: number | undefined
+	private element!: Phaser.GameObjects.DOMElement
 
 
 	constructor() {
@@ -79,7 +80,7 @@ export default class OtpScene extends Phaser.Scene {
 		//const { width, height } = this.scale
 
 
-		const element = this.add
+		this.element = this.add
 			.dom(0, 0)
 			.createFromCache('otpForm')
 			.setOrigin(0,0)
@@ -98,37 +99,37 @@ export default class OtpScene extends Phaser.Scene {
 		];
 
 		textElementIds.forEach((id, index) => {
-			const textElement = <Element>element.getChildByID(id)! as HTMLElement;
+			const textElement = <Element>this.element.getChildByID(id)! as HTMLElement;
 			textElement.textContent = i18next.t(textElementKeys[index]);
 		});
 
 
-		element.addListener('submit')
-		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
+		this.element.addListener('submit')
+		this.element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
 				let input = ''
 				for (let i = 1; i <= 6; i++) {
-					const inputElement = <HTMLInputElement>element.getChildByID(`otp${i}`)
+					const inputElement = <HTMLInputElement>this.element.getChildByID(`otp${i}`)
 					input = input + inputElement.value
 				}
 				this.verify(input)
 			}
 		})
 
-		element.addListener('paste')
-		element.on('paste', (event: ClipboardEvent) => {
+		this.element.addListener('paste')
+		this.element.on('paste', (event: ClipboardEvent) => {
 			event.preventDefault()
 			const paste = event?.clipboardData?.getData('text')
 			if (!/^[0-9]{6}?$/.test(paste || '')) return
 			for (let i = 1; i <= 6; i++) {
-				const inputElement = <HTMLInputElement>element.getChildByID(`otp${i}`)
+				const inputElement = <HTMLInputElement>this.element.getChildByID(`otp${i}`)
 				inputElement.value = <string>paste?.substring(i - 1, i)
 			}
 		})
 
-		element.addListener('input')
-		element.on('input', (event: DOMEvent<HTMLInputElement>) => {
+		this.element.addListener('input')
+		this.element.on('input', (event: DOMEvent<HTMLInputElement>) => {
 			const otpId = event.target.id
 			const otpIndex = parseInt(otpId.substring('otp'.length, otpId.length))
 			if (otpIndex > 6) return
@@ -142,8 +143,8 @@ export default class OtpScene extends Phaser.Scene {
 			}
 		})
 
-		element.addListener('click');
-		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
+		this.element.addListener('click');
+		this.element.on('click', (event: DOMEvent<HTMLInputElement>) => {
 			console.log(event.target.id);
 			if(event.target.id === 'resend' || event.target.id === 'resend-text-button'){
 				this.signIn(this.phoneNumber);
@@ -169,6 +170,7 @@ export default class OtpScene extends Phaser.Scene {
 			const user = result.user
 			const idToken = await user.getIdToken(true)
 			localStorage.setItem('idToken', idToken)
+			this.element.destroy()
 			this.scene.stop()
 			this.scene.launch('register')
 		} catch (e){
