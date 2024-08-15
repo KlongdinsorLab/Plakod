@@ -9,6 +9,7 @@ import TutorialHudScene from './scene/tutorial/TutorialHudScene'
 import TutorialControllerScene from './scene/tutorial/TutorialControllerScene'
 import PauseScene from './scene/PauseScene'
 import WarmupScene from './scene/warmup/WarmupScene'
+import WarmupGaugeScene from 'scene/warmup/WarmupGaugeScene'
 import SetupScene from './scene/setup/SetupScene'
 import EndGameScene from './scene/EndGameScene'
 import LoginScene from './scene/auth/LoginScene'
@@ -32,6 +33,23 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 
+import BossScene from 'scene/boss/BossScene'
+import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
+import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
+import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
+import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
+import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
+import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
+import RedeemScene from 'scene/booster/RedeemScene'
+import RankingScene from 'scene/submenu/RankingScene'
+import HomeScene from 'scene/HomeScene'
+import RandomBossCutScene from 'scene/cutscene/RandomBossCutscene'
+import Cutscene1 from 'scene/cutscene/Cutscene1'
+import Cutscene2 from 'scene/cutscene/Cutscene2'
+import SettingScene from 'scene/submenu/SettingScene'
+import LifeCountScene from 'scene/LifeCountScene'
+import DisplayNameScene from 'scene/DisplayNameScene'
+import MyBagScene from 'scene/submenu/MyBagScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -55,6 +73,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		StartLoginScene,
 		LoginScene,
+		HomeScene,
 		OtpScene,
 		RegisterScene,
 		ConfirmScene,
@@ -64,11 +83,28 @@ const config: Phaser.Types.Core.GameConfig = {
 		SetupScene,
 		GameScene,
 		EndGameScene,
+		Cutscene1,
+		Cutscene2,
+		RandomBossCutScene,
 		TutorialCharacterScene,
 		TutorialHudScene,
 		TutorialControllerScene,
+		WarmupGaugeScene,
 		WarmupScene,
+		BossScene,
+		BossItemTutorial,
+		BossTutorialPhase1,
+		BossTutorialPhase2,
+		BossCutSceneVS,
+		BossCutSceneEscape,
+		BossCutSceneEscape2,
 		PauseScene,
+		RedeemScene,
+		RankingScene,
+		SettingScene,
+		LifeCountScene,
+		DisplayNameScene,
+		MyBagScene,
 	],
 }
 

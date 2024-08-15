@@ -9,7 +9,6 @@ export default class I18nSingleton {
 	private constructor() {
 		if (i18next.isInitialized) return
 		i18next?.init({
-			//lng: localStorage.getItem('language') || navigator.language,
 			lng: localStorage.getItem('language') || "th",
 			debug: false,
 			resources: {
