@@ -5,6 +5,7 @@ import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const tirabase = new MockAPIService();
 // TODO login here
@@ -55,6 +56,10 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   async create() {
+
+    const APIService = new supabaseAPIService()
+    const testFunction = await APIService.register("+66123456789",8,'M',500,2)
+    console.log(testFunction)
 
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
@@ -127,7 +132,7 @@ export default class TitleScene extends Phaser.Scene {
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
 
-    this.scene.start(import.meta.env.VITE_START_SCENE || 'home', { bgm: this.bgm })
+    this.scene.start(import.meta.env.VITE_START_SCEN || 'home', { bgm: this.bgm })
     //this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
     // import.meta.env.VITE_START_SCENE && new SoundManager(this).stop(this.bgm!)
 
