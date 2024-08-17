@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import i18next from "i18next";
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader';
+import { tirabase } from 'scene/TitleScene'
+import { Airflow } from 'services/API/definition/typeProperty';
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -141,6 +143,27 @@ export default class ConfirmScene extends Phaser.Scene {
 			}else if(event?.target?.id === 'confirm-button'){
                 // alert('ลงทะเบียนเสร็จสิ้น');
                 element.destroy()
+                console.log({age: ageInput.textContent
+                    , gender: this.selectedData?.gender
+                    , airflow: airflowInput.textContent
+                    , difficulty: this.selectedData?.difficulty
+                    , edit:true})
+
+                let airflowNumber : Airflow
+
+                if(airflowInput.textContent === "100") airflowNumber = 100
+                else if(airflowInput.textContent === "200") airflowNumber = 200
+                else if(airflowInput.textContent === "300") airflowNumber = 300
+                else if(airflowInput.textContent === "400") airflowNumber = 400
+                else if(airflowInput.textContent === "500") airflowNumber = 500
+                else if(airflowInput.textContent === "600") airflowNumber = 600
+                else airflowNumber = 100
+                tirabase.register('0123456789',
+                    ageInput.textContent === null ? 0 : parseInt(ageInput.textContent),
+                    this.selectedData?.gender === "male" ? "M" : "F",
+                    airflowNumber,
+                    parseInt(this.selectedData?.difficulty ?? '1'))
+                tirabase.login('0123456789')
                 this.scene.launch('home')
             }
 		})

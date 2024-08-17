@@ -13,13 +13,13 @@ import MockAPIService from 'services/API/mockUp/MockAPIService'
 
 const tirabase = new MockAPIService();
 // TODO login here
-tirabase.register('0958927519',
-  21,
-  'M',
-  600,
-  3,
-)
-tirabase.login('0958927518');
+// tirabase.register('0958927519',
+//   21,
+//   'M',
+//   600,
+//   3,
+// )
+// tirabase.login('0958927518');
 export { tirabase }
 
 export default class TitleScene extends Phaser.Scene {
