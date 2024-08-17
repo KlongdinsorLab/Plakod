@@ -5,7 +5,6 @@ import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
-import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const tirabase = new MockAPIService();
 // TODO login here
