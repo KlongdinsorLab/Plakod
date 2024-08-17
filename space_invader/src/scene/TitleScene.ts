@@ -57,9 +57,9 @@ export default class TitleScene extends Phaser.Scene {
 
   async create() {
 
-    const APIService = new supabaseAPIService()
-    const testFunction = await APIService.register("+66123456789",8,'M',500,2)
-    console.log(testFunction)
+    // const APIService = new supabaseAPIService()
+    // const testFunction = await APIService.updateUsername("Beet Buster")
+    // console.log(testFunction)
 
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
