@@ -56,6 +56,10 @@ export default class TitleScene extends Phaser.Scene {
 
   async create() {
 
+    // const APIService = new supabaseAPIService()
+    // const testFunction = await APIService.updateUsername("Beet Buster")
+    // console.log(testFunction)
+
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     this.hasController = urlParams.get('controller') === 'true'
@@ -127,7 +131,7 @@ export default class TitleScene extends Phaser.Scene {
   startGame() {
     I18nSingleton.getInstance().destroyEmitter()
 
-    this.scene.start(import.meta.env.VITE_START_SCENE || 'home', { bgm: this.bgm })
+    this.scene.start(import.meta.env.VITE_START_SCEN || 'home', { bgm: this.bgm })
     //this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
     // import.meta.env.VITE_START_SCENE && new SoundManager(this).stop(this.bgm!)
 
