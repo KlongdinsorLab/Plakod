@@ -16,8 +16,9 @@ export default class supabaseAPIService  {
                airflow : airflow,
                difficultyId : difficultyId
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 
      async login(phoneNumber : string) {
@@ -28,8 +29,9 @@ export default class supabaseAPIService  {
           body: {
                phoneNumber : phoneNumber
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 
      async updateUsername(username : string) {
@@ -40,8 +42,9 @@ export default class supabaseAPIService  {
           body: {
                username : username
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 
      async updateSelectedCharacter(characterId : number) {
@@ -52,8 +55,9 @@ export default class supabaseAPIService  {
           body: {
                character_id : characterId
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 
      async updateCurrentDifficulty(difficultyId : number) {
@@ -64,8 +68,9 @@ export default class supabaseAPIService  {
           body: {
                difficulty_id : difficultyId
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 
      async updateAirflow(airflow : number) {
@@ -76,7 +81,8 @@ export default class supabaseAPIService  {
           body: {
                airflow : airflow
           }})
-          if(!error) return data
-          else return error
+          if(error) return error
+
+          return data
      }
 }
