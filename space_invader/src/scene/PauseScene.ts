@@ -306,7 +306,7 @@ export default class PauseScene extends Phaser.Scene {
 	}
 
 	detectInactivity(): void {
-		const inactivityTime = 30 * 1000 //30 minutes inactivity
+		const inactivityTime = 30 * 60 * 1000 //30 minutes inactivity
 
 		let inactivityTimeout: NodeJS.Timeout
 
