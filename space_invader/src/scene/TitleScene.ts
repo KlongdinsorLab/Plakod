@@ -128,7 +128,7 @@ export default class TitleScene extends Phaser.Scene {
 	startGame() {
 		I18nSingleton.getInstance().destroyEmitter()
 
-		this.scene.start(import.meta.env.VITE_START_SCEN || 'home', {
+		this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
 			bgm: this.bgm,
 		})
 		//this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
