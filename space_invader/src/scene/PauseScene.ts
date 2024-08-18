@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import {
-	DARK_BROWN,
 	DARK_ORANGE,
 	LARGE_FONT_SIZE,
 	MARGIN,
@@ -10,9 +9,9 @@ import {
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import TimeService from 'services/timeService'
-import { boosters } from './booster/RedeemScene'
 import WebFont from 'webfontloader'
 import SoundToggle from 'component/ui/home/SoundToggle'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 export type Menu = {
 	menu: Phaser.GameObjects.Image
@@ -20,9 +19,9 @@ export type Menu = {
 export default class PauseScene extends Phaser.Scene {
 	private menu!: Phaser.GameObjects.Image
 	private sceneName!: string
-	private timeService!: TimeService
-	private playCount!: number
 	private subSceneKeys!: string[]
+	private score!: number
+	private lap!: number
 
 	constructor() {
 		super('pause')
@@ -32,13 +31,20 @@ export default class PauseScene extends Phaser.Scene {
 		menu,
 		sceneName,
 		subSceneKeys,
+		score,
+		lap,
 	}: {
 		menu: Phaser.GameObjects.Image
 		sceneName: string
 		subSceneKeys: string[]
+		score: number
+		lap: number
 	}) {
+		this.detectInactivity()
 		this.menu = menu
 		this.sceneName = sceneName
+		this.score = score
+		this.lap = lap
 		if (subSceneKeys) this.subSceneKeys = subSceneKeys
 		else this.subSceneKeys = []
 	}
@@ -61,9 +67,8 @@ export default class PauseScene extends Phaser.Scene {
 	create() {
 		const soundManager = new SoundManager(this)
 		soundManager.pauseAll()
-		this.timeService = new TimeService()
-		// TODO: call api
-		this.playCount = Number(localStorage.getItem('playCount') ?? '')
+
+		const apiService = new supabaseAPIService()
 
 		const { width, height } = this.scale
 
@@ -196,6 +201,22 @@ export default class PauseScene extends Phaser.Scene {
 			)
 			.setOrigin(0, 0.5)
 
+		const handleHomeClick = async () => {
+			try {
+				await apiService.updateGameSession({
+					score: this.score,
+					lap: this.lap,
+				})
+				apiService.endGameSession()
+				this.stopAllScenes()
+				this.scene.stop()
+				i18n.destroyEmitter()
+				this.scene.start('home')
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
 		const homeText = i18n
 			.createTranslatedText(
 				this,
@@ -206,12 +227,7 @@ export default class PauseScene extends Phaser.Scene {
 			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0, 0.5)
 		homeButton.setInteractive()
-		homeButton.on('pointerup', () => {
-			this.stopAllScenes()
-			this.scene.stop()
-			i18n.destroyEmitter()
-			this.scene.start('title')
-		})
+		homeButton.on('pointerup', handleHomeClick)
 
 		WebFont.load({
 			google: {
@@ -287,5 +303,43 @@ export default class PauseScene extends Phaser.Scene {
 				this.scene.resume(this.subSceneKeys[i])
 			}
 		}
+	}
+
+	detectInactivity(): void {
+		const inactivityTime = 30 * 1000 //30 minutes inactivity
+
+		let inactivityTimeout: NodeJS.Timeout
+
+		const apiService = new supabaseAPIService()
+		const handleInactivity = async () => {
+			try {
+				console.log({
+					score: this.score,
+					lap: this.lap,
+				})
+				await apiService.updateGameSession({
+					score: this.score,
+					lap: this.lap,
+				})
+				apiService.endGameSession()
+				this.stopAllScenes()
+				this.scene.stop()
+				I18nSingleton.getInstance().destroyEmitter()
+				this.game.events.removeListener(Phaser.Core.Events.BLUR)
+				this.game.events.removeListener(Phaser.Core.Events.FOCUS)
+				this.scene.start('home')
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		this.game.events.on(Phaser.Core.Events.BLUR, () => console.log('blur'))
+		this.game.events.on(Phaser.Core.Events.BLUR, () => {
+			inactivityTimeout = setTimeout(handleInactivity, inactivityTime)
+		})
+
+		this.game.events.on(Phaser.Core.Events.FOCUS, () => {
+			clearTimeout(inactivityTimeout)
+		})
 	}
 }
