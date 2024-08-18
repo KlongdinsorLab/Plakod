@@ -8,7 +8,6 @@ import {
 	MODAL_BACKGROUND_COLOR,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
-import TimeService from 'services/timeService'
 import WebFont from 'webfontloader'
 import SoundToggle from 'component/ui/home/SoundToggle'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
