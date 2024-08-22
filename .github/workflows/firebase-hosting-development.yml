@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       VITE_SUPABASE_URL: https://dtfbxtfpdfpwflcjxttr.supabase.co
+      VITE_SUPABASE_ANON_KEY : ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v3
       - name: install
