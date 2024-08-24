@@ -13,7 +13,6 @@ import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 import { tirabase } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
-import { AchievementPopup } from 'component/popup/AchievementPopup'
 
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
@@ -103,17 +102,6 @@ export default class HomeScene extends Phaser.Scene {
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
 
-		this.load.atlas('heading',
-			'assets/heading/heading_spritesheet.png',
-			'assets/heading/heading_spritesheet.json'
-		)
-
-		this.load.atlas('achievement',
-			'assets/achievement/achievement_spritesheet.png',
-			'assets/achievement/achievement_spritesheet.json'
-		)
-
-		this.load.image('popupAuraEffect',"assets/effect/popup_aura.png")
 	}
 
 	async create() {
@@ -213,9 +201,6 @@ export default class HomeScene extends Phaser.Scene {
 					.setStroke('#57453B', 12)
 			},
 		})
-
-		const ap = new AchievementPopup(this,11)
-		ap.create()
 	}
 
 	update(_: number, __: number): void {

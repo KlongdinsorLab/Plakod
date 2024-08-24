@@ -1,7 +1,8 @@
-//import I18nSingleton from "i18n/I18nSingleton";
+import I18nSingleton from "i18n/I18nSingleton";
 import { Popup } from "./Popup";
 export class AchievementPopup extends Popup{
     private achievementId : number
+    private isCompleteAchievement : boolean = false
 
     private layer!: Phaser.GameObjects.Layer
     private screenOverlay!: Phaser.GameObjects.Rectangle
@@ -23,6 +24,8 @@ export class AchievementPopup extends Popup{
     }
     create(): void {
         this.layer = this.scene.add.layer()
+        const i18n = I18nSingleton.getInstance()
+
 
         this.screenOverlay = this.scene.add.rectangle(
             0,
@@ -35,11 +38,11 @@ export class AchievementPopup extends Popup{
         .setAlpha(0.9)
         this.layer.add(this.screenOverlay)
 
-        // TODO I18n
-        this.headText = this.scene.add.text(
+        this.headText = i18n.createTranslatedText(
+            this.scene,
             this.scene.scale.width/2,
             288,
-            "ยินดีด้วยนะ!\nคุณปลดล็อครางวัล"
+            "achievement_popup_heading"
         )
         .setFontSize(40)
         .setColor("#FFFFFF")
@@ -77,10 +80,11 @@ export class AchievementPopup extends Popup{
         this.layer.add(this.banner)
 
         // TODO I18n
-        this.bannerText = this.scene.add.text(
+        this.bannerText = i18n.createTranslatedText(
+            this.scene,
             this.scene.scale.width/2,
             675,
-            "ชื่อความสำเร็จ"
+            "achievement_name_" + this.achievementId
         )
         .setFontSize(28)
         .setColor("#FFFFFF")
@@ -88,11 +92,11 @@ export class AchievementPopup extends Popup{
         .setOrigin(0.5,0)
         this.layer.add(this.bannerText)
 
-        // TODO I18n
-        this.detailText = this.scene.add.text(
+        this.detailText = i18n.createTranslatedText(
+            this.scene,
             this.scene.scale.width/2,
             817,
-            'อ่านรายละเอียดได้ที่ "รางวัล"'
+            "achievement_popup_detail"
         )
         .setFontSize(32)
         .setColor("#FFFFFF")
@@ -110,14 +114,17 @@ export class AchievementPopup extends Popup{
             32,32,64,64
         )
         .setOrigin(0.5,0)
-        this.submitButton.setInteractive().on("pointerup",() => {this.destroy()})
+        this.submitButton.setInteractive().on("pointerup",() => {
+            this.isCompleteAchievement = true
+            this.destroy()
+        })
         this.layer.add(this.submitButton)
 
-        // TODO I18n
-        this.buttonText = this.scene.add.text(
+        this.buttonText = i18n.createTranslatedText(
+            this.scene,
             this.scene.scale.width/2,
             932,
-            'ยืนยัน'
+            "submit"
         )
         .setOrigin(0.5,0)
         .setFontSize(32)
@@ -125,7 +132,39 @@ export class AchievementPopup extends Popup{
         .setStroke("#9E461B",6)
         this.layer.add(this.buttonText)
     }
+
     destroy(): void {
         this.layer.destroy()
+    }
+
+    initFontStyle(){
+        this.headText.setStyle({
+            fontFamily: 'Mali',
+			fontStyle: 'bold'
+        })
+        this.bannerText.setStyle({
+            fontFamily: 'Mali',
+			fontStyle: 'bold'
+        })
+        this.detailText.setStyle({
+            fontFamily: 'Mali',
+			fontStyle: 'bold'
+        })
+        this.buttonText.setStyle({
+            fontFamily: 'Mali',
+			fontStyle: 'bold'
+        })
+    }
+
+    getIsCompleteAchievement() : boolean {
+        return this.isCompleteAchievement
+    }
+
+    setVisibleOn() {
+        this.layer.setVisible(true)
+    }
+
+    setVisibleOff() {
+        this.layer.setVisible(false)
     }
 }
