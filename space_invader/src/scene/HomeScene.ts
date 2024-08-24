@@ -101,12 +101,13 @@ export default class HomeScene extends Phaser.Scene {
 		)
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
+
 	}
 
 	async create() {
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
-
+		
 		// call API
 		await this.handleData()
 

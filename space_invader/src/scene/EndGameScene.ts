@@ -8,6 +8,7 @@ import RestartButton from 'component/ui/Button/RestartButton'
 import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
 import { BoosterEffect } from 'component/booster/booster'
+import { AchievementPopup } from 'component/popup/AchievementPopup'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -26,6 +27,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 	private boosterEffect!: BoosterEffect
 	private vas!: vas
+	private achievementPopup !: AchievementPopup
 
 	private playerJson = {"totalPlayed" : 20, "todayPlayed" : 9}
 
@@ -83,9 +85,22 @@ export default class EndGameScene extends Phaser.Scene {
 			'assets/button/button_spritesheet.png',
 			'assets/button/button_spritesheet.json'
 		)
+
+		this.load.atlas('heading',
+			'assets/heading/heading_spritesheet.png',
+			'assets/heading/heading_spritesheet.json'
+		)
+
+		this.load.atlas('achievement',
+			'assets/achievement/achievement_spritesheet.png',
+			'assets/achievement/achievement_spritesheet.json'
+		)
+
+		this.load.image('popupAuraEffect',"assets/effect/popup_aura.png")
 	}
 
 	create() {
+
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
 		// TODO: call api
@@ -153,7 +168,10 @@ export default class EndGameScene extends Phaser.Scene {
 			this.restartButton.hide()
 		}
 
-		
+		// TODO call api
+		this.achievementPopup = new AchievementPopup(this,5)
+		this.achievementPopup.create()
+		this.achievementPopup.setVisibleOff()
 
 		const self = this
 		WebFont.load({
@@ -175,6 +193,7 @@ export default class EndGameScene extends Phaser.Scene {
 				self.heart2.initFontStyle()
 				self.restartButton.initFontStyle()
 				self.homeButton.initFontStyle()
+				self.achievementPopup.initFontStyle()
 
 				self.victoryText
 					.setStyle({
@@ -216,7 +235,10 @@ export default class EndGameScene extends Phaser.Scene {
 		if(!this.isHeartEmpty){
 			this.restartButton.show()
 		}
-		if(this.vas.getIsCompleteVas()){
+		if(this.vas.getIsCompleteVas() && !this.achievementPopup.getIsCompleteAchievement()){
+			this.achievementPopup.setVisibleOn()
+		}
+		if(this.vas.getIsCompleteVas() && this.achievementPopup.getIsCompleteAchievement()){
 			this.ShowUI();
 		}
 
