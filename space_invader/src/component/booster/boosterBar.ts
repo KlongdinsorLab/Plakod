@@ -138,8 +138,10 @@ export default class boosterBar{
 
         this.boosters.forEach((booster, index) => {
             booster.onSetUnavailable(() => {
+                if(this.selectedBooster.includes(index)){
+                    this.setDescriptionBox(index, 0xFF0000)
+                }
                 this.setDeselected(index)
-                this.setDescriptionBox(index, 0xFF0000)
             });
         });
 
@@ -255,8 +257,9 @@ export default class boosterBar{
                     delay: 3000,
                     callback: () => {
                         this.setDescriptionBox()
+                        this.timeoutEvent?.remove()
                     },
-                    loop: true
+                    loop: false
                 })
                 this.initFontStyle()
                 return
