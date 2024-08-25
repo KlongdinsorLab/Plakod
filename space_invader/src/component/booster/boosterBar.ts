@@ -17,13 +17,16 @@ export default class boosterBar{
 
     private descriptionImage!: Phaser.GameObjects.Image;
     private descriptionBg!: Phaser.GameObjects.Graphics
+    private descriptionTitle!: Phaser.GameObjects.Text | undefined;
     private descriptionText: Phaser.GameObjects.Text | undefined;
     private descriptionAmount: Phaser.GameObjects.Text | undefined;
+
+    private timeoutEvent: Phaser.Time.TimerEvent | undefined;
 
     private boosters: BoosterUI[]=[];
 
     private boosterJson = [
-        {boosterId: 1,      expireDate: [], amount : 3 },
+        {boosterId: 1,      expireDate: ['2024-08-25T05:12:00.000Z'], amount : 1 },
         {boosterId: 2 ,     expireDate: [], amount : 2 },
         {boosterId: 3 ,     expireDate: [], amount : 30},
         {boosterId: 4 ,     expireDate: [], amount : 1},
@@ -135,7 +138,8 @@ export default class boosterBar{
 
         this.boosters.forEach((booster, index) => {
             booster.onSetUnavailable(() => {
-                this.setDeselected(index);
+                this.setDeselected(index)
+                this.setDescriptionBox(index, 0xFF0000)
             });
         });
 
@@ -163,65 +167,63 @@ export default class boosterBar{
 
     setSelected(index:number):void{
         const position = this.boosters[index].getPosition()
-        const selectedMark = this.scene.add.graphics();
-        selectedMark.lineStyle(6, 0x327F76);
-        selectedMark.strokeRoundedRect(position.x, position.y, 96, 96, 100);
-        this.boosterGraphics.set(this.boosters[index].getName(), selectedMark);
+        const selectedMark = this.scene.add.graphics()
+        selectedMark.lineStyle(6, 0x327F76)
+        selectedMark.strokeRoundedRect(position.x, position.y, 96, 96, 100)
+        this.boosterGraphics.set(this.boosters[index].getName(), selectedMark)
 
-        const newBoosterMark = this.scene.add.image(position.x + 104, position.y, 'booster_selectedMark').setOrigin(1, 0);
-        newBoosterMark.setDepth(1);
-        this.boosterMark.set(this.boosters[index].getName(), newBoosterMark);
+        const newBoosterMark = this.scene.add.image(position.x + 104, position.y, 'booster_selectedMark').setOrigin(1, 0)
+        newBoosterMark.setDepth(1)
+        this.boosterMark.set(this.boosters[index].getName(), newBoosterMark)
 
-        this.selectedBooster.push(this.boosters[index].getName());
+        this.selectedBooster.push(this.boosters[index].getName())
         this.setDescriptionBox(index)
     }
 
     setDeselected(index: number): void {
-        const name = this.boosters[index].getName();
-        const selectedMark = this.boosterGraphics.get(name);
+        const name = this.boosters[index].getName()
+        const selectedMark = this.boosterGraphics.get(name)
         if (selectedMark) {
-            selectedMark.destroy();
-            this.boosterGraphics.delete(name);
+            selectedMark.destroy()
+            this.boosterGraphics.delete(name)
         }
-    
-        const boosterMark = this.boosterMark.get(name);
+
+        const boosterMark = this.boosterMark.get(name)
         if (boosterMark) {
-            boosterMark.destroy();
-            this.boosterMark.delete(name);
+            boosterMark.destroy()
+            this.boosterMark.delete(name)
         }
     
-        this.selectedBooster = this.selectedBooster.filter(selected => selected !== name);
+        this.selectedBooster = this.selectedBooster.filter(selected => selected !== name)
         if(this.descriptionText){
             if(this.descriptionText!.name === (index+1).toString()){
-                this.setDescriptionBox();
+                this.setDescriptionBox()
             }else if(index === 5 && this.descriptionText!.name === "_rare1" ){
-                this.setDescriptionBox();
+                this.setDescriptionBox()
             }else if(index === 6 && this.descriptionText!.name === "_rare2"){
-                this.setDescriptionBox();
+                this.setDescriptionBox()
             }
         }
-        
     }
-    
 
     setDescriptionBox(index?: number, color?: number) {
-        if (!this.scene) return; // Ensure scene is defined
+        if (!this.scene) return
     
         if (this.descriptionBg) {
-            this.descriptionBg.destroy();
+            this.descriptionBg.destroy()
         }
     
-        const descriptionBox = this.scene.add.graphics();
-        descriptionBox.fillStyle(color ?? 0xFFE7BA);
-        descriptionBox.fillRoundedRect(this.position.x, this.position.y + this.gapSize.height * 2, this.position.x * 5.6, MARGIN * 3, 18);
-        this.descriptionBg = descriptionBox;
+        const descriptionBox = this.scene.add.graphics()
+        descriptionBox.fillStyle(color ?? 0xFFE7BA)
+        descriptionBox.fillRoundedRect(this.position.x, this.position.y + this.gapSize.height * 2, this.position.x * 5.6, 160, 18)
+        this.descriptionBg = descriptionBox
     
         if (index !== undefined) {
-            const name = this.boosters[index].getFrame();
-            let frame = "booster" + name + ".png";
+            const name = this.boosters[index].getFrame()
+            let frame = "booster" + name + ".png"
     
             if (this.descriptionImage) {
-                this.descriptionImage.destroy();
+                this.descriptionImage.destroy()
             }
             
             this.descriptionImage = this.scene.add.image(
@@ -230,64 +232,93 @@ export default class boosterBar{
                 "dropItem", 
                 frame
             ).setOrigin(0, 0).setSize(this.boosterSize.width, this.boosterSize.height);
-
+            let title = 'booster_title_' + name
             let text = 'booster_description_' + name
             if(index === 5 || index === 6){
+                title = 'booster_title' + name
                 text = 'booster_description' + name
             }
-    
-            this.descriptionText = I18nSingleton.getInstance()
+            if(color === 0xFF0000){
+                text = 'booster_timeout'
+                this.descriptionText = I18nSingleton.getInstance()
+                .createTranslatedText(
+                    this.scene,
+                    this.position.x + MARGIN * 2 / 3 + 128,
+                    this.position.y + this.gapSize.height * 2 + MARGIN / 2.5 +6 ,
+                    text
+                )
+                .setAlign('start')
+                .setOrigin(0, 0)
+                .setColor('#FFFFFF')
+                this.descriptionText.name = this.boosters[index].getFrame()
+                this.timeoutEvent = this.scene.time.addEvent({
+                    delay: 3000,
+                    callback: () => {
+                        this.setDescriptionBox()
+                    },
+                    loop: true
+                })
+                this.initFontStyle()
+                return
+            }
+            this.descriptionTitle = I18nSingleton.getInstance()
                 .createTranslatedText(
                     this.scene,
                     this.position.x + MARGIN * 2 / 3 + 128,
                     this.position.y + this.gapSize.height * 2 + MARGIN / 2.5,
+                    title
+                )
+                .setAlign('start')
+                .setOrigin(0, 0)
+            this.descriptionText = I18nSingleton.getInstance()
+                .createTranslatedText(
+                    this.scene,
+                    this.position.x + MARGIN * 2 / 3 + 128,
+                    this.position.y + this.gapSize.height * 2 + MARGIN / 2.5 + 36,
                     text
                 )
                 .setAlign('start')
-                .setOrigin(0, 0);
-
+                .setOrigin(0, 0)
+                .setColor('#57453B')
+            this.descriptionTitle.name = this.boosters[index].getFrame()
             this.descriptionText.name = this.boosters[index].getFrame()
-                
-    
-            this.setDescriptionAmount(index);
-    
-        } else {
+            this.setDescriptionAmount(index)
+        }else{
             this.descriptionAmount = I18nSingleton.getInstance()
                 .createTranslatedText(
                     this.scene,
-                    this.position.x * 5.6 / 2 - 64,
+                    this.position.x * 5.6 / 2 - 88,
                     this.position.y + this.gapSize.height * 2 + MARGIN + 8,
-                    i18next.t('booster_description_default',{MAX_SELECTED_BOOSTER})
-
+                    'booster_description_default'
                 )
                 .setAlign('center')
-                .setOrigin(0, 0);
-    
+                .setOrigin(0, 0)
         }
-    
-        this.initFontStyle(); // Ensure initFontStyle is called after setting descriptionText and descriptionAmount
+        this.initFontStyle()
     }
     
     setDescriptionAmount(index:number): void{
         let text : string;
         if (this.boosters[index].getState() === States.LIMITED_TIME) {
-            const [hours, minutes, seconds] = this.boosters[index].getTimeText().split(':').map(Number);
+            const [hours, minutes, seconds] = this.boosters[index].getTimeText().split(':').map(Number)
             if(hours == 0 && minutes == 0 && seconds > 0){
-                text = i18next.t('booster_description_expire_seconds');
+                text = i18next.t('booster_description_expire_seconds')
+            }else if(hours == 0 && minutes > 0){
+                text = i18next.t('booster_description_expire_minute', {minutes},)
             }else{
-            text = i18next.t('booster_description_expire', { hours, minutes},);
+                text = i18next.t('booster_description_expire', { hours, minutes},)
             }
         }  
         else {
             const amount = this.boosters[index].getAmount();
-            text = i18next.t('booster_description_amount', { amount });
+            text = i18next.t('booster_description_amount', { amount })
         }
         
         this.descriptionAmount = I18nSingleton.getInstance()
         .createTranslatedText(
             this.scene,
             this.position.x+MARGIN*2/3+128, 
-            this.position.y+this.gapSize.height*2+MARGIN*2-8, 
+            this.position.y+this.gapSize.height*2+MARGIN*2-6, 
             text
         )
         .setAlign('start')
@@ -306,20 +337,27 @@ export default class boosterBar{
     }
 
     initFontStyle(){
+        if(this.descriptionTitle){
+            this.descriptionTitle.setStyle({
+                fontFamily: 'Mali',
+                fontStyle: 'bold',
+                fontSize: '28px',
+                color: '#57453B'
+            })
+        }
         if (this.descriptionText) {
             this.descriptionText.setStyle({
                 fontFamily: 'Mali',
                 fontStyle: 500,
-                fontSize: '24px',
-                color: '#57453B'
-            }).setLineSpacing(8);
+                fontSize: '28px',
+            })
         }
     
         if (this.descriptionAmount) {
             this.descriptionAmount.setStyle({
                 fontFamily: 'Mali',
                 fontWeight: 500,
-                fontSize: '24px',
+                fontSize: '28px',
                 color: '#D35E24'
             });
         }

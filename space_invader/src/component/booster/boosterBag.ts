@@ -25,6 +25,7 @@ export default class BoosterBag{
     private sortedBooster: { boosterId: number, expireDate?: string | null, amount?:number }[] = []
 
     private descriptionBackground!: Phaser.GameObjects.Graphics
+    private descriptionTitle!: Phaser.GameObjects.Text
     private descriptionText!: Phaser.GameObjects.Text
     private descriptionAmount!: Phaser.GameObjects.Text
     private descriptionDefaultText!: Phaser.GameObjects.Text
@@ -139,6 +140,7 @@ export default class BoosterBag{
             this.boosterGraphics.delete(this.selectedBooster.getName())
             this.descriptionBackground?.destroy()
             this.descriptionBoosterUI.destroy()
+            this.descriptionTitle.destroy()
             this.descriptionText.destroy()
             this.descriptionAmount?.destroy()
             this.descriptionDefaultText?.setVisible(true)
@@ -174,6 +176,7 @@ export default class BoosterBag{
             this.boosterGraphics.get(this.selectedBooster.getName())?.destroy()
             this.boosterGraphics.delete(this.selectedBooster.getName())
             this.descriptionBoosterUI.destroy()
+            this.descriptionTitle.destroy()
             this.descriptionText.destroy()
         }
         this.descriptionBoosterUI = new BoosterUI(this.scene, boosterUI.getName(), {x: 128, y: 986})
@@ -192,30 +195,45 @@ export default class BoosterBag{
         this.updateFont()
     }
     setDescription(boosterUI: BoosterUI):void{
-        let text;
-        text = 'booster_description_' + boosterUI.getFrame()
+        let title = 'booster_title_' + boosterUI.getFrame()
+        let text = 'booster_description_' + boosterUI.getFrame()
         if(boosterUI.getName() === BoosterName.BOOSTER_RARE1 || boosterUI.getName() === BoosterName.BOOSTER_RARE2){
+            title = 'booster_title' + boosterUI.getFrame()
             text = 'booster_description' + boosterUI.getFrame()
         }
         this.descriptionBoosterUI = new BoosterUI(this.scene, boosterUI.getName(), {x: 128, y: 986})
         this.descriptionBoosterUI.create()
-        this.descriptionText = I18nSingleton.getInstance()
+        this.descriptionTitle = I18nSingleton.getInstance()
         .createTranslatedText(
             this.scene, 
             252, 
             986, 
+            title
+        ).setOrigin(0)
+        .setAlign('left')
+        .setSize(334, 96)
+        .setFontSize(28)
+        .setColor('#57453B')
+        this.descriptionText = I18nSingleton.getInstance()
+        .createTranslatedText(
+            this.scene, 
+            252, 
+            1028, 
             text
         ).setOrigin(0)
         .setAlign('left')
         .setSize(334, 96)
-        .setFontSize(24)
+        .setFontSize(28)
         .setColor('#57453B')
         let amountText;
         if(boosterUI.getAmount() === 0){
             const [hours, minutes, seconds] = boosterUI.getTimeText().split(':').map(Number)
             if(hours == 0 && minutes == 0 && seconds > 0){
                 amountText = i18next.t('booster_description_expire_seconds')
-            }else{
+            }else if(hours == 0 && minutes > 0){
+                amountText = i18next.t('booster_description_expire_minute', {minutes})
+            }
+            else{
                 amountText = i18next.t('booster_description_expire', { hours, minutes})
             }
         }else{
@@ -226,12 +244,12 @@ export default class BoosterBag{
         .createTranslatedText(
             this.scene, 
             252, 
-            1058, 
+            1064, 
             amountText
         ).setOrigin(0)
         .setAlign('left')
         .setSize(334, 96)
-        .setFontSize(24)
+        .setFontSize(28)
         .setColor('#D35E24')
         this.updateFont()
     }
@@ -367,10 +385,16 @@ export default class BoosterBag{
         .setColor('#57453B')
     }
     updateFont():void{
+        if(this.descriptionTitle){
+            this.descriptionTitle?.setStyle({
+                fontFamily: 'Mali',
+                fontStyle: 'bold',
+            })
+        }
         if(this.descriptionText){
             this.descriptionText?.setStyle({
                 fontFamily: 'Mali',
-                fontStyle: 'bold',
+                fontWeight: 500,
             })
             
         }
@@ -387,6 +411,7 @@ export default class BoosterBag{
         })
         this.setDeselected()
         this.totalBoosterText.setVisible(false)
+        this.descriptionTitle?.setVisible(false)
         this.descriptionText?.setVisible(false)
         this.descriptionAmount?.setVisible(false)
         this.descriptionDefaultText?.setVisible(false)
@@ -405,6 +430,7 @@ export default class BoosterBag{
             booster?.show()
         })
         this.totalBoosterText.setVisible(true)
+        this.descriptionTitle?.setVisible(true)
         this.descriptionText?.setVisible(true)
         this.descriptionAmount?.setVisible(true)
         this.descriptionDefaultText?.setVisible(true)
@@ -426,6 +452,7 @@ export default class BoosterBag{
         this.boosterUI.length = 0
 
         this.totalBoosterText.destroy()
+        this.descriptionTitle?.destroy()
         this.descriptionText?.destroy()
         this.descriptionAmount?.destroy()
         this.descriptionDefaultText?.destroy()
