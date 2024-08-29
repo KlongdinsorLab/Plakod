@@ -111,8 +111,7 @@ export default class EndGameScene extends Phaser.Scene {
 		const apiService = new supabaseAPIService()
 		
 		this.boosterEffect = this.scene.scene.registry.get("boosterEffect")
-		// this.score = this.score * this.boosterEffect.score
-		this.score = 0
+		this.score = this.score * this.boosterEffect.score
 
 		const finishObject = await apiService.finishGameSession({score: this.score, lap: 10, is_booster_received: false})
 		const response = finishObject.response

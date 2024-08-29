@@ -127,6 +127,7 @@ export class AchievementPopup extends Popup{
             this.achievementIndex ++
             this.destroy()
             this.create()
+            this.initFontStyle()
         })
         this.layer.add(this.submitButton)
 
