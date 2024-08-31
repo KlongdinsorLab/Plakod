@@ -29,7 +29,7 @@ export default class EndGameScene extends Phaser.Scene {
 	private vas!: vas
 	private achievementPopup !: AchievementPopup
 
-	private playerJson = {"totalPlayed" : 20, "todayPlayed" : 9}
+	private playerJson = {"totalPlayed" : 15, "todayPlayed" : 5}
 
 	constructor() {
 		super('end game')
@@ -149,6 +149,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.restartButton = new RestartButton(this)
 		this.homeButton = new HomeButton(this)
+		this.vas = new vas(this)
 
 		if(this.playerJson.totalPlayed % VAS_COUNT == 0){
 			this.homeButton.disable()
@@ -161,7 +162,7 @@ export default class EndGameScene extends Phaser.Scene {
 			this.heart1.getBody().setVisible(false)
 			this.heart2.getBody().setVisible(false)
 			
-			this.vas = new vas(this)
+			this.vas.create()
 		}
 
 		if(this.isHeartEmpty){
