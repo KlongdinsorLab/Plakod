@@ -10,6 +10,7 @@ import vas from 'component/ui/Vas'
 import { BoosterEffect } from 'component/booster/booster'
 import { AchievementPopup } from 'component/popup/AchievementPopup'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { AchievementDetailDTO } from 'services/API/definition/responseDTO'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -176,12 +177,8 @@ export default class EndGameScene extends Phaser.Scene {
 			this.restartButton.hide()
 		}
 
-		// TODO call api
-		const achievementList : any[] = response.new_achievements
-		const achievementIdList : any[] = []
-		achievementList.forEach(achievement => {
-			achievementIdList.push(achievement.id)
-		});
+		const achievementList : AchievementDetailDTO[] = response.new_achievements
+		const achievementIdList = achievementList.map((achievement) => achievement.id)
 		console.log(achievementIdList)
 
 		this.achievementPopup = new AchievementPopup(this,achievementIdList)

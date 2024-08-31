@@ -1,3 +1,4 @@
+import { finishGameSessionInputDTO } from '../definition/responseDTO'
 import { supabaseClient } from './supabaseClient'
 
 // TODO handle errors
@@ -174,7 +175,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async finishGameSession({ score, lap, is_booster_received }: { score: number; lap: number, is_booster_received: boolean }) {
+	async finishGameSession({ score, lap, is_booster_received }: finishGameSessionInputDTO) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'finish-game',
 			{
