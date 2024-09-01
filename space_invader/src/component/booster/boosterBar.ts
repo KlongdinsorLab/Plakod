@@ -4,6 +4,11 @@ import { BoosterName } from "./booster";
 import I18nSingleton from 'i18n/I18nSingleton';
 import i18next from 'i18next';
 
+type TransformedBooster = {
+    boosterId: number;
+    expireDate: string[];
+    amount: number;
+};
 export default class boosterBar{
     private scene: Phaser.Scene;
     private selectedBooster: BoosterName[] = [];
@@ -22,18 +27,37 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
 
-    private boosterJson = [
-        {boosterId: 1,      expireDate: [], amount : 3 },
-        {boosterId: 2 ,     expireDate: [], amount : 2 },
-        {boosterId: 3 ,     expireDate: [], amount : 30},
-        {boosterId: 4 ,     expireDate: [], amount : 1},
-        {boosterId: 5 ,     expireDate: [], amount : 1},
-        {boosterId: 6 ,     expireDate: [], amount : 1},
-        {boosterId: 7 ,     expireDate: [], amount : 2},
+    private boosterJson:{boosterId:number, expireDate:string[], amount: number}[] = [
+        {boosterId: 1,      expireDate: [], amount : 0 },
+        {boosterId: 2 ,     expireDate: [], amount : 0 },
+        {boosterId: 3 ,     expireDate: [], amount : 0},
+        {boosterId: 4 ,     expireDate: [], amount : 0},
+        {boosterId: 5 ,     expireDate: [], amount : 0},
+        {boosterId: 6 ,     expireDate: [], amount : 0},
+        {boosterId: 7 ,     expireDate: [], amount : 0},
   ]
     
 
     constructor(scene: Phaser.Scene){
+
+        //todo: get booster data from backend
+        const boosterJson2 = [
+            { boosterId: 1, expireDate: null }, { boosterId: 1, expireDate: null },
+            { boosterId: 2, expireDate: null }, { boosterId: 2, expireDate: null }, { boosterId: 2, expireDate: "2024-08-12T10:00:00.000Z" },
+            { boosterId: 3, expireDate: null }, { boosterId: 3, expireDate: "2024-08-31T11:00:00.000Z" },
+            { boosterId: 4, expireDate: null }, { boosterId: 4, expireDate: "2024-08-12T08:00:00.000Z" },
+            { boosterId: 5, expireDate: null },
+            { boosterId: 6, expireDate: null },
+            { boosterId: 7, expireDate: null }, { boosterId: 7, expireDate: null },
+        ];
+        
+        boosterJson2.forEach((booster) => {
+            this.boosterJson[booster.boosterId-1].amount += 1;
+            if(booster.expireDate !== null){
+                this.boosterJson[booster.boosterId-1].expireDate.push(booster.expireDate);
+            }
+        })
+
         this.selectedBooster.length = 0
         this.scene = scene
         this.boosters[0] = new BoosterUI(

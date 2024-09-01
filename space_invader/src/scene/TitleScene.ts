@@ -5,15 +5,17 @@ import SoundManager from 'component/sound/SoundManager'
 import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
+import MockAPIService2 from 'services/API/mockUp/MockAPIService2'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const tirabase = new MockAPIService()
+const mockAPI2 = new MockAPIService2()
 const supabase = new supabaseAPIService()
 
 // TODO login here
 tirabase.register('0958927519', 21, 'M', 600, 3)
 tirabase.login('0958927518')
-export { tirabase, supabase }
+export { tirabase, supabase, mockAPI2 }
 
 export default class TitleScene extends Phaser.Scene {
 	//	private background!: Phaser.GameObjects.TileSprite

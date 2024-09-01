@@ -1,5 +1,6 @@
 import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import { mockAPI2 } from 'scene/TitleScene'
 
 const Difficulty = {
 	easy: 'difficulty_easy',
@@ -39,9 +40,10 @@ export default class HomeTopBar {
 			.image(336, 40, 'landing_page', 'bar_airflow.png')
 			.setOrigin(0.5, 0)
 		// TODO: Choosing airflow
+		const airFlow = mockAPI2.get_airflow().airflow
 		const airFlowLevelText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, 336 + 28, 40, 'home_airflow_level', {
-				level: 600,
+				level: airFlow,
 			})
 			.setAlign('center')
 

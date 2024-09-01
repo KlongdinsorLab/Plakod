@@ -11,7 +11,7 @@ import PlayButton from 'component/ui/Button/PlayButton'
 import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
-import { tirabase } from 'scene/TitleScene'
+import { tirabase, mockAPI2 } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
 
 const ReminderText = {
