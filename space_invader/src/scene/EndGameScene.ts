@@ -35,7 +35,7 @@ export default class EndGameScene extends Phaser.Scene {
 	private levelUpPopup!: LevelUpPopup
 	private finishGameResponse!: FinishGameResponse
 
-	private playerJson = { totalPlayed: 10, todayPlayed: 5 }
+	private playerJson = { totalPlayed: 15, todayPlayed: 5 }
 
 	private isLoading!: boolean
 
