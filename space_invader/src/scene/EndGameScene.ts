@@ -9,6 +9,8 @@ import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
 import { BoosterEffect } from 'component/booster/booster'
 import { AchievementPopup } from 'component/popup/AchievementPopup'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { AchievementDetailDTO } from 'services/API/definition/responseDTO'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -30,6 +32,8 @@ export default class EndGameScene extends Phaser.Scene {
 	private achievementPopup !: AchievementPopup
 
 	private playerJson = {"totalPlayed" : 15, "todayPlayed" : 5}
+
+	private isLoading !: boolean
 
 	constructor() {
 		super('end game')
@@ -99,14 +103,19 @@ export default class EndGameScene extends Phaser.Scene {
 		this.load.image('popupAuraEffect',"assets/effect/popup_aura.png")
 	}
 
-	create() {
+	async create() {
+		this.isLoading = true
 
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
-		// TODO: call api
 
+		const apiService = new supabaseAPIService()
+		
 		this.boosterEffect = this.scene.scene.registry.get("boosterEffect")
 		this.score = this.score * this.boosterEffect.score
+
+		const finishObject = await apiService.finishGameSession({score: this.score, lap: 10, is_booster_received: false})
+		const response = finishObject.response
 		
 		//this.playCount = Number(localStorage.getItem('playCount') ?? '')
 		this.add
@@ -131,7 +140,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.scoreText = i18n
 			.createTranslatedText(this, width / 2, 296, 'score', {
-				score: this.score ?? 200800,
+				score: this.score,
 			})
 			.setAlign('center')
 			.setOrigin(0.5, 0)
@@ -169,8 +178,11 @@ export default class EndGameScene extends Phaser.Scene {
 			this.restartButton.hide()
 		}
 
-		// TODO call api
-		this.achievementPopup = new AchievementPopup(this,5)
+		const achievementList : AchievementDetailDTO[] = response.new_achievements
+		const achievementIdList = achievementList.map((achievement) => achievement.id)
+		console.log(achievementIdList)
+
+		this.achievementPopup = new AchievementPopup(this,achievementIdList)
 		this.achievementPopup.create()
 		this.achievementPopup.setVisibleOff()
 
@@ -229,9 +241,12 @@ export default class EndGameScene extends Phaser.Scene {
 					.setStroke('white', 6)
 			},
 		})
+
+		this.isLoading = false
 	}
 
 	update(_: number, __: number): void {
+		if(this.isLoading) return
 		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if(!this.isHeartEmpty){
 			this.restartButton.show()

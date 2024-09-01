@@ -1,3 +1,4 @@
+import { finishGameSessionInputDTO } from '../definition/responseDTO'
 import { supabaseClient } from './supabaseClient'
 
 // TODO handle errors
@@ -165,6 +166,27 @@ export default class supabaseAPIService {
 				headers: {
 					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
 				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async finishGameSession({ score, lap, is_booster_received }: finishGameSessionInputDTO) {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'finish-game',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+				body: {
+					score: score,
+					lap: lap,
+					is_booster_received: is_booster_received
+				}
 			},
 		)
 		if (error) {
