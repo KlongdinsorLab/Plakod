@@ -173,4 +173,33 @@ export default class supabaseAPIService {
 
 		return data
 	}
+
+	async finishGameSession({
+		score,
+		lap,
+		is_booster_received,
+	}: {
+		score: number
+		lap: number
+		is_booster_received: boolean
+	}) {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'finish-game',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+				body: {
+					score: score,
+					lap: lap,
+					is_booster_received: is_booster_received,
+				},
+			},
+		)
+		if (error) {
+			throw new Error(error)
+		}
+
+		return data
+	}
 }
