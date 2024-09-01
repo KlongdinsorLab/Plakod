@@ -1,7 +1,8 @@
 import I18nSingleton from "i18n/I18nSingleton";
 import { Popup } from "./Popup";
 export class AchievementPopup extends Popup{
-    private achievementId : number
+    private achievementIdList : number[]
+    private achievementIndex : number = 0
     private isCompleteAchievement : boolean = false
 
     private layer!: Phaser.GameObjects.Layer
@@ -18,15 +19,19 @@ export class AchievementPopup extends Popup{
 
     private submitButton !: Phaser.GameObjects.NineSlice
 
-    constructor(scene: Phaser.Scene, achievementId : number){
+    constructor(scene: Phaser.Scene, achievementIdList : number[]){
         super(scene)
-        this.achievementId = achievementId
+        this.achievementIdList = achievementIdList
     }
     create(): void {
         this.layer = this.scene.add.layer()
         const i18n = I18nSingleton.getInstance()
 
-
+        if(this.achievementIdList.length === 0) {
+            this.destroy()
+            this.isCompleteAchievement = true
+            return
+        }
         this.screenOverlay = this.scene.add.rectangle(
             0,
             0,
@@ -63,7 +68,7 @@ export class AchievementPopup extends Popup{
             this.scene.scale.width/2,
             484,
             "achievement",
-            "achievement" + this.achievementId + ".png"
+            "achievement" + this.achievementIdList[this.achievementIndex] + ".png"
             // "achievement10.png"
         )
         .setScale(2,2)
@@ -79,12 +84,11 @@ export class AchievementPopup extends Popup{
         .setOrigin(0.5,0)
         this.layer.add(this.banner)
 
-        // TODO I18n
         this.bannerText = i18n.createTranslatedText(
             this.scene,
             this.scene.scale.width/2,
             675,
-            "achievement_name_" + this.achievementId
+            "achievement_name_" + this.achievementIdList[this.achievementIndex]
         )
         .setFontSize(28)
         .setColor("#FFFFFF")
@@ -115,8 +119,15 @@ export class AchievementPopup extends Popup{
         )
         .setOrigin(0.5,0)
         this.submitButton.setInteractive().on("pointerup",() => {
-            this.isCompleteAchievement = true
+            if(this.achievementIndex === this.achievementIdList.length - 1) {
+                this.isCompleteAchievement = true
+                this.destroy()
+                return
+            }
+            this.achievementIndex ++
             this.destroy()
+            this.create()
+            this.initFontStyle()
         })
         this.layer.add(this.submitButton)
 
@@ -138,19 +149,19 @@ export class AchievementPopup extends Popup{
     }
 
     initFontStyle(){
-        this.headText.setStyle({
+        this.headText?.setStyle({
             fontFamily: 'Mali',
 			fontStyle: 'bold'
         })
-        this.bannerText.setStyle({
+        this.bannerText?.setStyle({
             fontFamily: 'Mali',
 			fontStyle: 'bold'
         })
-        this.detailText.setStyle({
+        this.detailText?.setStyle({
             fontFamily: 'Mali',
 			fontStyle: 'bold'
         })
-        this.buttonText.setStyle({
+        this.buttonText?.setStyle({
             fontFamily: 'Mali',
 			fontStyle: 'bold'
         })

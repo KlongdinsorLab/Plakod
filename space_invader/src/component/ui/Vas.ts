@@ -21,15 +21,19 @@ export default class vas {
 	private button: Phaser.GameObjects.Arc[] = []
 	private buttonBg: Map<string, Phaser.GameObjects.Arc> = new Map()
 
+	private isCreated: boolean = false
+
 	private position = { x: 96, y: 480 }
 	private boxSize = { width: 528, height: 528 }
 	private gapSize = { width: 80, height: 80 }
 
 	constructor(scene: Phaser.Scene) {
 		this.scene = scene
+	}
 
+	create(): void {
 		//const {width, height} = scene.scale;
-		const box = scene.add.graphics()
+		const box = this.scene.add.graphics()
 		box.fillStyle(0xfff6e5)
 		box.fillRoundedRect(this.position.x, this.position.y, 528, 528, 30)
 		box.lineStyle(10, 0x5011aa)
@@ -37,7 +41,7 @@ export default class vas {
 		this.boxBg = box
 		this.boxText = I18nSingleton.getInstance()
 			.createTranslatedText(
-				scene,
+				this.scene,
 				this.position.x + this.boxSize.width / 2,
 				this.position.y + 40,
 				'vas_box_text',
@@ -96,7 +100,7 @@ export default class vas {
 			10,
 		)
 
-		this.buttonImage = scene.add
+		this.buttonImage = this.scene.add
 			.nineslice(
 				this.position.x,
 				this.position.y + 576,
@@ -152,6 +156,9 @@ export default class vas {
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 			.setColor('black')
+
+		this.isCreated = true
+		this.initFontStyle()
 	}
 
 	setImageResponse(index?: number): void {
@@ -254,92 +261,56 @@ export default class vas {
 	}
 
 	initFontStyle() {
-		this.boxText
-			.setStyle({
-				fontFamily: 'Mali',
-				fontSize: '32px',
-				color: '#ffffff',
-			})
-			.setStroke('#3f088c', 6)
-			.setFontStyle('bold')
-
-		if (this.imageText) {
-			this.imageText
+		if (this.isCreated) {
+			this.boxText
 				.setStyle({
 					fontFamily: 'Mali',
 					fontSize: '32px',
-					color: '#3f088c',
+					color: '#ffffff',
 				})
+				.setStroke('#3f088c', 6)
 				.setFontStyle('bold')
-		}
 
-		this.confirmText
-			.setStyle({
-				fontFamily: 'Mali',
-				fontSize: '32px',
-				color: '#ffffff',
-			})
-			.setStroke('#3f088c', 6)
-			.setFontStyle('bold')
-
-		if (this.RestText) {
-			this.RestText.setStyle({
-				fontFamily: 'Mali',
-				fontSize: '40px',
-				color: '#dd2d04',
-			})
-				.setStroke('#ffffff', 6)
-				.setFontStyle('bold')
-		}
-
-		this.buttonText.forEach((text) => {
-			if (text.active) {
-				text.setStyle({
-					fontFamily: 'Jua',
-					fontSize: '32px',
-					color: '#3f088c',
-				})
+			if (this.imageText) {
+				this.imageText
+					.setStyle({
+						fontFamily: 'Mali',
+						fontSize: '32px',
+						color: '#3f088c',
+					})
+					.setFontStyle('bold')
 			}
-		})
-	}
-	setVisibleOn(): void {
-		this.buttonText?.forEach((text) => {
-			text.setVisible(true)
-		})
-		this.button?.forEach((element) => {
-			element.setVisible(true)
-		})
-		this.boxText?.setVisible(true)
-		this.imageText?.setVisible(true)
-		this.confirmText?.setVisible(true)
-		this.boxBg?.setVisible(true)
-		this.emoImage?.setVisible(true)
-		this.buttonImage?.setVisible(true)
 
-		if (this.RestText) {
-			this.RestText.setVisible(true)
+			this.confirmText
+				.setStyle({
+					fontFamily: 'Mali',
+					fontSize: '32px',
+					color: '#ffffff',
+				})
+				.setStroke('#3f088c', 6)
+				.setFontStyle('bold')
+
+			if (this.RestText) {
+				this.RestText.setStyle({
+					fontFamily: 'Mali',
+					fontSize: '40px',
+					color: '#dd2d04',
+				})
+					.setStroke('#ffffff', 6)
+					.setFontStyle('bold')
+			}
+
+			this.buttonText.forEach((text) => {
+				if (text.active) {
+					text.setStyle({
+						fontFamily: 'Jua',
+						fontSize: '32px',
+						color: '#3f088c',
+					})
+				}
+			})
 		}
 	}
-
-	setVisibleOff(): void {
-		this.buttonText?.forEach((text) => {
-			text.setVisible(false)
-		})
-		this.button?.forEach((element) => {
-			element.setVisible(false)
-		})
-		this.boxText?.setVisible(false)
-		this.imageText?.setVisible(false)
-		this.confirmText?.setVisible(false)
-		this.boxBg?.setVisible(false)
-		this.emoImage?.setVisible(false)
-		this.buttonImage?.setVisible(false)
-
-		if (this.RestText) {
-			this.RestText.setVisible(false)
-		}
-	}
-
 	clearPopup(): void {
 		this.buttonText.forEach((text) => {
 			text.destroy()

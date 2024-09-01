@@ -56,9 +56,9 @@ export default class RedeemScene extends Phaser.Scene {
         //popup box
         const box = this.add.graphics();
         box.fillStyle(0xFFF6E5);
-        box.fillRoundedRect( MARGIN, height/4-MARGIN*2, 624, 920, 20)
+        box.fillRoundedRect( MARGIN, 208, 624, 936, 20)
         box.lineStyle(6, 0xD35E24)
-        box.strokeRoundedRect( MARGIN, height/4-MARGIN*2, 624, 920, 20)
+        box.strokeRoundedRect( MARGIN, 208, 624, 936, 20)
 
         //line
         const line = this.add.graphics();
@@ -120,7 +120,7 @@ export default class RedeemScene extends Phaser.Scene {
         //button
         this.buttonGrey = this.add.nineslice(
             MARGIN*2, 
-            1000, 
+            1016, 
             'button', 
             'button_grey.png', 
             128, 
@@ -136,14 +136,14 @@ export default class RedeemScene extends Phaser.Scene {
 
         this.buttonIcon = this.add.image(
             MARGIN*2+64, 
-            1000+44,
+            1016+44,
             'icon',
             'icon_back.png',
         )
 
         this.buttonRed = this.add.nineslice(
             MARGIN*11/2, 
-            1000, 
+            1016, 
             'button', 
             'button_red.png', 
             376, 
@@ -162,7 +162,7 @@ export default class RedeemScene extends Phaser.Scene {
             .createTranslatedText(
                 this,
                 MARGIN*11/2+188,
-                1000+48,
+                1016+48,
                 'redeem_button_text'
             )
             .setAlign('center')
