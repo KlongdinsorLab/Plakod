@@ -10,6 +10,7 @@ import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
 import { BoosterEffect } from 'component/booster/booster'
 import { AchievementPopup } from 'component/popup/AchievementPopup'
+import { AchievementDetailDTO } from 'services/API/definition/responseDTO'
 import { LevelUpPopup } from 'component/popup/LevelUpPopup'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { FinishGameResponse } from 'services/API/definition/responseDTO'
@@ -34,7 +35,9 @@ export default class EndGameScene extends Phaser.Scene {
 	private levelUpPopup!: LevelUpPopup
 	private finishGameResponse!: FinishGameResponse
 
-	private playerJson = { totalPlayed: 1, todayPlayed: 1 }
+	private playerJson = { totalPlayed: 10, todayPlayed: 5 }
+
+	private isLoading!: boolean
 
 	constructor() {
 		super('end game')
@@ -144,7 +147,9 @@ export default class EndGameScene extends Phaser.Scene {
 		this.load.image('popupAuraEffect', 'assets/effect/popup_aura.png')
 	}
 
-	create() {
+	async create() {
+		this.isLoading = true
+
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
 		const apiService = new supabaseAPIService()
@@ -189,7 +194,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.scoreText = i18n
 			.createTranslatedText(this, width / 2, 296, 'score', {
-				score: this.score ?? 200800,
+				score: this.score,
 			})
 			.setAlign('center')
 			.setOrigin(0.5, 0)
@@ -208,6 +213,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.restartButton = new RestartButton(this)
 		this.homeButton = new HomeButton(this)
+		this.vas = new vas(this)
 
 		if (this.playerJson.totalPlayed % VAS_COUNT == 0) {
 			this.homeButton.disable()
@@ -220,18 +226,24 @@ export default class EndGameScene extends Phaser.Scene {
 			this.heart1.getBody().setVisible(false)
 			this.heart2.getBody().setVisible(false)
 
-			this.vas = new vas(this)
-			this.vas.setVisibleOff()
+			this.vas.create()
 		}
 
 		if (this.isHeartEmpty) {
 			this.restartButton.hide()
 		}
 
-		// TODO call api
-		this.achievementPopup = new AchievementPopup(this, 5)
-		this.achievementPopup.create()
-		this.achievementPopup.setVisibleOff()
+		const achievementList: AchievementDetailDTO[] =
+			this.finishGameResponse?.new_achievements
+		if (achievementList && achievementList.length !== 0) {
+			const achievementIdList = achievementList?.map(
+				(achievement) => achievement.id,
+			)
+
+			this.achievementPopup = new AchievementPopup(this, achievementIdList)
+			this.achievementPopup.create()
+			this.achievementPopup.setVisibleOff()
+		}
 
 		if (this.finishGameResponse?.level_up) {
 			this.levelUpPopup = new LevelUpPopup(this, this.finishGameResponse.level)
@@ -270,7 +282,7 @@ export default class EndGameScene extends Phaser.Scene {
 				self.heart2.initFontStyle()
 				self.restartButton.initFontStyle()
 				self.homeButton.initFontStyle()
-				self.achievementPopup.initFontStyle()
+				self.achievementPopup?.initFontStyle()
 
 				self.victoryText
 					.setStyle({
@@ -305,12 +317,15 @@ export default class EndGameScene extends Phaser.Scene {
 					.setStroke('white', 6)
 			},
 		})
+
+		this.isLoading = false
 	}
 
-	update(): void {
+	update(_: number, __: number): void {
+		if (this.isLoading) return
+
 		this.isHeartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-
 		if (!this.isHeartEmpty) {
 			this.restartButton.show()
 		}
@@ -332,21 +347,23 @@ export default class EndGameScene extends Phaser.Scene {
 			return
 		}
 
-		if (!this.achievementPopup.getIsCompleteAchievement()) {
-			this.achievementPopup.setVisibleOn()
+		if (
+			this.achievementPopup &&
+			!this.achievementPopup.getIsCompleteAchievement()
+		) {
+			this.achievementPopup?.setVisibleOn()
 			return
 		}
 
-		if (this.vas) {
-			if (!this.vas?.getIsCompleteVas()) {
-				this.vas.setVisibleOn()
-			} else {
-				this.vas.clearPopup()
-			}
+		if (this.vas?.getIsCompleteVas()) {
+			this.vas.clearPopup()
+			this.ShowUI()
 			return
 		}
 
-		this.ShowUI()
+		if (this.playerJson.totalPlayed % VAS_COUNT != 0) {
+			this.ShowUI()
+		}
 	}
 
 	ShowUI(): void {
