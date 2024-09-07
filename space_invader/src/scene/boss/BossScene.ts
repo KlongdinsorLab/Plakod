@@ -40,6 +40,7 @@ import { BoosterUI } from 'component/booster/boosterUI'
 
 import { Booster1 } from 'component/booster/boosterList/booster_1'
 import { Booster2 } from 'component/booster/boosterList/booster_2'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -69,6 +70,8 @@ export default class BossScene extends Phaser.Scene {
 
 	private boosterEffect!: BoosterEffect
 	private menu!: Menu
+
+	private apiService!: supabaseAPIService
 
 	constructor() {
 		super({ key: 'bossScene' })
@@ -148,6 +151,8 @@ export default class BossScene extends Phaser.Scene {
 	async create() {
 		const { name, score, playerX, reloadCount } = this.props
 		const { width, height } = this.scale
+
+		this.apiService = new supabaseAPIService()
 
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'boss_background')
@@ -242,7 +247,7 @@ export default class BossScene extends Phaser.Scene {
 		this.bulletText.setVisible(false)
 	}
 
-	update(_: number, delta: number) {
+	async update(_: number, delta: number) {
 		if (!this.isCompleteInit) return
 
 		this.menu.updateGameState(
@@ -326,9 +331,12 @@ export default class BossScene extends Phaser.Scene {
 			})
 			this.scene.pause()
 			this.boss.resetState()
+			this.reloadCount.decrementCount()
 			setTimeout(() => {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
+			const data = await this.apiService.updateGameSession({score : this.score.getScore(), lap : this.scene.scene.registry.get('lap')})
+			console.log(data)
 		}
 
 		if (this.input.pointer1.isDown) {
