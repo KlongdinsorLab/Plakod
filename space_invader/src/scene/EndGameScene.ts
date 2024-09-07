@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import Phaser from 'phaser'
 import { MARGIN, VAS_COUNT, MAX_PLAYED } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
@@ -9,8 +10,10 @@ import HomeButton from 'component/ui/Button/HomeButton'
 import vas from 'component/ui/Vas'
 import { BoosterEffect } from 'component/booster/booster'
 import { AchievementPopup } from 'component/popup/AchievementPopup'
-import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { AchievementDetailDTO } from 'services/API/definition/responseDTO'
+import { LevelUpPopup } from 'component/popup/LevelUpPopup'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { FinishGameResponse } from 'services/API/definition/responseDTO'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -21,7 +24,6 @@ export default class EndGameScene extends Phaser.Scene {
 	private rewardDialog!: RewardDialog
 	private restartButton!: RestartButton
 	private homeButton!: HomeButton
-	//private playCount!: number
 	private victoryText!: Phaser.GameObjects.Text
 	private highScoreText!: Phaser.GameObjects.Text
 	private scoreText!: Phaser.GameObjects.Text
@@ -29,11 +31,13 @@ export default class EndGameScene extends Phaser.Scene {
 
 	private boosterEffect!: BoosterEffect
 	private vas!: vas
-	private achievementPopup !: AchievementPopup
+	private achievementPopup!: AchievementPopup
+	private levelUpPopup!: LevelUpPopup
+	private finishGameResponse!: FinishGameResponse
 
-	private playerJson = {"totalPlayed" : 15, "todayPlayed" : 5}
+	private playerJson = { totalPlayed: 15, todayPlayed: 5 }
 
-	private isLoading !: boolean
+	private isLoading!: boolean
 
 	constructor() {
 		super('end game')
@@ -75,32 +79,72 @@ export default class EndGameScene extends Phaser.Scene {
 		this.load.atlas(
 			'heart_spritesheet',
 			'assets/heart_spritesheet/heart_spritesheet.png',
-			'assets/heart_spritesheet/heart_spritesheet.json'
+			'assets/heart_spritesheet/heart_spritesheet.json',
 		)
 
 		this.load.atlas(
 			'vas',
 			'assets/vas/vas_spritesheet.png',
-			'assets/vas/vas_spritesheet.json'
+			'assets/vas/vas_spritesheet.json',
 		)
 
 		this.load.atlas(
 			'button',
 			'assets/button/button_spritesheet.png',
-			'assets/button/button_spritesheet.json'
+			'assets/button/button_spritesheet.json',
 		)
 
-		this.load.atlas('heading',
+		this.load.atlas(
+			'heading',
 			'assets/heading/heading_spritesheet.png',
-			'assets/heading/heading_spritesheet.json'
+			'assets/heading/heading_spritesheet.json',
 		)
 
-		this.load.atlas('achievement',
+		this.load.atlas(
+			'achievement',
 			'assets/achievement/achievement_spritesheet.png',
-			'assets/achievement/achievement_spritesheet.json'
+			'assets/achievement/achievement_spritesheet.json',
 		)
 
-		this.load.image('popupAuraEffect',"assets/effect/popup_aura.png")
+		this.load.atlas(
+			'achievement',
+			'assets/achievement/achievement_spritesheet.png',
+			'assets/achievement/achievement_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b2v1',
+			'assets/character/enemy/b2v1_spritesheet.png',
+			'assets/character/enemy/b2v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b3v1',
+			'assets/character/enemy/b3v1_spritesheet.png',
+			'assets/character/enemy/b3v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b4v1',
+			'assets/character/enemy/b4v1_spritesheet.png',
+			'assets/character/enemy/b4v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'icon',
+			'assets/icon/icon_spritesheet.png',
+			'assets/icon/icon_spritesheet.json',
+		)
+
+		//booster
+		this.load.image('booster_selectedMark', 'assets/dropItem/selectedMark.png')
+		this.load.atlas(
+			'dropItem',
+			'assets/dropItem/dropitem_spritesheet.png',
+			'assets/dropItem/dropitem_spritesheet.json',
+		)
+
+		this.load.image('popupAuraEffect', 'assets/effect/popup_aura.png')
 	}
 
 	async create() {
@@ -108,16 +152,26 @@ export default class EndGameScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
-
 		const apiService = new supabaseAPIService()
-		
-		this.boosterEffect = this.scene.scene.registry.get("boosterEffect")
-		this.score = this.score * this.boosterEffect.score
 
-		const finishObject = await apiService.finishGameSession({score: this.score, lap: 10, is_booster_received: false})
-		const response = finishObject.response
-		
-		//this.playCount = Number(localStorage.getItem('playCount') ?? '')
+		this.boosterEffect = this.scene.scene.registry.get('boosterEffect')
+		if (this.boosterEffect && this.boosterEffect.score) {
+			this.score = this.score * this.boosterEffect.score
+		}
+
+		const finishGame = async () => {
+			try {
+				this.finishGameResponse = await apiService.finishGameSession({
+					score: this.score,
+					lap: this.scene.scene.registry.get('lap'),
+					is_booster_received: false,
+				})
+			} catch (error) {
+				console.error(error)
+			}
+		}
+		finishGame()
+
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
 			.setOrigin(0)
@@ -153,14 +207,15 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.heart1 = new Heart(this, width / 2 + 1.5 * MARGIN, 464, 1)
 		this.heart2 = new Heart(this, width / 2 - 1.5 * MARGIN, 464, 2)
-		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		this.isHeartEmpty =
+			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		this.rewardDialog = new RewardDialog(this)
 
 		this.restartButton = new RestartButton(this)
 		this.homeButton = new HomeButton(this)
 		this.vas = new vas(this)
 
-		if(this.playerJson.totalPlayed % VAS_COUNT == 0){
+		if (this.playerJson.totalPlayed % VAS_COUNT == 0) {
 			this.homeButton.disable()
 			this.homeButton.hide()
 			this.restartButton.disable()
@@ -170,21 +225,41 @@ export default class EndGameScene extends Phaser.Scene {
 
 			this.heart1.getBody().setVisible(false)
 			this.heart2.getBody().setVisible(false)
-			
+
 			this.vas.create()
 		}
 
-		if(this.isHeartEmpty){
+		if (this.isHeartEmpty) {
 			this.restartButton.hide()
 		}
 
-		const achievementList : AchievementDetailDTO[] = response.new_achievements
-		const achievementIdList = achievementList.map((achievement) => achievement.id)
-		console.log(achievementIdList)
+		const achievementList: AchievementDetailDTO[] =
+			this.finishGameResponse?.new_achievements
+		if (achievementList && achievementList.length !== 0) {
+			const achievementIdList = achievementList?.map(
+				(achievement) => achievement.id,
+			)
 
-		this.achievementPopup = new AchievementPopup(this,achievementIdList)
-		this.achievementPopup.create()
-		this.achievementPopup.setVisibleOff()
+			this.achievementPopup = new AchievementPopup(this, achievementIdList)
+			this.achievementPopup.create()
+			this.achievementPopup.setVisibleOff()
+		}
+
+		if (this.finishGameResponse?.level_up) {
+			this.levelUpPopup = new LevelUpPopup(this, this.finishGameResponse.level)
+			this.levelUpPopup.create()
+			this.levelUpPopup.setVisibleOff()
+
+			this.homeButton.disable()
+			this.homeButton.hide()
+			this.restartButton.disable()
+			this.restartButton.hide()
+			this.rewardDialog.hide()
+			this.completeText.setVisible(false)
+
+			this.heart1.getBody().setVisible(false)
+			this.heart2.getBody().setVisible(false)
+		}
 
 		const self = this
 		WebFont.load({
@@ -200,13 +275,14 @@ export default class EndGameScene extends Phaser.Scene {
 				const juaFontStyle = {
 					fontFamily: 'Jua',
 				}
-				self.vas.initFontStyle()
+
+				self.vas?.initFontStyle()
 				self.rewardDialog.initFontStyle()
 				self.heart1.initFontStyle()
 				self.heart2.initFontStyle()
 				self.restartButton.initFontStyle()
 				self.homeButton.initFontStyle()
-				self.achievementPopup.initFontStyle()
+				self.achievementPopup?.initFontStyle()
 
 				self.victoryText
 					.setStyle({
@@ -246,38 +322,74 @@ export default class EndGameScene extends Phaser.Scene {
 	}
 
 	update(_: number, __: number): void {
-		if(this.isLoading) return
-		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-		if(!this.isHeartEmpty){
+		if (this.isLoading) return
+
+		this.isHeartEmpty =
+			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if (!this.isHeartEmpty) {
 			this.restartButton.show()
 		}
-		if(this.vas.getIsCompleteVas() && !this.achievementPopup.getIsCompleteAchievement()){
-			this.achievementPopup.setVisibleOn()
-		}
-		if(this.vas.getIsCompleteVas() && this.achievementPopup.getIsCompleteAchievement()){
-			this.ShowUI();
+
+		if (
+			this.finishGameResponse?.level_up &&
+			!this.levelUpPopup.getIsConfirmLevelUp()
+		) {
+			this.levelUpPopup.setVisibleOn()
+			const self = this
+			WebFont.load({
+				google: {
+					families: ['Mali', 'Jua'],
+				},
+				active: function () {
+					self.levelUpPopup.initFontStyle()
+				},
+			})
+			return
 		}
 
+		if (
+			this.achievementPopup &&
+			!this.achievementPopup.getIsCompleteAchievement()
+		) {
+			this.achievementPopup?.setVisibleOn()
+			return
+		}
+
+		if (this.vas?.getIsCompleteVas()) {
+			this.vas.clearPopup()
+			this.ShowUI()
+			return
+		}
+
+		if (this.playerJson.totalPlayed % VAS_COUNT != 0) {
+			this.ShowUI()
+		}
 	}
 
-	ShowUI():void{ 
-		this.isHeartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-		if(!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED && this.vas.getScore()<7){
+	ShowUI(): void {
+		this.isHeartEmpty =
+			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if (!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED) {
+			if (this.vas && this.vas.getScore() >= 7) {
+				this.restartButton.hide()
+				return
+			}
+
 			this.restartButton.show()
 			this.restartButton.activate()
-		}else{
+		} else {
 			this.restartButton.hide()
 		}
 
-		if(this.playerJson.todayPlayed == 10){
+		if (this.playerJson.todayPlayed == 10) {
 			this.completeText.setVisible(true)
 			this.rewardDialog.hide()
-		}else{
+		} else {
 			this.rewardDialog.show()
 		}
 		this.homeButton.show()
 		this.homeButton.activate()
-		
+
 		this.heart1.getBody().setVisible(true)
 		this.heart2.getBody().setVisible(true)
 	}

@@ -9,8 +9,10 @@ import { BossByName } from 'scene/boss/bossInterface'
 import WebFont from 'webfontloader'
 
 const bossNameText = {
-	"B1": "alien_boss_name",
-	"B2": "slime_boss_name"
+	B1: 'b1v1_name',
+	B2: 'b2v1_name',
+	B3: 'b3v1_name',
+	B4: 'b4v1_name',
 }
 
 export default class RandomBossCutScene extends Phaser.Scene {
@@ -24,7 +26,13 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		super('cutscene_randomboss')
 	}
 
-	init({mcName, bgm}: {mcName: keyof typeof PlayerByName, bgm: Phaser.Sound.BaseSound}) {
+	init({
+		mcName,
+		bgm,
+	}: {
+		mcName: keyof typeof PlayerByName
+		bgm: Phaser.Sound.BaseSound
+	}) {
 		this.mcName = mcName
 		this.bgm = bgm
 	}
@@ -54,7 +62,10 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		)
 
 		this.load.image('boss1_background', 'assets/background/bg_boss.jpg')
-		this.load.image('boss2_background', 'assets/background/bg_boss scene_b2.png')
+		this.load.image(
+			'boss2_background',
+			'assets/background/bg_boss scene_b2.png',
+		)
 	}
 
 	create() {
@@ -67,7 +78,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 
 		// TODO: random player
 		const sceneLayer = this.add.layer()
-		const player = new PlayerByName[this.mcName ?? "mc1"](this, sceneLayer)
+		const player = new PlayerByName[this.mcName ?? 'mc1'](this, sceneLayer)
 		player.hide()
 		const score = new Score(this)
 		score.hide()
@@ -85,7 +96,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.lineStyle(6, 0xd35e24, 1)
 			.strokeRoundedRect(48, height - 320, 624, 240, 40)
 
-		const playerName = this.add.text(0,0, "username").setVisible(false)
+		const playerName = this.add.text(0, 0, 'username').setVisible(false)
 
 		const bossName = i18n
 			.createTranslatedText(this, 0, 0, bossNameText[this.bossName])
@@ -128,7 +139,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		})
 
 		setTimeout(() => {
-			this.scene.start('game', { bossName: "B1" })
+			this.scene.start('game', { bossName: 'B1' })
 			new SoundManager(this).stop(this.bgm!)
 		}, 3000)
 	}

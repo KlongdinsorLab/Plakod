@@ -131,7 +131,7 @@ export class B1BossVersion1 extends BossVersion {
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
 		const bossName = I18nSingleton.getInstance()
-			.createTranslatedText(scene, -320, 280, 'alien_boss_name')
+			.createTranslatedText(scene, -320, 280, 'b1v1_name')
 			.setOrigin(0.5, 1)
 
 		player.playVsScene(scene)
@@ -429,12 +429,15 @@ export class B1BossVersion1 extends BossVersion {
 			.tileSprite(0, 0, width, height, 'boss1_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
-			
-		const bossImage = scene.add.image(870, height - 275, 'b1v1', "b1v1_attack_00005.png").setOrigin(0.5, 1).setScale(2.5)
+
+		const bossImage = scene.add
+			.image(870, height - 275, 'b1v1', 'b1v1_attack_00005.png')
+			.setOrigin(0.5, 1)
+			.setScale(2.5)
 		const polygon = scene.add
-					.polygon(width, 0, [48, 622, 668, 484, 668, 910, 48, 910], 0xFFFFFF, 0)
-					.setStrokeStyle(5, 0x000000, 1)
-					.setOrigin(0,0)
+			.polygon(width, 0, [48, 622, 668, 484, 668, 910, 48, 910], 0xffffff, 0)
+			.setStrokeStyle(5, 0x000000, 1)
+			.setOrigin(0, 0)
 
 		const mask = polygon.createGeometryMask()
 
@@ -442,9 +445,9 @@ export class B1BossVersion1 extends BossVersion {
 		bossImage.setMask(mask)
 
 		player.playRandomBossScene(scene)
-		
+
 		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width, 780, 'alien_boss_name')
+			.createTranslatedText(scene, width, 780, 'b1v1_name')
 			.setOrigin(0, 0)
 
 		WebFont.load({
@@ -454,7 +457,7 @@ export class B1BossVersion1 extends BossVersion {
 			active: function () {
 				const bossTutorialUiStyle = {
 					fontFamily: 'Mali',
-					fontStyle:"bold"
+					fontStyle: 'bold',
 				}
 
 				bossText
@@ -472,7 +475,7 @@ export class B1BossVersion1 extends BossVersion {
 			x: 0,
 			duration: 500,
 			repeat: 0,
-			ease:'sine.out'
+			ease: 'sine.out',
 		})
 
 		scene.tweens.add({
@@ -480,7 +483,7 @@ export class B1BossVersion1 extends BossVersion {
 			x: 80,
 			duration: 500,
 			repeat: 0,
-			ease:'sine.out'
+			ease: 'sine.out',
 		})
 
 		scene.tweens.add({
@@ -488,8 +491,7 @@ export class B1BossVersion1 extends BossVersion {
 			x: width / 2 + MARGIN,
 			duration: 500,
 			repeat: 0,
-			ease:'sine.out'
+			ease: 'sine.out',
 		})
-
 	}
 }

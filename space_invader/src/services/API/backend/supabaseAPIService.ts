@@ -175,7 +175,11 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async finishGameSession({ score, lap, is_booster_received }: finishGameSessionInputDTO) {
+	async finishGameSession({
+		score,
+		lap,
+		is_booster_received,
+	}: finishGameSessionInputDTO) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'finish-game',
 			{
@@ -185,8 +189,8 @@ export default class supabaseAPIService {
 				body: {
 					score: score,
 					lap: lap,
-					is_booster_received: is_booster_received
-				}
+					is_booster_received: is_booster_received,
+				},
 			},
 		)
 		if (error) {
