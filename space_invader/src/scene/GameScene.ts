@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import {
 	BULLET_COUNT,
 	DARK_BROWN,
+	GAME_TIME_LIMIT_MS,
 	HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
 	MARGIN,
@@ -154,9 +156,7 @@ export default class GameScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.scale
-		// const queryString = window.location.search;
-		// const urlParams = new URLSearchParams(queryString);
-		// this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+		this.setGameTimeout()
 
 		this.bgm = this.sound.add('bgm', { volume: 1, loop: true })
 		this.soundManager.init()
@@ -522,6 +522,12 @@ export default class GameScene extends Phaser.Scene {
 		}
 
 		// console.log(gauge.getDuratation())
+	}
+
+	setGameTimeout() {
+		setTimeout(() => {
+			this.scene.launch('end game', { score: this.score.getScore() })
+		}, GAME_TIME_LIMIT_MS)
 	}
 }
 

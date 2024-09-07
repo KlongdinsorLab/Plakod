@@ -317,7 +317,7 @@ export default class AchievementBag{
     setSelected(achievementUI: AchievementUI):void {
         let position = achievementUI.getPosition()
         this.selectedCircle = this.scene.add.graphics()
-        this.selectedCircle.lineStyle(4, 0x327F76)
+        this.selectedCircle.lineStyle(4, 0xFFA800)
         this.selectedCircle.strokeRoundedRect(position.x, position.y, 96, 96, 100)
         this.achievementGraphics.set(achievementUI.getId(), this.selectedCircle)
 
