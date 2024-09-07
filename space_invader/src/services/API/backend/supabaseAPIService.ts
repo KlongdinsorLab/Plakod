@@ -199,4 +199,20 @@ export default class supabaseAPIService {
 
 		return data
 	}
+
+	async getUnlcokedAchievement() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-unlocked-achievements',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
 }

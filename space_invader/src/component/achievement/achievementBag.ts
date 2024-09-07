@@ -2,6 +2,7 @@ import { AchievementUI } from "./achievementUI"
 import { RewardPopup } from "component/popup/RewardPopup"
 import I18nSingleton from "i18n/I18nSingleton"
 import { TOTAL_MC } from "config"
+import { AchievementDetailDTO } from "services/API/definition/responseDTO"
 export default class AchievementBag{
     private scene: Phaser.Scene
     private achievementUI: AchievementUI[]
@@ -62,17 +63,16 @@ export default class AchievementBag{
     private allAchievementJson = [
         {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}, {id: 11}, {id: 12}, {id: 13}, {id: 14}, {id: 15}, {id: 16}, {id: 17},
     ]
-    private unlockedAchievementJson = [
-        {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10},
-    ]
+    private unlockedAchievementJson : AchievementDetailDTO[]
     private playerMCJson = [
         {id:1}
     ]
 
-    constructor(scene: Phaser.Scene){
+    constructor(scene: Phaser.Scene, unlockedAchievementJson : AchievementDetailDTO[]){
         this.scene = scene
         this.achievementUI = []
         this.sortedAchievementJson = []
+        this.unlockedAchievementJson = unlockedAchievementJson
         this.totalUnlockedAchievement = this.unlockedAchievementJson.length
         this.totalAchievement = this.allAchievementJson.length
         this.totalUnlockedReward = this.playerMCJson.length-1

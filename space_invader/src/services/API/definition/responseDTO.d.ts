@@ -18,20 +18,20 @@ export interface RankDTO {
 }
 
 export interface AchievementDetailDTO {
-	id: number
-	name: string
-	detail: string
-	games_played_in_a_day: number | null
-	games_played_consecutive_days: number | null
-	accumulative_score: number | null
-	games_played: number | null
-	booster_number: number | null
-	booster_type: string | null
-	booster_action: string | null
-	booster_unique: string | null
-	boss_id: number | null
-	boss_encounter: number | null
-	characters_unlocked: number | null
+     id: number;
+     name: string;
+     detail: string | null;
+     games_played_in_a_day: number | null;
+     games_played_consecutive_days: number | null;
+     accumulative_score: number | null;
+     games_played: number | null;
+     boosters_number: number | null;
+     booster_type: string | null;
+     booster_action: string | null;
+     booster_unique: string | null;
+     boss_id: number | null;
+     boss_encounter: number | null;
+     characters_unlocked: number | null;
 }
 
 export interface CharacterDetailDTO {
