@@ -4,6 +4,7 @@ import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import BoosterBag from "component/booster/boosterBag";
 import AchievementBag from "component/achievement/achievementBag";
+import supabaseAPIService from "services/API/backend/supabaseAPIService";
 
 enum SlotType{
     BOOSTER,
@@ -109,9 +110,15 @@ export default class MyBagScene extends Phaser.Scene{
         )
         this.load.image('popupAuraEffect', 'assets/effect/popup_aura.png')
     }
-    create(){
+    async create(){
         const {width,height} = this.scale;
         const self = this;
+
+        const apiService = new supabaseAPIService()
+        const data = await apiService.getUnlcokedAchievement()
+        console.log(data)
+        const unlockedAchievement = data.response
+
         this.background = this.add.tileSprite( width/2, height/2, 720, 1280, 'bg').setOrigin(0.5).setScrollFactor(0,0)
         this.myBagIcon = this.add.image(width/2, 112, 'icon', 'icon_bag.png').setScale(2.5)
         this.banner = this.add.nineslice(width/2, 232, 'heading', 'heading_red.png', 528, 128)
@@ -254,7 +261,7 @@ export default class MyBagScene extends Phaser.Scene{
         this.boosterBag.create()
         this.boosterBag.createDefaultText()
 
-        this.achievementBag = new AchievementBag(this)
+        this.achievementBag = new AchievementBag(this,unlockedAchievement)
         this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
         this.achievementBag.create()
         this.achievementBag.createDefaultTextDescription()
