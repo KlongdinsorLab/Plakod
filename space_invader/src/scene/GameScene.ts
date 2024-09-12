@@ -34,6 +34,7 @@ import { boosterByName } from 'component/booster/boosterByName'
 import { Booster, BoosterEffect } from 'component/booster/booster'
 import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
 import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -76,6 +77,8 @@ export default class GameScene extends Phaser.Scene {
 	private boosterEffect!: BoosterEffect
 
 	private laserFactory!: LaserFactory
+
+	private apiService!: supabaseAPIService
 
 	constructor() {
 		super({ key: 'game' })
@@ -157,6 +160,8 @@ export default class GameScene extends Phaser.Scene {
 	create() {
 		const { width, height } = this.scale
 		this.setGameTimeout()
+
+		this.apiService = new supabaseAPIService()
 
 		this.bgm = this.sound.add('bgm', { volume: 1, loop: true })
 		this.soundManager.init()
@@ -291,6 +296,8 @@ export default class GameScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
+		// this.reloadCount.setCount(6)
+
 		const self = this
 		WebFont.load({
 			google: {
@@ -312,6 +319,7 @@ export default class GameScene extends Phaser.Scene {
 		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
 	update(_: number, delta: number) {
+		
 		//        if (this.input.gamepad.total === 0) {
 		//            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
 		//            text.x = width / 2 - text.width / 2
@@ -472,8 +480,10 @@ export default class GameScene extends Phaser.Scene {
 					this.boosterEffect.laserFrequency *
 					ShootingPhase.NORMAL *
 					this.boosterEffect.shootingPhase,
-				callback: () => {
+				callback: async () => {
 					this.reloadCount.decrementCount()
+					const data = await this.apiService.updateGameSession({score : this.score.getScore(), lap : this.scene.scene.registry.get('lap')})
+					console.log(data)
 					this.isCompleteBoss = false
 				},
 				loop: false,

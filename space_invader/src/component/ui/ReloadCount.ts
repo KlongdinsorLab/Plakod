@@ -89,7 +89,7 @@ export default class ReloadCount {
 			// this.soundManager.play(this.lapChangedSound!, true)
 		}
 		this.reloadCount = count
-		this.scene.scene.scene.registry.set('lap', this.getCountText(count))
+		this.scene.scene.scene.registry.set('lap', RELOAD_COUNT - this.getCount())
 		this.body.setText(this.getCountText(count))
 	}
 
