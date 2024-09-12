@@ -11,8 +11,9 @@ import PlayButton from 'component/ui/Button/PlayButton'
 import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
-import { tirabase } from 'scene/TitleScene'
+import { supabase, tirabase } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
@@ -35,37 +36,39 @@ export default class HomeScene extends Phaser.Scene {
 	private timeService!: TimeService
 	private reminderText!: Phaser.GameObjects.Text
 	private playerData!: PlayerDTO
+	private apiService!: supabaseAPIService
+	private isLoading!: boolean 
 
 	constructor() {
 		super('home')
 	}
 
 	private async handleData() {
-		const response = await tirabase.getPlayer()
+		const response = await this.apiService.getPlayer()
 		this.playerData = response.response
-		const {
-			airflow,
-			difficulty,
-			playCount,
-			playToday,
-			playerCharactersId,
-			playerId,
-			playerLevel,
-			selectedCharacterId,
-			username,
-		} = this.playerData
+		// const {
+		// 	airflow,
+		// 	difficulty,
+		// 	playCount,
+		// 	playToday,
+		// 	playerCharactersId,
+		// 	playerId,
+		// 	playerLevel,
+		// 	selectedCharacterId,
+		// 	username,
+		// } = this.playerData
 
 		console.log(this.playerData)
 
-		this.scene.scene.registry.set('username', username)
-		this.scene.scene.registry.set('airflow', airflow)
-		this.scene.scene.registry.set('difficulty', difficulty)
-		this.scene.scene.registry.set('playCount', playCount)
-		this.scene.scene.registry.set('playToday', playToday)
-		this.scene.scene.registry.set('playerCharactersId', playerCharactersId)
-		this.scene.scene.registry.set('playerId', playerId)
-		this.scene.scene.registry.set('playerLevel', playerLevel)
-		this.scene.scene.registry.set('selectedCharacterId', selectedCharacterId)
+		this.scene.scene.registry.set('username', this.playerData.username)
+		this.scene.scene.registry.set('airflow', this.playerData.airflow)
+		this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
+		// this.scene.scene.registry.set('playCount', playCount)
+		// this.scene.scene.registry.set('playToday', playToday)
+		// this.scene.scene.registry.set('playerCharactersId', playerCharactersId)
+		// this.scene.scene.registry.set('playerId', playerId)
+		// this.scene.scene.registry.set('playerLevel', playerLevel)
+		this.scene.scene.registry.set('selectedCharacterId', this.playerData.selected_character_id)
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
@@ -105,10 +108,12 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	async create() {
+		this.isLoading = true
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
 		
 		// call API
+		this.apiService = new supabaseAPIService()
 		await this.handleData()
 
 		const { width, height } = this.scale
@@ -201,9 +206,12 @@ export default class HomeScene extends Phaser.Scene {
 					.setStroke('#57453B', 12)
 			},
 		})
+
+		this.isLoading = false
 	}
 
 	update(_: number, __: number): void {
+		if(this.isLoading) return
 		const heartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if (this.playCount >= 10 || heartEmpty) {

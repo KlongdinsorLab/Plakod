@@ -6,7 +6,7 @@ export interface PlayerDTO {
 	playCount: number
 	playToday: Date[]
 	difficulty: DifficultyDTO
-	selectedCharacterId: number
+	selected_character_id: number
 	playerCharactersId: number[]
 }
 
