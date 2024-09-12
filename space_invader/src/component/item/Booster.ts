@@ -31,13 +31,14 @@ export class Booster extends Item {
 		isTutorial?: boolean,
 	): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
 		const { width } = this.scene.scale
-		const boosterIndex = Math.floor(Math.random() * boosterList.length)
+		const boosterIndex = this.scene.scene.scene.registry.get('booster_drop_id')
+		console.log(boosterIndex)
 		const startingX = isTutorial ? width / 2 : Math.floor(Math.random() * width)
 		this.item = this.scene.physics.add.image(
 			startingX,
 			-MARGIN,
-			'bossAsset',
-			boosterList[boosterIndex],
+			'dropItem',
+            'booster' + boosterIndex + '.png',
 		)
 
 		const boosterCollider = this.scene.physics.add.overlap(

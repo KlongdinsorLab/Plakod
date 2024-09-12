@@ -121,6 +121,12 @@ export default class BossScene extends Phaser.Scene {
 			'assets/ui/asset_warmup.json',
 		)
 
+		this.load.atlas(
+			'dropItem', 
+			'assets/dropItem/dropitem_spritesheet.png', 
+			'assets/dropItem/dropitem_spritesheet.json'
+		)
+
 		this.load.image('laser', 'assets/effect/mc_bullet.png')
 
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')

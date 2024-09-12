@@ -123,13 +123,16 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async startGameSession() {
+	async startGameSession(playerBoosterId : number) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'start-game',
 			{
 				headers: {
 					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
 				},
+				body: {
+					player_booster_id : playerBoosterId
+				}
 			},
 		)
 		if (error) {
