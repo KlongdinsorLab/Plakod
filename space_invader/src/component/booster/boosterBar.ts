@@ -25,20 +25,21 @@ export default class boosterBar{
 
     private boosters: BoosterUI[]=[];
 
-    private boosterJson = [
-        {boosterId: 1,      expireDate: [], amount : 1 },
-        {boosterId: 2 ,     expireDate: [], amount : 2 },
-        {boosterId: 3 ,     expireDate: [], amount : 30},
-        {boosterId: 4 ,     expireDate: [], amount : 1},
-        {boosterId: 5 ,     expireDate: [], amount : 1},
-        {boosterId: 6 ,     expireDate: [], amount : 1},
-        {boosterId: 7 ,     expireDate: [], amount : 2},
-  ]
+private boosterJson : boosterRedeem[] //= [
+//         {boosterId: 1,      expireDate: [], amount : 1 },
+//         {boosterId: 2 ,     expireDate: [], amount : 2 },
+//         {boosterId: 3 ,     expireDate: [], amount : 30},
+//         {boosterId: 4 ,     expireDate: [], amount : 1},
+//         {boosterId: 5 ,     expireDate: [], amount : 1},
+//         {boosterId: 6 ,     expireDate: [], amount : 1},
+//         {boosterId: 7 ,     expireDate: [], amount : 2},
+//   ]
     
 
-    constructor(scene: Phaser.Scene){
+    constructor(scene: Phaser.Scene, boosterJson : boosterRedeem[]){
         this.selectedBooster.length = 0
         this.scene = scene
+        this.boosterJson = boosterJson
         this.boosters[0] = new BoosterUI(
             this.scene,
             BoosterName.BOOSTER_1,
@@ -380,4 +381,9 @@ export default class boosterBar{
     
 }
 
+interface boosterRedeem {
+    boosterId : number,
+    expireDate : string[],
+    amount : number,
+}
     

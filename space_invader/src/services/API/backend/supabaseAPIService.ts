@@ -218,4 +218,36 @@ export default class supabaseAPIService {
 
 		return data
 	}
+
+	async getBoosterBag() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-booster-bag',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async getBoosterRedeem() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-booster-redeem',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
 }
