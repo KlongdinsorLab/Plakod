@@ -196,5 +196,7 @@
 	"achievement_name_14": "Achievement name 14",
 	"achievement_name_15": "Achievement name 15",
 	"achievement_name_16": "Achievement name 16",
-	"achievement_name_17": "Achievement name 17"
+	"achievement_name_17": "Achievement name 17",
+	"start_login_text": "Please login to start the game",
+  	"start_login_button": "Login"
 }

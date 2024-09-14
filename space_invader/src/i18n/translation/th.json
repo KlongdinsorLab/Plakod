@@ -242,5 +242,7 @@
 	"levelup_popup_heading": "ยินดีด้วยนะ !\nคุณเลเวลอัพ",
 	"levelup_boss_unlock": "ปลดล็อคบอสตัวใหม่",
 	"levelup_boss_detail": "เพิ่มโอกาสต่อสู้กับ {{bossName}}",
-	"levelup_reward_recieve": "รางวัลที่ได้รับ"
+	"levelup_reward_recieve": "รางวัลที่ได้รับ",
+	"start_login_text":"กรุณาเข้าสู่ระบบก่อนเริ่มเกม",
+  	"start_login_button":"เข้าสู่ระบบ"
 }
