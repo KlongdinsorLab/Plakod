@@ -10,10 +10,8 @@ import {
 } from 'firebase/auth'
 import { MEDIUM_FONT_SIZE } from 'config'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
-import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const tirabase = new MockAPIService()
-const supabase = new supabaseAPIService()
 
 // TODO login here
 // tirabase.register('0958927519',
