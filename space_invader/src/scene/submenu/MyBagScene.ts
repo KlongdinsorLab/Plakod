@@ -49,15 +49,15 @@ export default class MyBagScene extends Phaser.Scene{
     private achievementBag!: AchievementBag
 
 
-    private boosterJson = [
-        {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:null }, {boosterId: 1,  expireDate:"2024-08-12T12:00:00.000Z" },{boosterId: 1,  expireDate:"2024-08-12T09:00:00.000Z" },
-        {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:null }, {boosterId: 2,  expireDate:"2024-08-12T10:00:00.000Z" },
-        {boosterId: 3,  expireDate:null }, {boosterId: 3,  expireDate:"2024-08-12T11:00:00.000Z" }, {boosterId: 3,  expireDate:"2024-08-13T11:00:00.000Z" },
-        {boosterId: 4,  expireDate:null }, {boosterId: 4,  expireDate:"2024-08-12T08:00:00.000Z" },
-        {boosterId: 5,  expireDate:null }, {boosterId: 5,  expireDate:"2024-08-12T06:00:00.000Z" },
-        {boosterId: 6,  expireDate:null }, {boosterId: 6,  expireDate:"2024-08-12T06:00:00.000Z" },{boosterId: 6,  expireDate:"2024-08-13T08:00:00.000Z" },
-        {boosterId: 7,  expireDate:null }, {boosterId: 7,  expireDate:"2024-08-10T08:24:00.000Z" },
-  ]
+//     private boosterJson = [
+//         {boosterId: 1,  expired_at:null }, {boosterId: 1,  expired_at:null }, {boosterId: 1,  expired_at:"2024-08-12T12:00:00.000Z" },{boosterId: 1,  expired_at:"2024-08-12T09:00:00.000Z" },
+//         {boosterId: 2,  expired_at:null }, {boosterId: 2,  expired_at:null }, {boosterId: 2,  expired_at:"2024-08-12T10:00:00.000Z" },
+//         {boosterId: 3,  expired_at:null }, {boosterId: 3,  expired_at:"2024-08-12T11:00:00.000Z" }, {boosterId: 3,  expired_at:"2024-08-13T11:00:00.000Z" },
+//         {boosterId: 4,  expired_at:null }, {boosterId: 4,  expired_at:"2024-08-12T08:00:00.000Z" },
+//         {boosterId: 5,  expired_at:null }, {boosterId: 5,  expired_at:"2024-08-12T06:00:00.000Z" },
+//         {boosterId: 6,  expired_at:null }, {boosterId: 6,  expired_at:"2024-08-12T06:00:00.000Z" },{boosterId: 6,  expired_at:"2024-08-13T08:00:00.000Z" },
+//         {boosterId: 7,  expired_at:null }, {boosterId: 7,  expired_at:"2024-08-10T08:24:00.000Z" },
+//   ]
 
     constructor(){
         super('mybag')
@@ -115,9 +115,13 @@ export default class MyBagScene extends Phaser.Scene{
         const self = this;
 
         const apiService = new supabaseAPIService()
-        const data = await apiService.getUnlcokedAchievement()
-        console.log(data)
-        const unlockedAchievement = data.response
+
+        const boosterData = await apiService.getBoosterBag()
+        const boosterJson = boosterData.response
+        console.log(boosterJson)
+
+        const achievementData = await apiService.getUnlcokedAchievement()
+        const unlockedAchievement = achievementData.response
 
         this.background = this.add.tileSprite( width/2, height/2, 720, 1280, 'bg').setOrigin(0.5).setScrollFactor(0,0)
         this.myBagIcon = this.add.image(width/2, 112, 'icon', 'icon_bag.png').setScale(2.5)
@@ -257,7 +261,7 @@ export default class MyBagScene extends Phaser.Scene{
             {tl:0, tr:0, bl:40, br:40}
         )
 
-        this.boosterBag = new BoosterBag(this, this.boosterJson)
+        this.boosterBag = new BoosterBag(this, boosterJson)
         this.boosterBag.create()
         this.boosterBag.createDefaultText()
 

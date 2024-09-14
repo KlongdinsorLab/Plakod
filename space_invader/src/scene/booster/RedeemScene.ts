@@ -43,11 +43,14 @@ export default class RedeemScene extends Phaser.Scene {
         this.load.atlas('dropItem', 'assets/dropItem/dropitem_spritesheet.png', 'assets/dropItem/dropitem_spritesheet.json')
         
     }
-    create(){
+    async create(){
         const {width, height} = this.scale;
         const self = this;
 
-        const apiService = new supabaseAPIService
+        const apiService = new supabaseAPIService()
+
+        const boosterData = await apiService.getBoosterRedeem()
+        const boosterJson = boosterData.response
 
         //clear boosters
 		boosters.length = 0
@@ -116,7 +119,7 @@ export default class RedeemScene extends Phaser.Scene {
             
 
         //boosters
-        this.boosterBar = new boosterBar(this);
+        this.boosterBar = new boosterBar(this, boosterJson);
 
         
 
