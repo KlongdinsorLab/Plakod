@@ -19,7 +19,7 @@ export class B1BossVersion2 extends BossVersion {
 	private movePattern!: Phaser.Curves.Path
 	private obstacleFactory!: B1BossObstacleFactory
 
-	constructor(){
+	constructor() {
 		super()
 		this.obstacleFactory = new B1BossObstacleFactory()
 	}
@@ -94,18 +94,18 @@ export class B1BossVersion2 extends BossVersion {
 	}
 
 	useSkill(bossSkill: BossSkill, delta: number): void {
-		if(this.skillTimer === 0){
+		if (this.skillTimer === 0) {
 			bossSkill.setMovePath(this.movePattern)
 			bossSkill.move()
 		}
 		this.skillTimer += delta
 
-		if(this.skillTimer > 12000 && this.skillTimer < 18000){
+		if (this.skillTimer > 12000 && this.skillTimer < 18000) {
 			bossSkill.setActive(true)
 			return
 		}
-		
-		if(this.skillTimer > 36000 && this.skillTimer < 42000){
+
+		if (this.skillTimer > 36000 && this.skillTimer < 42000) {
 			bossSkill.setActive(true)
 			return
 		}
@@ -113,7 +113,12 @@ export class B1BossVersion2 extends BossVersion {
 		bossSkill.setActive(false)
 	}
 
-	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
+	createObstacleByTime(
+		scene: Phaser.Scene,
+		player: Player,
+		score: Score,
+		delta: number,
+	): void {
 		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
@@ -133,8 +138,8 @@ export class B1BossVersion2 extends BossVersion {
 			.setScrollFactor(0, 0)
 
 		const bossText = I18nSingleton.getInstance()
-		.createTranslatedText(scene, width / 2, height - 2*MARGIN, 'alien_boss_name_version2')
-		.setOrigin(0.5, 1)
+			.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
+			.setOrigin(0.5, 1)
 
 		WebFont.load({
 			google: {
@@ -150,7 +155,7 @@ export class B1BossVersion2 extends BossVersion {
 						...bossTutorialUiStyle,
 						color: 'white',
 						fontWeight: 700,
-						align: 'center'
+						align: 'center',
 					})
 					.setFontSize('80px')
 					.setStroke('#FB511C', 16)
@@ -170,8 +175,12 @@ export class B1BossVersion2 extends BossVersion {
 			repeat: -1,
 		})
 
-		const group = scene.add.group({key: 'tranform'}).setOrigin(0.5,1).setXY(width / 2, -140).scaleXY(1);
-		group.playAnimation('b1v1');
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setOrigin(0.5, 1)
+			.setXY(width / 2, -140)
+			.scaleXY(1)
+		group.playAnimation('b1v1')
 
 		scene.tweens.add({
 			targets: group.getChildren(),
@@ -191,10 +200,10 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4*MARGIN)
+					group.setXY(width / 2, height / 2 + 4 * MARGIN)
 					group.scaleXY(1.25)
-				},1000)
-			}
+				}, 1000)
+			},
 		})
 	}
 
@@ -235,7 +244,7 @@ export class B1BossVersion2 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			bossSound.play("b1-escape-voice")
+			bossSound.play('b1-escape-voice')
 			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
@@ -345,12 +354,24 @@ export class B1BossVersion2 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2 + 2*MARGIN, 'boss_attack_skill')
+			.createTranslatedText(
+				scene,
+				width / 2,
+				height / 2 + 2 * MARGIN,
+				'boss_attack_skill',
+			)
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE)
 
-		const shield = scene.physics.add.image(width / 2, 300, 'bossSkill_Shield').setOrigin(0.5, 0.5).setScale(1.25)
-		const group = scene.add.group({key: 'tranform'}).setXY(width / 2, 480).setOrigin(0.5, 1).scaleXY(0.5);
+		const shield = scene.physics.add
+			.image(width / 2, 300, 'bossSkill_Shield')
+			.setOrigin(0.5, 0.5)
+			.setScale(1.25)
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setXY(width / 2, 480)
+			.setOrigin(0.5, 1)
+			.scaleXY(0.5)
 		group.playAnimation('boss-move')
 
 		scene.tweens.add({
@@ -358,7 +379,7 @@ export class B1BossVersion2 extends BossVersion {
 			duration: 2000,
 			alpha: 0,
 			repeat: -1,
-			ease: 'sine.out'
+			ease: 'sine.out',
 		})
 
 		WebFont.load({
@@ -375,7 +396,7 @@ export class B1BossVersion2 extends BossVersion {
 						...bossTutorialUiStyle,
 						color: 'white',
 						fontWeight: 700,
-						align: "center"
+						align: 'center',
 					})
 					.setFontSize('6em')
 					.setStroke('#FB511C', 12)
@@ -471,7 +492,5 @@ export class B1BossVersion2 extends BossVersion {
 		}, 2000)
 	}
 
-	playRandomScene(_: Phaser.Scene, __: Player): void {
-		
-	}
+	playRandomScene(_: Phaser.Scene, __: Player): void {}
 }

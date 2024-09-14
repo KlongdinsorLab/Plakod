@@ -32,7 +32,7 @@ export const HOLD_BAR_IDLE_COLOR = 0x603f8b
 export const HOLD_BAR_CHARGING_COLOR = 0xefc53f
 export const HOLD_BAR_CHARGED_COLOR = 0x00b1b0
 export const HOLD_BAR_EMPTY_COLOR = 0xff8370
-export const MODAL_BACKGROUND_COLOR = 0x473d4d
+export const MODAL_BACKGROUND_COLOR = 0xfff6e5
 export const HOLDBAR_REDUCING_RATIO = 0.5
 export const CIRCLE_GAUGE_MARGIN = 88
 export const CIRCLE_GAUGE_RADUIS = 56
@@ -56,8 +56,7 @@ export const HIT_POISON_SCORE = 0
 export const BOOSTER_FREQUENCT_MS = 25000
 export const MAX_SELECTED_BOOSTER = 1
 
-
-export const GAME_TIME_LIMIT_MS = 160000
+export const GAME_TIME_LIMIT_MS = 1.8e6 //30 minutes
 export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'

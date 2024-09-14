@@ -14,7 +14,6 @@ import SoundToggle from 'component/ui/home/SoundToggle'
 import { tirabase } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
 
-
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
 	heartEmpty: 'home_reminder_empty_heart',
@@ -38,12 +37,12 @@ export default class HomeScene extends Phaser.Scene {
 	private playerData!: PlayerDTO
 
 	constructor() {
-		super('home');
+		super('home')
 	}
 
 	private async handleData() {
-		const response = await tirabase.getPlayer();
-		this.playerData = response.response;
+		const response = await tirabase.getPlayer()
+		this.playerData = response.response
 		const {
 			airflow,
 			difficulty,
@@ -55,22 +54,22 @@ export default class HomeScene extends Phaser.Scene {
 			selectedCharacterId,
 			username,
 		} = this.playerData
-		
-		console.log(this.playerData);
 
-		this.scene.scene.registry.set('username', username);
-		this.scene.scene.registry.set('airflow', airflow);
-		this.scene.scene.registry.set('difficulty', difficulty);
-		this.scene.scene.registry.set('playCount', playCount);
-		this.scene.scene.registry.set('playToday', playToday);
-		this.scene.scene.registry.set('playerCharactersId', playerCharactersId);
-		this.scene.scene.registry.set('playerId', playerId);
-		this.scene.scene.registry.set('playerLevel', playerLevel);
-		this.scene.scene.registry.set('selectedCharacterId', selectedCharacterId);
+		console.log(this.playerData)
+
+		this.scene.scene.registry.set('username', username)
+		this.scene.scene.registry.set('airflow', airflow)
+		this.scene.scene.registry.set('difficulty', difficulty)
+		this.scene.scene.registry.set('playCount', playCount)
+		this.scene.scene.registry.set('playToday', playToday)
+		this.scene.scene.registry.set('playerCharactersId', playerCharactersId)
+		this.scene.scene.registry.set('playerId', playerId)
+		this.scene.scene.registry.set('playerLevel', playerLevel)
+		this.scene.scene.registry.set('selectedCharacterId', selectedCharacterId)
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
-		this.bgm = bgm;
+		this.bgm = bgm
 	}
 
 	preload() {
@@ -86,26 +85,37 @@ export default class HomeScene extends Phaser.Scene {
 			'assets/ui/landing_page_spritesheet.json',
 		)
 		this.load.atlas(
-			'heart_spritesheet', 
-			'assets/heart_spritesheet/heart_spritesheet.png', 
-			'assets/heart_spritesheet/heart_spritesheet.json'
+			'button',
+			'assets/ui/button_spritesheet.png',
+			'assets/ui/button_spritesheet.json',
+		)
+		this.load.atlas(
+			'icon',
+			'assets/icon/icon_spritesheet.png',
+			'assets/icon/icon_spritesheet.json',
+		)
+		this.load.atlas(
+			'heart_spritesheet',
+			'assets/heart_spritesheet/heart_spritesheet.png',
+			'assets/heart_spritesheet/heart_spritesheet.json',
 		)
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
+
 	}
 
 	async create() {
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
-
-		// call API
-		await this.handleData();
 		
+		// call API
+		await this.handleData()
+
 		const { width, height } = this.scale
 		this.timeService = new TimeService()
-		
+
 		// TODO: call api
-		this.playCount = Number(localStorage.getItem('playCount') ?? "")
+		this.playCount = Number(localStorage.getItem('playCount') ?? '')
 
 		this.add
 			.tileSprite(0, 0, width, height, 'landing_page_bg')
@@ -121,16 +131,28 @@ export default class HomeScene extends Phaser.Scene {
 		this.playButton = new PlayButton(this, this.bgm)
 
 		const isFirstPlay = this.timeService.isFirstPlay()
-		if(isFirstPlay){
-			localStorage.setItem('playCount', "0")
+		if (isFirstPlay) {
+			localStorage.setItem('playCount', '0')
 		}
-		if(isFirstPlay && this.heart1.getIsRecharged() && this.heart2.getIsRecharged()){
+		if (
+			isFirstPlay &&
+			this.heart1.getIsRecharged() &&
+			this.heart2.getIsRecharged()
+		) {
 			this.isShowReminder = true
 			this.reminderCase = 'firstRound'
-		} else if(this.playCount < 10 && !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()){
+		} else if (
+			this.playCount < 10 &&
+			!this.heart1.getIsRecharged() &&
+			!this.heart2.getIsRecharged()
+		) {
 			this.isShowReminder = true
 			this.reminderCase = 'heartEmpty'
-		} else if(this.playCount >= 10 && !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()){
+		} else if (
+			this.playCount >= 10 &&
+			!this.heart1.getIsRecharged() &&
+			!this.heart2.getIsRecharged()
+		) {
 			this.isShowReminder = true
 			this.reminderCase = 'playTomorrow'
 		}
@@ -151,7 +173,7 @@ export default class HomeScene extends Phaser.Scene {
 		this.instructionButton = new InstructionButton(this)
 		this.achievementButton = new AchievementButton(this)
 		this.settingButton = new SettingButton(this)
-		
+
 		const self = this
 		WebFont.load({
 			google: {
@@ -167,7 +189,7 @@ export default class HomeScene extends Phaser.Scene {
 				self.rankingButton.initFontStyle()
 
 				new HomeTopBar(self)
-				new SoundToggle(self)
+				new SoundToggle(self, MARGIN * 2, height - 3 * MARGIN + 53)
 
 				self.reminderText
 					.setStyle({
@@ -182,16 +204,16 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	update(_: number, __: number): void {
-		const heartEmpty = !this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
-		if(this.playCount >= 10 || heartEmpty){
+		const heartEmpty =
+			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
+		if (this.playCount >= 10 || heartEmpty) {
 			this.playButton.disable()
 		}
 
-		if(!heartEmpty){
+		if (!heartEmpty) {
 			this.playButton.activate()
 		}
 
 		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
 	}
-
 }

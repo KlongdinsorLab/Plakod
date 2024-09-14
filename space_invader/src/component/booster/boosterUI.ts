@@ -16,7 +16,7 @@ export class BoosterUI {
     private state: States = States.UNAVAILABLE;
     private amount:number| undefined;
     private frame!:string;
-    private expireDate: string| undefined;
+    private expired_at: string| undefined;
     private expireArray: string[]= [];
     private markCircle! :Phaser.GameObjects.Arc;
     private markText! :Phaser.GameObjects.Text;
@@ -44,7 +44,7 @@ export class BoosterUI {
             width?: number,
             height?:number,
             amount?:number, 
-            expireDate?:string | null, 
+            expired_at?:string | null, 
             expireArray?:string[],
             canSelect?:boolean,
             isBoosterBag?:boolean,
@@ -66,7 +66,7 @@ export class BoosterUI {
         this.isCompleteInit = false;
         this.isBoosterBag = options?.isBoosterBag?? false
         this.amount = options?.amount?? 0
-        this.expireDate = options?.expireDate?? undefined
+        this.expired_at = options?.expired_at?? undefined
         this.expireArray = options?.expireArray?? []
         this.setState()
 
@@ -99,10 +99,10 @@ export class BoosterUI {
     }
 
     setState(): void{
-        if(this.expireDate && this.isBoosterBag){
+        if(this.expired_at && this.isBoosterBag){
             this.state = States.LIMITED_TIME
         }
-        if(this.expireDate === undefined && this.isBoosterBag){
+        if(this.expired_at === undefined && this.isBoosterBag){
             this.state = States.UNAVAILABLE
         }
         if(this.expireArray && !this.isBoosterBag){
@@ -126,7 +126,7 @@ export class BoosterUI {
         if(this.state === States.PERMANENT){
             this.setAmount()
         }else if(this.state === States.LIMITED_TIME){
-            if(this.expireDate){
+            if(this.expired_at){
                 this.setTimer()
             }else if(this.expireArray){
                 this.setAmount()
@@ -152,8 +152,8 @@ export class BoosterUI {
         if(this.expireArray && !this.isBoosterBag){
             const expire = this.expireArray[this.countdownIndex];
             dateObject = new Date(expire)
-        }else if(this.expireDate){
-            dateObject = new Date(this.expireDate)
+        }else if(this.expired_at){
+            dateObject = new Date(this.expired_at)
         }
 
         this.countdownTime = this.scene.add.text(this.position.x, this.position.y + 104, '', { fontSize: '20px', color: '#111111' }).setOrigin(0, 0).setColor('#000000')
@@ -168,8 +168,8 @@ export class BoosterUI {
                     if(this.expireArray && !this.isBoosterBag){
                         this.countdownIndex++;
                         this.amount!--;
-                    }else if(this.expireDate){
-                        this.expireDate = undefined
+                    }else if(this.expired_at){
+                        this.expired_at = undefined
                         this.isTimeout = true
                         this.destroy()
                     }

@@ -4,6 +4,7 @@ import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import boosterBar from "component/booster/boosterBar";
 import { BoosterName } from "component/booster/booster";
+import supabaseAPIService from "services/API/backend/supabaseAPIService";
 
 export let boosters: BoosterName[] = [];
 
@@ -42,9 +43,14 @@ export default class RedeemScene extends Phaser.Scene {
         this.load.atlas('dropItem', 'assets/dropItem/dropitem_spritesheet.png', 'assets/dropItem/dropitem_spritesheet.json')
         
     }
-    create(){
+    async create(){
         const {width, height} = this.scale;
         const self = this;
+
+        const apiService = new supabaseAPIService()
+
+        const boosterData = await apiService.getBoosterRedeem()
+        const boosterJson = boosterData.response
 
         //clear boosters
 		boosters.length = 0
@@ -56,9 +62,9 @@ export default class RedeemScene extends Phaser.Scene {
         //popup box
         const box = this.add.graphics();
         box.fillStyle(0xFFF6E5);
-        box.fillRoundedRect( MARGIN, height/4-MARGIN*2, 624, 920, 20)
+        box.fillRoundedRect( MARGIN, 208, 624, 936, 20)
         box.lineStyle(6, 0xD35E24)
-        box.strokeRoundedRect( MARGIN, height/4-MARGIN*2, 624, 920, 20)
+        box.strokeRoundedRect( MARGIN, 208, 624, 936, 20)
 
         //line
         const line = this.add.graphics();
@@ -113,14 +119,14 @@ export default class RedeemScene extends Phaser.Scene {
             
 
         //boosters
-        this.boosterBar = new boosterBar(this);
+        this.boosterBar = new boosterBar(this, boosterJson);
 
         
 
         //button
         this.buttonGrey = this.add.nineslice(
             MARGIN*2, 
-            1000, 
+            1016, 
             'button', 
             'button_grey.png', 
             128, 
@@ -136,14 +142,14 @@ export default class RedeemScene extends Phaser.Scene {
 
         this.buttonIcon = this.add.image(
             MARGIN*2+64, 
-            1000+44,
+            1016+44,
             'icon',
             'icon_back.png',
         )
 
         this.buttonRed = this.add.nineslice(
             MARGIN*11/2, 
-            1000, 
+            1016, 
             'button', 
             'button_red.png', 
             376, 
@@ -151,7 +157,14 @@ export default class RedeemScene extends Phaser.Scene {
             20,20,20,30
         )
         .setOrigin(0, 0)
-        .setInteractive().on('pointerup', () => {
+        .setInteractive().on('pointerup', async () => {
+            this.buttonRed.setInteractive().off('pointerup')
+
+            const gameSession = ( await apiService.startGameSession(0) ).response
+            console.log(gameSession)
+            this.scene.scene.registry.set('booster_drop_id', gameSession.booster_drop_id)
+            this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+            
             this.destroy();
             this.scene.stop();
             boosters = this.boosterBar.getBooster();
@@ -162,7 +175,7 @@ export default class RedeemScene extends Phaser.Scene {
             .createTranslatedText(
                 this,
                 MARGIN*11/2+188,
-                1000+48,
+                1016+48,
                 'redeem_button_text'
             )
             .setAlign('center')
