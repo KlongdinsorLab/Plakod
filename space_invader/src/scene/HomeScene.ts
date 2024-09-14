@@ -63,11 +63,10 @@ export default class HomeScene extends Phaser.Scene {
 		this.scene.scene.registry.set('username', this.playerData.username)
 		this.scene.scene.registry.set('airflow', this.playerData.airflow)
 		this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
-		// this.scene.scene.registry.set('playCount', playCount)
-		// this.scene.scene.registry.set('playToday', playToday)
-		// this.scene.scene.registry.set('playerCharactersId', playerCharactersId)
-		// this.scene.scene.registry.set('playerId', playerId)
-		// this.scene.scene.registry.set('playerLevel', playerLevel)
+		this.scene.scene.registry.set('playCount', this.playerData.play_count)
+		this.scene.scene.registry.set('playToday', this.playerData.play_today)
+		this.scene.scene.registry.set('playerCharactersId', this.playerData.unlocked_characters_id)
+		this.scene.scene.registry.set('playerLevel', this.playerData.level)
 		this.scene.scene.registry.set('selectedCharacterId', this.playerData.selected_character_id)
 	}
 

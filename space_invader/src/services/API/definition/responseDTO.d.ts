@@ -1,13 +1,12 @@
 export interface PlayerDTO {
-	playerId: number
 	username: string
-	playerLevel: number
+	level: number
 	airflow: number
-	playCount: number
-	playToday: Date[]
+	play_count: number
+	play_today: Date[]
 	difficulty: DifficultyDTO
 	selected_character_id: number
-	playerCharactersId: number[]
+	unlocked_characters_id: number[]
 }
 
 export interface RankDTO {
