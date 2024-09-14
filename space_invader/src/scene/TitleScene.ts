@@ -2,18 +2,26 @@ import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 //import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
-import { MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import {
+	browserSessionPersistence,
+	getAuth,
+	setPersistence,
+} from 'firebase/auth'
+import { MEDIUM_FONT_SIZE } from 'config'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
-import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const tirabase = new MockAPIService()
-const supabase = new supabaseAPIService()
 
 // TODO login here
-tirabase.register('0958927519', 21, 'M', 600, 3)
-tirabase.login('0958927518')
-export { tirabase, supabase }
+// tirabase.register('0958927519',
+//   21,
+//   'M',
+//   600,
+//   3,
+// )
+// tirabase.login('0958927518');
+export { tirabase }
 
 export default class TitleScene extends Phaser.Scene {
 	//	private background!: Phaser.GameObjects.TileSprite
@@ -58,16 +66,33 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	async create() {
+		const {width,height} = this.scene.scene.scale
 		const queryString = window.location.search
 		const urlParams = new URLSearchParams(queryString)
 		this.hasController = urlParams.get('controller') === 'true'
 
-		const { width, height } = this.scale
-		//		const i18n = I18nSingleton.getInstance()
-		//		this.background = this.add
-		//			.tileSprite(0, 0, width, height, 'titleBackground')
-		//			.setOrigin(0)
-		//			.setScrollFactor(0, 0)
+		const isSetup = localStorage.getItem('setup') ?? false
+		if (!isSetup) {
+			this.scene.pause()
+			this.scene.launch('setup')
+			return
+		}
+
+		const auth = getAuth();
+		auth.useDeviceLanguage();
+		(async ()=> {
+			await setPersistence(auth, browserSessionPersistence)
+			const user = auth.currentUser
+			if (user === null) {
+				this.scene.pause()
+				this.scene.launch('login')
+				return
+			}
+
+			// TODO check user data
+			this.scene.pause()
+			this.scene.launch('register')
+		})()
 
 		this.add
 			.tileSprite(0, 0, width, height, 'titleBackground')
@@ -102,15 +127,7 @@ export default class TitleScene extends Phaser.Scene {
     }
     */
 
-		if (!this.hasController && this.input?.gamepad?.total === 0) {
-			this.input.gamepad.once(
-				'connected',
-				() => {
-					this.startGame()
-				},
-				this,
-			)
-		}
+
 	}
 
 	update() {

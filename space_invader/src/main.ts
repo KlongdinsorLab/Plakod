@@ -2,7 +2,8 @@ import Phaser from 'phaser'
 
 import GameScene from './scene/GameScene'
 import TitleScene from './scene/TitleScene'
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
+import StartLoginScene from 'scene/auth/StartLoginScene'
+
 import TutorialCharacterScene from './scene/tutorial/TutorialCharacter'
 import TutorialHudScene from './scene/tutorial/TutorialHudScene'
 import TutorialControllerScene from './scene/tutorial/TutorialControllerScene'
@@ -14,8 +15,24 @@ import EndGameScene from './scene/EndGameScene'
 import LoginScene from './scene/auth/LoginScene'
 import OtpScene from './scene/auth/OtpScene'
 import RegisterScene from './scene/auth/RegisterScene'
+import ConfirmScene from 'scene/auth/ConfirmScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
+import { initializeApp } from "firebase/app";
+import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
+
+
+
+const firebaseConfig = {
+	apiKey: FIREBASE_API_KEY,
+	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
+	projectId: FIREBASE_PROJECT_ID,
+};
+
+initializeApp(firebaseConfig);
+
+
 import BossScene from 'scene/boss/BossScene'
 import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
 import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
@@ -54,11 +71,13 @@ const config: Phaser.Types.Core.GameConfig = {
 		createContainer: true,
 	},
 	scene: [
-		TitleScene,
+		StartLoginScene,
 		LoginScene,
 		HomeScene,
 		OtpScene,
 		RegisterScene,
+		ConfirmScene,
+		TitleScene,
 		DifficultyScene,
 		AirflowScene,
 		SetupScene,
@@ -90,3 +109,4 @@ const config: Phaser.Types.Core.GameConfig = {
 }
 
 export default new Phaser.Game(config)
+

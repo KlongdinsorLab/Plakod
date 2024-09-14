@@ -1,0 +1,51 @@
+<div class="confirm bg-white w-[720px] h-[1280px]">
+  <div class="confirm-head static bg-[#f1f1f1] w-[720px] h-[336px] flex flex-col">
+    <h1 id="head-text" class="sarabun-medium text-[56px] text-black text-center pt-[96px]">
+        ตรวจสอบข้อมูล
+    </h1>
+    <br/>
+    <div class="step-box w-[720px] flex flex-row justify-center ">
+      <ul class="timeline mt-[56] w-[720px] justify-center flex flex-row">
+        <li>
+          <div class="timeline-start"></div>
+          <div class="timeline-middle">
+            <div class="sarabun-regular bg-[#43a99e] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">1</div>
+          </div>
+        </li>
+        <li class="flex items-center">
+          <hr class="bg-[#43a99e]  h-[10px] w-[96px] flex-grow "/>
+        </li>
+        <li>
+          <div class="timeline-middle">
+            <div class="sarabun-regular bg-[#43a99e] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">2</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+    <div class="confirm-body w-full h-full pt-24">
+        <div class="firstLine-input flex flex-row mb-6">
+                <div class="age-section w-64 h-36 flex flex-col ml-[96px]">
+                    <label id="age-label" for="age" class="sarabun-regular text-black text-[36px] mb-4">อายุ</label>
+                    <h1 class="sarabun-regular text-4xl text-[#727272]" id="age">{age}</h1>
+                </div>
+                <div class="gender-section w-64 h-36 flex flex-col ml-3">
+                    <label id="gender-label" for="gender" class="sarabun-regular text-black text-[36px] mb-4">เพศ</label>
+                    <h1 class="sarabun-regular text-4xl text-[#727272]" id="gender">{gender}</h1>
+                </div>
+        </div>
+        <div class="airflow-section flex flex-col justify-center h-[208px] w-[528px] mx-24 mb-6">
+                <label for="airflow" class="sarabun-regular text-black text-[36px] mb-4"><span id="airflow-label" >ปริมาณอากาศ</span><span class="text-[#ff0000]"> *</span></label>
+                <h1 class="sarabun-regular text-4xl text-[#727272]" id="airflow">{airflow}</h1>
+                <h1 id="warning-text" class="text-[#ff0000] sarabun-light text-[28px] mt-4">* แก้ไขได้ในภายหลังตามคำแนะนำของแพทย์</h1>
+        </div>
+        <div class="difficulty-section flex flex-col justify-center h-36 w-[528px] mx-24 mb-20">
+            <label id="difficulty-label" for="difficulty" class="sarabun-regular text-black text-[36px] mb-4">ระดับกายภาพ</label>
+            <h1 class="sarabun-regular text-4xl text-[#727272]" id="difficulty">{difficulty}</h1>
+        </div>
+        <div class="button-section flex flex-row">
+            <button id="edit-button" class="btn btn-ghost sarabun-medium rounded-2xl  border-2 border-[#727272] text-[#727272] text-4xl h-[96px] w-[256px] ml-[96px] ">แก้ไขข้อมูล</button>
+            <button id="confirm-button" class="btn sarabun-medium rounded-2xl bg-[#43a99e] border-none text-white text-4xl h-[96px] w-[256px] ml-[16px] mr-[96px]">ยืนยัน</button>
+        </div>
+    </div>
+</div> 
