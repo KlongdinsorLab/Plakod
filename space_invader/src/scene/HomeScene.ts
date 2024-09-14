@@ -105,6 +105,15 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	async create() {
+		// Delete Later
+		tirabase.register('0958927519',
+  			21,
+  			'M',
+  			600,
+  			3,
+		)
+		tirabase.login('0958927518');
+
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
 		

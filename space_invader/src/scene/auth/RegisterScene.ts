@@ -10,10 +10,12 @@ interface DOMEvent<T extends EventTarget> extends Event {
 export default class RegisterScene extends Phaser.Scene {
 	private selectedData: { age: string, gender: string, airflow: string, difficulty: string, edit:boolean } | undefined;
 	private isEdit: boolean = false;
+	private phoneNumber !: string
 	
-	init(data: { age: string; gender: string; airflow: string; difficulty: string; edit:boolean }) {
+	init(data: { phoneNumber : string; age: string; gender: string; airflow: string; difficulty: string; edit:boolean }) {
         this.selectedData = data;
 		this.isEdit = data.edit;
+		this.phoneNumber = data.phoneNumber
 		console.log('register init:',data);
 		console.log('register isEdit:',this.isEdit);
     }
@@ -163,7 +165,7 @@ export default class RegisterScene extends Phaser.Scene {
 		})
 		if(age !== 'ยังไม่ระบุ' && gender !== 'ยังไม่ระบุ' && airflow !== 'ยังไม่ระบุ' && difficulty !== 'ยังไม่ระบุ'){
 			this.scene.stop()
-			this.scene.launch('confirm',{ age: age, gender: gender, airflow: airflow, difficulty: difficulty})
+			this.scene.launch('confirm',{ phoneNumber : this.phoneNumber, age: age, gender: gender, airflow: airflow, difficulty: difficulty})
 		}
 	}
 }
