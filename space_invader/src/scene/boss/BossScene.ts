@@ -125,14 +125,18 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'dropItem', 
-			'assets/dropItem/dropitem_spritesheet.png', 
-			'assets/dropItem/dropitem_spritesheet.json'
+			'dropItem',
+			'assets/dropItem/dropitem_spritesheet.png',
+			'assets/dropItem/dropitem_spritesheet.json',
 		)
 
 		this.load.image('laser', 'assets/effect/mc_bullet.png')
 
-		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+		this.load.atlas(
+			'inGameUI',
+			'assets/ui/ingameui_spritesheet.png',
+			'assets/ui/ingameui_spritesheet.json',
+		)
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
@@ -341,7 +345,10 @@ export default class BossScene extends Phaser.Scene {
 			setTimeout(() => {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
-			const data = await this.apiService.updateGameSession({score : this.score.getScore(), lap : this.scene.scene.registry.get('lap')})
+			const data = await this.apiService.updateGameSession({
+				score: this.score.getScore(),
+				lap: this.scene.scene.registry.get('lap'),
+			})
 			console.log(data)
 		}
 
