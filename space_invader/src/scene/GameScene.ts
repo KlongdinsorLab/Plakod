@@ -120,6 +120,7 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
 		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
 		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
+		this.load.image('obstacle', 'assets/character/enemy/obstacle.png')
 
 		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
 

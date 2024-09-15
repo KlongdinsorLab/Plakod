@@ -241,7 +241,7 @@ export default class BossScene extends Phaser.Scene {
 				'collect_bullet_bar.png',
 			)
 			.setOrigin(0.5, 1)
-			.setDepth(1)
+			.setDepth(10)
 			.setVisible(false)
 
 		// Mock bullet count, delete when finish test
@@ -252,7 +252,7 @@ export default class BossScene extends Phaser.Scene {
 				` /${COLLECT_BULLET_COUNT}`,
 			)
 			.setOrigin(0.5, 1)
-			.setDepth(2)
+			.setDepth(11)
 		this.bulletText.setVisible(false)
 
 		const self = this
@@ -388,10 +388,16 @@ export default class BossScene extends Phaser.Scene {
 		// scroll the background
 		this.background.tilePositionY += 1.5
 
-		this.laserFactory.createByTime(this, this.player, [this.boss], delta, {
-			bossSkill: this.boss.getSkill(),
-			laserFrequency: LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
-		})
+		this.laserFactory.createByTime(
+			this,
+			this.player,
+			[this.boss, ...this.boss.getVersion().getObstacles()],
+			delta,
+			{
+				bossSkill: this.boss.getSkill(),
+				laserFrequency: LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
+			},
+		)
 
 		if (this.player.getIsReload()) {
 			if (!this.boss.getIsSecondPhase()) {

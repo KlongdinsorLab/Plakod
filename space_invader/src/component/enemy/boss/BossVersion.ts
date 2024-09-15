@@ -1,7 +1,9 @@
-import Player from "component/player/Player";
-import { Boss } from "./Boss";
-import { BossSkill } from "./BossSkill";
-import Score from "component/ui/Score";
+import Player from 'component/player/Player'
+import { Boss } from './Boss'
+import { BossSkill } from './BossSkill'
+import Score from 'component/ui/Score'
+import { B1BossObstacle } from './b1/B1BossObstacle'
+import { Meteor } from '../Meteor'
 
 export abstract class BossVersion {
 	abstract createAnimation(scene: Phaser.Scene): void
@@ -10,7 +12,13 @@ export abstract class BossVersion {
 	abstract hasObstacle(): boolean
 	abstract hasSkill(): boolean
 	abstract useSkill(bossSkill: BossSkill, delta: number): void
-	abstract createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void
+	abstract createObstacleByTime(
+		scene: Phaser.Scene,
+		player: Player,
+		score: Score,
+		delta: number,
+	): void
+	abstract getObstacles(): B1BossObstacle[] | Meteor[]
 	abstract getDurationPhase1(): number
 	abstract getDurationPhase2(): number
 	abstract playVsScene(scene: Phaser.Scene, player: Player): void

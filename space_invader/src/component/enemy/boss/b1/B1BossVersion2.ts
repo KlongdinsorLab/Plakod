@@ -6,22 +6,25 @@ import {
 } from 'config'
 import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
-// import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
+import { MeteorFactory } from 'component/enemy/MeteorFactory'
+import { Meteor } from 'component/enemy/Meteor'
 
 export class B1BossVersion2 extends BossVersion {
 	private skillTimer = 0
 	private movePattern!: Phaser.Curves.Path
-	private obstacleFactory!: B1BossObstacleFactory
-
+	private obstacleFactory!: MeteorFactory
+	private soundEffect!:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound
 	constructor() {
 		super()
-		this.obstacleFactory = new B1BossObstacleFactory()
+		this.obstacleFactory = new MeteorFactory()
 	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
@@ -119,7 +122,14 @@ export class B1BossVersion2 extends BossVersion {
 		score: Score,
 		delta: number,
 	): void {
-		this.obstacleFactory.createByTime(scene, player, score, delta)
+		this.soundEffect = scene.sound.addAudioSprite('mcSound')
+		this.obstacleFactory.createByTime(
+			scene,
+			player,
+			score,
+			this.soundEffect,
+			delta,
+		)
 	}
 
 	getDurationPhase1(): number {
@@ -493,4 +503,8 @@ export class B1BossVersion2 extends BossVersion {
 	}
 
 	playRandomScene(_: Phaser.Scene, __: Player): void {}
+
+	getObstacles(): Meteor[] {
+		return this.obstacleFactory.getMeteors()
+	}
 }
