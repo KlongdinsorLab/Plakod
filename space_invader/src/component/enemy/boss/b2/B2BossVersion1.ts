@@ -11,6 +11,7 @@ import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
 import Score from 'component/ui/Score'
+import { Meteor } from 'component/enemy/Meteor'
 
 export class B2BossVersion1 extends BossVersion {
 	constructor() {
@@ -429,5 +430,9 @@ export class B2BossVersion1 extends BossVersion {
 			repeat: 0,
 			ease: 'sine.out',
 		})
+	}
+
+	getObstacles(): Meteor[] {
+		return []
 	}
 }
