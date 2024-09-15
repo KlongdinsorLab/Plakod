@@ -11,6 +11,7 @@ import {
 	setPersistence,
 	browserSessionPersistence,
 } from 'firebase/auth'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 
 interface DOMEvent<T extends EventTarget> extends Event {
@@ -23,6 +24,8 @@ export default class OtpScene extends Phaser.Scene {
 	//private isResend: boolean = false;
 	private countdownInterval: number | undefined
 	private element!: Phaser.GameObjects.DOMElement
+
+	private apiService !: supabaseAPIService
 
 
 	constructor() {
@@ -40,6 +43,8 @@ export default class OtpScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.apiService = new supabaseAPIService()
+
 		const i18n = I18nSingleton.getInstance();
 		i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
             .setFontSize(32)
@@ -172,7 +177,12 @@ export default class OtpScene extends Phaser.Scene {
 			localStorage.setItem('idToken', idToken)
 			this.element.destroy()
 			this.scene.stop()
-			this.scene.launch('register')
+
+			const supabaseResponse = await this.apiService.login(this.phoneNumber)
+			if(supabaseResponse.message === "No existing player") this.scene.launch('register', {phoneNumber : this.phoneNumber})
+			else if (supabaseResponse.message === "Ok") this.scene.launch('home')
+			else throw new Error("Authentication Error")
+			
 		} catch (e){
 			//TODO handle error
 			console.log(e)

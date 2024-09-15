@@ -2,8 +2,7 @@ import Phaser from 'phaser';
 import i18next from "i18next";
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader';
-import { tirabase } from 'scene/TitleScene'
-import { Airflow } from 'services/API/definition/typeProperty';
+import supabaseAPIService from 'services/API/backend/supabaseAPIService';
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -11,12 +10,16 @@ interface DOMEvent<T extends EventTarget> extends Event {
 
 export default class ConfirmScene extends Phaser.Scene {
     private selectedData: { age: string, gender: string, airflow: string, difficulty: string } | undefined;
+    private apiService !: supabaseAPIService
+    private phoneNumber !: string
 
     constructor() {
         super('confirm');
     }
-    init(data: { age: string; gender: string; airflow: string; difficulty: string }) {
+
+    init(data: { phoneNumber : string; age: string; gender: string; airflow: string; difficulty: string; edit:boolean }) {
         this.selectedData = data;
+        this.phoneNumber = data.phoneNumber
     }
     
 
@@ -26,6 +29,8 @@ export default class ConfirmScene extends Phaser.Scene {
     }
 
     create() {
+        this.apiService = new supabaseAPIService()
+
         const i18n = I18nSingleton.getInstance();
         i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
             .setFontSize(32)
@@ -149,21 +154,28 @@ export default class ConfirmScene extends Phaser.Scene {
                     , difficulty: this.selectedData?.difficulty
                     , edit:true})
 
-                let airflowNumber : Airflow
+                // let airflowNumber : Airflow
 
-                if(airflowInput.textContent === "100") airflowNumber = 100
-                else if(airflowInput.textContent === "200") airflowNumber = 200
-                else if(airflowInput.textContent === "300") airflowNumber = 300
-                else if(airflowInput.textContent === "400") airflowNumber = 400
-                else if(airflowInput.textContent === "500") airflowNumber = 500
-                else if(airflowInput.textContent === "600") airflowNumber = 600
-                else airflowNumber = 100
-                tirabase.register('0123456789',
-                    ageInput.textContent === null ? 0 : parseInt(ageInput.textContent),
+                // if(airflowInput.textContent === "100") airflowNumber = 100
+                // else if(airflowInput.textContent === "200") airflowNumber = 200
+                // else if(airflowInput.textContent === "300") airflowNumber = 300
+                // else if(airflowInput.textContent === "400") airflowNumber = 400
+                // else if(airflowInput.textContent === "500") airflowNumber = 500
+                // else if(airflowInput.textContent === "600") airflowNumber = 600
+                // else airflowNumber = 100
+                // tirabase.register('0123456789',
+                //     ageInput.textContent === null ? 0 : parseInt(ageInput.textContent),
+                //     this.selectedData?.gender === "male" ? "M" : "F",
+                //     airflowNumber,
+                //     parseInt(this.selectedData?.difficulty ?? '1'))
+                // tirabase.login('0123456789')
+                this.apiService.register(
+                    this.phoneNumber,
+                    parseInt(ageInput.textContent === null ? '1' : ageInput.textContent),
                     this.selectedData?.gender === "male" ? "M" : "F",
-                    airflowNumber,
-                    parseInt(this.selectedData?.difficulty ?? '1'))
-                tirabase.login('0123456789')
+                    parseInt(airflowInput.textContent === null ? '100' : airflowInput.textContent),
+                    parseInt(this.selectedData?.difficulty ?? '1')
+                )
                 this.scene.launch('home')
             }
 		})
