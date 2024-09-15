@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
@@ -101,22 +102,16 @@ export default class HomeScene extends Phaser.Scene {
 		)
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
-
 	}
 
 	async create() {
 		// Delete Later
-		tirabase.register('0958927519',
-  			21,
-  			'M',
-  			600,
-  			3,
-		)
-		tirabase.login('0958927518');
+		tirabase.register('0958927519', 21, 'M', 600, 3)
+		tirabase.login('0958927518')
 
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
-		
+
 		// call API
 		await this.handleData()
 

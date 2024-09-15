@@ -130,12 +130,12 @@ export interface finishGameSessionInputDTO {
 	is_booster_received: boolean
 }
 
-export interface unlockedCharacterDTO {
+export interface UnlockedCharacterDTO {
 	id: number
 	player_id: number
 	character_id: number
 }
 
-export interface unlockCharacterInput {
+export interface UnlockCharacterInput {
 	character_id: number
 }

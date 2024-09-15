@@ -4,7 +4,7 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import { TOTAL_MC } from 'config'
 import {
 	AchievementDetailDTO,
-	unlockedCharacterDTO,
+	UnlockedCharacterDTO,
 } from 'services/API/definition/responseDTO'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 export default class AchievementBag {
@@ -93,7 +93,7 @@ export default class AchievementBag {
 	constructor(
 		scene: Phaser.Scene,
 		unlockedAchievementJson: AchievementDetailDTO[],
-		unlockedCharacter: unlockedCharacterDTO[],
+		unlockedCharacter: UnlockedCharacterDTO[],
 	) {
 		this.scene = scene
 		this.achievementUI = []

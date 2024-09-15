@@ -1,6 +1,9 @@
 import {
+	CharacterDetailDTO,
 	finishGameSessionInputDTO,
-	unlockCharacterInput,
+	Response,
+	UnlockCharacterInput,
+	UnlockedCharacterDTO,
 } from '../definition/responseDTO'
 import { supabaseClient } from './supabaseClient'
 
@@ -254,7 +257,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async getUnlockedCharacter() {
+	async getUnlockedCharacter(): Promise<Response<UnlockedCharacterDTO[]>> {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'get-unlocked-characters',
 			{
@@ -270,7 +273,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async unlockCharacter({ character_id }: unlockCharacterInput) {
+	async unlockCharacter({ character_id }: UnlockCharacterInput) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'unlock-character',
 			{
