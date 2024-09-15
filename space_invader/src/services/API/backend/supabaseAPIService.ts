@@ -1,5 +1,4 @@
 import {
-	CharacterDetailDTO,
 	finishGameSessionInputDTO,
 	Response,
 	UnlockCharacterInput,
