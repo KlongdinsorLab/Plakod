@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 let booster1: Booster1
 let booster2: Booster2
 import Player from 'component/player/Player'
@@ -72,6 +73,8 @@ export default class BossScene extends Phaser.Scene {
 	private menu!: Menu
 
 	private apiService!: supabaseAPIService
+
+	private collectBulletBar!: Phaser.GameObjects.Image
 
 	constructor() {
 		super({ key: 'bossScene' })
@@ -230,6 +233,28 @@ export default class BossScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
+		this.collectBulletBar = this.add
+			.image(
+				width / 2,
+				height - MARGIN + HOLD_BAR_BORDER + 29,
+				'inGameUI',
+				'collect_bullet_bar.png',
+			)
+			.setOrigin(0.5, 1)
+			.setDepth(1)
+			.setVisible(false)
+
+		// Mock bullet count, delete when finish test
+		this.bulletText = this.add
+			.text(
+				width / 2 + 32,
+				height - MARGIN + HOLD_BAR_BORDER + 14,
+				` /${COLLECT_BULLET_COUNT}`,
+			)
+			.setOrigin(0.5, 1)
+			.setDepth(2)
+		this.bulletText.setVisible(false)
+
 		const self = this
 		WebFont.load({
 			google: {
@@ -242,19 +267,15 @@ export default class BossScene extends Phaser.Scene {
 				}
 				self.score.getBody().setStyle(menuUiStyle)
 				self.reloadCount.getBody().setStyle(menuUiStyle)
+				self.bulletText
+					.setStyle({
+						fontFamily: 'Jua',
+						color: 'white',
+					})
+					.setFontSize('48px')
+					.setStroke('#42342C', 10)
 			},
 		})
-
-		// Mock bullet count, delete when finish test
-		this.bulletText = this.add
-			.text(
-				width / 2,
-				height - MARGIN + HOLD_BAR_BORDER,
-				` /${COLLECT_BULLET_COUNT}`,
-			)
-			.setFontSize(LARGE_FONT_SIZE)
-			.setOrigin(0.5, 1)
-		this.bulletText.setVisible(false)
 	}
 
 	async update(_: number, delta: number) {
@@ -316,12 +337,14 @@ export default class BossScene extends Phaser.Scene {
 					delta,
 				)
 
+			this.collectBulletBar.setVisible(true)
 			this.bulletText.setVisible(true)
 			this.bulletText.setText(
 				` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`,
 			)
 		} else if (this.player.getIsBulletFull() && !this.boss.getIsStartAttack()) {
 			// Boss Phase 2
+			this.collectBulletBar.setVisible(false)
 			this.bulletText.setVisible(false)
 			this.boss.startAttackPhase()
 			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)

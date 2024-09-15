@@ -6,7 +6,6 @@ import {
 	MARGIN,
 	HOLD_BAR_BORDER,
 	HOLD_BAR_HEIGHT,
-	LARGE_FONT_SIZE,
 	INHALE_GAUGE_SECTIONS,
 } from 'config'
 
