@@ -61,10 +61,14 @@ export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
-export const DARK_BROWN = 0x57453b
-export const DARK_PURPLE = 0x583e7c
-export const DARK_ORANGE = 0xd35e24
-export const GREEN = 0x05ff00
+const env = import.meta.env;
+export const FIREBASE_API_KEY = (env.VITE_FIREBASE_API_KEY);
+export const FIREBASE_PROJECT_ID = (env.VITE_FIREBASE_PROJECT_ID);
+export const VITE_URL_PATH = (env.VITE_URL_PATH);
+export const DARK_BROWN = 0x57453B
+export const DARK_PURPLE = 0x583E7C
+export const DARK_ORANGE = 0xD35E24
+export const GREEN = 0x05FF00
 
 export const VAS_COUNT = 10
 export const MAX_PLAYED = 10

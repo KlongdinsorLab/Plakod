@@ -4,6 +4,7 @@ import WebFont from 'webfontloader';
 import { MARGIN } from "config";
 import boosterBar from "component/booster/boosterBar";
 import { BoosterName } from "component/booster/booster";
+import supabaseAPIService from "services/API/backend/supabaseAPIService";
 
 export let boosters: BoosterName[] = [];
 
@@ -42,9 +43,14 @@ export default class RedeemScene extends Phaser.Scene {
         this.load.atlas('dropItem', 'assets/dropItem/dropitem_spritesheet.png', 'assets/dropItem/dropitem_spritesheet.json')
         
     }
-    create(){
+    async create(){
         const {width, height} = this.scale;
         const self = this;
+
+        const apiService = new supabaseAPIService()
+
+        const boosterData = await apiService.getBoosterRedeem()
+        const boosterJson = boosterData.response
 
         //clear boosters
 		boosters.length = 0
@@ -113,7 +119,7 @@ export default class RedeemScene extends Phaser.Scene {
             
 
         //boosters
-        this.boosterBar = new boosterBar(this);
+        this.boosterBar = new boosterBar(this, boosterJson);
 
         
 
@@ -151,7 +157,14 @@ export default class RedeemScene extends Phaser.Scene {
             20,20,20,30
         )
         .setOrigin(0, 0)
-        .setInteractive().on('pointerup', () => {
+        .setInteractive().on('pointerup', async () => {
+            this.buttonRed.setInteractive().off('pointerup')
+
+            const gameSession = ( await apiService.startGameSession(0) ).response
+            console.log(gameSession)
+            this.scene.scene.registry.set('booster_drop_id', gameSession.booster_drop_id)
+            this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+            
             this.destroy();
             this.scene.stop();
             boosters = this.boosterBar.getBooster();

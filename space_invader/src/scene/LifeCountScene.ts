@@ -3,7 +3,6 @@ import Heart from 'component/ui/Heart'
 import WebFont from 'webfontloader'
 import I18nSingleton from 'i18n/I18nSingleton'
 // import TimeService from 'services/timeService'
-import { supabase } from './TitleScene'
 
 export default class LifeCountScene extends Phaser.Scene {
 	private bgm?: Phaser.Sound.BaseSound
@@ -95,11 +94,6 @@ export default class LifeCountScene extends Phaser.Scene {
 	update() {}
 
 	startGame() {
-		try {
-			supabase.startGameSession()
-		} catch (error) {
-			console.error(error)
-		}
 		this.scene.start('cutscene1', { bgm: this.bgm })
 	}
 }

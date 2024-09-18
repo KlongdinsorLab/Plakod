@@ -692,7 +692,6 @@ export default class MockAPIService extends AbstractAPIService {
 
 							PlayerBoosters[expireIndex].status = 'EXPIRE'
 
-							console.log(`Booster [${b.booster_id}] is expire.`)
 							return false
 						}
 					}

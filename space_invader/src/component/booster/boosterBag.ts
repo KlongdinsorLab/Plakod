@@ -7,7 +7,7 @@ import i18next from "i18next"
 export default class BoosterBag{
     private scene: Phaser.Scene
     private boosterUI: BoosterUI[] = []
-    private boosterJson:{ boosterId: number, expireDate: string | null }[]
+    private boosterJson:{ boosterId: number, expired_at: string | null }[]
 
     private maxBoostersPerLine = 4
     private maxLines = 2
@@ -21,8 +21,8 @@ export default class BoosterBag{
 
     private totalBooster: number = 0
     private boosterAmount: number[] = [0, 0, 0, 0, 0, 0, 0]
-    private boosterLimitedTime: { boosterId: number, expireDate: string | null }[] = []
-    private sortedBooster: { boosterId: number, expireDate?: string | null, amount?:number }[] = []
+    private boosterLimitedTime: { boosterId: number, expired_at: string | null }[] = []
+    private sortedBooster: { boosterId: number, expired_at?: string | null, amount?:number }[] = []
 
     private descriptionBackground!: Phaser.GameObjects.Graphics
     private descriptionTitle!: Phaser.GameObjects.Text
@@ -40,7 +40,7 @@ export default class BoosterBag{
 
     private isHide: boolean = false
 
-    constructor(scene:Phaser.Scene, boosterJson:{ boosterId: number, expireDate: string | null }[]){
+    constructor(scene:Phaser.Scene, boosterJson:{ boosterId: number, expired_at: string | null }[]){
         this.scene = scene
         this.boosterJson = boosterJson
         this.countBooster()
@@ -72,7 +72,7 @@ export default class BoosterBag{
                     {
                         x: position.x, 
                         y: position.y, 
-                        expireDate: this.sortedBooster[this.index].expireDate ?? undefined,
+                        expired_at: this.sortedBooster[this.index].expired_at ?? undefined,
                         amount: this.sortedBooster[this.index].amount ?? undefined,
                         isBoosterBag: true
                     }
@@ -274,7 +274,7 @@ export default class BoosterBag{
     countBooster(): void{
         this.boosterJson.forEach((booster)=>{
             this.totalBooster++
-            if(booster.expireDate === null){
+            if(booster.expired_at === null){
                 this.boosterAmount[booster.boosterId-1]++
             }else{
                 this.boosterLimitedTime.push(booster)
@@ -289,12 +289,12 @@ export default class BoosterBag{
             }
         })
     }
-    sortBoosterByTime(boosters: { boosterId: number, expireDate: string | null }[]): { boosterId: number, expireDate: string | null }[]{
+    sortBoosterByTime(boosters: { boosterId: number, expired_at: string | null }[]): { boosterId: number, expired_at: string | null }[]{
         return boosters.sort((a, b) => {
-            if (a.expireDate === null) return 1
-            if (b.expireDate === null) return -1
-            const dateA = new Date(a.expireDate).getTime()
-            const dateB = new Date(b.expireDate).getTime()
+            if (a.expired_at === null) return 1
+            if (b.expired_at === null) return -1
+            const dateA = new Date(a.expired_at).getTime()
+            const dateB = new Date(b.expired_at).getTime()
             return dateA - dateB
         })
     }

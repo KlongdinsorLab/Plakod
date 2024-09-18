@@ -1,4 +1,7 @@
-import { finishGameSessionInputDTO } from '../definition/responseDTO'
+import {
+	finishGameSessionInputDTO,
+	unlockCharacterInput,
+} from '../definition/responseDTO'
 import { supabaseClient } from './supabaseClient'
 
 // TODO handle errors
@@ -123,12 +126,15 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async startGameSession() {
+	async startGameSession(playerBoosterId: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'start-game',
 			{
 				headers: {
 					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+				body: {
+					player_booster_id: playerBoosterId,
 				},
 			},
 		)
@@ -200,7 +206,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async getUnlcokedAchievement() {
+	async getUnlockedAchievement() {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'get-unlocked-achievements',
 			{
@@ -223,6 +229,71 @@ export default class supabaseAPIService {
 				headers: {
 					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
 				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async getBoosterBag() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-booster-bag',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async getBoosterRedeem() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-booster-redeem',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async getUnlockedCharacter() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-unlocked-characters',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async unlockCharacter({ character_id }: unlockCharacterInput) {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'unlock-character',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+				body: { character_id },
 			},
 		)
 		if (error) {

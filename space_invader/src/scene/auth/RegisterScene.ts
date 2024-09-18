@@ -1,72 +1,171 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from "i18next";
+import { getAuth, updateProfile } from 'firebase/auth'
+import WebFont from 'webfontloader';
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
 export default class RegisterScene extends Phaser.Scene {
-	private background!: Phaser.GameObjects.TileSprite
-
+	private selectedData: { age: string, gender: string, airflow: string, difficulty: string, edit:boolean } | undefined;
+	private isEdit: boolean = false;
+	private phoneNumber !: string
+	
+	init(data: { phoneNumber : string; age: string; gender: string; airflow: string; difficulty: string; edit:boolean }) {
+        this.selectedData = data;
+		this.isEdit = data.edit;
+		this.phoneNumber = data.phoneNumber
+		console.log('register init:',data);
+		console.log('register isEdit:',this.isEdit);
+    }
+	
 	constructor() {
 		super('register')
 	}
 
 	preload() {
+		this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 		this.load.html('registerForm', 'html/auth/register.html')
-		this.load.image('background', 'assets/background/purple.png')
 	}
 
 	create() {
-		const { width, height } = this.scale
+		const i18n = I18nSingleton.getInstance();
+		i18n.createTranslatedText( this, 100, 680 -3, "use_button" )
+            .setFontSize(32)
+            .setPadding(0,20,0,10)
+            .setStroke("#9E461B",6)
+            .setColor("#FFFFFF")
+            .setOrigin(0.5,0.5)
+            .setVisible(false)
+		WebFont.load({
+			google: {
+				families: ['Sarabun:300,400,500']
+			},
+			active: () => {
+				applyFontStyles();
+			}
+		});
+		
+		function applyFontStyles(): void {
+			const lightElements = document.querySelectorAll('.sarabun-light');
+			lightElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '300';
+			});
+		
+			const mediumElements = document.querySelectorAll('.sarabun-medium');
+			mediumElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '400';
+			});
+		
+			const regularElements = document.querySelectorAll('.sarabun-regular');
+			regularElements.forEach(element => {
+				(element as HTMLElement).style.fontFamily = 'Sarabun, sans-serif';
+				(element as HTMLElement).style.fontWeight = '500';
+			});
+		}
 
-		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
-			.setOrigin(0)
-			.setScrollFactor(0, 0)
-
-		const i18n = I18nSingleton.getInstance()
-		const title = i18n
-			.createTranslatedText(this, width / 2, 3 * MARGIN, 'register_title')
-			.setFontSize(LARGE_FONT_SIZE)
-			.setOrigin(0.5, 0)
-		i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				title.y + 2 * MARGIN,
-				'register_description',
-			)
-			.setFontSize(MEDIUM_FONT_SIZE)
-			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(width/2, height / 2)
+			.dom(0,0)
 			.createFromCache('registerForm')
-			.setScale(1.5)
+			.setOrigin(0,0)
 
-		element.addListener('submit')
-		element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
-			event.preventDefault()
-			if (event?.target?.id === 'submit-form') {
-				// TODO
-				this.scene.stop()
-				this.scene.launch('difficulty')
-			}
-		})
+		
+		if (this.isEdit) {
+			console.log('age in isEdit:',this.selectedData!.age);
+			const ageInput = element.getChildByID('age')! as HTMLSelectElement;
+			ageInput.value = this.selectedData!.age
 
-		const birthday = <Element>element.getChildByID('label-birthday')
-		birthday.textContent = i18next.t('register_birthday_title')
+			console.log('gender in isEdit:',this.selectedData!.gender);
+			const genderInput = element.getChildByID('gender')! as HTMLSelectElement;
+			genderInput.value = this.selectedData!.gender;
 
-		const gender = <Element>element.getChildByID('label-gender')
-		gender.textContent = i18next.t('register_gender_title')
+			console.log('airflow in isEdit:',this.selectedData!.airflow);
+			const airflowInput = element.getChildByID('airflow')! as HTMLSelectElement;
+			airflowInput.value = this.selectedData!.airflow
 
-		const disease = <Element>element.getChildByID('label-disease')
-		disease.textContent = i18next.t('register_disease_title')
+
+			console.log('difficulty in isEdit:',this.selectedData!.difficulty);
+			const difficultyInput = element.getChildByID('difficulty')! as HTMLSelectElement;
+			difficultyInput.value = this.selectedData!.difficulty;
+			
+			this.isEdit = false;
+		}
+
+		
+		const labelIds = [
+			'default-value1', 'default-value2', 'default-value3', 'default-value4', 
+			'head-text', 'age-label', 'gender-label', 'airflow-label', 
+			'difficulty-label', 'warning-text', 'button'
+		];
+		
+		const labelKeys = [
+			'register_option_default', 'register_option_default', 'register_option_default', 'register_option_default', 
+			'register_title', 'register_age_title', 'register_gender_title', 'register_airflow_title', 
+			'register_difficulty_title', 'register_warning', 'register_button'
+		];
+		
+		const optionIds = [
+			'option-male', 'option-female', 'option-other', 
+			'option-easy', 'option-medium', 'option-hard'
+		];
+		
+		const optionKeys = [
+			'register_option_male', 'register_option_female', 'register_option_other', 
+			'register_option_easy', 'register_option_medium', 'register_option_hard'
+		];
+		
+		labelIds.forEach((id, index) => {
+			const labelElement = <Element>element.getChildByID(id);
+			labelElement.textContent = i18next.t(labelKeys[index]);
+		});
+		
+		optionIds.forEach((id, index) => {
+			const optionElement = <Element>element.getChildByID(id);
+			optionElement.textContent = i18next.t(optionKeys[index]);
+		});
+		
+
+		
+		
+			element.addListener('submit')
+			element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
+				event.preventDefault()
+				const ageSelect = document.getElementById('age')! as HTMLSelectElement;
+				const genderSelect = document.getElementById('gender')! as HTMLSelectElement;
+				const airflowSelect = document.getElementById('airflow')! as HTMLSelectElement;
+				const difficultySelect = document.getElementById('difficulty')! as HTMLSelectElement;
+				if (event?.target?.id === 'submit-form') {
+					// todo: send data to database
+					
+					//const selectedAge = ageSelect.options[ageSelect.selectedIndex].value;
+					//const selectedGender = genderSelect.options[genderSelect.selectedIndex].value;		
+					//const selectedAirflow = airflowSelect.options[airflowSelect.selectedIndex].value;
+					//const selectedDifficulty = difficultySelect.options[difficultySelect.selectedIndex].value;
+				}
+			
+
+			this.updateProfile(ageSelect.value, genderSelect.value, airflowSelect.value, difficultySelect.value);
+		});
+
 	}
 
-	update() {
-		this.background.tilePositionY -= 1
+	update() {}
+
+	async updateProfile(age: string, gender: string, airflow: string, difficulty:string) {
+		console.log(age,gender,airflow,difficulty)
+// 		TODO add database
+		const auth = getAuth()
+		const user = auth.currentUser;
+		await updateProfile(user!, {
+			displayName: "Test User"
+		})
+		if(age !== 'ยังไม่ระบุ' && gender !== 'ยังไม่ระบุ' && airflow !== 'ยังไม่ระบุ' && difficulty !== 'ยังไม่ระบุ'){
+			this.scene.stop()
+			this.scene.launch('confirm',{ phoneNumber : this.phoneNumber, age: age, gender: gender, airflow: airflow, difficulty: difficulty})
+		}
 	}
 }
