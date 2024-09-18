@@ -2,11 +2,11 @@ export default class TimeService {
 	private playCount!: number
 	private lastPlay1!: Date
 	private lastPlay2!: Date
-	constructor() {
+	constructor(playCount : number,lastPlay1?: Date, lastPlay2?: Date) {
 		// TODO: call api
-		this.lastPlay1 = new Date(localStorage.getItem('lastPlayTime1') ?? '')
-		this.lastPlay2 = new Date(localStorage.getItem('lastPlayTime2') ?? '')
-		this.playCount = Number(localStorage.getItem('playCount')) ?? 0
+		this.lastPlay1 = lastPlay1 ?? new Date('')
+		this.lastPlay2 = lastPlay2 ?? new Date('')
+		this.playCount = playCount
 	}
 
 	isFirstPlay(): boolean {
@@ -21,17 +21,17 @@ export default class TimeService {
 		return diff >= 1 && heart1Recharged && heart2Recharged
 	}
 
-	saveLastPlayTime() {
-		// TODO: call api
-		if (this.isFirstPlay()) {
-			this.playCount = 0
-		}
-		localStorage.setItem('playCount', `${this.playCount + 1}`)
+	// saveLastPlayTime() {
+	// 	// TODO: call api
+	// 	if (this.isFirstPlay()) {
+	// 		this.playCount = 0
+	// 	}
+	// 	localStorage.setItem('playCount', `${this.playCount + 1}`)
 
-		const heartIndex = (this.playCount + 1) % 2 !== 0 ? 1 : 2
-		const lastPlayTime = new Date()
-		localStorage.setItem(`lastPlayTime${heartIndex}`, lastPlayTime.toString())
-	}
+	// 	const heartIndex = (this.playCount + 1) % 2 !== 0 ? 1 : 2
+	// 	const lastPlayTime = new Date()
+	// 	localStorage.setItem(`lastPlayTime${heartIndex}`, lastPlayTime.toString())
+	// }
 
 	getTimeCountdown(lastPlayTime: Date): string {
 		if (isNaN(lastPlayTime.getTime()) || this.playCount >= 10 || this.isRecharged(lastPlayTime)) return ''

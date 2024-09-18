@@ -11,7 +11,6 @@ import PlayButton from 'component/ui/Button/PlayButton'
 import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
-import { supabase, tirabase } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
@@ -45,18 +44,11 @@ export default class HomeScene extends Phaser.Scene {
 
 	private async handleData() {
 		const response = await this.apiService.getPlayer()
-		this.playerData = response.response
-		// const {
-		// 	airflow,
-		// 	difficulty,
-		// 	playCount,
-		// 	playToday,
-		// 	playerCharactersId,
-		// 	playerId,
-		// 	playerLevel,
-		// 	selectedCharacterId,
-		// 	username,
-		// } = this.playerData
+		const data = response.response
+		const playToday = this.handlePlayToday(data.play_today)
+		data.play_today = playToday
+
+		this.playerData = data
 
 		console.log(this.playerData)
 
@@ -116,10 +108,13 @@ export default class HomeScene extends Phaser.Scene {
 		await this.handleData()
 
 		const { width, height } = this.scale
-		this.timeService = new TimeService()
+		this.timeService = new TimeService(
+			this.scene.scene.registry.get('playToday')[0],
+			this.scene.scene.registry.get('playToday')[1]
+		)
 
 		// TODO: call api
-		this.playCount = Number(localStorage.getItem('playCount') ?? '')
+		this.playCount = this.scene.scene.registry.get('playCount')
 
 		this.add
 			.tileSprite(0, 0, width, height, 'landing_page_bg')
@@ -222,5 +217,21 @@ export default class HomeScene extends Phaser.Scene {
 		}
 
 		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
+	}
+
+	sortDate(dates : Date[]) : Date[] {
+		dates.sort((a : Date, b : Date) => {
+			return b.getTime() - a.getTime()
+		})
+		return dates
+	}
+
+	handlePlayToday (playTodayString : string[]) {
+		const playTodayDate : Date[] = []
+		playTodayString.forEach((element) => {
+			playTodayDate.push(new Date(element))
+		})
+		this.sortDate(playTodayDate)
+		return playTodayDate
 	}
 }

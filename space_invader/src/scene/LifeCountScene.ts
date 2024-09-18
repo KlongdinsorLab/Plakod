@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import Heart from 'component/ui/Heart'
 import WebFont from 'webfontloader'
 import I18nSingleton from 'i18n/I18nSingleton'
-import TimeService from 'services/timeService'
+// import TimeService from 'services/timeService'
 import { supabase } from './TitleScene'
 
 export default class LifeCountScene extends Phaser.Scene {
@@ -12,7 +12,7 @@ export default class LifeCountScene extends Phaser.Scene {
 
 	private heart_count = 7 // from backend
 
-	private timeService!: TimeService
+	// private timeService!: TimeService
 
 	constructor() {
 		super('life_count')
@@ -62,14 +62,14 @@ export default class LifeCountScene extends Phaser.Scene {
 		this.heart1 = new Heart(this, width / 2 + 24 + 46, 528, 1, false, false)
 		this.heart2 = new Heart(this, width / 2 - 24 - 46, 528, 2, false, false)
 
-		this.timeService = new TimeService()
+		// this.timeService = new TimeService()
 
 		if (this.heart1.getIsRecharged()) {
 			this.heart1.emptyHeart()
 		} else {
 			this.heart2.emptyHeart()
 		}
-		this.timeService.saveLastPlayTime()
+		// this.timeService.saveLastPlayTime()
 		this.time.delayedCall(2000, () => {
 			this.startGame()
 		})
