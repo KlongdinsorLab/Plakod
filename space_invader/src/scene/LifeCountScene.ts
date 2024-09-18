@@ -10,8 +10,7 @@ export default class LifeCountScene extends Phaser.Scene {
 	private heart1!: Heart
 	private heart2!: Heart
 
-	private heart_count = 7 // from backend
-
+	private heart_count!: number
 	// private timeService!: TimeService
 
 	constructor() {
@@ -38,6 +37,8 @@ export default class LifeCountScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.scale
+
+		this.heart_count = 9 - this.scene.scene.registry.get('playCount')
 
 		const i18n = I18nSingleton.getInstance()
 		this.add
