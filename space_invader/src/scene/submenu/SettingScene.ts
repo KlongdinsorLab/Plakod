@@ -122,7 +122,7 @@ export default class SettingScene extends Phaser.Scene {
             .setOrigin(0,0)
         
         const difficultyDTO: DifficultyDTO = this.registry.get('difficulty');
-        const difficultyId: number = difficultyDTO.difficultyId;
+        const difficultyId: number = difficultyDTO.id;
         this.difficultySelectUi = new difficultySelectUi(this, difficultyId)
 
         // Airflow Box

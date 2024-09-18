@@ -58,7 +58,7 @@ export interface BoosterDTO {
 }
 
 export interface DifficultyDTO {
-	difficultyId: number
+	id: number
 	name: string
 	inhaleSecond: number
 }
