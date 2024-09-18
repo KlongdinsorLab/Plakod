@@ -2,11 +2,11 @@ export default class TimeService {
 	private playCount!: number
 	private lastPlay1!: Date
 	private lastPlay2!: Date
-	constructor(playCount : number,lastPlay1?: Date, lastPlay2?: Date) {
+	constructor(playCount?: number,lastPlay1?: Date, lastPlay2?: Date) {
 		// TODO: call api
 		this.lastPlay1 = lastPlay1 ?? new Date('')
 		this.lastPlay2 = lastPlay2 ?? new Date('')
-		this.playCount = playCount
+		this.playCount = playCount ?? 0
 	}
 
 	isFirstPlay(): boolean {
