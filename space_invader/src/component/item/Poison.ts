@@ -36,7 +36,7 @@ export class Poison extends Item {
 		this.item = this.scene.physics.add.image(
 			startingX,
 			-MARGIN,
-			'bossAsset',
+			'dropItem',
 			'item_poison.png',
 		)
 

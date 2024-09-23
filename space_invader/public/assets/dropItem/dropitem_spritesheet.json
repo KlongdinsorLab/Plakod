@@ -1,73 +1,10 @@
 {
 	"frames": [
 		{
-			"filename": "booster_random.png",
-			"frame": {
-				"x": 1,
-				"y": 1,
-				"w": 96,
-				"h": 96
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 96,
-				"h": 96
-			},
-			"sourceSize": {
-				"w": 96,
-				"h": 96
-			}
-		},
-		{
-			"filename": "booster_rare1.png",
-			"frame": {
-				"x": 99,
-				"y": 1,
-				"w": 96,
-				"h": 96
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 96,
-				"h": 96
-			},
-			"sourceSize": {
-				"w": 96,
-				"h": 96
-			}
-		},
-		{
-			"filename": "booster_rare2.png",
-			"frame": {
-				"x": 197,
-				"y": 1,
-				"w": 96,
-				"h": 96
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 96,
-				"h": 96
-			},
-			"sourceSize": {
-				"w": 96,
-				"h": 96
-			}
-		},
-		{
 			"filename": "booster1.png",
 			"frame": {
 				"x": 1,
-				"y": 99,
+				"y": 1,
 				"w": 96,
 				"h": 96
 			},
@@ -88,7 +25,7 @@
 			"filename": "booster2.png",
 			"frame": {
 				"x": 99,
-				"y": 99,
+				"y": 1,
 				"w": 96,
 				"h": 96
 			},
@@ -109,7 +46,7 @@
 			"filename": "booster3.png",
 			"frame": {
 				"x": 197,
-				"y": 99,
+				"y": 1,
 				"w": 96,
 				"h": 96
 			},
@@ -130,7 +67,7 @@
 			"filename": "booster4.png",
 			"frame": {
 				"x": 1,
-				"y": 197,
+				"y": 99,
 				"w": 96,
 				"h": 96
 			},
@@ -149,6 +86,69 @@
 		},
 		{
 			"filename": "booster5.png",
+			"frame": {
+				"x": 99,
+				"y": 99,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster_random.png",
+			"frame": {
+				"x": 197,
+				"y": 99,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster_rare1.png",
+			"frame": {
+				"x": 1,
+				"y": 197,
+				"w": 96,
+				"h": 96
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 96
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 96
+			}
+		},
+		{
+			"filename": "booster_rare2.png",
 			"frame": {
 				"x": 99,
 				"y": 197,

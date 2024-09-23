@@ -34,7 +34,7 @@ export class Bullet extends Item {
     this.item = this.scene.physics.add.image(
       startingX,
       -MARGIN,
-      'bossAsset', 'item_bullet.png'
+      'dropItem', 'item_bullet.png'
     )
 
     const bulletCollider = this.scene.physics.add.overlap(
