@@ -82,13 +82,114 @@ export default class GameScene extends Phaser.Scene {
 		this.soundManager = new SoundManager(this)
 	}
 
+	// https://labs.phaser.io/edit.html?src=src\loader\loader%20events\display%20file%20as%20loaded.js
+	// https://labs.phaser.io/edit.html?src=src\loader\loader%20events\add%20files%20during%20load.js
 	preload() {
 		this.load.image('background', 'assets/background/background.jpg')
+		this.load.image('background', 'assets/background/background_1.jpg')
+		this.load.image('background', 'assets/background/background_2.jpg')
+		this.load.image('background', 'assets/background/background_3.jpg')
 
 		this.load.atlas(
 			'player',
 			'assets/character/player/mc1_spritesheet.png',
 			'assets/character/player/mc1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'player2',
+			'assets/character/player/mc2_spritesheet.png',
+			'assets/character/player/mc2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'player3',
+			'assets/character/player/mc3_spritesheet.png',
+			'assets/character/player/mc3_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'player4',
+			'assets/character/player/mc4_spritesheet.png',
+			'assets/character/player/mc4_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'player5',
+			'assets/character/player/mc5_spritesheet.png',
+			'assets/character/player/mc5_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss1v1',
+			'assets/character/enemy/b1v1_spritesheet.png',
+			'assets/character/enemy/b1v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss1v2',
+			'assets/character/enemy/b1v2_spritesheet.png',
+			'assets/character/enemy/b1v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss2v1',
+			'assets/character/enemy/b2v1_spritesheet.png',
+			'assets/character/enemy/b2v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss2v2',
+			'assets/character/enemy/b2v2_spritesheet.png',
+			'assets/character/enemy/b2v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss3v1',
+			'assets/character/enemy/b3v1_spritesheet.png',
+			'assets/character/enemy/b3v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss3v2',
+			'assets/character/enemy/b3v2_spritesheet.png',
+			'assets/character/enemy/b3v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss4v1',
+			'assets/character/enemy/b4v1_spritesheet.png',
+			'assets/character/enemy/b4v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss4v2',
+			'assets/character/enemy/b4v2_spritesheet.png',
+			'assets/character/enemy/b4v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss5v1',
+			'assets/character/enemy/b5v1_spritesheet.png',
+			'assets/character/enemy/b5v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss5v2',
+			'assets/character/enemy/b5v2_spritesheet.png',
+			'assets/character/enemy/b5v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss6v1',
+			'assets/character/enemy/b6v1_spritesheet.png',
+			'assets/character/enemy/b6v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'boss6v2',
+			'assets/character/enemy/b6v2_spritesheet.png',
+			'assets/character/enemy/b6v2_spritesheet.json',
 		)
 
 		this.load.atlas(
@@ -125,9 +226,21 @@ export default class GameScene extends Phaser.Scene {
 		this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
-		// this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
-		// this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
-		// this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+		this.load.audio('bossHit1', 'sound/boss-hit1.mp3')
+		this.load.audio('bossHit2', 'sound/boss-hit2.mp3')
+		this.load.audio('bossHit3', 'sound/boss-hit3.mp3')
+		this.load.audio('bossHit4', 'sound/boss-hit4.mp3')
+		this.load.audio('bossHit5', 'sound/boss-hit5.mp3')
+		this.load.audio('bossHit6', 'sound/boss-hit6.mp3')
+
+		this.load.audio('mcHit1', 'sound/mc1-hit1.mp3')
+		this.load.audio('mcHit2', 'sound/mc1-hit2.mp3')
+		this.load.audio('mcHit3', 'sound/mc1-hit3.mp3')
+		this.load.audio('mcHit4', 'sound/mc1-hit4.mp3')
+		this.load.audio('mcHit5', 'sound/mc1-hit5.mp3')
+		this.load.audio('mcHit6', 'sound/mc1-hit6.mp3')
+
+		this.load.audio('mcHitVs', 'sound/mc1-vs.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 		this.load.script(
