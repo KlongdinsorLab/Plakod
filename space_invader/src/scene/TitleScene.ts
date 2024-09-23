@@ -71,27 +71,28 @@ export default class TitleScene extends Phaser.Scene {
 		const urlParams = new URLSearchParams(queryString)
 		this.hasController = urlParams.get('controller') === 'true'
 
-		const isSetup = localStorage.getItem('setup') ?? false
-		if (!isSetup) {
-			this.scene.pause()
-			this.scene.launch('setup')
-			return
-		}
+		// const isSetup = localStorage.getItem('setup') ?? false
+		// if (!isSetup) {
+		// 	this.scene.pause()
+		// 	this.scene.launch('setup')
+		// 	return
+		// }
 
 		const auth = getAuth();
 		auth.useDeviceLanguage();
 		(async ()=> {
 			await setPersistence(auth, browserSessionPersistence)
 			const user = auth.currentUser
+			
 			if (user === null) {
 				this.scene.pause()
-				this.scene.launch('login')
+				this.scene.launch('start-login')
 				return
 			}
 
 			// TODO check user data
-			this.scene.pause()
-			this.scene.launch('register')
+			// this.scene.pause()
+			// this.scene.launch('register')
 		})()
 
 		this.add
