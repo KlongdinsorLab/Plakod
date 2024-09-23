@@ -1,17 +1,17 @@
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Button } from './Button'
 import { MARGIN } from 'config'
-import TimeService from 'services/timeService'
+// import TimeService from 'services/timeService'
 
 export default class RestartButton extends Button {
-	private timeService!: TimeService
+	// private timeService!: TimeService
 	// private playCount!: number
 	
 	constructor(scene: Phaser.Scene) {
 		super(scene)
 		const { width } = scene.scale
 		const i18n = I18nSingleton.getInstance()
-		this.timeService = new TimeService()
+		// this.timeService = new TimeService()
 		// TODO: get playCount from backend
 		// this.playCount = Number(localStorage.getItem('playCount')) ?? 0
 
@@ -23,7 +23,7 @@ export default class RestartButton extends Button {
         this.button.on('pointerup', () => {
 			scene.scene.stop()
 			i18n.destroyEmitter()
-			this.timeService.saveLastPlayTime()
+			// this.timeService.saveLastPlayTime()
 
 			scene.scene.start('cutscene_randomboss')
 		})

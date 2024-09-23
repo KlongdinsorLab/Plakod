@@ -445,7 +445,7 @@ export default class MockAPIService extends AbstractAPIService {
 				)
 			}
 			const difficultDTO: DifficultyDTO = {
-				difficultyId: difficultyFound.id,
+				id: difficultyFound.id,
 				name: difficultyFound.name,
 				inhaleSecond: difficultyFound.inhale_second,
 			}
@@ -455,15 +455,14 @@ export default class MockAPIService extends AbstractAPIService {
 			).map((c) => c.character_id)
 
 			const playerDTO: PlayerDTO = {
-				playerId: player.id,
 				username: player.username,
-				playerLevel: playerLevel,
+				level: playerLevel,
 				airflow: player.airflow,
-				playCount: playCount,
-				playToday: playToday,
+				play_count: playCount,
+				play_today: playToday,
 				difficulty: difficultDTO,
-				selectedCharacterId: player.selected_character_id,
-				playerCharactersId: playerCharacterId,
+				selected_character_id: player.selected_character_id,
+				unlocked_characters_id: playerCharacterId,
 			}
 
 			resolve({

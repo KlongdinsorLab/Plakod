@@ -180,7 +180,7 @@ export default class OtpScene extends Phaser.Scene {
 
 			const supabaseResponse = await this.apiService.login(this.phoneNumber)
 			if(supabaseResponse.message === "No existing player") this.scene.launch('register', {phoneNumber : this.phoneNumber})
-			else if (supabaseResponse.message === "Ok") this.scene.launch('home')
+			else if (supabaseResponse.message === "Ok") this.scene.launch('title')
 			else throw new Error("Authentication Error")
 			
 		} catch (e){
