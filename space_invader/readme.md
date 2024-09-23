@@ -113,7 +113,56 @@ You can change the dev server's port number by modifying the `vite.config.ts` fi
 
 Change 8000 to whatever you want.
 
+## Deployment
+
+CI/CD will be setup to Google Firebase hosting. Project name [plakod-game[(https://console.firebase.google.com/project/plakod-game/overview)
+There are 2 branches develop and production. Develop branch will be deployed on [plakod-development.firebaseapp.com](plakod-development.firebaseapp.com) while Production will be deployed on [plakod.firebaseapp.com](plakod.firebaseapp.com)
+
+Create new Firebase hosting channel
+b
+$ npm exec -- firebase hosting:channel:create CHANNEL_ID
+```
+
+list all Firebase hosting channel
+```sh
+$ npm exec -- firebase hosting:channel:list
+```
+
+### Deploying with another site ID
+
+Currently we use plakod-game.web.app but we can have multple xxx.web.app
+
+Create new site ID
+```sh
+$ npm exec -- firebase hosting:sites:create SITE_ID
+```
+
+Delete site ID
+```sh
+$ npm exec -- firebase hosting:sites:delete SITE_ID
+```
+
+Deploy
+```sh
+$ firebase deploy --only hosting:TARGET_NAME
+```
+
+[see more](https://firebase.google.com/docs/hosting/multisites)
+
 ## Special Thanks
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
 - [Pixabay](https://pixabay.com/) for sound effect
+
+## Known Fixed Issues
+As with any development process, we've encountered a few challenges along the way. Below are some issues we faced and how we've resolved them:
+
+### Time Intervals
+- What Happened: Time Intervals don't stop when scene is closed
+- How We Fixed It: Use Phaser's time event instead
+### Physics Bodies
+- What Happened: Too much physics bodies at the same time causes performance issues
+- How We Fixed It: Make sure to destroy unused physics body, such as those not on the screen anymore
+### Random Number Generation
+- What Happened: Random method that involves constant division causes performance issues
+- How We Fixed It: Simplify random method such as random number in a fixed array

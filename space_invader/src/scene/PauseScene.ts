@@ -1,30 +1,73 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MARGIN, MODAL_BACKGROUND_COLOR } from 'config'
+import {
+	DARK_ORANGE,
+	LARGE_FONT_SIZE,
+	MARGIN,
+	MEDIUM_FONT_SIZE,
+	MODAL_BACKGROUND_COLOR,
+} from 'config'
 import SoundManager from 'component/sound/SoundManager'
+import WebFont from 'webfontloader'
+import SoundToggle from 'component/ui/home/SoundToggle'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 export type Menu = {
 	menu: Phaser.GameObjects.Image
 }
 export default class PauseScene extends Phaser.Scene {
 	private menu!: Phaser.GameObjects.Image
+	private sceneName!: string
+	private subSceneKeys!: string[]
+	private score!: number
+	private lap!: number
 
 	constructor() {
 		super('pause')
 	}
 
-	init({ menu }: Menu) {
+	init({
+		menu,
+		sceneName,
+		subSceneKeys,
+		score,
+		lap,
+	}: {
+		menu: Phaser.GameObjects.Image
+		sceneName: string
+		subSceneKeys: string[]
+		score: number
+		lap: number
+	}) {
+		this.detectInactivity()
 		this.menu = menu
+		this.sceneName = sceneName
+		this.score = score
+		this.lap = lap
+		if (subSceneKeys) this.subSceneKeys = subSceneKeys
+		else this.subSceneKeys = []
 	}
 
 	preload() {
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
+		this.load.atlas(
+			'button',
+			'assets/ui/button_spritesheet.png',
+			'assets/ui/button_spritesheet.json',
+		)
+		this.load.atlas(
+			'icon',
+			'assets/icon/icon_spritesheet.png',
+			'assets/icon/icon_spritesheet.json',
+		)
 	}
 
 	create() {
 		const soundManager = new SoundManager(this)
 		soundManager.pauseAll()
+
+		const apiService = new supabaseAPIService()
 
 		const { width, height } = this.scale
 
@@ -32,111 +75,270 @@ export default class PauseScene extends Phaser.Scene {
 
 		const i18n = I18nSingleton.getInstance()
 
-		const menu = this.add
-			.rectangle(
-				width / 2,
-				height / 2,
-				width - 4 * MARGIN,
-				height / 2,
-				MODAL_BACKGROUND_COLOR,
-				0.8,
-			)
-			.setOrigin(0.5, 0.5)
+		const MENU_HEAD_HEIGHT = 136
+		const MENU_WIDTH = 576
+		const MENU_HEIGHT = 576
 
-		i18n
+		const menuHead = this.add.graphics()
+		menuHead.fillStyle(DARK_ORANGE, 1)
+		menuHead.fillRoundedRect(
+			width / 10,
+			height / 4,
+			MENU_WIDTH,
+			MENU_HEAD_HEIGHT,
+			{
+				tl: 40,
+				tr: 40,
+				bl: 0,
+				br: 0,
+			},
+		)
+
+		const menuModal = this.add.graphics()
+		menuModal.fillStyle(MODAL_BACKGROUND_COLOR, 1)
+		menuModal.fillRoundedRect(
+			width / 10,
+			height / 4 + MENU_HEAD_HEIGHT,
+			MENU_WIDTH,
+			MENU_HEIGHT,
+			{
+				tl: 0,
+				tr: 0,
+				bl: 40,
+				br: 40,
+			},
+		)
+
+		const pauseText = i18n
 			.createTranslatedText(
 				this,
 				width / 2,
-				menu.y - menu.height / 2 - MARGIN,
+				height / 4 + MENU_HEAD_HEIGHT / 2,
 				'pause',
-				undefined,
-				{ fontSize: '42px' },
 			)
-			.setOrigin(0.5, 1)
+			.setFontSize(LARGE_FONT_SIZE)
+			.setOrigin(0.5, 0.5)
 
-		const sound = new SoundManager(this).createSoundToggle(
-			width / 2 - MARGIN,
-			menu.y - menu.height / 2 + 1.5 * MARGIN,
-		)
-
-		const language = i18n.createTranslatedText(
+		const soundToggle = new SoundToggle(
 			this,
-			width / 2 + MARGIN,
-			sound.y - MARGIN / 2,
-			'language_flag',
-			undefined,
-			{ fontSize: '80px' },
-		)
+			width / 2,
+			height / 4 + MENU_HEAD_HEIGHT + (5 * MARGIN) / 3,
+		).getBody()
 
-		language.setInteractive()
-		language.on('pointerup', () => {
-			i18n.setLanguage(i18n.getLanguage() === 'th' ? 'en' : 'th')
-		})
-
-		const resume = this.add
-			.rectangle(
+		const reminderText1 = i18n
+			.createTranslatedText(
+				this,
 				width / 2,
-				menu.y - menu.height / 2 + 4 * MARGIN,
-				menu.width - 2 * MARGIN,
-				96,
-				0x999999,
+				soundToggle.y + soundToggle.height / 2 + MARGIN + 8,
+				'pause_reminder_text1',
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0.5)
-		i18n
-			.createTranslatedText(this, resume.x, resume.y, 'resume', undefined, {
-				fontSize: '42px',
-			})
+
+		const reminderText2 = i18n
+			.createTranslatedText(
+				this,
+				width / 2,
+				reminderText1.y + MARGIN,
+				'pause_reminder_text2',
+			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0.5)
-		resume.setInteractive()
-		resume.on('pointerup', () => {
+
+		const resumeButton = this.add
+			.nineslice(
+				width / 2,
+				reminderText2.y + reminderText2.height / 2 + (MARGIN * 2) / 3,
+				'button',
+				'button_red.png',
+				480,
+				106,
+				32,
+				32,
+				64,
+				64,
+			)
+			.setOrigin(0.5, 0)
+		const resumeText = i18n
+			.createTranslatedText(
+				this,
+				resumeButton.x,
+				resumeButton.y + resumeButton.height / 2,
+				'resume',
+			)
+			.setFontSize(MEDIUM_FONT_SIZE)
+			.setOrigin(0.5, 0.5)
+		resumeButton.setInteractive()
+		resumeButton.on('pointerup', () => {
 			soundManager.resumeAll()
-			this.menu.setTexture('pause')
-			this.scene.resume('game')
+			this.menu.setTexture('ui', 'pause.png')
+			this.resumeAllScenes()
 			this.scene.stop()
 		})
 
-		const restart = this.add
-			.rectangle(
+		const homeButton = this.add
+			.nineslice(
 				width / 2,
-				resume.y + 3 * MARGIN,
-				menu.width - 2 * MARGIN,
-				96,
-				0x999999,
+				resumeButton.y + resumeButton.height + MARGIN / 2,
+				'button',
+				'button_gray.png',
+				480,
+				106,
+				32,
+				32,
+				64,
+				64,
 			)
-			.setOrigin(0.5, 0.5)
-		i18n
-			.createTranslatedText(this, restart.x, restart.y, 'restart', undefined, {
-				fontSize: '42px',
-			})
-			.setOrigin(0.5, 0.5)
-		restart.setInteractive()
-		restart.on('pointerup', () => {
-			this.scene.stop()
-			this.scene.stop('game')
-			i18n.destroyEmitter()
-			this.scene.start('game')
+			.setOrigin(0.5, 0)
+
+		const homeIcon = this.add
+			.image(
+				180,
+				homeButton.y + homeButton.height / 2 - 4,
+				'icon',
+				'icon_backtohome.png',
+			)
+			.setOrigin(0, 0.5)
+
+		const handleHomeClick = async () => {
+			try {
+				await apiService.updateGameSession({
+					score: this.score,
+					lap: this.lap,
+				})
+				apiService.endGameSession()
+				this.stopAllScenes()
+				this.scene.stop()
+				i18n.destroyEmitter()
+				this.scene.start('home')
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		const homeText = i18n
+			.createTranslatedText(
+				this,
+				homeIcon.x + homeIcon.width + MARGIN / 4,
+				homeButton.y + homeButton.height / 2,
+				'home',
+			)
+			.setFontSize(MEDIUM_FONT_SIZE)
+			.setOrigin(0, 0.5)
+		homeButton.setInteractive()
+		homeButton.on('pointerup', handleHomeClick)
+
+		WebFont.load({
+			google: {
+				families: ['Mali:500,600,700'],
+			},
+			active: () => {
+				pauseText
+					.setStyle({
+						fontFamily: 'Mali',
+						fontWeight: 600,
+						fontStyle: 'bold',
+						color: 'white',
+					})
+					.setFontSize(48)
+					.setStroke('#9E461B', 12)
+					.setLineSpacing(16)
+
+				reminderText1
+					.setStyle({
+						fontFamily: 'Mali',
+						fontWeight: 600,
+						fontStyle: 'bold',
+						color: '#57453B',
+					})
+					.setFontSize(32)
+					.setLineSpacing(32)
+
+				reminderText2
+					.setStyle({
+						fontFamily: 'Mali',
+						fontWeight: 600,
+						fontStyle: 'bold',
+						color: '#D35E24',
+					})
+					.setFontSize(32)
+					.setLineSpacing(32)
+
+				resumeText
+					.setStyle({
+						fontFamily: 'Mali',
+						fontWeight: 600,
+						fontStyle: 'bold',
+						color: 'white',
+					})
+					.setFontSize(32)
+					.setStroke('#9E461B', 6)
+					.setLineSpacing(16)
+
+				homeText
+					.setStyle({
+						fontFamily: 'Mali',
+						fontWeight: 600,
+						fontStyle: 'bold',
+						color: 'white',
+					})
+					.setFontSize(32)
+					.setStroke('#7A7367', 6)
+					.setLineSpacing(16)
+			},
+		})
+	}
+
+	stopAllScenes(): void {
+		for (let i = 0; i < this.subSceneKeys.length; i++)
+			this.scene.stop(this.subSceneKeys[i])
+		this.scene.stop(this.sceneName)
+	}
+
+	resumeAllScenes(): void {
+		this.scene.resume(this.sceneName)
+		for (let i = 0; i < this.subSceneKeys.length; i++) {
+			if (this.scene.isPaused(this.subSceneKeys[i])) {
+				this.scene.resume(this.subSceneKeys[i])
+			}
+		}
+	}
+
+	detectInactivity(): void {
+		const inactivityTime = 30 * 60 * 1000 //30 minutes inactivity
+
+		let inactivityTimeout: NodeJS.Timeout
+
+		const apiService = new supabaseAPIService()
+		const handleInactivity = async () => {
+			try {
+				console.log({
+					score: this.score,
+					lap: this.lap,
+				})
+				await apiService.updateGameSession({
+					score: this.score,
+					lap: this.lap,
+				})
+				apiService.endGameSession()
+				this.stopAllScenes()
+				this.scene.stop()
+				I18nSingleton.getInstance().destroyEmitter()
+				this.game.events.removeListener(Phaser.Core.Events.BLUR)
+				this.game.events.removeListener(Phaser.Core.Events.FOCUS)
+				this.scene.start('home')
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		this.game.events.on(Phaser.Core.Events.BLUR, () => console.log('blur'))
+		this.game.events.on(Phaser.Core.Events.BLUR, () => {
+			inactivityTimeout = setTimeout(handleInactivity, inactivityTime)
 		})
 
-		const home = this.add
-			.rectangle(
-				width / 2,
-				restart.y + 3 * MARGIN,
-				menu.width - 2 * MARGIN,
-				96,
-				0x999999,
-			)
-			.setOrigin(0.5, 0.5)
-		i18n
-			.createTranslatedText(this, home.x, home.y, 'home', undefined, {
-				fontSize: '42px',
-			})
-			.setOrigin(0.5, 0.5)
-		home.setInteractive()
-		home.on('pointerup', () => {
-			this.scene.stop()
-			this.scene.stop('game')
-			i18n.destroyEmitter()
-			this.scene.start('title')
+		this.game.events.on(Phaser.Core.Events.FOCUS, () => {
+			clearTimeout(inactivityTimeout)
 		})
 	}
 }

@@ -1,0 +1,309 @@
+{
+	"frames": [
+		{
+			"filename": "b3_skill1.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 33,
+				"h": 109
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 109
+			},
+			"sourceSize": {
+				"w": 33,
+				"h": 109
+			}
+		},
+		{
+			"filename": "b3v2_attack_00001.png",
+			"frame": {
+				"x": 36,
+				"y": 1,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00002.png",
+			"frame": {
+				"x": 263,
+				"y": 1,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00003.png",
+			"frame": {
+				"x": 490,
+				"y": 1,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00004.png",
+			"frame": {
+				"x": 1,
+				"y": 228,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00005.png",
+			"frame": {
+				"x": 228,
+				"y": 228,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00006.png",
+			"frame": {
+				"x": 455,
+				"y": 228,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00007.png",
+			"frame": {
+				"x": 1,
+				"y": 455,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00008.png",
+			"frame": {
+				"x": 228,
+				"y": 455,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00009.png",
+			"frame": {
+				"x": 455,
+				"y": 455,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00010.png",
+			"frame": {
+				"x": 717,
+				"y": 1,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00011.png",
+			"frame": {
+				"x": 682,
+				"y": 228,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_attack_00012.png",
+			"frame": {
+				"x": 682,
+				"y": 455,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b3v2_hurt.png",
+			"frame": {
+				"x": 1,
+				"y": 682,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 943,
+			"h": 908
+		},
+		"scale": "1"
+	}
+}
