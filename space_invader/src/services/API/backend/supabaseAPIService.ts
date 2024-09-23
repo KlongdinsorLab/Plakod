@@ -227,6 +227,22 @@ export default class supabaseAPIService {
 		return data
 	}
 
+	async getPlayer() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-player',
+			{
+				headers: {
+					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
 	async getBoosterBag() {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'get-booster-bag',

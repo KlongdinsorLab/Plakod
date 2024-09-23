@@ -11,10 +11,10 @@ export default class Heart {
 	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean, hasText: boolean = true) {
 		this.scene = scene
 		
-		const timeService = new TimeService()
+		const timeService = new TimeService(this.scene.scene.scene.registry.get('playCount'))
 		
 		// TODO: call api
-		const lastPlayTime = new Date(localStorage.getItem(`lastPlayTime${heartIndex}`) ?? '')
+		const lastPlayTime = this.scene.scene.scene.registry.get('playToday')[heartIndex - 1] ?? new Date('')
 		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
 
 		this.heart = scene.add
