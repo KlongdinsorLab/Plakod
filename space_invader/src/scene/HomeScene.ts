@@ -12,8 +12,8 @@ import PlayButton from 'component/ui/Button/PlayButton'
 import AchievementButton from 'component/ui/Button/AchievementButton'
 import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
-import { tirabase } from 'scene/TitleScene'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
+import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
@@ -36,37 +36,37 @@ export default class HomeScene extends Phaser.Scene {
 	private timeService!: TimeService
 	private reminderText!: Phaser.GameObjects.Text
 	private playerData!: PlayerDTO
+	private apiService!: supabaseAPIService
+	private isLoading!: boolean
 
 	constructor() {
 		super('home')
 	}
 
 	private async handleData() {
-		const response = await tirabase.getPlayer()
-		this.playerData = response.response
-		const {
-			airflow,
-			difficulty,
-			playCount,
-			playToday,
-			playerCharactersId,
-			playerId,
-			playerLevel,
-			selectedCharacterId,
-			username,
-		} = this.playerData
+		const response = await this.apiService.getPlayer()
+		const data = response.response
+		const playToday = this.handlePlayToday(data.play_today)
+		data.play_today = playToday
+
+		this.playerData = data
 
 		console.log(this.playerData)
 
-		this.scene.scene.registry.set('username', username)
-		this.scene.scene.registry.set('airflow', airflow)
-		this.scene.scene.registry.set('difficulty', difficulty)
-		this.scene.scene.registry.set('playCount', playCount)
-		this.scene.scene.registry.set('playToday', playToday)
-		this.scene.scene.registry.set('playerCharactersId', playerCharactersId)
-		this.scene.scene.registry.set('playerId', playerId)
-		this.scene.scene.registry.set('playerLevel', playerLevel)
-		this.scene.scene.registry.set('selectedCharacterId', selectedCharacterId)
+		this.scene.scene.registry.set('username', this.playerData.username)
+		this.scene.scene.registry.set('airflow', this.playerData.airflow)
+		this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
+		this.scene.scene.registry.set('playCount', this.playerData.play_count)
+		this.scene.scene.registry.set('playToday', this.playerData.play_today)
+		this.scene.scene.registry.set(
+			'playerCharactersId',
+			this.playerData.unlocked_characters_id,
+		)
+		this.scene.scene.registry.set('playerLevel', this.playerData.level)
+		this.scene.scene.registry.set(
+			'selectedCharacterId',
+			this.playerData.selected_character_id,
+		)
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
@@ -105,21 +105,22 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	async create() {
-		// Delete Later
-		tirabase.register('0958927519', 21, 'M', 600, 3)
-		tirabase.login('0958927518')
-
+		this.isLoading = true
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
 
 		// call API
+		this.apiService = new supabaseAPIService()
 		await this.handleData()
 
 		const { width, height } = this.scale
-		this.timeService = new TimeService()
+		this.timeService = new TimeService(
+			this.scene.scene.registry.get('playToday')[0],
+			this.scene.scene.registry.get('playToday')[1],
+		)
 
 		// TODO: call api
-		this.playCount = Number(localStorage.getItem('playCount') ?? '')
+		this.playCount = this.scene.scene.registry.get('playCount')
 
 		this.add
 			.tileSprite(0, 0, width, height, 'landing_page_bg')
@@ -205,9 +206,12 @@ export default class HomeScene extends Phaser.Scene {
 					.setStroke('#57453B', 12)
 			},
 		})
+
+		this.isLoading = false
 	}
 
 	update(_: number, __: number): void {
+		if (this.isLoading) return
 		const heartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if (this.playCount >= 10 || heartEmpty) {
@@ -219,5 +223,21 @@ export default class HomeScene extends Phaser.Scene {
 		}
 
 		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
+	}
+
+	sortDate(dates: Date[]): Date[] {
+		dates.sort((a: Date, b: Date) => {
+			return b.getTime() - a.getTime()
+		})
+		return dates
+	}
+
+	handlePlayToday(playTodayString: string[]) {
+		const playTodayDate: Date[] = []
+		playTodayString.forEach((element) => {
+			playTodayDate.push(new Date(element))
+		})
+		this.sortDate(playTodayDate)
+		return playTodayDate
 	}
 }

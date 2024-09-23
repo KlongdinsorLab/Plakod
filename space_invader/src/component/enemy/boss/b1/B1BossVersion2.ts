@@ -421,10 +421,10 @@ export class B1BossVersion2 extends BossVersion {
 			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
 			.setOrigin(0.5, 1)
 		const poison = scene.add
-			.image((2 * width) / 3, 8 * MARGIN, 'bossAsset', 'item_poison.png')
+			.image((2 * width) / 3, 8 * MARGIN, 'dropItem', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 3, 16 * MARGIN, 'bossAsset', 'item_bullet.png')
+			.image(width / 3, 16 * MARGIN, 'dropItem', 'item_bullet.png')
 			.setOrigin(0.5, 1)
 		const booster = scene.add
 			.image((2 * width) / 3, 16 * MARGIN, 'bossAsset', 'booster_random.png')

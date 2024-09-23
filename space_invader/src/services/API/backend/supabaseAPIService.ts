@@ -10,6 +10,11 @@ import { supabaseClient } from './supabaseClient'
 // TODO headers
 
 export default class supabaseAPIService {
+	private getAuthHeader() : string {
+		const header = 'Bearer ' + (localStorage.getItem('idToken') ?? import.meta.env.VITE_JWT_TOKEN)
+		return header
+	}
+
 	async register(
 		phoneNumber: string,
 		age: number,
@@ -19,7 +24,7 @@ export default class supabaseAPIService {
 	) {
 		const { data, error } = await supabaseClient.functions.invoke('register', {
 			headers: {
-				Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				Authorization: this.getAuthHeader(),
 			},
 			body: {
 				phoneNumber: phoneNumber,
@@ -39,7 +44,7 @@ export default class supabaseAPIService {
 	async login(phoneNumber: string) {
 		const { data, error } = await supabaseClient.functions.invoke('login', {
 			headers: {
-				Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+				Authorization: this.getAuthHeader(),
 			},
 			body: {
 				phoneNumber: phoneNumber,
@@ -57,7 +62,7 @@ export default class supabaseAPIService {
 			'update-username',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					username: username,
@@ -76,7 +81,7 @@ export default class supabaseAPIService {
 			'update-selected-character',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					character_id: characterId,
@@ -95,7 +100,7 @@ export default class supabaseAPIService {
 			'update-selected-character',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					difficulty_id: difficultyId,
@@ -114,7 +119,7 @@ export default class supabaseAPIService {
 			'update-selected-character',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					airflow: airflow,
@@ -133,7 +138,7 @@ export default class supabaseAPIService {
 			'start-game',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					player_booster_id: playerBoosterId,
@@ -152,7 +157,7 @@ export default class supabaseAPIService {
 			'update-game',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					score: score,
@@ -172,7 +177,7 @@ export default class supabaseAPIService {
 			'cancel-game',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 			},
 		)
@@ -192,7 +197,7 @@ export default class supabaseAPIService {
 			'finish-game',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: {
 					score: score,
@@ -213,6 +218,22 @@ export default class supabaseAPIService {
 			'get-unlocked-achievements',
 			{
 				headers: {
+					Authorization: this.getAuthHeader(),
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
+
+	async getPlayer() {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-player',
+			{
+				headers: {
 					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
 				},
 			},
@@ -229,7 +250,7 @@ export default class supabaseAPIService {
 			'get-booster-bag',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 			},
 		)
@@ -245,7 +266,7 @@ export default class supabaseAPIService {
 			'get-booster-redeem',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 			},
 		)
@@ -261,7 +282,7 @@ export default class supabaseAPIService {
 			'get-unlocked-characters',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 			},
 		)
@@ -277,7 +298,7 @@ export default class supabaseAPIService {
 			'unlock-character',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: this.getAuthHeader(),
 				},
 				body: { character_id },
 			},
