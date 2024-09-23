@@ -62,15 +62,33 @@ export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
-const env = import.meta.env;
-export const FIREBASE_API_KEY = (env.VITE_FIREBASE_API_KEY);
-export const FIREBASE_PROJECT_ID = (env.VITE_FIREBASE_PROJECT_ID);
-export const VITE_URL_PATH = (env.VITE_URL_PATH);
-export const DARK_BROWN = 0x57453B
-export const DARK_PURPLE = 0x583E7C
-export const DARK_ORANGE = 0xD35E24
-export const GREEN = 0x05FF00
+const env = import.meta.env
+export const FIREBASE_API_KEY = env.VITE_FIREBASE_API_KEY
+export const FIREBASE_PROJECT_ID = env.VITE_FIREBASE_PROJECT_ID
+export const VITE_URL_PATH = env.VITE_URL_PATH
+export const DARK_BROWN = 0x57453b
+export const DARK_PURPLE = 0x583e7c
+export const DARK_ORANGE = 0xd35e24
+export const GREEN = 0x05ff00
 
 export const VAS_COUNT = 10
 export const MAX_PLAYED = 10
 export const TOTAL_MC = 2
+
+export const ALL_CHARACTER = [
+	{
+		characterId: 1,
+		name: 'นักผจญภัย',
+		detail: '',
+	},
+	{
+		characterId: 2,
+		name: 'นักเวทย์',
+		detail: '',
+	},
+	{
+		characterId: 3,
+		name: 'จอมโจร',
+		detail: '',
+	},
+]

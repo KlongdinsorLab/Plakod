@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PlayerFullNameByName } from 'component/player/playerInterface'
+import { ALL_CHARACTER } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 
@@ -47,14 +48,13 @@ export default class characterSelectUi {
 			this.scene?.registry.get('playerCharactersId')
 		const selectedCharacterId = this.scene?.registry.get('selectedCharacterId')
 
-		const response = await apiService.getUnlockedCharacter()
-		const charactersResponse = response.response
+		const allCharacter = ALL_CHARACTER
 
 		const characters: {
 			[characterId: number]: { name: string; unlocked: boolean }
 		} = {}
-		charactersResponse.forEach((characterResponse) => {
-			const characterResponseId: number = characterResponse.character_id
+		allCharacter.forEach((characterResponse) => {
+			const characterResponseId: number = characterResponse.characterId
 			const playerCharacterFound = !!playerCharactersId.find(
 				(pc) => pc === characterResponseId,
 			)
@@ -70,7 +70,7 @@ export default class characterSelectUi {
 		})
 
 		this.characters = characters
-		this.charactersCount = charactersResponse.length
+		this.charactersCount = allCharacter.length
 		this.usingCharIndex = selectedCharacterId
 	}
 
