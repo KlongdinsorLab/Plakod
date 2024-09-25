@@ -9,8 +9,6 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
-import Score from 'component/ui/Score'
-import { Meteor } from 'component/enemy/Meteor'
 
 export class B1BossVersion1 extends BossVersion {
 	constructor() {

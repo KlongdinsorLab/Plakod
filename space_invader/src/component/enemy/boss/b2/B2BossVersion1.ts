@@ -10,8 +10,6 @@ import WebFont from 'webfontloader'
 // import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
-import Score from 'component/ui/Score'
-import { Meteor } from 'component/enemy/Meteor'
 
 export class B2BossVersion1 extends BossVersion {
 	constructor() {

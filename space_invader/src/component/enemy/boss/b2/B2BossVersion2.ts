@@ -11,8 +11,6 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
 import Player from 'component/player/Player'
-import Score from 'component/ui/Score'
-import { Meteor } from 'component/enemy/Meteor'
 
 export class B2BossVersion2 extends BossVersion {
 	private skillTimer = 0
