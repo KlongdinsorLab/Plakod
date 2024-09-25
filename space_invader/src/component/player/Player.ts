@@ -63,7 +63,7 @@ export default class Player {
 		)
 
 		gameLayer.add(this.player)
-		
+
 		this.shield = new Shield(scene, this.player)
 
 		// this.playerHitSounds = [...Array(3)].map((_, i) =>
@@ -191,6 +191,11 @@ export default class Player {
 		this.shield.updatePosition(this.player)
 	}
 
+	updatePosition(x: number): void {
+		this.player.x = x
+		this.shield.updatePosition(this.player)
+	}
+
 	getLaserLocation(): { x: number; y: number } {
 		return { x: this.player.x, y: this.player.y - 20 }
 	}
@@ -204,7 +209,6 @@ export default class Player {
 
 	damaged(): void {
 		this.playerSound.play(`mc1-hit${Math.floor(Math.random() * 3) + 1}`)
-		//   this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
@@ -291,13 +295,27 @@ export default class Player {
 		return this.isAttacking
 	}
 
-	activateShield(remainingTime?:number): void {
-		this.isUsedShield = true
-		if(remainingTime){
-			this.shield.countDownShield()
-		}else{
-		this.shield.activate()
+	activateShield(remainingTime?: number): void {
+		if (!this.isUsedShield) {
+			this.shield.activate()
+
+			if (remainingTime) {
+				this.shield.countDownShield()
+			}
+
+			this.isUsedShield = true
+			return
 		}
+
+		if (remainingTime) {
+			this.shield.countDownShield()
+		} else {
+			this.shield.depleteShield()
+		}
+	}
+
+	getShield(): Shield {
+		return this.shield
 	}
 
 	deactivateShield(): void {
@@ -327,7 +345,7 @@ export default class Player {
 	reduceBullet(): void {
 		if (this.isBulletFull) return
 
-		if(this.bullet <= 0) return
+		if (this.bullet <= 0) return
 
 		this.bullet--
 	}
@@ -391,16 +409,16 @@ export default class Player {
 			.setOrigin(0.5, 0.5)
 			.setScrollFactor(0, 0)
 			.setScale(1.15)
-		
+
 		const playerImage = scene.add
 			.image(-100, 100, 'player', 'mc_attack_00001.png')
 			.setOrigin(0.5, 0)
 			.setScale(2.5)
-			
+
 		const polygon = scene.add
-					.polygon(-400, 0, [48, 80, 668, 80, 668, 437, 48, 576], 0xFFFFFF, 0)
-					.setStrokeStyle(5, 0x000000, 1)
-					.setOrigin(0,0)
+			.polygon(-400, 0, [48, 80, 668, 80, 668, 437, 48, 576], 0xffffff, 0)
+			.setStrokeStyle(5, 0x000000, 1)
+			.setOrigin(0, 0)
 
 		const mask = polygon.createGeometryMask()
 
@@ -412,7 +430,7 @@ export default class Player {
 			x: 0,
 			duration: 500,
 			repeat: 0,
-			ease:'sine.out'
+			ease: 'sine.out',
 		})
 
 		scene.tweens.add({
@@ -420,7 +438,7 @@ export default class Player {
 			x: width / 2,
 			duration: 500,
 			repeat: 0,
-			ease:'sine.out'
+			ease: 'sine.out',
 		})
 	}
 }

@@ -41,6 +41,7 @@ import { BoosterUI } from 'component/booster/boosterUI'
 import { Booster1 } from 'component/booster/boosterList/booster_1'
 import { Booster2 } from 'component/booster/boosterList/booster_2'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { BossObstacleFactory } from 'component/enemy/boss/obstacle/BossObstacleFactory'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -53,6 +54,7 @@ export default class BossScene extends Phaser.Scene {
 	private poisonFactory!: PosionFactory
 	private bulletFactory!: BulletFactory
 	private boosterFactory!: BoosterFactory
+	private bossObstacleFactory!: BossObstacleFactory
 	// private menu!: Menu
 
 	// TODO move to boss class
@@ -67,6 +69,10 @@ export default class BossScene extends Phaser.Scene {
 	private props!: BossInterface
 	private bgm!: Phaser.Sound.BaseSound
 	private soundManager: SoundManager
+	private soundEffect!:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound
 
 	private boosterEffect!: BoosterEffect
 	private menu!: Menu
@@ -174,11 +180,12 @@ export default class BossScene extends Phaser.Scene {
 		this.bgm = this.sound.add('boss_bgm', { volume: 1, loop: true })
 		this.soundManager.init()
 		this.soundManager.play(this.bgm)
+		this.soundEffect = this.sound.addAudioSprite('mcSound')
 
 		this.bossLayer = this.add.layer()
 
 		this.player = new Player(this, this.bossLayer)
-		this.player.getBody().setX(playerX)
+		this.player.updatePosition(playerX)
 		this.player.addChargeParticle()
 
 		this.menu = new Menu(this)
@@ -210,9 +217,11 @@ export default class BossScene extends Phaser.Scene {
 		this.poisonFactory = new PosionFactory()
 		this.bulletFactory = new BulletFactory()
 		this.boosterFactory = new BoosterFactory()
+		this.bossObstacleFactory = new BossObstacleFactory()
 
 		this.isCompleteItemTutorial = false
 
+		// TODO: remove this
 		boosters.forEach((booster) => {
 			const boosterUI = new BoosterUI(this, booster, { x: 594, y: 1142 })
 			boosterUI.create()
@@ -243,7 +252,6 @@ export default class BossScene extends Phaser.Scene {
 			.setDepth(10)
 			.setVisible(false)
 
-		// Mock bullet count, delete when finish test
 		this.bulletText = this.add
 			.text(
 				width / 2 + 32,
@@ -253,6 +261,11 @@ export default class BossScene extends Phaser.Scene {
 			.setOrigin(0.5, 1)
 			.setDepth(11)
 		this.bulletText.setVisible(false)
+
+		// activate booster_1 if existed
+		if (this.boosterEffect.remainingUses > 0) {
+			this.player.activateShield()
+		}
 
 		const self = this
 		WebFont.load({
@@ -273,6 +286,8 @@ export default class BossScene extends Phaser.Scene {
 					})
 					.setFontSize('48px')
 					.setStroke('#42342C', 10)
+
+				self.player.getShield().initFontStyle()
 			},
 		})
 	}
@@ -286,6 +301,14 @@ export default class BossScene extends Phaser.Scene {
 		)
 		const gauge = this.gaugeRegistry?.get(0)
 		gauge.setVisibleAll(false)
+
+		this.bossObstacleFactory.createByTime(
+			this,
+			this.player,
+			this.score,
+			delta,
+			this.soundEffect,
+		)
 
 		if (
 			!this.boss.getIsSecondPhase() &&
@@ -307,12 +330,6 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()) {
 			// Collecting Item Phase
-			this.bossVersion.createObstacleByTime(
-				this,
-				this.player,
-				this.score,
-				delta,
-			)
 			this.poisonFactory.createByTime(
 				this,
 				this.player,
@@ -390,7 +407,7 @@ export default class BossScene extends Phaser.Scene {
 		this.laserFactory.createByTime(
 			this,
 			this.player,
-			[this.boss, ...this.boss.getVersion().getObstacles()],
+			[this.boss, ...this.bossObstacleFactory.getObstacle()],
 			delta,
 			{
 				bossSkill: this.boss.getSkill(),

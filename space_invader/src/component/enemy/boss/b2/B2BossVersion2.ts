@@ -79,10 +79,6 @@ export class B2BossVersion2 extends BossVersion {
 		return false
 	}
 
-	hasObstacle(): boolean {
-		return true
-	}
-
 	hasBoosterDrop(): boolean {
 		return true
 	}
@@ -109,15 +105,6 @@ export class B2BossVersion2 extends BossVersion {
 		}
 
 		bossSkill.setActive(false)
-	}
-
-	createObstacleByTime(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-		delta: number,
-	): void {
-		console.log(scene, player, score, delta)
 	}
 
 	getDurationPhase1(): number {
@@ -491,8 +478,4 @@ export class B2BossVersion2 extends BossVersion {
 	}
 
 	playRandomScene(_: Phaser.Scene, __: Player): void {}
-
-	getObstacles(): Meteor[] {
-		return []
-	}
 }

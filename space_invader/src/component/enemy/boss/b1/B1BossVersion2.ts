@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {
 	LARGE_FONT_SIZE,
 	MARGIN,
@@ -10,22 +11,10 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
 import Player from 'component/player/Player'
-import Score from 'component/ui/Score'
-import { MeteorFactory } from 'component/enemy/MeteorFactory'
-import { Meteor } from 'component/enemy/Meteor'
 
 export class B1BossVersion2 extends BossVersion {
 	private skillTimer = 0
 	private movePattern!: Phaser.Curves.Path
-	private obstacleFactory!: MeteorFactory
-	private soundEffect!:
-		| Phaser.Sound.NoAudioSound
-		| Phaser.Sound.WebAudioSound
-		| Phaser.Sound.HTML5AudioSound
-	constructor() {
-		super()
-		this.obstacleFactory = new MeteorFactory()
-	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -84,10 +73,6 @@ export class B1BossVersion2 extends BossVersion {
 		return false
 	}
 
-	hasObstacle(): boolean {
-		return true
-	}
-
 	hasBoosterDrop(): boolean {
 		return true
 	}
@@ -114,22 +99,6 @@ export class B1BossVersion2 extends BossVersion {
 		}
 
 		bossSkill.setActive(false)
-	}
-
-	createObstacleByTime(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-		delta: number,
-	): void {
-		this.soundEffect = scene.sound.addAudioSprite('mcSound')
-		this.obstacleFactory.createByTime(
-			scene,
-			player,
-			score,
-			this.soundEffect,
-			delta,
-		)
 	}
 
 	getDurationPhase1(): number {
@@ -503,8 +472,4 @@ export class B1BossVersion2 extends BossVersion {
 	}
 
 	playRandomScene(_: Phaser.Scene, __: Player): void {}
-
-	getObstacles(): Meteor[] {
-		return this.obstacleFactory.getMeteors()
-	}
 }
