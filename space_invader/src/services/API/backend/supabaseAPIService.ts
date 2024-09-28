@@ -97,7 +97,7 @@ export default class supabaseAPIService {
 
 	async updateCurrentDifficulty(difficultyId: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
-			'update-selected-character',
+			'update-current-difficulty',
 			{
 				headers: {
 					Authorization: this.getAuthHeader(),
@@ -116,7 +116,7 @@ export default class supabaseAPIService {
 
 	async updateAirflow(airflow: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
-			'update-selected-character',
+			'update-airflow',
 			{
 				headers: {
 					Authorization: this.getAuthHeader(),
