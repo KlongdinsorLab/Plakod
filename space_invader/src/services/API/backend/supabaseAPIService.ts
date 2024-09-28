@@ -232,7 +232,7 @@ export default class supabaseAPIService {
 			'get-player',
 			{
 				headers: {
-					Authorization: 'Bearer ' + import.meta.env.VITE_JWT_TOKEN,
+					Authorization: 'Bearer ' + this.getAuthHeader(),
 				},
 			},
 		)
