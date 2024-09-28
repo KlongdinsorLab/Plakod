@@ -176,7 +176,7 @@ export default class ConfirmScene extends Phaser.Scene {
                     parseInt(airflowInput.textContent === null ? '100' : airflowInput.textContent),
                     parseInt(this.selectedData?.difficulty ?? '1')
                 )
-                this.scene.launch('home')
+                this.scene.launch('title')
             }
 		})
 
