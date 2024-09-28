@@ -2,6 +2,7 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader';
 import { PlayerSlotStack } from 'component/ranking/playerSlotStack';
 import { MARGIN } from "config";
+import supabaseAPIService from 'services/API/backend/supabaseAPIService';
 
 export enum AccumulationType{
     ACCUMULATION_SCORE,
@@ -44,124 +45,126 @@ export default class RankingScene extends Phaser.Scene {
     private totalPlayer: number = 40;
     private currentPlayer: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
-    } = { id: '23', name: 'user23', score: 86 , played: 999 };
+        username: string, 
+        total_score: number, 
+        total_game: number 
+    } = { id: '23', username: 'user23', total_score: 86 , total_game: 999 };
     private currentPlayerJson!: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[]
     private sortPlayerScoreJson1: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[] = [
-        { id: '1',  name: 'น้องลาคูนี่จังงงงงงงงงงงงงงง',  score: 512000000 , played: 100 },
-        { id: '2',  name: 'สู้เขาสิน้องหญิง',  score: 256000000 , played: 90 },
-        { id: '3',  name: "ญญญญญญญญญญญ",  score: 128000000 , played: 999 },
-        { id: '4',  name: 'user4',  score: 103 , played: 70 },
-        { id: '5',  name: 'user5',  score: 102 , played: 60 },
-        { id: '6',  name: 'user6',  score: 101 , played: 77 },
-        { id: '7',  name: 'user7',  score: 100 , played: 40 },
-        { id: '8',  name: 'user8',  score: 99 ,  played: 35 },
-        { id: '9',  name: 'user9',  score: 99 ,  played: 20 },
-        { id: '10', name: 'user10', score: 99 ,  played: 10 },
-        { id: '11', name: 'user11', score: 98 ,  played: 9 },
-        { id: '12', name: 'user12', score: 97 ,  played: 6 },
-        { id: '13', name: 'user13', score: 96 ,  played: 6 },
-        { id: '14', name: 'user14', score: 95 ,  played: 6 },
-        { id: '15', name: 'user15', score: 94 ,  played: 6 },
-        { id: '16', name: 'user16', score: 93 ,  played: 6 },
-        { id: '17', name: 'user17', score: 92 ,  played: 6 },
-        { id: '18', name: 'user18', score: 91 ,  played: 6 },
-        { id: '19', name: 'user19', score: 90 ,  played: 6 },
-        { id: '20', name: 'user20', score: 89 ,  played: 6 },
+        { id: '1',  username: 'น้องลาคูนี่จังงงงงงงงงงงงงงง',  total_score: 512000000 , total_game: 100 },
+        { id: '2',  username: 'สู้เขาสิน้องหญิง',  total_score: 256000000 , total_game: 90 },
+        { id: '3',  username: "ญญญญญญญญญญญ",  total_score: 128000000 , total_game: 999 },
+        { id: '4',  username: 'user4',  total_score: 103 , total_game: 70 },
+        { id: '5',  username: 'user5',  total_score: 102 , total_game: 60 },
+        { id: '6',  username: 'user6',  total_score: 101 , total_game: 77 },
+        { id: '7',  username: 'user7',  total_score: 100 , total_game: 40 },
+        { id: '8',  username: 'user8',  total_score: 99 ,  total_game: 35 },
+        { id: '9',  username: 'user9',  total_score: 99 ,  total_game: 20 },
+        { id: '10', username: 'user10', total_score: 99 ,  total_game: 10 },
+        { id: '11', username: 'user11', total_score: 98 ,  total_game: 9 },
+        { id: '12', username: 'user12', total_score: 97 ,  total_game: 6 },
+        { id: '13', username: 'user13', total_score: 96 ,  total_game: 6 },
+        { id: '14', username: 'user14', total_score: 95 ,  total_game: 6 },
+        { id: '15', username: 'user15', total_score: 94 ,  total_game: 6 },
+        { id: '16', username: 'user16', total_score: 93 ,  total_game: 6 },
+        { id: '17', username: 'user17', total_score: 92 ,  total_game: 6 },
+        { id: '18', username: 'user18', total_score: 91 ,  total_game: 6 },
+        { id: '19', username: 'user19', total_score: 90 ,  total_game: 6 },
+        { id: '20', username: 'user20', total_score: 89 ,  total_game: 6 },
     ]
     private sortPlayerScoreJson2: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[] = [
-        { id: '21', name: 'user21', score: 88 , played: 100 },
-        { id: '22', name: 'user22', score: 87 , played: 90 },
-        { id: '23', name: "user23", score: 86 , played: 999 },
-        { id: '24', name: 'user24', score: 85 , played: 70 },
-        { id: '25', name: 'user25', score: 84 , played: 60 },
-        { id: '26', name: 'user26', score: 83 , played: 77 },
-        { id: '27', name: 'user27', score: 82 , played: 40 },
-        { id: '28', name: 'user28', score: 81 , played: 35 },
-        { id: '29', name: 'user29', score: 80 , played: 20 },
-        { id: '30', name: 'user30', score: 79 , played: 10 },
-        { id: '31', name: 'user31', score: 78 , played: 9 },
-        { id: '32', name: 'user32', score: 77 , played: 6 },
-        { id: '33', name: 'user33', score: 76 , played: 6 },
-        { id: '34', name: 'user34', score: 75 , played: 6 },
-        { id: '35', name: 'user35', score: 74 , played: 6 },
-        { id: '36', name: 'user36', score: 73 , played: 6 },
-        { id: '37', name: 'user37', score: 72 , played: 6 },
-        { id: '38', name: 'user38', score: 71 , played: 6 },
-        { id: '39', name: 'user39', score: 70 , played: 6 },
-        { id: '40', name: 'user40', score: 69 , played: 6 },
+        { id: '21', username: 'user21', total_score: 88 , total_game: 100 },
+        { id: '22', username: 'user22', total_score: 87 , total_game: 90 },
+        { id: '23', username: "user23", total_score: 86 , total_game: 999 },
+        { id: '24', username: 'user24', total_score: 85 , total_game: 70 },
+        { id: '25', username: 'user25', total_score: 84 , total_game: 60 },
+        { id: '26', username: 'user26', total_score: 83 , total_game: 77 },
+        { id: '27', username: 'user27', total_score: 82 , total_game: 40 },
+        { id: '28', username: 'user28', total_score: 81 , total_game: 35 },
+        { id: '29', username: 'user29', total_score: 80 , total_game: 20 },
+        { id: '30', username: 'user30', total_score: 79 , total_game: 10 },
+        { id: '31', username: 'user31', total_score: 78 , total_game: 9 },
+        { id: '32', username: 'user32', total_score: 77 , total_game: 6 },
+        { id: '33', username: 'user33', total_score: 76 , total_game: 6 },
+        { id: '34', username: 'user34', total_score: 75 , total_game: 6 },
+        { id: '35', username: 'user35', total_score: 74 , total_game: 6 },
+        { id: '36', username: 'user36', total_score: 73 , total_game: 6 },
+        { id: '37', username: 'user37', total_score: 72 , total_game: 6 },
+        { id: '38', username: 'user38', total_score: 71 , total_game: 6 },
+        { id: '39', username: 'user39', total_score: 70 , total_game: 6 },
+        { id: '40', username: 'user40', total_score: 69 , total_game: 6 },
     ]
     private sortPlayerHeartJson1: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[] = [
-        { id: '3',  name: 'user3',  score: 104 , played: 9999 },
-        { id: '23', name: "user23", score: 86 , played: 999 },
-        { id: '1',  name: 'น้องลาคูนี่จัง',  score: 111 , played: 123 },
-        { id: '21', name: 'user21', score: 88 , played: 111 },
-        { id: '2',  name: 'สู้เขาสิน้องหญิง',  score: 105 , played: 99 },
-        { id: '22', name: 'user22', score: 87 , played: 90 },
-        { id: '4',  name: 'user4',  score: 103 , played: 88 },
-        { id: '24', name: 'user24', score: 85 , played: 86 },
-        { id: '5',  name: 'user5',  score: 102 , played: 84 },
-        { id: '25', name: 'user25', score: 84 , played: 82 },
-        { id: '6',  name: 'user6',  score: 101 , played: 79 },
-        { id: '26', name: 'user26', score: 83 , played: 77 },
-        { id: '7',  name: 'user7',  score: 100 , played: 44 },
-        { id: '27', name: 'user27', score: 82 , played: 40 },
-        { id: '8',  name: 'user8',  score: 99 ,  played: 39 },
-        { id: '28', name: 'user28', score: 81 , played: 37 },
-        { id: '9',  name: 'user9',  score: 99 ,  played: 24 },
-        { id: '29', name: 'user29', score: 80 , played: 23 },
-        { id: '10', name: 'user10', score: 99 ,  played: 22 },
-        { id: '30', name: 'user30', score: 79 , played: 21 }
+        { id: '3',  username: 'user3',  total_score: 104 , total_game: 9999 },
+        { id: '23', username: "user23", total_score: 86 , total_game: 999 },
+        { id: '1',  username: 'น้องลาคูนี่จัง',  total_score: 111 , total_game: 123 },
+        { id: '21', username: 'user21', total_score: 88 , total_game: 111 },
+        { id: '2',  username: 'สู้เขาสิน้องหญิง',  total_score: 105 , total_game: 99 },
+        { id: '22', username: 'user22', total_score: 87 , total_game: 90 },
+        { id: '4',  username: 'user4',  total_score: 103 , total_game: 88 },
+        { id: '24', username: 'user24', total_score: 85 , total_game: 86 },
+        { id: '5',  username: 'user5',  total_score: 102 , total_game: 84 },
+        { id: '25', username: 'user25', total_score: 84 , total_game: 82 },
+        { id: '6',  username: 'user6',  total_score: 101 , total_game: 79 },
+        { id: '26', username: 'user26', total_score: 83 , total_game: 77 },
+        { id: '7',  username: 'user7',  total_score: 100 , total_game: 44 },
+        { id: '27', username: 'user27', total_score: 82 , total_game: 40 },
+        { id: '8',  username: 'user8',  total_score: 99 ,  total_game: 39 },
+        { id: '28', username: 'user28', total_score: 81 , total_game: 37 },
+        { id: '9',  username: 'user9',  total_score: 99 ,  total_game: 24 },
+        { id: '29', username: 'user29', total_score: 80 , total_game: 23 },
+        { id: '10', username: 'user10', total_score: 99 ,  total_game: 22 },
+        { id: '30', username: 'user30', total_score: 79 , total_game: 21 }
     ];
     private sortPlayerHeartJson2: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[] = [
-        { id: '11', name: 'user11', score: 98 ,  played: 20 },
-        { id: '31', name: 'user31', score: 78 , played: 19 },
-        { id: '12', name: 'user12', score: 97 ,  played: 18 },
-        { id: '13', name: 'user13', score: 96 ,  played: 17 },
-        { id: '14', name: 'user14', score: 95 ,  played: 16 },
-        { id: '15', name: 'user15', score: 94 ,  played: 15 },
-        { id: '16', name: 'user16', score: 93 ,  played: 14 },
-        { id: '17', name: 'user17', score: 92 ,  played: 13 },
-        { id: '18', name: 'user18', score: 91 ,  played: 12 },
-        { id: '19', name: 'user19', score: 90 ,  played: 11 },
-        { id: '20', name: 'user20', score: 89 ,  played: 10 },
-        { id: '32', name: 'user32', score: 77 , played: 9 },
-        { id: '33', name: 'user33', score: 76 , played: 8 },
-        { id: '34', name: 'user34', score: 75 , played: 7 },
-        { id: '35', name: 'user35', score: 74 , played: 6 },
-        { id: '36', name: 'user36', score: 73 , played: 5 },
-        { id: '37', name: 'user37', score: 72 , played: 4 },
-        { id: '38', name: 'user38', score: 71 , played: 3 },
-        { id: '39', name: 'user39', score: 70 , played: 2 },
-        { id: '40', name: 'user40', score: 69 , played: 1 }
+        { id: '11', username: 'user11', total_score: 98 ,  total_game: 20 },
+        { id: '31', username: 'user31', total_score: 78 , total_game: 19 },
+        { id: '12', username: 'user12', total_score: 97 ,  total_game: 18 },
+        { id: '13', username: 'user13', total_score: 96 ,  total_game: 17 },
+        { id: '14', username: 'user14', total_score: 95 ,  total_game: 16 },
+        { id: '15', username: 'user15', total_score: 94 ,  total_game: 15 },
+        { id: '16', username: 'user16', total_score: 93 ,  total_game: 14 },
+        { id: '17', username: 'user17', total_score: 92 ,  total_game: 13 },
+        { id: '18', username: 'user18', total_score: 91 ,  total_game: 12 },
+        { id: '19', username: 'user19', total_score: 90 ,  total_game: 11 },
+        { id: '20', username: 'user20', total_score: 89 ,  total_game: 10 },
+        { id: '32', username: 'user32', total_score: 77 , total_game: 9 },
+        { id: '33', username: 'user33', total_score: 76 , total_game: 8 },
+        { id: '34', username: 'user34', total_score: 75 , total_game: 7 },
+        { id: '35', username: 'user35', total_score: 74 , total_game: 6 },
+        { id: '36', username: 'user36', total_score: 73 , total_game: 5 },
+        { id: '37', username: 'user37', total_score: 72 , total_game: 4 },
+        { id: '38', username: 'user38', total_score: 71 , total_game: 3 },
+        { id: '39', username: 'user39', total_score: 70 , total_game: 2 },
+        { id: '40', username: 'user40', total_score: 69 , total_game: 1 }
     ];
+
+    private apiService!: supabaseAPIService
 
     constructor(){
         super('ranking');
@@ -188,7 +191,11 @@ export default class RankingScene extends Phaser.Scene {
             'assets/icon/icon_spritesheet.json'
         )
     }
-    create(){
+    async create(){
+        this.apiService = new supabaseAPIService()
+
+        await this.handleData()
+
         const {width, height} = this.scale;
         const self = this;
         this.rankingIndex = 0;
@@ -376,6 +383,34 @@ export default class RankingScene extends Phaser.Scene {
     }
     update(): void {}
 
+    private async handleData(){
+        const response = await this.apiService.getRanking()
+        const data = response.response
+
+        this.sortPlayerScoreJson1 = data.ranking_by_score.slice(0,20)
+        this.sortPlayerScoreJson2 = []
+
+        this.sortPlayerHeartJson1 = data.ranking_by_play.slice(0,20)
+        this.sortPlayerHeartJson2 = []
+
+        this.totalPlayer = data.ranking_by_score.length
+
+        this.currentPlayer = data.ranking_by_score.find((
+            element : { 
+                id: string,
+                username: string, 
+                total_score: number, 
+                total_game: number 
+            }) => element.username = this.scene.scene.registry.get("username"))
+
+
+        this.currentPlayerHeartRank = this.sortPlayerHeartJson1.indexOf(this.currentPlayer) + 1
+        this.currentPlayerScoreRank = this.sortPlayerScoreJson1.indexOf(this.currentPlayer) + 1
+
+        if(this.currentPlayerHeartRank === -1) this.currentPlayerHeartRank = this.sortPlayerHeartJson2.indexOf(this.currentPlayer) + 1
+        if(this.currentPlayerScoreRank === -1) this.currentPlayerScoreRank = this.sortPlayerScoreJson2.indexOf(this.currentPlayer) + 1
+    }
+
     private createScoreButton():void{
         this.scoreButton = this.add.graphics()
         this.scoreButton.fillStyle(0x43A99E)
@@ -557,9 +592,9 @@ export default class RankingScene extends Phaser.Scene {
     //todo: fetch data from backend
     private setCurrentPlayerData():{ 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }[]{
         if(this.accumulationType === AccumulationType.ACCUMULATION_SCORE){
             const fileNumber = Math.floor(this.rankingIndex/20)

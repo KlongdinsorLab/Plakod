@@ -307,4 +307,20 @@ export default class supabaseAPIService {
 
 		return data
 	}
+
+	async getRanking(){
+		const { data, error } = await supabaseClient.functions.invoke(
+			'get-ranking',
+			{
+				headers: {
+					Authorization: this.getAuthHeader(),
+				},
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
 }

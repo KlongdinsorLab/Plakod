@@ -4,16 +4,16 @@ import { AccumulationType } from "scene/submenu/RankingScene";
 
 export class PlayerSlotStack{
     private scene: Phaser.Scene;
-    private playerData: { id: string,name: string, score: number, played: number }[]
+    private playerData: { id: string,username: string, total_score: number, total_game: number }[]
     private accumulationType: AccumulationType;
     private startPosition: {x:number, y:number};
     private gapHeight: number = 16;
     private slotHeight: number = 88;
     private currentPlayer!: { 
         id: string,
-        name: string, 
-        score: number, 
-        played: number 
+        username: string, 
+        total_score: number, 
+        total_game: number 
     }
     private playerSlots: PlayerSlot[] = [];
     private currentPlayerSlot?: PlayerSlot
@@ -26,8 +26,8 @@ export class PlayerSlotStack{
 
     constructor(
         scene:Phaser.Scene, 
-        playerData: { id: string,name: string, score: number, played: number }[],
-        currentPlayer: { id: string,name: string, score: number, played: number },
+        playerData: { id: string,username: string, total_score: number, total_game: number }[],
+        currentPlayer: { id: string,username: string, total_score: number, total_game: number },
         accumulationType: AccumulationType,
         startPosition: {x:number, y:number},
         index: number,
@@ -54,14 +54,14 @@ export class PlayerSlotStack{
             }
             let stat;
             if(this.accumulationType === AccumulationType.ACCUMULATION_SCORE){
-                stat = this.playerData[i].score;
+                stat = this.playerData[i].total_score;
             }else{
-                stat = this.playerData[i].played;
+                stat = this.playerData[i].total_game;
             }
             this.playerSlots.push(
                 new PlayerSlot(
                     this.scene, 
-                    this.playerData[i].name, 
+                    this.playerData[i].username, 
                     this.rank, 
                     stat, 
                     this.accumulationType, 
@@ -76,15 +76,15 @@ export class PlayerSlotStack{
         let playerStat;
         let playerRank = 0;
         if(this.accumulationType === AccumulationType.ACCUMULATION_SCORE){
-            playerStat = this.currentPlayer.score
+            playerStat = this.currentPlayer.total_score
             playerRank = this.playerRankScore!
         }else{
-            playerStat = this.currentPlayer.played
+            playerStat = this.currentPlayer.total_game
             playerRank = this.playerRankHeart!
         }
         this.currentPlayerSlot = new PlayerSlot(
             this.scene, 
-            this.currentPlayer.name, 
+            this.currentPlayer.username, 
             playerRank, 
             playerStat, 
             this.accumulationType, 
@@ -110,11 +110,11 @@ export class PlayerSlotStack{
         this.createPlayerSlot();
     }
 
-    setCurrentPlayer(currentPlayer: { id: string,name: string, score: number, played: number }){
+    setCurrentPlayer(currentPlayer: { id: string,username: string, total_score: number, total_game: number }){
         this.currentPlayer = currentPlayer;
     }
 
-    setPlayerData(playerData: { id: string,name: string, score: number, played: number }[]){
+    setPlayerData(playerData: { id: string,username: string, total_score: number, total_game: number }[]){
         this.playerData = playerData;
         if(this.index === 0){
             this.index = 20-(this.maxPlayerSlot);
