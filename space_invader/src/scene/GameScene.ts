@@ -77,6 +77,9 @@ export default class GameScene extends Phaser.Scene {
 
 	private laserFactory!: LaserFactory
 
+	private bossId !: number
+	private mcId !: number
+
 	constructor() {
 		super({ key: 'game' })
 		this.soundManager = new SoundManager(this)
@@ -92,104 +95,20 @@ export default class GameScene extends Phaser.Scene {
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'player2',
-			'assets/character/player/mc2_spritesheet.png',
-			'assets/character/player/mc2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'player3',
-			'assets/character/player/mc3_spritesheet.png',
-			'assets/character/player/mc3_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'player4',
-			'assets/character/player/mc4_spritesheet.png',
-			'assets/character/player/mc4_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'player5',
-			'assets/character/player/mc5_spritesheet.png',
-			'assets/character/player/mc5_spritesheet.json',
+			`assets/character/player/mc${this.mcId}_spritesheet.png`,
+			`assets/character/player/mc${this.mcId}_spritesheet.json`,
 		)
 
 		this.load.atlas(
 			'boss1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
 		this.load.atlas(
 			'boss1v2',
-			'assets/character/enemy/b1v2_spritesheet.png',
-			'assets/character/enemy/b1v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss2v1',
-			'assets/character/enemy/b2v1_spritesheet.png',
-			'assets/character/enemy/b2v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss2v2',
-			'assets/character/enemy/b2v2_spritesheet.png',
-			'assets/character/enemy/b2v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss3v1',
-			'assets/character/enemy/b3v1_spritesheet.png',
-			'assets/character/enemy/b3v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss3v2',
-			'assets/character/enemy/b3v2_spritesheet.png',
-			'assets/character/enemy/b3v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss4v1',
-			'assets/character/enemy/b4v1_spritesheet.png',
-			'assets/character/enemy/b4v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss4v2',
-			'assets/character/enemy/b4v2_spritesheet.png',
-			'assets/character/enemy/b4v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss5v1',
-			'assets/character/enemy/b5v1_spritesheet.png',
-			'assets/character/enemy/b5v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss5v2',
-			'assets/character/enemy/b5v2_spritesheet.png',
-			'assets/character/enemy/b5v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss6v1',
-			'assets/character/enemy/b6v1_spritesheet.png',
-			'assets/character/enemy/b6v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'boss6v2',
-			'assets/character/enemy/b6v2_spritesheet.png',
-			'assets/character/enemy/b6v2_spritesheet.json',
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -254,16 +173,20 @@ export default class GameScene extends Phaser.Scene {
 		reloadCount,
 		isCompleteBoss,
 		bossName,
+		mcId
 	}: {
 		score: number
 		reloadCount: number
 		isCompleteBoss: boolean
 		bossName: keyof typeof BossByName
+		mcId: number
 	}) {
 		this.scoreNumber = score ?? 0
 		this.reloadCountNumber = reloadCount ?? RELOAD_COUNT
 		this.isCompleteBoss = isCompleteBoss ?? false
-		this.bossName = bossName
+		this.bossName = bossName ?? 'B1'
+		this.bossId = parseInt(bossName[bossName.length-1])
+		this.mcId = mcId ?? 1
 		this.soundManager.unmute()
 	}
 
