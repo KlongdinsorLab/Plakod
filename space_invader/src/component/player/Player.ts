@@ -12,7 +12,7 @@ import {
 	BOSSV1_PHASE2_BULLET_COUNT,
 	BOSSV2_PHASE2_BULLET_COUNT,
 } from 'config'
-import I18nSingleton from 'i18n/I18nSingleton'
+// import I18nSingleton from 'i18n/I18nSingleton'
 import Shield from 'component/equipment/defense/shield'
 // import WebFont from 'webfontloader'
 
@@ -354,18 +354,18 @@ export default class Player {
 			.image(850, 1200, 'player', 'mc_attack_00001.png')
 			.setOrigin(0.5, 1)
 			.setScale(2.5)
-		const playerName = I18nSingleton.getInstance()
-			.createTranslatedText(scene, 800, 950, 'player_name')
-			.setOrigin(0.5, 1)
+		// const playerName = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, 800, 950, 'player_name')
+		// 	.setOrigin(0.5, 1)
 
-		playerName
-			.setStyle({
-				fontFamily: 'Mali',
-				color: 'white',
-				fontWeight: 800,
-			})
-			.setFontSize('7em')
-			.setStroke('#FB511C', 18)
+		// playerName
+		// 	.setStyle({
+		// 		fontFamily: 'Mali',
+		// 		color: 'white',
+		// 		fontWeight: 800,
+		// 	})
+		// 	.setFontSize('7em')
+		// 	.setStroke('#FB511C', 18)
 
 		scene.tweens.add({
 			targets: playerImage,
@@ -374,13 +374,13 @@ export default class Player {
 			repeat: 0,
 			ease: 'bounce.out',
 		})
-		scene.tweens.add({
-			targets: playerName,
-			x: 220,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
+		// scene.tweens.add({
+		// 	targets: playerName,
+		// 	x: 220,
+		// 	duration: 1000,
+		// 	repeat: 0,
+		// 	ease: 'bounce.out',
+		// })
 	}
 
 	playRandomBossScene(scene: Phaser.Scene): void {
