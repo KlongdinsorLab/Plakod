@@ -177,15 +177,15 @@ export class B1BossVersion2 extends BossVersion {
 
 		const group = scene.add
 			.group({ key: 'tranform' })
-			.setOrigin(0.5, 1)
-			.setXY(width / 2, -140)
+			.setOrigin(0.5, 0.5)
+			.setXY(width / 2, -365)
 			.scaleXY(1)
 		group.playAnimation('b1v1')
 
 		scene.tweens.add({
 			targets: group.getChildren(),
 			x: width / 2,
-			y: height / 2 + 225,
+			y: height / 2,
 			duration: 1000,
 			repeat: 0,
 			ease: 'sine.out',
