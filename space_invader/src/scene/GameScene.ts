@@ -296,7 +296,7 @@ export default class GameScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
-		this.reloadCount.setCount(1)
+		// this.reloadCount.setCount(1)
 
 		const self = this
 		WebFont.load({
