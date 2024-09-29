@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { DARK_ORANGE, LARGE_FONT_SIZE, MARGIN, TUTORIAL_DELAY_MS } from 'config'
+import { DARK_ORANGE, LARGE_FONT_SIZE, MARGIN, TUTORIAL_DELAY_MS, WARM_UP_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
@@ -129,7 +129,7 @@ export default class WarmupScene extends Phaser.Scene {
             targets: exhale,
             scale: 3,
             startDelay: 2000,
-            duration: TUTORIAL_DELAY_MS,
+            duration: WARM_UP_DELAY_MS,
             ease: 'Sine.inOut',
             onComplete: (tween) => {
               if (self.step === Step.INHALE) return
