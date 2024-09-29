@@ -137,30 +137,30 @@ export class B1BossVersion2 extends BossVersion {
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
-			.setOrigin(0.5, 1)
+		// const bossText = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
+		// 	.setOrigin(0.5, 1)
 
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
+		// WebFont.load({
+		// 	google: {
+		// 		families: ['Mali'],
+		// 	},
+		// 	active: function () {
+		// 		const bossTutorialUiStyle = {
+		// 			fontFamily: 'Mali',
+		// 		}
 
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-						align: 'center',
-					})
-					.setFontSize('80px')
-					.setStroke('#FB511C', 16)
-			},
-		})
+		// 		bossText
+		// 			.setStyle({
+		// 				...bossTutorialUiStyle,
+		// 				color: 'white',
+		// 				fontWeight: 700,
+		// 				align: 'center',
+		// 			})
+		// 			.setFontSize('80px')
+		// 			.setStroke('#FB511C', 16)
+		// 	},
+		// })
 
 		scene.anims.create({
 			key: 'b1v1',
@@ -185,7 +185,7 @@ export class B1BossVersion2 extends BossVersion {
 		scene.tweens.add({
 			targets: group.getChildren(),
 			x: width / 2,
-			y: height / 2,
+			y: height / 2 + 225,
 			duration: 1000,
 			repeat: 0,
 			ease: 'sine.out',
@@ -200,7 +200,7 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4 * MARGIN)
+					group.setXY(width / 2, height / 2).setOrigin(0.5,0.5)
 					group.scaleXY(1.25)
 				}, 1000)
 			},

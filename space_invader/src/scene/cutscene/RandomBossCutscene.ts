@@ -5,6 +5,7 @@ import { PlayerByName } from 'component/player/playerInterface'
 import SoundManager from 'component/sound/SoundManager'
 import Score from 'component/ui/Score'
 import I18nSingleton from 'i18n/I18nSingleton'
+import i18next from 'i18next'
 import { BossByName } from 'scene/boss/bossInterface'
 import WebFont from 'webfontloader'
 
@@ -96,11 +97,13 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			.lineStyle(6, 0xd35e24, 1)
 			.strokeRoundedRect(48, height - 320, 624, 240, 40)
 
-		const playerName = this.add.text(0, 0, 'username').setVisible(false)
+		// const playerName = this.add.text(0, 0, 'username').setVisible(false)
 
-		const bossName = i18n
-			.createTranslatedText(this, 0, 0, bossNameText[this.bossName])
-			.setVisible(false)
+		// const bossName = i18n
+		// 	.createTranslatedText(this, 0, 0, bossNameText[this.bossName])
+		// 	.setVisible(false)
+
+		const username = this.scene.scene.registry.get("username")
 
 		const dialogText = i18n
 			.createTranslatedText(
@@ -109,8 +112,8 @@ export default class RandomBossCutScene extends Phaser.Scene {
 				height - 200,
 				'random_scene_dialog',
 				{
-					username: playerName.text,
-					bossName: bossName.text,
+					username: username,
+					bossName: i18next.t(bossNameText[this.bossName]),
 				},
 			)
 			.setAlign('center')
