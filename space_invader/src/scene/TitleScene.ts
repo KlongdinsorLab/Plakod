@@ -83,7 +83,7 @@ export default class TitleScene extends Phaser.Scene {
 		(async ()=> {
 			await setPersistence(auth, browserSessionPersistence)
 			const user = auth.currentUser
-			
+
 			if (user === null) {
 				this.scene.pause()
 				this.scene.launch('start-login')
@@ -128,7 +128,15 @@ export default class TitleScene extends Phaser.Scene {
     }
     */
 
-
+    if (!this.hasController && this.input?.gamepad?.total === 0) {
+			this.input.gamepad.once(
+				'connected',
+				() => {
+					this.startGame()
+				},
+				this,
+			)
+		}
 	}
 
 	update() {
