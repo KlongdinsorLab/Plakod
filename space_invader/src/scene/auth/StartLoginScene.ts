@@ -5,9 +5,14 @@ import WebFont from 'webfontloader';
 export default class StartLoginScene extends Phaser.Scene {
     private Text!: Phaser.GameObjects.Text;
     private buttonText!: Phaser.GameObjects.Text;
+    private bgm?: Phaser.Sound.BaseSound
+
     constructor() {
         super('start-login');
     }
+    init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
+		this.bgm = bgm
+	}
     preload() {
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
         this.load.image('background', 'assets/background/landing_page_bg.png');
@@ -67,7 +72,7 @@ export default class StartLoginScene extends Phaser.Scene {
         .setOrigin(0.5,0)
         .setInteractive().on('pointerup', () => {
             this.scene.stop();
-            this.scene.start('login');
+            this.scene.start('login', {bgm: this.bgm,});
         })
 
         this.buttonText = I18nSingleton.getInstance()

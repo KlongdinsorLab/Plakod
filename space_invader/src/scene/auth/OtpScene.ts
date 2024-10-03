@@ -24,6 +24,7 @@ export default class OtpScene extends Phaser.Scene {
 	//private isResend: boolean = false;
 	private countdownInterval: number | undefined
 	private element!: Phaser.GameObjects.DOMElement
+	private bgm?: Phaser.Sound.BaseSound
 
 	private apiService !: supabaseAPIService
 
@@ -32,9 +33,14 @@ export default class OtpScene extends Phaser.Scene {
 		super('otp')
 	}
 
-	init({ confirmationResult, data }: { confirmationResult: ConfirmationResult, data: { phoneNumber: string } }) {
+	init({ confirmationResult, data, bgm }: 
+		{ confirmationResult: ConfirmationResult, 
+			data: { phoneNumber: string }, 
+			bgm: Phaser.Sound.BaseSound
+		}) {
 		this.confirmationResult = confirmationResult;
 		this.phoneNumber = data.phoneNumber;
+		this.bgm = bgm
 	}
 	
 	preload() {
@@ -168,7 +174,7 @@ export default class OtpScene extends Phaser.Scene {
 			if(this.isTimeout){
 				alert('Time out');
 				this.scene.stop()
-				this.scene.launch('login')
+				this.scene.launch('login', {bgm: this.bgm})
 				return;
 			}
 			const result = await this.confirmationResult.confirm(code)
@@ -179,8 +185,11 @@ export default class OtpScene extends Phaser.Scene {
 			this.scene.stop()
 
 			const supabaseResponse = await this.apiService.login(this.phoneNumber)
-			if(supabaseResponse.message === "No existing player") this.scene.launch('register', {phoneNumber : this.phoneNumber})
-			else if (supabaseResponse.message === "Ok") this.scene.launch('title')
+			if(supabaseResponse.message === "No existing player") this.scene.launch('register', {phoneNumber : this.phoneNumber, bgm: this.bgm})
+			else if (supabaseResponse.message === "Ok") {
+				this.scene.stop() 
+				this.scene.launch('home', {bgm: this.bgm})
+			}
 			else throw new Error("Authentication Error")
 			
 		} catch (e){

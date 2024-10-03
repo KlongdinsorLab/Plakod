@@ -135,7 +135,7 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	async startGame() {
-		if(import.meta.env.VITE_START_SCENE) {
+		if(import.meta.env.VITE_START_SCEN) {
 			// testing flow
 			this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
 				bgm: this.bgm,
@@ -150,17 +150,20 @@ export default class TitleScene extends Phaser.Scene {
 				const user = auth.currentUser
 			
 				if (user === null) {
-					this.scene.pause()
-					this.scene.launch('start-login')
+					this.scene.stop()
+					this.scene.launch('start-login', {bgm: this.bgm,})
 					return
+				}
+				else {
+					this.scene.stop()
+					this.scene.start('home', {bgm: this.bgm,})
 				}
 
 					// TODO check user data
 					// this.scene.pause()
 					// this.scene.launch('register')
-				})()
+			})()
 			I18nSingleton.getInstance().destroyEmitter()
-			this.scene.start('home', {bgm: this.bgm,})
 		}
 
 		//this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
