@@ -144,7 +144,7 @@ export default class TitleScene extends Phaser.Scene {
         const buttontext1 = i18n.createTranslatedText(this, width/2 + 15, 800 + 96/2, "how_to_connect").setOrigin(0.5,0.5)
             .setColor("#D35E24")
             .setFontSize(28)
-            .setPadding(0,20,0,10)
+            .setPadding(0,20,0,20)
             
         // Button 2
         this.add.nineslice(width/2, 920, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
@@ -153,7 +153,7 @@ export default class TitleScene extends Phaser.Scene {
         const buttontext2 = i18n.createTranslatedText(this, width/2 + 15, 920 + 96/2, "how_to_close").setOrigin(0.5,0.5)
             .setColor("#D35E24")
             .setFontSize(28)
-            .setPadding(0,20,0,10)
+            .setPadding(0,20,0,20)
 
         // Button 3
         this.add.nineslice(width/2, 1040, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
@@ -162,7 +162,7 @@ export default class TitleScene extends Phaser.Scene {
         const buttontext3 = i18n.createTranslatedText(this, width/2 + 15, 1040 + 96/2, "how_to_charge").setOrigin(0.5,0.5)
             .setColor("#D35E24")
             .setFontSize(28)
-            .setPadding(0,20,0,10)  
+            .setPadding(0,20,0,20)  
 
         WebFont.load({
             google: {
