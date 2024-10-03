@@ -83,7 +83,7 @@ export default class DeviceConnectedScene extends Phaser.Scene {
         // Button 3
         this.add.nineslice(width/2, 1040, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp3())
-        this.add.image(122 + (width/2 - 528/2), 1040 + 96/2, 'icon_spritesheet', 'icon_battery.png')
+        this.add.image(92 + (width/2 - 528/2), 1040 + 96/2, 'icon_spritesheet', 'icon_battery.png')
         const buttontext3 = i18n.createTranslatedText(this, width/2 + 15, 1040 + 96/2, "how_to_charge").setOrigin(0.5,0.5)
             .setColor("#D35E24")
             .setFontSize(28)
@@ -91,11 +91,12 @@ export default class DeviceConnectedScene extends Phaser.Scene {
 
         WebFont.load({
             google: {
-              families: ['Mali:Bold 700']
+              families: ['Mali']
             },
             active: function() {
               const menuUiStyle = {
-                fontFamily: 'Mali'
+                fontFamily: 'Mali',
+                fontStyle: 'bold'
               }
               mainText1.setStyle(menuUiStyle)
               mainText2.setStyle(menuUiStyle)

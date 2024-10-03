@@ -246,9 +246,9 @@
 	"levelup_reward_recieve": "รางวัลที่ได้รับ",
 	"start_login_text":"กรุณาเข้าสู่ระบบก่อนเริ่มเกม",
   	"start_login_button":"เข้าสู่ระบบ",
-	"dc_controller_connect" : "กรุณาเชื่อมต่อสัญญาณ Bluetooth เข้ากับคอนโทรลเลอร์และ",
+	"dc_controller_connect" : "กรุณาเชื่อมต่อสัญญาณ Bluetooth เข้ากับคอนโทรลเลอร์",
   	"dc_press_home" : "กดปุ่ม Home เพื่อเข้าสู่หน้าเกม",
   	"how_to_connect" : "วิธีเชื่อมต่ออุปกรณ์",
   	"how_to_close" : "วิธีปิดอุปกรณ์",
-  	"how_to_charge" : "วิธีชาร์จอุปกรณ์"
+  	"how_to_charge" : "แบตเตอรี่และการชาร์จ"
 }
