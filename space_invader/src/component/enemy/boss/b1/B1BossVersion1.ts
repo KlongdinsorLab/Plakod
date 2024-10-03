@@ -112,9 +112,9 @@ export class B1BossVersion1 extends BossVersion {
 			.setOrigin(0.5, 1)
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
-		const bossName = I18nSingleton.getInstance()
-			.createTranslatedText(scene, -320, 280, 'b1v1_name')
-			.setOrigin(0.5, 1)
+		// const bossName = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, -320, 280, 'b1v1_name')
+		// 	.setOrigin(0.5, 1)
 
 		player.playVsScene(scene)
 
@@ -127,14 +127,14 @@ export class B1BossVersion1 extends BossVersion {
 			.setFontSize('200px')
 			.setStroke('#000000', 36)
 
-		bossName
-			.setStyle({
-				fontFamily: 'Mali',
-				color: 'white',
-				fontWeight: 800,
-			})
-			.setFontSize('7em')
-			.setStroke('#FB511C', 18)
+		// bossName
+		// 	.setStyle({
+		// 		fontFamily: 'Mali',
+		// 		color: 'white',
+		// 		fontWeight: 800,
+		// 	})
+		// 	.setFontSize('7em')
+		// 	.setStroke('#FB511C', 18)
 
 		scene.tweens.add({
 			targets: bossImage,
@@ -143,13 +143,13 @@ export class B1BossVersion1 extends BossVersion {
 			repeat: 0,
 			ease: 'bounce.out',
 		})
-		scene.tweens.add({
-			targets: bossName,
-			x: 530,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
+		// scene.tweens.add({
+		// 	targets: bossName,
+		// 	x: 530,
+		// 	duration: 1000,
+		// 	repeat: 0,
+		// 	ease: 'bounce.out',
+		// })
 	}
 
 	playEscapePhase1(scene: Phaser.Scene): void {
@@ -343,27 +343,27 @@ export class B1BossVersion1 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'avoid_poison')
+			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)
 		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'collect_bullet')
+			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
 		const poison = scene.add
-			.image(width / 2, 9 * MARGIN, 'dropItem', 'item_poison.png')
+			.image(width / 2, 17 * MARGIN, 'dropItem', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 2, 17 * MARGIN, 'dropItem', 'item_bullet.png')
+			.image(width / 2, 9 * MARGIN, 'dropItem', 'item_bullet.png')
 			.setOrigin(0.5, 1)
 
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
-			.strokeRoundedRect(width / 3, 6 * MARGIN + 8, width / 3, height / 8, 32)
+			.strokeRoundedRect(width / 2 - 264, 14 * MARGIN + 8, 528, height / 8, 32)
 		const bulletBox = scene.add
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
-			.strokeRoundedRect(width / 3, 14 * MARGIN + 8, width / 3, height / 8, 32)
+			.strokeRoundedRect(width / 2 - 264, 6 * MARGIN + 8, 528, height / 8, 32)
 
 		WebFont.load({
 			google: {
@@ -428,29 +428,29 @@ export class B1BossVersion1 extends BossVersion {
 
 		player.playRandomBossScene(scene)
 
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width, 780, 'b1v1_name')
-			.setOrigin(0, 0)
+		// const bossText = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, width, 780, 'b1v1_name')
+		// 	.setOrigin(0, 0)
 
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-					fontStyle: 'bold',
-				}
+		// WebFont.load({
+		// 	google: {
+		// 		families: ['Mali'],
+		// 	},
+		// 	active: function () {
+		// 		const bossTutorialUiStyle = {
+		// 			fontFamily: 'Mali',
+		// 			fontStyle: 'bold',
+		// 		}
 
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-					})
-					.setFontSize('40px')
-					.setStroke('#FB511C', 12)
-			},
-		})
+		// 		bossText
+		// 			.setStyle({
+		// 				...bossTutorialUiStyle,
+		// 				color: 'white',
+		// 			})
+		// 			.setFontSize('40px')
+		// 			.setStroke('#FB511C', 12)
+		// 	},
+		// })
 
 		scene.tweens.add({
 			targets: polygon,
@@ -460,13 +460,13 @@ export class B1BossVersion1 extends BossVersion {
 			ease: 'sine.out',
 		})
 
-		scene.tweens.add({
-			targets: bossText,
-			x: 80,
-			duration: 500,
-			repeat: 0,
-			ease: 'sine.out',
-		})
+		// scene.tweens.add({
+		// 	targets: bossText,
+		// 	x: 80,
+		// 	duration: 500,
+		// 	repeat: 0,
+		// 	ease: 'sine.out',
+		// })
 
 		scene.tweens.add({
 			targets: bossImage,

@@ -56,11 +56,11 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 	create() {
 		const { name, score, playerX, reloadCount } = this.props
-		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
-		const bossSound = this.sound.addAudioSprite('bossSound')
-		tutorialSound.play('boss-vs')
+		// const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+		// const bossSound = this.sound.addAudioSprite('bossSound')
+		// tutorialSound.play('boss-vs')
 		
-		setTimeout(() => bossSound.play('b1-vs'), 500)
+		// setTimeout(() => bossSound.play('b1-vs'), 500)
 
 		// const soundManager = new SoundManager(this)
 		// const bossVs = this.sound.add('bossVs')

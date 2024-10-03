@@ -113,9 +113,9 @@ export class B2BossVersion1 extends BossVersion {
 			.setOrigin(0.5, 1)
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
-		const bossName = I18nSingleton.getInstance()
-			.createTranslatedText(scene, -320, 280, 'b2v1_name')
-			.setOrigin(0.5, 1)
+		// const bossName = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, -320, 280, 'b2v1_name')
+		// 	.setOrigin(0.5, 1)
 
 		player.playVsScene(scene)
 
@@ -128,14 +128,14 @@ export class B2BossVersion1 extends BossVersion {
 			.setFontSize('200px')
 			.setStroke('#000000', 36)
 
-		bossName
-			.setStyle({
-				fontFamily: 'Mali',
-				color: 'white',
-				fontWeight: 800,
-			})
-			.setFontSize('7em')
-			.setStroke('#FB511C', 18)
+		// bossName
+		// 	.setStyle({
+		// 		fontFamily: 'Mali',
+		// 		color: 'white',
+		// 		fontWeight: 800,
+		// 	})
+		// 	.setFontSize('7em')
+		// 	.setStroke('#FB511C', 18)
 
 		scene.tweens.add({
 			targets: bossImage,
@@ -144,13 +144,13 @@ export class B2BossVersion1 extends BossVersion {
 			repeat: 0,
 			ease: 'bounce.out',
 		})
-		scene.tweens.add({
-			targets: bossName,
-			x: 530,
-			duration: 1000,
-			repeat: 0,
-			ease: 'bounce.out',
-		})
+		// scene.tweens.add({
+		// 	targets: bossName,
+		// 	x: 530,
+		// 	duration: 1000,
+		// 	repeat: 0,
+		// 	ease: 'bounce.out',
+		// })
 	}
 
 	playEscapePhase1(scene: Phaser.Scene): void {
@@ -368,29 +368,29 @@ export class B2BossVersion1 extends BossVersion {
 
 		player.playRandomBossScene(scene)
 
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width, 780, 'b2v1_name')
-			.setOrigin(0, 0)
+		// const bossText = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, width, 780, 'b2v1_name')
+		// 	.setOrigin(0, 0)
 
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-					fontStyle: 'bold',
-				}
+		// WebFont.load({
+		// 	google: {
+		// 		families: ['Mali'],
+		// 	},
+		// 	active: function () {
+		// 		const bossTutorialUiStyle = {
+		// 			fontFamily: 'Mali',
+		// 			fontStyle: 'bold',
+		// 		}
 
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-					})
-					.setFontSize('40px')
-					.setStroke('#FB511C', 12)
-			},
-		})
+		// 		bossText
+		// 			.setStyle({
+		// 				...bossTutorialUiStyle,
+		// 				color: 'white',
+		// 			})
+		// 			.setFontSize('40px')
+		// 			.setStroke('#FB511C', 12)
+		// 	},
+		// })
 
 		scene.tweens.add({
 			targets: polygon,
@@ -400,13 +400,13 @@ export class B2BossVersion1 extends BossVersion {
 			ease: 'sine.out',
 		})
 
-		scene.tweens.add({
-			targets: bossText,
-			x: 80,
-			duration: 500,
-			repeat: 0,
-			ease: 'sine.out',
-		})
+		// scene.tweens.add({
+		// 	targets: bossText,
+		// 	x: 80,
+		// 	duration: 500,
+		// 	repeat: 0,
+		// 	ease: 'sine.out',
+		// })
 
 		scene.tweens.add({
 			targets: bossImage,

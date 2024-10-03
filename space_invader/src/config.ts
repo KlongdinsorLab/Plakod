@@ -59,6 +59,7 @@ export const MAX_SELECTED_BOOSTER = 1
 
 export const GAME_TIME_LIMIT_MS = 1.8e6 //30 minutes
 export const TUTORIAL_DELAY_MS = 3000
+export const WARM_UP_DELAY_MS = 1500
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
@@ -76,3 +77,21 @@ export const MAX_PLAYED = 10
 export const TOTAL_MC = 2
 
 export const INHALE_GAUGE_SECTIONS = 5
+
+export const ALL_CHARACTER = [
+	{
+		characterId: 1,
+		name: 'นักผจญภัย',
+		detail: '',
+	},
+	{
+		characterId: 2,
+		name: 'นักเวทย์',
+		detail: '',
+	},
+	{
+		characterId: 3,
+		name: 'จอมโจร',
+		detail: '',
+	},
+]
