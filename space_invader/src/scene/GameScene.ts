@@ -4,7 +4,7 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import {
 	BULLET_COUNT,
-	buttonMap,
+	BUTTON_MAP,
 	DARK_BROWN,
 	GAME_TIME_LIMIT_MS,
 	HOLD_DURATION_MS,
@@ -178,15 +178,15 @@ export default class GameScene extends Phaser.Scene {
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
-			?.defineKey(0, buttonMap['left'].controller, buttonMap['left'].keyboard)
-			.defineKey(0, buttonMap['right'].controller, buttonMap['right'].keyboard)
-			.defineKey(0, buttonMap['charge'].controller, buttonMap['charge'].keyboard)
+			?.defineKey(0, BUTTON_MAP['left'].controller, BUTTON_MAP['left'].keyboard)
+			.defineKey(0, BUTTON_MAP['right'].controller, BUTTON_MAP['right'].keyboard)
+			.defineKey(0, BUTTON_MAP['charge'].controller, BUTTON_MAP['charge'].keyboard)
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
-			.defineKey(0, buttonMap[1].controller, buttonMap[1].keyboard)
-			.defineKey(0, buttonMap[2].controller, buttonMap[2].keyboard)
-			.defineKey(0, buttonMap[3].controller, buttonMap[3].keyboard)
-			.defineKey(0, buttonMap[4].controller, buttonMap[4].keyboard)
+			.defineKey(0, BUTTON_MAP[1].controller, BUTTON_MAP[1].keyboard)
+			.defineKey(0, BUTTON_MAP[2].controller, BUTTON_MAP[2].keyboard)
+			.defineKey(0, BUTTON_MAP[3].controller, BUTTON_MAP[3].keyboard)
+			.defineKey(0, BUTTON_MAP[4].controller, BUTTON_MAP[4].keyboard)
 
 			// .defineKey(0, 'B5', 'ONE')
 			// .defineKey(0, 'B7', 'TWO')

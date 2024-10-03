@@ -111,7 +111,7 @@ const keyboardCharge : keyboardInput = 'SPACE'
 const keyboardLeft : keyboardInput = 'LEFT'
 const keyboardRight : keyboardInput = 'RIGHT'
 
-export const buttonMap = {
+export const BUTTON_MAP = {
 	'1': {
 		controller: 'B6',
 		keyboard: keyboardOne
