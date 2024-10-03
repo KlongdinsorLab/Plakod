@@ -51,7 +51,7 @@ export default class TitleScene extends Phaser.Scene {
 		this.load.atlas('button_spritesheet', 'assets/button_spritesheet/button_spritesheet.png', 'assets/button_spritesheet/button_spritesheet.json')
         this.load.atlas('icon_spritesheet', 'assets/icon_spritesheet/icon_spritesheet.png', 'assets/icon_spritesheet/icon_spritesheet.json')
 
-        this.load.image('press_home', 'assets/press home.png')
+        this.load.image('press_home', 'assets/press_home.png')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 
@@ -107,7 +107,7 @@ export default class TitleScene extends Phaser.Scene {
             .setScrollFactor(0, 0)
 
         // Image
-        this.add.image(width/2, 144, 'press_home').setOrigin(0.5,0)
+        this.add.image(width/2, 432, 'press_home').setOrigin(0.5,1)
 
         // Main Text Box
         const textBox = this.add.graphics()
