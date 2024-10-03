@@ -10,7 +10,7 @@ export default class StartLoginScene extends Phaser.Scene {
     }
     preload() {
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-        this.load.image('background', 'assets/background/landing_page_bg.png');
+        this.load.image('loginBackground', 'assets/background/landing_page_bg.png');
         this.load.atlas(
 			'landing_page',
 			'assets/ui/landing_page_spritesheet.png',
@@ -43,7 +43,7 @@ export default class StartLoginScene extends Phaser.Scene {
         
         const {width, height} = this.scale;
         this.add
-            .tileSprite(0,0,width, height, 'background')
+            .tileSprite(0,0,width, height, 'loginBackground')
             .setOrigin(0)
             .setScrollFactor(0,0);
         this.add.image(width/2, 324, 'landing_page', 'logo_breathbuddy.png').setScale(1.5,1.5).setOrigin(0.5,0);
