@@ -1,6 +1,8 @@
 import {
 	finishGameSessionInputDTO,
-	unlockCharacterInput,
+	Response,
+	UnlockCharacterInput,
+	UnlockedCharacterDTO,
 } from '../definition/responseDTO'
 import { supabaseClient } from './supabaseClient'
 
@@ -95,7 +97,7 @@ export default class supabaseAPIService {
 
 	async updateCurrentDifficulty(difficultyId: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
-			'update-selected-character',
+			'update-current-difficulty',
 			{
 				headers: {
 					Authorization: this.getAuthHeader(),
@@ -114,7 +116,7 @@ export default class supabaseAPIService {
 
 	async updateAirflow(airflow: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
-			'update-selected-character',
+			'update-airflow',
 			{
 				headers: {
 					Authorization: this.getAuthHeader(),
@@ -275,7 +277,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async getUnlockedCharacter() {
+	async getUnlockedCharacter(): Promise<Response<UnlockedCharacterDTO[]>> {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'get-unlocked-characters',
 			{
@@ -291,7 +293,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async unlockCharacter({ character_id }: unlockCharacterInput) {
+	async unlockCharacter({ character_id }: UnlockCharacterInput) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'unlock-character',
 			{

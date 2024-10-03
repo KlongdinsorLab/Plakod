@@ -111,7 +111,15 @@ export default class TitleScene extends Phaser.Scene {
     }
     */
 
-
+    if (!this.hasController && this.input?.gamepad?.total === 0) {
+			this.input.gamepad.once(
+				'connected',
+				() => {
+					this.startGame()
+				},
+				this,
+			)
+		}
 	}
 
 	async update() {

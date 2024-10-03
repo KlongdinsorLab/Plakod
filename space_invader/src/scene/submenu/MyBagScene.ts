@@ -6,7 +6,7 @@ import { MARGIN } from 'config'
 import BoosterBag from 'component/booster/boosterBag'
 import AchievementBag from 'component/achievement/achievementBag'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
-import { unlockedCharacterDTO } from 'services/API/definition/responseDTO'
+import { UnlockedCharacterDTO } from 'services/API/definition/responseDTO'
 
 enum SlotType {
 	BOOSTER,
@@ -129,7 +129,7 @@ export default class MyBagScene extends Phaser.Scene {
 
 		const {
 			response: unlockedCharacterList,
-		}: { response: unlockedCharacterDTO[] } =
+		}: { response: UnlockedCharacterDTO[] } =
 			await apiService.getUnlockedCharacter()
 
 		this.background = this.add

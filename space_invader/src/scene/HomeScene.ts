@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
@@ -36,7 +37,7 @@ export default class HomeScene extends Phaser.Scene {
 	private reminderText!: Phaser.GameObjects.Text
 	private playerData!: PlayerDTO
 	private apiService!: supabaseAPIService
-	private isLoading!: boolean 
+	private isLoading!: boolean
 
 	constructor() {
 		super('home')
@@ -57,9 +58,15 @@ export default class HomeScene extends Phaser.Scene {
 		this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
 		this.scene.scene.registry.set('playCount', this.playerData.play_count)
 		this.scene.scene.registry.set('playToday', this.playerData.play_today)
-		this.scene.scene.registry.set('playerCharactersId', this.playerData.unlocked_characters_id)
+		this.scene.scene.registry.set(
+			'playerCharactersId',
+			this.playerData.unlocked_characters_id,
+		)
 		this.scene.scene.registry.set('playerLevel', this.playerData.level)
-		this.scene.scene.registry.set('selectedCharacterId', this.playerData.selected_character_id)
+		this.scene.scene.registry.set(
+			'selectedCharacterId',
+			this.playerData.selected_character_id,
+		)
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
@@ -95,14 +102,13 @@ export default class HomeScene extends Phaser.Scene {
 		)
 		this.load.svg('mute', 'assets/icon/mute.svg')
 		this.load.svg('unmute', 'assets/icon/unmute.svg')
-
 	}
 
 	async create() {
 		this.isLoading = true
 		//localStorage.setItem("lastPlayTime1", '')
 		//localStorage.setItem("lastPlayTime2", '')
-		
+
 		// call API
 		this.apiService = new supabaseAPIService()
 		await this.handleData()
@@ -110,7 +116,7 @@ export default class HomeScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		this.timeService = new TimeService(
 			this.scene.scene.registry.get('playToday')[0],
-			this.scene.scene.registry.get('playToday')[1]
+			this.scene.scene.registry.get('playToday')[1],
 		)
 
 		// TODO: call api
@@ -205,7 +211,7 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	update(_: number, __: number): void {
-		if(this.isLoading) return
+		if (this.isLoading) return
 		const heartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if (this.playCount >= 10 || heartEmpty) {
@@ -219,15 +225,15 @@ export default class HomeScene extends Phaser.Scene {
 		this.reminderText.setVisible(this.timeService.isFirstPlay() || heartEmpty)
 	}
 
-	sortDate(dates : Date[]) : Date[] {
-		dates.sort((a : Date, b : Date) => {
+	sortDate(dates: Date[]): Date[] {
+		dates.sort((a: Date, b: Date) => {
 			return b.getTime() - a.getTime()
 		})
 		return dates
 	}
 
-	handlePlayToday (playTodayString : string[]) {
-		const playTodayDate : Date[] = []
+	handlePlayToday(playTodayString: string[]) {
+		const playTodayDate: Date[] = []
 		playTodayString.forEach((element) => {
 			playTodayDate.push(new Date(element))
 		})

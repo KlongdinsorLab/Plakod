@@ -68,7 +68,7 @@
 	"tutorial_gauge_description": "ดูดเครื่องบริหารปอดค้างไว้ เพื่อชาร์จกระสุน",
 	"tutorial_controller": "กดค้างเพื่อ\nควบคุมทิศทาง",
 	"tutorial_continue": "แตะหน้าจอเพื่อไปต่อ",
-	"tutorial_inhale_1": "ดูดค้างให้",
+	"tutorial_inhale_1": "ดูดให้เต็ม",
 	"tutorial_inhale_2": "สีเขียวเต็มหลอด",
 	"tutorial_attack_1": "โจมตีลูกไฟ",
 	"tutorial_attack_2": "จนกระสุน\nหมดหลอด",

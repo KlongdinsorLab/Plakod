@@ -187,6 +187,12 @@ export default class GameScene extends Phaser.Scene {
 			.defineKey(0, 'B7', 'THREE')
 			.defineKey(0, 'B5', 'FOUR')
 
+			// .defineKey(0, 'B5', 'ONE')
+			// .defineKey(0, 'B7', 'TWO')
+			// .defineKey(0, 'B4', 'THREE')
+			// .defineKey(0, 'B6', 'FOUR')
+			//
+
 		this.gameLayer = this.add.layer()
 		this.player = new Player(this, this.gameLayer)
 		// TODO comment just for testing
@@ -296,7 +302,7 @@ export default class GameScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
-		// this.reloadCount.setCount(6)
+		// this.reloadCount.setCount(1)
 
 		const self = this
 		WebFont.load({
@@ -319,7 +325,7 @@ export default class GameScene extends Phaser.Scene {
 		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
 	update(_: number, delta: number) {
-		
+
 		//        if (this.input.gamepad.total === 0) {
 		//            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
 		//            text.x = width / 2 - text.width / 2

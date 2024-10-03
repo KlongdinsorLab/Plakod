@@ -137,30 +137,30 @@ export class B1BossVersion2 extends BossVersion {
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
-			.setOrigin(0.5, 1)
+		// const bossText = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
+		// 	.setOrigin(0.5, 1)
 
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
+		// WebFont.load({
+		// 	google: {
+		// 		families: ['Mali'],
+		// 	},
+		// 	active: function () {
+		// 		const bossTutorialUiStyle = {
+		// 			fontFamily: 'Mali',
+		// 		}
 
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-						align: 'center',
-					})
-					.setFontSize('80px')
-					.setStroke('#FB511C', 16)
-			},
-		})
+		// 		bossText
+		// 			.setStyle({
+		// 				...bossTutorialUiStyle,
+		// 				color: 'white',
+		// 				fontWeight: 700,
+		// 				align: 'center',
+		// 			})
+		// 			.setFontSize('80px')
+		// 			.setStroke('#FB511C', 16)
+		// 	},
+		// })
 
 		scene.anims.create({
 			key: 'b1v1',
@@ -177,15 +177,15 @@ export class B1BossVersion2 extends BossVersion {
 
 		const group = scene.add
 			.group({ key: 'tranform' })
-			.setOrigin(0.5, 1)
-			.setXY(width / 2, -140)
+			.setOrigin(0.5, 0.5)
+			.setXY(width / 2, -365)
 			.scaleXY(1)
 		group.playAnimation('b1v1')
 
 		scene.tweens.add({
 			targets: group.getChildren(),
 			x: width / 2,
-			y: height / 2,
+			y: height / 2 + 225,
 			duration: 1000,
 			repeat: 0,
 			ease: 'sine.out',
@@ -200,7 +200,7 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4 * MARGIN)
+					group.setXY(width / 2, height / 2).setOrigin(0.5,0.5)
 					group.scaleXY(1.25)
 				}, 1000)
 			},
@@ -407,36 +407,36 @@ export class B1BossVersion2 extends BossVersion {
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'avoid_poison')
+			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)
 		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'collect_item')
+			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
-		const meteor = scene.physics.add.staticGroup()
-		meteor
-			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
-			.setOrigin(0.5, 1)
-		meteor
-			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
-			.setOrigin(0.5, 1)
+		// const meteor = scene.physics.add.staticGroup()
+		// meteor
+		// 	.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
+		// 	.setOrigin(0.5, 1)
+		// meteor
+		// 	.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
+		// 	.setOrigin(0.5, 1)
 		const poison = scene.add
-			.image((2 * width) / 3, 8 * MARGIN, 'dropItem', 'item_poison.png')
+			.image(width / 2, 16 * MARGIN, 'dropItem', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 3, 16 * MARGIN, 'dropItem', 'item_bullet.png')
+			.image(width / 3, 8 * MARGIN, 'dropItem', 'item_bullet.png')
 			.setOrigin(0.5, 1)
 		const booster = scene.add
-			.image((2 * width) / 3, 16 * MARGIN, 'bossAsset', 'booster_random.png')
+			.image((2 * width) / 3, 8 * MARGIN, 'dropItem', 'booster_random.png')
 			.setOrigin(0.5, 1)
 
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
 			.strokeRoundedRect(
-				width / 6,
-				4 * MARGIN + 16,
-				width / 1.5,
+				width / 2 - 264,
+				12 * MARGIN + 16,
+				528,
 				height / 6,
 				32,
 			)
@@ -444,9 +444,9 @@ export class B1BossVersion2 extends BossVersion {
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
 			.strokeRoundedRect(
-				width / 6,
-				12 * MARGIN + 16,
-				width / 1.5,
+				width / 2 - 264,
+				4 * MARGIN + 16,
+				528,
 				height / 6,
 				32,
 			)
@@ -481,7 +481,7 @@ export class B1BossVersion2 extends BossVersion {
 		})
 
 		setTimeout(() => {
-			meteor.setVisible(false)
+			// meteor.setVisible(false)
 			poison.setVisible(false)
 			bullet.setVisible(false)
 			booster.setVisible(false)
