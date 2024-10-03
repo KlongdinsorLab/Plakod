@@ -2,12 +2,12 @@ import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
-	DESTROY_METEOR_SCORE,
+	BOSS_HIT_SCORE,
 	BOSS_HIT_DELAY_MS,
 	BOSS_TUTORIAL_DELAY_MS,
 	BOSS_MULTIPLE_COUNT,
 } from 'config'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
 import { BossSkill } from '../BossSkill'
@@ -15,10 +15,12 @@ import { B1BossSkill } from './B1BossSkill'
 import { B1BossVersion1 } from './B1BossVersion1'
 import { B1BossVersion2 } from './B1BossVersion2'
 
+import { BoosterEffect } from 'component/booster/booster'
+
 let isHit = false
 
 export class B1Boss extends Boss {
-	private soundManager: SoundManager
+	// private soundManager: SoundManager
 	private phaseCount!: number
 	private bossTimer = 0
 	private isStartAttack = false
@@ -27,10 +29,15 @@ export class B1Boss extends Boss {
 	private isSecondPhase = false
 	private bossVersion!: BossVersion
 	private bossSkill!: BossSkill
-	private bossHitSounds!: (Phaser.Sound.NoAudioSound
-		| Phaser.Sound.WebAudioSound
-		| Phaser.Sound.HTML5AudioSound)[]
+	// private bossHitSounds!: (Phaser.Sound.NoAudioSound
+	// 	| Phaser.Sound.WebAudioSound
+	// 	| Phaser.Sound.HTML5AudioSound)[]
+	private bossSound!: Phaser.Sound.NoAudioSound
+	| Phaser.Sound.WebAudioSound
+	| Phaser.Sound.HTML5AudioSound
 	private bossRemoved!: boolean
+
+	private boosterEffect!: BoosterEffect
 
 	constructor(
 		scene: Phaser.Scene,
@@ -39,22 +46,28 @@ export class B1Boss extends Boss {
 		lap: number = 6,
 	) {
 		super(scene, player, score, lap)
-		this.soundManager = new SoundManager(scene)
+		
+		// this.soundManager = new SoundManager(scene)
+		this.bossSound = scene.sound.addAudioSprite('bossSound')
 		this.phaseCount = 0
 
 		this.bossVersion = this.setVersion(lap)
+		
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
 
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
 
-		this.bossHitSounds = [...Array(4)].map((_, i) =>
-			this.scene.sound.add(`bossHit${i+1}`),
-		)
+		// this.bossHitSounds = [...Array(4)].map((_, i) =>
+		// 	this.scene.sound.add(`bossHit${i+1}`),
+		// )
 
 		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
 		this.scene.physics.world.enable(this.bossSkill.getBody())
+
+
+		this.boosterEffect = scene.registry.get("boosterEffect")
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -88,8 +101,9 @@ export class B1Boss extends Boss {
 		if (isHit) return
 
 		// TODO fixes me
-		const randomSoundIndex = Math.floor(Math.random() * 4)
-		this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
+		// const randomSoundIndex = Math.floor(Math.random() * 4)
+		// this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
+		this.bossSound.play(`b1-hit${Math.floor(Math.random() * 4) + 1}`)
 
 		this.enemy.stop()
 		// this.enemy.setTexture('boss')
@@ -104,8 +118,8 @@ export class B1Boss extends Boss {
 			// this.enemy.setTexture('boss')
 			this.enemy.play('boss-move')
 		}, BOSS_HIT_DELAY_MS)
-		this.soundManager.play(this.enermyDestroyedSound!, true)
-		this.score.add(DESTROY_METEOR_SCORE)
+		// this.soundManager.play(this.enermyDestroyedSound!, true)
+		this.score.add(BOSS_HIT_SCORE*this.boosterEffect.destroyMeteorScore)
 	}
 
 	destroy() {
@@ -124,7 +138,7 @@ export class B1Boss extends Boss {
 		const { width } = this.scene.scale
 		const path = new Phaser.Curves.Path(this.enemy.x, this.enemy.y).lineTo(
 			width / 2,
-			-140,
+			-200,
 		)
 		this.bossRemoved = true
 		this.enemy.setPath(path).startFollow({ duration: 300, onComplete:() => this.endAttackPhase() })

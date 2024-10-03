@@ -1,13 +1,56 @@
-<label class="label mb-1" for="phone">
-    <span class="label-text text-white" id="label">Phone number</span>
-</label>
-<form class="flex flex-col items-center" id="submit-form">
-    <div class="join">
-        <button class="btn btn-ghost text-white join-item">+66</button>
-        <input class="input input-ghost text-white join-item w-full max-w-xs" placeholder="0812345678" id="phone"
-               type="tel"
-               pattern="[0-9]{10}"
-               required/>
+
+<div class='Login bg-white w-[720px] h-[1280px]'>
+    <div class="login-head static bg-[#f1f1f1] w-[720px] h-[336px] flex flex-col">
+      <h1 id="head-text" class="sarabun-medium text-[56px] text-black text-center pt-[96px]">
+          เข้าสู่ระบบ
+      </h1>
+      <br/>
+      <div class="step-box w-[720px] flex flex-row justify-center ">
+        <ul class="timeline mt-[56] w-[720px] justify-center flex flex-row">
+          <li>
+            <div class="timeline-start"></div>
+            <div class="timeline-middle">
+              <div class="sarabun-regular bg-[#d35e24] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">1</div>
+            </div>
+          </li>
+          <li class="flex items-center">
+            <hr class="bg-[#cdcdcd] h-[10px] w-[96px] flex-grow "/>
+          </li>
+          <li>
+            <div class="timeline-middle">
+              <div class="sarabun-regular bg-[#cdcdcd] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-[#727272]">2</div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <button class="btn btn-outline btn-wide mt-16" data-theme="dark" id="button">Login</button>
-</form>
+    <div class="login-body h-full w-[720px] ">
+      <div class="phone-picture mt-[64px] flex justify-center">
+        <svg width="172" height="160" viewBox="0 0 172 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_1488_5890)">
+            <path d="M171.779 160H160.959L150.307 78.4106C150.139 76.9587 149.859 75.5067 149.468 74.0547C149.077 72.6028 148.322 71.3183 147.203 70.2014L109.711 33.0087L112.478 66.3481L119.86 73.7197C122.264 76.121 124.724 78.6061 127.241 81.175L119.692 88.714L88.6575 57.8039C87.0918 56.2402 85.2186 55.4584 83.0378 55.4584C81.9753 55.4584 80.9688 55.6538 80.0182 56.0448C79.0676 56.4357 78.2288 57.022 77.5019 57.8039C76.775 58.5857 76.2158 59.4234 75.8244 60.3169C75.433 61.2104 75.2093 62.2156 75.1534 63.3325C75.1534 65.5105 75.9362 67.3813 77.5019 68.9449L91.2577 82.7665V95.6667C91.2577 99.3525 91.9007 102.787 93.1868 105.97C94.4729 109.153 96.2903 111.918 98.6388 114.263C100.987 116.609 103.727 118.507 106.859 119.959C109.99 121.411 113.401 122.221 117.092 122.389V122.891C117.092 123.059 117.064 123.226 117.008 123.394C117.008 124.287 117.064 125.265 117.176 126.326C117.287 127.387 117.399 128.448 117.511 129.509C117.623 130.57 117.763 131.659 117.93 132.776C118.098 133.893 118.154 134.87 118.098 135.708C118.098 137.662 117.735 139.449 117.008 141.069C116.281 142.688 115.274 144.112 113.988 145.341C112.702 146.569 111.22 147.519 109.543 148.189C107.865 148.859 106.048 149.222 104.091 149.278H13.0009C11.2115 149.278 9.53397 148.971 7.96827 148.356C6.40258 147.742 5.00463 146.877 3.77444 145.76C2.54425 144.643 1.62161 143.33 1.00652 141.823C0.391424 140.315 0.0559177 138.611 0 136.713V135.624C0 135.289 0.0559177 134.926 0.167753 134.535L20.0465 6.87332C20.2702 5.58889 20.8014 4.47199 21.6401 3.52262C22.4789 2.57326 23.4575 1.79143 24.5758 1.17714C25.6942 0.562844 26.9244 0.0602394 28.2664 -0.330675C29.6084 -0.721589 30.8386 -0.889124 31.957 -0.833279H96.2064C97.3247 -0.833279 98.527 -0.693667 99.8131 -0.414442C101.099 -0.135218 102.301 0.339464 103.42 1.0096C104.538 1.67974 105.489 2.48949 106.272 3.43886C107.054 4.38822 107.502 5.53304 107.614 6.87332L108.368 16.5066L154.668 62.5786C156.681 64.589 158.135 66.7949 159.03 69.1962C159.925 71.5976 160.568 74.2223 160.959 77.0704L171.779 160ZM100.736 54.6207L97.0452 9.97271C96.8774 9.91687 96.5978 9.88894 96.2064 9.88894H31.957C31.6774 9.88894 31.4257 9.91687 31.2021 9.97271C30.9784 10.0286 30.6988 10.0844 30.3633 10.1402L10.7362 136.21V136.713C10.7362 137.327 10.9599 137.774 11.4072 138.053C11.8546 138.332 12.3858 138.5 13.0009 138.556H104.091C104.874 138.556 105.601 138.332 106.272 137.885C106.943 137.439 107.306 136.769 107.362 135.875C107.362 135.149 107.334 134.423 107.278 133.697C107.222 132.971 107.138 132.217 107.026 131.435C104.119 130.598 101.407 129.425 98.8904 127.917C96.3741 126.409 94.0256 124.622 91.8448 122.556C89.664 120.49 87.8187 118.2 86.309 115.687C84.7992 113.174 83.5131 110.494 82.4506 107.645C81.556 105.077 81.0247 102.591 80.857 100.19C80.6892 97.7888 80.5774 95.3037 80.5215 92.7349V87.1225L69.8692 76.5678C68.0798 74.7807 66.7378 72.7703 65.8431 70.5365C64.9484 68.3027 64.4731 65.9014 64.4172 63.3325C64.4172 60.7637 64.8925 58.3623 65.8431 56.1285C66.7937 53.8947 68.1357 51.9122 69.8692 50.181C71.6026 48.4499 73.5597 47.1375 75.7405 46.244C77.9213 45.3505 80.3537 44.8479 83.0378 44.7362C85.1067 44.7362 86.924 44.9875 88.4897 45.4901C90.0554 45.9927 91.5373 46.6907 92.9352 47.5843C94.3331 48.4778 95.6193 49.5109 96.7935 50.6836C97.9678 51.8564 99.2819 53.1687 100.736 54.6207ZM48.3129 127.833V117.111H69.7853V127.833H48.3129Z" fill="#D15B36"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_1488_5890">
+              <rect width="171.779" height="160" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+    </div>
+    <br/>
+    <h1 id="login_description" class="sarabun-regular text-center text-black text-[36px] mt-[64px] mx-24 mb-[84px] w-[528px]">เข้าสู่ระบบด้วยหมายเลขโทรศัพท์<br/>และยืนยันตัวตนด้วยรหัส OTP</h1>
+    <form id="submit-form" class="w-[720px] flex flex-col justify-center">
+      <label for="phoneNumber-input" id="phoneNumber-text" class="sarabun-regular text-black text-[36px] ml-[96px] ">กรอกหมายเลขโทรศัพท์</label>
+      <input id="phoneNumber-input" 
+            type="tel" 
+            placeholder="0123456789" 
+            pattern="[0-9]{10}"
+            maxlength="10"
+            size="10"
+            required
+            class="sarabun-regular input input-bordered text-black w-[528px] bg-transparent mx-[96px] mt-[20px] text-4xl border-gray-700 p-9 tracking-wide" />
+      <button id="button" class="btn sarabun-medium rounded-2xl bg-[#d35e24] border-none text-white text-4xl h-[96px] w-[528px] mt-[84px] mx-[96px]">ขอรหัส OTP</button>
+    </form>
+    </div>
+</div>
+

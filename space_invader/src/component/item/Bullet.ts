@@ -21,6 +21,9 @@ export class Bullet extends Item {
     super(scene, player, score, gauge, isTutorial)
     this.move()
     // this.soundManager = new SoundManager(scene)
+    this.scene.time.delayedCall(5000, () => {
+      this.item.destroy()
+    })
   }
 
   create(
@@ -31,7 +34,7 @@ export class Bullet extends Item {
     this.item = this.scene.physics.add.image(
       startingX,
       -MARGIN,
-      'bossAsset', 'item_bullet.png'
+      'dropItem', 'item_bullet.png'
     )
 
     const bulletCollider = this.scene.physics.add.overlap(

@@ -6,7 +6,7 @@ import {
 } from 'config'
 import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
@@ -19,7 +19,7 @@ export class B1BossVersion2 extends BossVersion {
 	private movePattern!: Phaser.Curves.Path
 	private obstacleFactory!: B1BossObstacleFactory
 
-	constructor(){
+	constructor() {
 		super()
 		this.obstacleFactory = new B1BossObstacleFactory()
 	}
@@ -94,18 +94,18 @@ export class B1BossVersion2 extends BossVersion {
 	}
 
 	useSkill(bossSkill: BossSkill, delta: number): void {
-		if(this.skillTimer === 0){
+		if (this.skillTimer === 0) {
 			bossSkill.setMovePath(this.movePattern)
 			bossSkill.move()
 		}
 		this.skillTimer += delta
 
-		if(this.skillTimer > 12000 && this.skillTimer < 18000){
+		if (this.skillTimer > 12000 && this.skillTimer < 18000) {
 			bossSkill.setActive(true)
 			return
 		}
-		
-		if(this.skillTimer > 36000 && this.skillTimer < 42000){
+
+		if (this.skillTimer > 36000 && this.skillTimer < 42000) {
 			bossSkill.setActive(true)
 			return
 		}
@@ -113,7 +113,12 @@ export class B1BossVersion2 extends BossVersion {
 		bossSkill.setActive(false)
 	}
 
-	createObstacleByTime(scene: Phaser.Scene,player: Player,score: Score, delta: number): void {
+	createObstacleByTime(
+		scene: Phaser.Scene,
+		player: Player,
+		score: Score,
+		delta: number,
+	): void {
 		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
@@ -132,30 +137,30 @@ export class B1BossVersion2 extends BossVersion {
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
-		const bossText = I18nSingleton.getInstance()
-		.createTranslatedText(scene, width / 2, height - 2*MARGIN, 'alien_boss_name_version2')
-		.setOrigin(0.5, 1)
+		// const bossText = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, width / 2, height - 2 * MARGIN, 'b1v2_name')
+		// 	.setOrigin(0.5, 1)
 
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
+		// WebFont.load({
+		// 	google: {
+		// 		families: ['Mali'],
+		// 	},
+		// 	active: function () {
+		// 		const bossTutorialUiStyle = {
+		// 			fontFamily: 'Mali',
+		// 		}
 
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-						align: 'center'
-					})
-					.setFontSize('80px')
-					.setStroke('#FB511C', 16)
-			},
-		})
+		// 		bossText
+		// 			.setStyle({
+		// 				...bossTutorialUiStyle,
+		// 				color: 'white',
+		// 				fontWeight: 700,
+		// 				align: 'center',
+		// 			})
+		// 			.setFontSize('80px')
+		// 			.setStroke('#FB511C', 16)
+		// 	},
+		// })
 
 		scene.anims.create({
 			key: 'b1v1',
@@ -170,13 +175,17 @@ export class B1BossVersion2 extends BossVersion {
 			repeat: -1,
 		})
 
-		const group = scene.add.group({key: 'tranform'}).setOrigin(0.5,1).setXY(width / 2, -140).scaleXY(1);
-		group.playAnimation('b1v1');
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setOrigin(0.5, 0.5)
+			.setXY(width / 2, -365)
+			.scaleXY(1)
+		group.playAnimation('b1v1')
 
 		scene.tweens.add({
 			targets: group.getChildren(),
 			x: width / 2,
-			y: height / 2,
+			y: height / 2 + 225,
 			duration: 1000,
 			repeat: 0,
 			ease: 'sine.out',
@@ -191,17 +200,18 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2 + 4*MARGIN)
+					group.setXY(width / 2, height / 2).setOrigin(0.5,0.5)
 					group.scaleXY(1.25)
-				},1000)
-			}
+				}, 1000)
+			},
 		})
 	}
 
 	playEscapePhase1(scene: Phaser.Scene): void {
 		const { width } = scene.scale
-		const soundManager = new SoundManager(scene)
-		const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
+		const bossSound = scene.sound.addAudioSprite('bossSound')
+		// const soundManager = new SoundManager(scene)
+		// const bossEscapeVoice = scene.sound.add('bossEscapeVoice')
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, width / 2, 600, 'boss_escape')
 			.setOrigin(0.5, 1)
@@ -234,7 +244,8 @@ export class B1BossVersion2 extends BossVersion {
 		boss.play('boss-hit')
 
 		setTimeout(() => {
-			soundManager.play(bossEscapeVoice, false)
+			bossSound.play('b1-escape-voice')
+			// soundManager.play(bossEscapeVoice, false)
 		}, 500)
 
 		setTimeout(() => {
@@ -343,12 +354,24 @@ export class B1BossVersion2 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2 + 2*MARGIN, 'boss_attack_skill')
+			.createTranslatedText(
+				scene,
+				width / 2,
+				height / 2 + 2 * MARGIN,
+				'boss_attack_skill',
+			)
 			.setOrigin(0.5, 1)
 			.setFontSize(LARGE_FONT_SIZE)
 
-		const shield = scene.physics.add.image(width / 2, 300, 'bossSkill_Shield').setOrigin(0.5, 0.5).setScale(1.25)
-		const group = scene.add.group({key: 'tranform'}).setXY(width / 2, 480).setOrigin(0.5, 1).scaleXY(0.5);
+		const shield = scene.physics.add
+			.image(width / 2, 300, 'bossSkill_Shield')
+			.setOrigin(0.5, 0.5)
+			.setScale(1.25)
+		const group = scene.add
+			.group({ key: 'tranform' })
+			.setXY(width / 2, 480)
+			.setOrigin(0.5, 1)
+			.scaleXY(0.5)
 		group.playAnimation('boss-move')
 
 		scene.tweens.add({
@@ -356,7 +379,7 @@ export class B1BossVersion2 extends BossVersion {
 			duration: 2000,
 			alpha: 0,
 			repeat: -1,
-			ease: 'sine.out'
+			ease: 'sine.out',
 		})
 
 		WebFont.load({
@@ -373,7 +396,7 @@ export class B1BossVersion2 extends BossVersion {
 						...bossTutorialUiStyle,
 						color: 'white',
 						fontWeight: 700,
-						align: "center"
+						align: 'center',
 					})
 					.setFontSize('6em')
 					.setStroke('#FB511C', 12)
@@ -384,36 +407,36 @@ export class B1BossVersion2 extends BossVersion {
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'avoid_poison')
+			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)
 		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'collect_item')
+			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
-		const meteor = scene.physics.add.staticGroup()
-		meteor
-			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
-			.setOrigin(0.5, 1)
-		meteor
-			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
-			.setOrigin(0.5, 1)
+		// const meteor = scene.physics.add.staticGroup()
+		// meteor
+		// 	.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
+		// 	.setOrigin(0.5, 1)
+		// meteor
+		// 	.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
+		// 	.setOrigin(0.5, 1)
 		const poison = scene.add
-			.image((2 * width) / 3, 8 * MARGIN, 'bossAsset', 'item_poison.png')
+			.image(width / 2, 16 * MARGIN, 'dropItem', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 3, 16 * MARGIN, 'bossAsset', 'item_bullet.png')
+			.image(width / 3, 8 * MARGIN, 'dropItem', 'item_bullet.png')
 			.setOrigin(0.5, 1)
 		const booster = scene.add
-			.image((2 * width) / 3, 16 * MARGIN, 'bossAsset', 'booster_random.png')
+			.image((2 * width) / 3, 8 * MARGIN, 'dropItem', 'booster_random.png')
 			.setOrigin(0.5, 1)
 
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
 			.strokeRoundedRect(
-				width / 6,
-				4 * MARGIN + 16,
-				width / 1.5,
+				width / 2 - 264,
+				12 * MARGIN + 16,
+				528,
 				height / 6,
 				32,
 			)
@@ -421,9 +444,9 @@ export class B1BossVersion2 extends BossVersion {
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
 			.strokeRoundedRect(
-				width / 6,
-				12 * MARGIN + 16,
-				width / 1.5,
+				width / 2 - 264,
+				4 * MARGIN + 16,
+				528,
 				height / 6,
 				32,
 			)
@@ -458,7 +481,7 @@ export class B1BossVersion2 extends BossVersion {
 		})
 
 		setTimeout(() => {
-			meteor.setVisible(false)
+			// meteor.setVisible(false)
 			poison.setVisible(false)
 			bullet.setVisible(false)
 			booster.setVisible(false)
@@ -468,4 +491,6 @@ export class B1BossVersion2 extends BossVersion {
 			bulletText.setVisible(false)
 		}, 2000)
 	}
+
+	playRandomScene(_: Phaser.Scene, __: Player): void {}
 }

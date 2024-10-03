@@ -7,6 +7,7 @@ export const LASER_SPEED = 800
 export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
 export const BULLET_COUNT = 30
+export const BOSS_HIT_SCORE = 400
 export const BOSS_PHASE1_BULLET_COUNT = 60
 export const BOSSV1_PHASE2_BULLET_COUNT = 90
 export const BOSSV2_PHASE2_BULLET_COUNT = 120
@@ -32,7 +33,7 @@ export const HOLD_BAR_IDLE_COLOR = 0x603f8b
 export const HOLD_BAR_CHARGING_COLOR = 0xefc53f
 export const HOLD_BAR_CHARGED_COLOR = 0x00b1b0
 export const HOLD_BAR_EMPTY_COLOR = 0xff8370
-export const MODAL_BACKGROUND_COLOR = 0x473d4d
+export const MODAL_BACKGROUND_COLOR = 0xfff6e5
 export const HOLDBAR_REDUCING_RATIO = 0.5
 export const CIRCLE_GAUGE_MARGIN = 88
 export const CIRCLE_GAUGE_RADUIS = 56
@@ -46,22 +47,49 @@ export const METEOR_SPEED = 300
 export const METEOR_ITEMPHASE_SPEED = 500
 export const METEOR_SPIN_SPEED = 100
 export const PLAYER_HIT_DELAY_MS = 3000
-export const HIT_METEOR_SCORE = -200
-export const DESTROY_METEOR_SCORE = 400
+export const HIT_METEOR_SCORE = -100
+export const DESTROY_METEOR_SCORE = 200
 export const BULLET_FREQUENCY_MS = 3000
 export const BULLET_SPEED = 300
 export const POISON_FREQUENCY_MS = 5000
 export const POISON_SPEED = 400
-export const HIT_POISON_SCORE = -400
+export const HIT_POISON_SCORE = 0
 export const BOOSTER_FREQUENCT_MS = 25000
+export const MAX_SELECTED_BOOSTER = 1
 
-
-export const GAME_TIME_LIMIT_MS = 160000
+export const GAME_TIME_LIMIT_MS = 1.8e6 //30 minutes
 export const TUTORIAL_DELAY_MS = 3000
+export const WARM_UP_DELAY_MS = 1500
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
-export const DARK_BROWN = 0x57453B
-export const DARK_PURPLE = 0x583E7C
-export const DARK_ORANGE = 0xD35E24
-export const GREEN = 0x05FF00
+const env = import.meta.env
+export const FIREBASE_API_KEY = env.VITE_FIREBASE_API_KEY
+export const FIREBASE_PROJECT_ID = env.VITE_FIREBASE_PROJECT_ID
+export const VITE_URL_PATH = env.VITE_URL_PATH
+export const DARK_BROWN = 0x57453b
+export const DARK_PURPLE = 0x583e7c
+export const DARK_ORANGE = 0xd35e24
+export const GREEN = 0x05ff00
+
+export const VAS_COUNT = 10
+export const MAX_PLAYED = 10
+export const TOTAL_MC = 2
+
+export const ALL_CHARACTER = [
+	{
+		characterId: 1,
+		name: 'นักผจญภัย',
+		detail: '',
+	},
+	{
+		characterId: 2,
+		name: 'นักเวทย์',
+		detail: '',
+	},
+	{
+		characterId: 3,
+		name: 'จอมโจร',
+		detail: '',
+	},
+]

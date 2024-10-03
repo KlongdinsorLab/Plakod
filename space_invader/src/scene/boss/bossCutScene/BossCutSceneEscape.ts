@@ -3,7 +3,7 @@ import {
 	BossCutScene,
 	BossTutorialScene,
 } from 'component/enemy/boss/Boss'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { BOSS_CUTSCENE_DELAY_MS } from 'config'
 
 export default class BossCutSceneEscape extends Phaser.Scene {
@@ -21,14 +21,16 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
-		this.load.audio('bossEscape', 'sound/boss-escape.mp3')
-		this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
+		// this.load.audio('bossEscape', 'sound/boss-escape.mp3')
+		// this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
 	}
 
 	create() {
-		const soundManager = new SoundManager(this)
-		const bossEscape = this.sound.add('bossEscape')
-		soundManager.play(bossEscape, false)
+		// const soundManager = new SoundManager(this)
+		// const bossEscape = this.sound.add('bossEscape')
+		// soundManager.play(bossEscape, false)
+		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+		tutorialSound.play('boss-escape')
 
 		this.boss.getVersion().playEscapePhase1(this)
 

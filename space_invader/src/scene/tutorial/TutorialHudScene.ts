@@ -35,7 +35,7 @@ export default class TutorialHudScene extends Phaser.Scene {
   preload() {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
     this.load.atlas('warmup', 'assets/sprites/warmup/warmup_spritesheet.png', 'assets/sprites/warmup/warmup_spritesheet.json');
-    this.load.audio('tutorialCharge', 'sound/tutorial-charge.mp3')
+    // this.load.audio('tutorialCharge', 'sound/tutorial-charge.mp3')
   }
 
   init({ score, gauge, menu, reloadCount }: Hud) {
@@ -49,9 +49,11 @@ export default class TutorialHudScene extends Phaser.Scene {
     const soundManager = new SoundManager(this)
     const isMute = soundManager.isMute()
     // soundManager.mute()
-
-    const tutorialCharge = this.sound.add('tutorialCharge')
-    soundManager.play(tutorialCharge, false)
+    const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
+    tutorialSound.play('tutorial-charge')
+    
+    // const tutorialCharge = this.sound.add('tutorialCharge')
+    // soundManager.play(tutorialCharge, false)
 
     const { width, height } = this.scale
     this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)

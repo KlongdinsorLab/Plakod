@@ -1,0 +1,10 @@
+{
+	"spritemap": {
+		"b1-vs": { "start": 0.004, "end": 2.804, "loop": false },
+		"b1-escape-voice": { "start": 3.329, "end": 4.299, "loop": false },
+		"b1-hit1": { "start": 4.654, "end": 5.793, "loop": false },
+		"b1-hit2": { "start": 6.403, "end": 6.843, "loop": false },
+		"b1-hit3": { "start": 7.588, "end": 8.283, "loop": false },
+		"b1-hit4": { "start": 8.638, "end": 9.038, "loop": false }
+	}
+}

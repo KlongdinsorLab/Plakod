@@ -1,15 +1,27 @@
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import {
 	COLLECT_BULLET_COUNT,
 	FULLCHARGE_ANIMATION_MS,
 	FULLCHARGE_SCALE,
-	LASER_FREQUENCY_MS,
+	//LASER_FREQUENCY_MS,
 	MARGIN,
 	PLAYER_SPEED,
 	PLAYER_START_MARGIN,
+	BULLET_COUNT,
+	BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE2_BULLET_COUNT,
 } from 'config'
-import I18nSingleton from 'i18n/I18nSingleton'
+// import I18nSingleton from 'i18n/I18nSingleton'
+import Shield from 'component/equipment/defense/shield'
 // import WebFont from 'webfontloader'
+
+export enum ShootingPhase {
+	NORMAL = BULLET_COUNT,
+	BOSS_PHASE_1 = BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE_2 = BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE_2 = BOSSV2_PHASE2_BULLET_COUNT,
+}
 
 export default class Player {
 	private scene: Phaser.Scene
@@ -22,14 +34,21 @@ export default class Player {
 	private bullet: number = 0
 	private isBulletFull: boolean = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
-	private soundManager: SoundManager
-	private playerHitSounds!: (Phaser.Sound.NoAudioSound
+	private isUsedShield = false
+	// private soundManager: SoundManager
+	// private playerHitSounds!: (Phaser.Sound.NoAudioSound
+	// 	| Phaser.Sound.WebAudioSound
+	// 	| Phaser.Sound.HTML5AudioSound)[]
+	private playerSound!:
+		| Phaser.Sound.NoAudioSound
 		| Phaser.Sound.WebAudioSound
-		| Phaser.Sound.HTML5AudioSound)[]
+		| Phaser.Sound.HTML5AudioSound
 
+	private shield!: Shield
 	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
-		this.soundManager = new SoundManager(scene)
+		// this.soundManager = new SoundManager(scene)
+		this.playerSound = scene.sound.addAudioSprite('mcSound')
 		const { width, height } = this.scene.scale
 		//		this.player = this.scene.physics.add.image(
 		//			width / 2,
@@ -44,10 +63,13 @@ export default class Player {
 		)
 
 		gameLayer.add(this.player)
+		
+		this.shield = new Shield(scene, this.player)
 
-		this.playerHitSounds = [...Array(3)].map((_, i) =>
-			this.scene.sound.add(`mcHit${i+1}`),
-		)
+		// this.playerHitSounds = [...Array(3)].map((_, i) =>
+		// 	this.scene.sound.add(`mcHit${i+1}`),
+		// )
+
 		//		this.scene.anims.create({
 		//			key: 'run',
 		//			frames: this.scene.anims.generateFrameNames('player', {
@@ -161,10 +183,12 @@ export default class Player {
 
 	moveLeft(delta: number): void {
 		this.player.x = this.player.x - (PLAYER_SPEED * delta) / 1000
+		this.shield.updatePosition(this.player)
 	}
 
 	moveRight(delta: number): void {
 		this.player.x = this.player.x + (PLAYER_SPEED * delta) / 1000
+		this.shield.updatePosition(this.player)
 	}
 
 	getLaserLocation(): { x: number; y: number } {
@@ -179,15 +203,16 @@ export default class Player {
 	}
 
 	damaged(): void {
-	  this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
+		this.playerSound.play(`mc1-hit${Math.floor(Math.random() * 3) + 1}`)
+		//   this.soundManager.play(this.playerHitSounds[Math.floor(Math.random() * 3)])
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
 	}
 
 	recovered(): void {
-	  const animation = this.isAttacking ? 'attack' : 'run'
-	  this.player.play(animation)
+		const animation = this.isAttacking ? 'attack' : 'run'
+		this.player.play(animation)
 		this.player.alpha = 1
 		this.playerHitTweens.restart()
 		this.playerHitTweens.pause()
@@ -201,7 +226,7 @@ export default class Player {
 		| Phaser.Sound.HTML5AudioSound {
 		const randomIndex = Math.floor(Math.random() * index)
 		const hitSounds = [...Array(index)].map((_, i) =>
-			this.scene.sound.add(`mcHit${i+1}`),
+			this.scene.sound.add(`mcHit${i + 1}`),
 		)
 		return hitSounds[randomIndex]
 	}
@@ -232,7 +257,7 @@ export default class Player {
 		if (this.chargeEmitter) this.chargeEmitter.active = true
 	}
 
-	reloadSet(bulletCount: number): void {
+	reloadSet(bulletCount: number, laserFrequency: number): void {
 		this.player.play('attack', true)
 		this.isAttacking = true
 		this.isReload = false
@@ -240,7 +265,7 @@ export default class Player {
 		setTimeout(() => {
 			this.isAttacking = false
 			this.player.play('run', true)
-		}, LASER_FREQUENCY_MS * bulletCount)
+		}, laserFrequency * bulletCount)
 	}
 
 	attack(): void {
@@ -266,6 +291,22 @@ export default class Player {
 		return this.isAttacking
 	}
 
+	activateShield(remainingTime?:number): void {
+		this.isUsedShield = true
+		if(remainingTime){
+			this.shield.countDownShield()
+		}else{
+		this.shield.activate()
+		}
+	}
+
+	deactivateShield(): void {
+		this.shield.deactivate()
+	}
+	getIsUsedShield(): boolean {
+		return this.isUsedShield
+	}
+
 	hide(): void {
 		this.player.setVisible(false)
 	}
@@ -283,6 +324,14 @@ export default class Player {
 		}
 	}
 
+	reduceBullet(): void {
+		if (this.isBulletFull) return
+
+		if(this.bullet <= 0) return
+
+		this.bullet--
+	}
+
 	resetBullet(): void {
 		this.bullet = 0
 		this.isBulletFull = false
@@ -292,29 +341,32 @@ export default class Player {
 		return this.isBulletFull
 	}
 
-  getBulletCount(): number {
-    return this.bullet
-  }
+	getBulletCount(): number {
+		return this.bullet
+	}
 
-  playVsScene(scene: Phaser.Scene): void{
-	const mc1Vs = scene.sound.add('mc1Vs')
+	playVsScene(scene: Phaser.Scene): void {
 		setTimeout(() => {
-			this.soundManager.play(mc1Vs, false)
+			this.playerSound.play('mc1-vs')
 		}, 2000)
-		
-    const playerImage = scene.add.image(850, 1200, 'player', 'mc_attack_00001.png').setOrigin(0.5, 1).setScale(2.5);
-		const playerName = I18nSingleton.getInstance()
-			.createTranslatedText(scene, 800, 950, 'player_name')
-			.setOrigin(0.5, 1)
 
-      playerName.setStyle({
-        fontFamily: 'Mali',
-        color: 'white',
-        fontWeight: 800,
-      })
-      .setFontSize('7em')
-      .setStroke('#FB511C', 18)
-		
+		const playerImage = scene.add
+			.image(850, 1200, 'player', 'mc_attack_00001.png')
+			.setOrigin(0.5, 1)
+			.setScale(2.5)
+		// const playerName = I18nSingleton.getInstance()
+		// 	.createTranslatedText(scene, 800, 950, 'player_name')
+		// 	.setOrigin(0.5, 1)
+
+		// playerName
+		// 	.setStyle({
+		// 		fontFamily: 'Mali',
+		// 		color: 'white',
+		// 		fontWeight: 800,
+		// 	})
+		// 	.setFontSize('7em')
+		// 	.setStroke('#FB511C', 18)
+
 		scene.tweens.add({
 			targets: playerImage,
 			x: 500,
@@ -322,12 +374,53 @@ export default class Player {
 			repeat: 0,
 			ease: 'bounce.out',
 		})
+		// scene.tweens.add({
+		// 	targets: playerName,
+		// 	x: 220,
+		// 	duration: 1000,
+		// 	repeat: 0,
+		// 	ease: 'bounce.out',
+		// })
+	}
+
+	playRandomBossScene(scene: Phaser.Scene): void {
+		const { width, height } = scene.scale
+
+		const bg = scene.add
+			.tileSprite(width / 2, 0, width, height, 'background')
+			.setOrigin(0.5, 0.5)
+			.setScrollFactor(0, 0)
+			.setScale(1.15)
+		
+		const playerImage = scene.add
+			.image(-100, 100, 'player', 'mc_attack_00001.png')
+			.setOrigin(0.5, 0)
+			.setScale(2.5)
+			
+		const polygon = scene.add
+					.polygon(-400, 0, [48, 80, 668, 80, 668, 437, 48, 576], 0xFFFFFF, 0)
+					.setStrokeStyle(5, 0x000000, 1)
+					.setOrigin(0,0)
+
+		const mask = polygon.createGeometryMask()
+
+		bg.setMask(mask)
+		playerImage.setMask(mask)
+
 		scene.tweens.add({
-			targets: playerName,
-			x: 220,
-			duration: 1000,
+			targets: polygon,
+			x: 0,
+			duration: 500,
 			repeat: 0,
-			ease: 'bounce.out',
+			ease:'sine.out'
 		})
-  }
+
+		scene.tweens.add({
+			targets: playerImage,
+			x: width / 2,
+			duration: 500,
+			repeat: 0,
+			ease:'sine.out'
+		})
+	}
 }

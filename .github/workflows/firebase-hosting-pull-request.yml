@@ -12,12 +12,19 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    env: 
+      VITE_SUPABASE_URL: https://dtfbxtfpdfpwflcjxttr.supabase.co
+      VITE_SUPABASE_ANON_KEY : ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
     steps:
       - uses: actions/checkout@v3
       - name: install
         run: npm install
       - name: build
         run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

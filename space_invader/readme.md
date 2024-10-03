@@ -22,6 +22,12 @@ nvm use node
 
 Replace 'node' with 'latest' for `nvm-windows`.
 
+Set .env for Firebase
+```.env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_PROJECT_ID=
+```
+
 Install dependencies
 ```bash
 npm install
@@ -119,7 +125,7 @@ CI/CD will be setup to Google Firebase hosting. Project name [plakod-game[(https
 There are 2 branches develop and production. Develop branch will be deployed on [plakod-development.firebaseapp.com](plakod-development.firebaseapp.com) while Production will be deployed on [plakod.firebaseapp.com](plakod.firebaseapp.com)
 
 Create new Firebase hosting channel
-```sh
+b
 $ npm exec -- firebase hosting:channel:create CHANNEL_ID
 ```
 
@@ -153,3 +159,16 @@ $ firebase deploy --only hosting:TARGET_NAME
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
 - [Pixabay](https://pixabay.com/) for sound effect
+
+## Known Fixed Issues
+As with any development process, we've encountered a few challenges along the way. Below are some issues we faced and how we've resolved them:
+
+### Time Intervals
+- What Happened: Time Intervals don't stop when scene is closed
+- How We Fixed It: Use Phaser's time event instead
+### Physics Bodies
+- What Happened: Too much physics bodies at the same time causes performance issues
+- How We Fixed It: Make sure to destroy unused physics body, such as those not on the screen anymore
+### Random Number Generation
+- What Happened: Random method that involves constant division causes performance issues
+- How We Fixed It: Simplify random method such as random number in a fixed array

@@ -5,13 +5,12 @@ import { BULLET_SPEED, MARGIN } from 'config'
 import { Item } from './Item'
 import InhaleGauge from 'component/ui/InhaleGauge'
 
-const boosterList = [
+export const boosterList = [
 	'booster_3waybullet.png',
 	'booster_heal.png',
 	'booster_scoreX2.png',
 	'booster_speedbullet.png',
 	'booster_strongbullet.png',
-	"booster_random.png"
 ]
 
 export class Booster extends Item {
@@ -32,13 +31,14 @@ export class Booster extends Item {
 		isTutorial?: boolean,
 	): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
 		const { width } = this.scene.scale
-		const boosterIndex = Math.floor(Math.random() * boosterList.length)
+		const boosterIndex = this.scene.scene.scene.registry.get('booster_drop_id')
+		console.log(boosterIndex)
 		const startingX = isTutorial ? width / 2 : Math.floor(Math.random() * width)
 		this.item = this.scene.physics.add.image(
 			startingX,
 			-MARGIN,
-			'bossAsset',
-			boosterList[boosterIndex],
+			'dropItem',
+            'booster' + boosterIndex + '.png',
 		)
 
 		const boosterCollider = this.scene.physics.add.overlap(

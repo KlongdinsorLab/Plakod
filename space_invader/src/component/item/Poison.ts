@@ -23,6 +23,9 @@ export class Poison extends Item {
 		super(scene, player, score, gauge, isTutorial)
 		this.move()
 		// this.soundManager = new SoundManager(scene)
+		this.scene.time.delayedCall(5000, () => {
+			this.item.destroy()
+		})
 	}
 
 	create(
@@ -33,7 +36,7 @@ export class Poison extends Item {
 		this.item = this.scene.physics.add.image(
 			startingX,
 			-MARGIN,
-			'bossAsset',
+			'dropItem',
 			'item_poison.png',
 		)
 
@@ -45,6 +48,7 @@ export class Poison extends Item {
 				this.player.setIsHit(true)
 				this.player.damaged()
 				this.score.add(HIT_POISON_SCORE)
+				this.player.reduceBullet()
 				this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
 				poisonCollider.active = false
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
