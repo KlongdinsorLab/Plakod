@@ -8,7 +8,7 @@ import {
 	getAuth,
 	setPersistence,
 } from 'firebase/auth'
-import { MEDIUM_FONT_SIZE } from 'config'
+import { BUTTON_MAP, MEDIUM_FONT_SIZE } from 'config'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
 
 const tirabase = new MockAPIService()
@@ -91,8 +91,8 @@ export default class TitleScene extends Phaser.Scene {
 
 		this.controller1 = this.mergedInput?.addPlayer(0)
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
+			?.defineKey(0, BUTTON_MAP['left'].controller, BUTTON_MAP['left'].keyboard)
+			.defineKey(0, BUTTON_MAP['right'].controller, BUTTON_MAP['right'].keyboard)
 			.defineKey(0, 'B0', 'SPACE')
 
 		//		this.player = new Player(this)
