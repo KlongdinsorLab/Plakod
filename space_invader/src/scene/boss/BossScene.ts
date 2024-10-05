@@ -6,14 +6,7 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
 import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
-import {
-	LASER_FREQUENCY_MS,
-	COLLECT_BULLET_COUNT,
-	DARK_BROWN,
-	HOLD_BAR_BORDER,
-	MARGIN,
-	RELOAD_COUNT,
-} from 'config'
+import { LASER_FREQUENCY_MS, DARK_BROWN, MARGIN, RELOAD_COUNT } from 'config'
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
