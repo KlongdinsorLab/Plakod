@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 let booster1: Booster1
 let booster2: Booster2
 import Player from 'component/player/Player'
@@ -5,15 +6,7 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
 import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
-import {
-	LASER_FREQUENCY_MS,
-	COLLECT_BULLET_COUNT,
-	DARK_BROWN,
-	HOLD_BAR_BORDER,
-	LARGE_FONT_SIZE,
-	MARGIN,
-	RELOAD_COUNT,
-} from 'config'
+import { LASER_FREQUENCY_MS, DARK_BROWN, MARGIN, RELOAD_COUNT } from 'config'
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
@@ -37,6 +30,8 @@ import { BoosterUI } from 'component/booster/boosterUI'
 import { Booster1 } from 'component/booster/boosterList/booster_1'
 import { Booster2 } from 'component/booster/boosterList/booster_2'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { BossObstacleFactory } from 'component/enemy/boss/obstacle/BossObstacleFactory'
+import CollectBulletBar from 'component/ui/CollectBulletBar'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -49,6 +44,7 @@ export default class BossScene extends Phaser.Scene {
 	private poisonFactory!: PosionFactory
 	private bulletFactory!: BulletFactory
 	private boosterFactory!: BoosterFactory
+	private bossObstacleFactory!: BossObstacleFactory
 	// private menu!: Menu
 
 	// TODO move to boss class
@@ -57,17 +53,22 @@ export default class BossScene extends Phaser.Scene {
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
-	private bulletText!: Phaser.GameObjects.Text
 
 	private isCompleteInit = false
 	private props!: BossInterface
 	private bgm!: Phaser.Sound.BaseSound
 	private soundManager: SoundManager
+	private soundEffect!:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound
 
 	private boosterEffect!: BoosterEffect
 	private menu!: Menu
 
 	private apiService!: supabaseAPIService
+
+	private collectBulletBar!: CollectBulletBar
 
 	constructor() {
 		super({ key: 'bossScene' })
@@ -128,7 +129,11 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.image('laser', 'assets/effect/mc_bullet.png')
 
-		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+		this.load.atlas(
+			'inGameUI',
+			'assets/ui/ingameui_spritesheet.png',
+			'assets/ui/ingameui_spritesheet.json',
+		)
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
@@ -164,11 +169,12 @@ export default class BossScene extends Phaser.Scene {
 		this.bgm = this.sound.add('boss_bgm', { volume: 1, loop: true })
 		this.soundManager.init()
 		this.soundManager.play(this.bgm)
+		this.soundEffect = this.sound.addAudioSprite('mcSound')
 
 		this.bossLayer = this.add.layer()
 
 		this.player = new Player(this, this.bossLayer)
-		this.player.getBody().setX(playerX)
+		this.player.updatePosition(playerX)
 		this.player.addChargeParticle()
 
 		this.menu = new Menu(this)
@@ -200,9 +206,11 @@ export default class BossScene extends Phaser.Scene {
 		this.poisonFactory = new PosionFactory()
 		this.bulletFactory = new BulletFactory()
 		this.boosterFactory = new BoosterFactory()
+		this.bossObstacleFactory = new BossObstacleFactory()
 
 		this.isCompleteItemTutorial = false
 
+		// TODO: remove this
 		boosters.forEach((booster) => {
 			const boosterUI = new BoosterUI(this, booster, { x: 594, y: 1142 })
 			boosterUI.create()
@@ -222,6 +230,13 @@ export default class BossScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
+		this.collectBulletBar = new CollectBulletBar(this)
+
+		// activate booster_1 if existed
+		if (this.boosterEffect.remainingUses > 0) {
+			this.player.activateShield()
+		}
+
 		const self = this
 		WebFont.load({
 			google: {
@@ -234,19 +249,10 @@ export default class BossScene extends Phaser.Scene {
 				}
 				self.score.getBody().setStyle(menuUiStyle)
 				self.reloadCount.getBody().setStyle(menuUiStyle)
+				self.player.getShield().initFontStyle()
+				self.collectBulletBar.initFontStyle()
 			},
 		})
-
-		// Mock bullet count, delete when finish test
-		this.bulletText = this.add
-			.text(
-				width / 2,
-				height - MARGIN + HOLD_BAR_BORDER,
-				` /${COLLECT_BULLET_COUNT}`,
-			)
-			.setFontSize(LARGE_FONT_SIZE)
-			.setOrigin(0.5, 1)
-		this.bulletText.setVisible(false)
 	}
 
 	async update(_: number, delta: number) {
@@ -258,6 +264,14 @@ export default class BossScene extends Phaser.Scene {
 		)
 		const gauge = this.gaugeRegistry?.get(0)
 		gauge.setVisibleAll(false)
+
+		this.bossObstacleFactory.createByTime(
+			this,
+			this.player,
+			this.score,
+			delta,
+			this.soundEffect,
+		)
 
 		if (
 			!this.boss.getIsSecondPhase() &&
@@ -278,12 +292,6 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE, this.boss)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()) {
 			// Collecting Item Phase
-			this.bossVersion.createObstacleByTime(
-				this,
-				this.player,
-				this.score,
-				delta,
-			)
 			this.poisonFactory.createByTime(
 				this,
 				this.player,
@@ -307,13 +315,11 @@ export default class BossScene extends Phaser.Scene {
 					delta,
 				)
 
-			this.bulletText.setVisible(true)
-			this.bulletText.setText(
-				` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`,
-			)
+			this.collectBulletBar.show()
+			this.collectBulletBar.setBulletText(this.player.getBulletCount())
 		} else if (this.player.getIsBulletFull() && !this.boss.getIsStartAttack()) {
 			// Boss Phase 2
-			this.bulletText.setVisible(false)
+			this.collectBulletBar.hide()
 			this.boss.startAttackPhase()
 		}
 
@@ -355,10 +361,16 @@ export default class BossScene extends Phaser.Scene {
 		// scroll the background
 		this.background.tilePositionY += 1.5
 
-		this.laserFactory.createByTime(this, this.player, [this.boss], delta, {
-			bossSkill: this.boss.getSkill(),
-			laserFrequency: LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
-		})
+		this.laserFactory.createByTime(
+			this,
+			this.player,
+			[this.boss, ...this.bossObstacleFactory.getObstacle()],
+			delta,
+			{
+				bossSkill: this.boss.getSkill(),
+				laserFrequency: LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
+			},
+		)
 
 		if (this.player.getIsReload()) {
 			if (!this.boss.getIsSecondPhase()) {

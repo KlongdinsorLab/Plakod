@@ -224,12 +224,6 @@ export class B2Boss extends Boss {
 	playAttack(delta: number): void {
 		this.attack(delta)
 		if (this.isSecondPhase) {
-			this.bossVersion.createObstacleByTime(
-				this.scene,
-				this.player,
-				this.score,
-				delta,
-			)
 			this.bossVersion.useSkill(this.bossSkill, delta)
 		}
 	}

@@ -4,7 +4,6 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
-import Score from 'component/ui/Score'
 
 export class B2BossVersion1 extends BossVersion {
 	constructor() {
@@ -68,10 +67,6 @@ export class B2BossVersion1 extends BossVersion {
 		return false
 	}
 
-	hasObstacle(): boolean {
-		return false
-	}
-
 	hasBoosterDrop(): boolean {
 		return false
 	}
@@ -81,15 +76,6 @@ export class B2BossVersion1 extends BossVersion {
 	}
 
 	useSkill(): void {}
-
-	createObstacleByTime(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-		delta: number,
-	): void {
-		console.log(scene, player, score, delta)
-	}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS

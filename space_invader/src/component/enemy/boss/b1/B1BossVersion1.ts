@@ -4,14 +4,10 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
-import Score from 'component/ui/Score'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 
 export class B1BossVersion1 extends BossVersion {
-	private obstacleFactory!: B1BossObstacleFactory
 	constructor() {
 		super()
-		this.obstacleFactory = new B1BossObstacleFactory()
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -71,10 +67,6 @@ export class B1BossVersion1 extends BossVersion {
 		return false
 	}
 
-	hasObstacle(): boolean {
-		return false
-	}
-
 	hasBoosterDrop(): boolean {
 		return false
 	}
@@ -84,15 +76,6 @@ export class B1BossVersion1 extends BossVersion {
 	}
 
 	useSkill(): void {}
-
-	createObstacleByTime(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-		delta: number,
-	): void {
-		this.obstacleFactory.createByTime(scene, player, score, delta)
-	}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS

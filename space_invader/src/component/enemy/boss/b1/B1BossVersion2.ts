@@ -1,22 +1,15 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { MARGIN, PHASE_1_BOSS_TIME_MS, PHASE_2_BOSS_TIME_MS } from 'config'
 import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
-import { B1BossObstacleFactory } from './B1BossObstacleFactory'
 import Player from 'component/player/Player'
-import Score from 'component/ui/Score'
 
 export class B1BossVersion2 extends BossVersion {
 	private skillTimer = 0
 	private movePattern!: Phaser.Curves.Path
-	private obstacleFactory!: B1BossObstacleFactory
-
-	constructor() {
-		super()
-		this.obstacleFactory = new B1BossObstacleFactory()
-	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -75,10 +68,6 @@ export class B1BossVersion2 extends BossVersion {
 		return false
 	}
 
-	hasObstacle(): boolean {
-		return true
-	}
-
 	hasBoosterDrop(): boolean {
 		return true
 	}
@@ -105,15 +94,6 @@ export class B1BossVersion2 extends BossVersion {
 		}
 
 		bossSkill.setActive(false)
-	}
-
-	createObstacleByTime(
-		scene: Phaser.Scene,
-		player: Player,
-		score: Score,
-		delta: number,
-	): void {
-		this.obstacleFactory.createByTime(scene, player, score, delta)
 	}
 
 	getDurationPhase1(): number {

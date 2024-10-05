@@ -76,6 +76,8 @@ export const VAS_COUNT = 10
 export const MAX_PLAYED = 10
 export const TOTAL_MC = 2
 
+export const INHALE_GAUGE_SECTIONS = 5
+
 export const ALL_CHARACTER = [
 	{
 		characterId: 1,
