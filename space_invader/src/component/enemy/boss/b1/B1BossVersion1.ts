@@ -1,13 +1,7 @@
 import { BossVersion } from '../BossVersion'
-import {
-	LARGE_FONT_SIZE,
-	MARGIN,
-	PHASE_1_BOSS_TIME_MS,
-	PHASE_2_BOSS_TIME_MS,
-} from 'config'
+import { MARGIN, PHASE_1_BOSS_TIME_MS, PHASE_2_BOSS_TIME_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
-// import SoundManager from 'component/sound/SoundManager'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
 import Score from 'component/ui/Score'
@@ -265,96 +259,6 @@ export class B1BossVersion1 extends BossVersion {
 				alpha: 1,
 			})
 		}, 1000)
-	}
-
-	playTutorialPhase1(scene: Phaser.Scene): void {
-		const { width, height } = scene.scale
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2, 'boss_attack')
-			.setOrigin(0.5, 1)
-			.setFontSize(LARGE_FONT_SIZE)
-			.setAlpha(0)
-
-		const bossImage = scene.add.image(width / 2, -140, 'b1v1').setOrigin(0.5, 1)
-
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-					})
-					.setFontSize('6em')
-					.setStroke('#FB511C', 12)
-			},
-		})
-
-		scene.tweens.add({
-			targets: bossText,
-			duration: 200,
-			alpha: 1,
-		})
-
-		scene.tweens.add({
-			targets: bossImage,
-			y: 480,
-			duration: 1000,
-			repeat: 0,
-			ease: 'sine.out',
-		})
-	}
-
-	playTutorialPhase2(scene: Phaser.Scene): void {
-		const { width, height } = scene.scale
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2, 'boss_attack')
-			.setOrigin(0.5, 1)
-			.setFontSize(LARGE_FONT_SIZE)
-			.setAlpha(0)
-
-		const bossImage = scene.add.image(width / 2, -140, 'b1v1').setOrigin(0.5, 1)
-
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-					})
-					.setFontSize('6em')
-					.setStroke('#FB511C', 12)
-			},
-		})
-
-		scene.tweens.add({
-			targets: bossText,
-			duration: 200,
-			alpha: 1,
-		})
-
-		scene.tweens.add({
-			targets: bossImage,
-			y: 480,
-			duration: 1000,
-			repeat: 0,
-			ease: 'sine.out',
-		})
 	}
 
 	playItemTutorial(scene: Phaser.Scene): void {

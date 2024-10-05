@@ -1,12 +1,6 @@
-import {
-	LARGE_FONT_SIZE,
-	MARGIN,
-	PHASE_1_BOSS_TIME_MS,
-	PHASE_2_BOSS_TIME_MS,
-} from 'config'
+import { MARGIN, PHASE_1_BOSS_TIME_MS, PHASE_2_BOSS_TIME_MS } from 'config'
 import { BossVersion } from '../BossVersion'
 import WebFont from 'webfontloader'
-// import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
@@ -200,7 +194,7 @@ export class B1BossVersion2 extends BossVersion {
 				})
 				b1v1.addFrame(newFrames)
 				setTimeout(() => {
-					group.setXY(width / 2, height / 2).setOrigin(0.5,0.5)
+					group.setXY(width / 2, height / 2).setOrigin(0.5, 0.5)
 					group.scaleXY(1.25)
 				}, 1000)
 			},
@@ -305,105 +299,6 @@ export class B1BossVersion2 extends BossVersion {
 		}, 1000)
 	}
 
-	playTutorialPhase1(scene: Phaser.Scene): void {
-		const { width, height } = scene.scale
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, height / 2, 'boss_attack')
-			.setOrigin(0.5, 1)
-			.setFontSize(LARGE_FONT_SIZE)
-			.setAlpha(0)
-
-		const bossImage = scene.add.image(width / 2, -140, 'b1v2').setOrigin(0.5, 1)
-
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-					})
-					.setFontSize('6em')
-					.setStroke('#FB511C', 12)
-			},
-		})
-
-		scene.tweens.add({
-			targets: bossText,
-			duration: 200,
-			alpha: 1,
-		})
-
-		scene.tweens.add({
-			targets: bossImage,
-			y: 480,
-			duration: 1000,
-			repeat: 0,
-			ease: 'sine.out',
-		})
-	}
-
-	playTutorialPhase2(scene: Phaser.Scene): void {
-		const { width, height } = scene.scale
-
-		const bossText = I18nSingleton.getInstance()
-			.createTranslatedText(
-				scene,
-				width / 2,
-				height / 2 + 2 * MARGIN,
-				'boss_attack_skill',
-			)
-			.setOrigin(0.5, 1)
-			.setFontSize(LARGE_FONT_SIZE)
-
-		const shield = scene.physics.add
-			.image(width / 2, 300, 'bossSkill_Shield')
-			.setOrigin(0.5, 0.5)
-			.setScale(1.25)
-		const group = scene.add
-			.group({ key: 'tranform' })
-			.setXY(width / 2, 480)
-			.setOrigin(0.5, 1)
-			.scaleXY(0.5)
-		group.playAnimation('boss-move')
-
-		scene.tweens.add({
-			targets: shield,
-			duration: 2000,
-			alpha: 0,
-			repeat: -1,
-			ease: 'sine.out',
-		})
-
-		WebFont.load({
-			google: {
-				families: ['Mali'],
-			},
-			active: function () {
-				const bossTutorialUiStyle = {
-					fontFamily: 'Mali',
-				}
-
-				bossText
-					.setStyle({
-						...bossTutorialUiStyle,
-						color: 'white',
-						fontWeight: 700,
-						align: 'center',
-					})
-					.setFontSize('6em')
-					.setStroke('#FB511C', 12)
-			},
-		})
-	}
-
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 		const avoidText = I18nSingleton.getInstance()
@@ -433,23 +328,11 @@ export class B1BossVersion2 extends BossVersion {
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
-			.strokeRoundedRect(
-				width / 2 - 264,
-				12 * MARGIN + 16,
-				528,
-				height / 6,
-				32,
-			)
+			.strokeRoundedRect(width / 2 - 264, 12 * MARGIN + 16, 528, height / 6, 32)
 		const bulletBox = scene.add
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
-			.strokeRoundedRect(
-				width / 2 - 264,
-				4 * MARGIN + 16,
-				528,
-				height / 6,
-				32,
-			)
+			.strokeRoundedRect(width / 2 - 264, 4 * MARGIN + 16, 528, height / 6, 32)
 
 		WebFont.load({
 			google: {

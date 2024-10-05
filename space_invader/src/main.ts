@@ -19,25 +19,20 @@ import ConfirmScene from 'scene/auth/ConfirmScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
-import { initializeApp } from "firebase/app";
-import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from "./config";
-
-
+import { initializeApp } from 'firebase/app'
+import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from './config'
 
 const firebaseConfig = {
 	apiKey: FIREBASE_API_KEY,
 	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
 	projectId: FIREBASE_PROJECT_ID,
-};
+}
 
-initializeApp(firebaseConfig);
-
+initializeApp(firebaseConfig)
 
 import BossScene from 'scene/boss/BossScene'
 import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
 import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
-import BossTutorialPhase1 from 'scene/boss/bossTutorial/BossTutorialPhase1'
-import BossTutorialPhase2 from 'scene/boss/bossTutorial/BossTutorialPhase2'
 import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 import BossCutSceneEscape2 from 'scene/boss/bossCutScene/BossCutSceneEscape2'
 import RedeemScene from 'scene/booster/RedeemScene'
@@ -93,8 +88,6 @@ const config: Phaser.Types.Core.GameConfig = {
 		WarmupScene,
 		BossScene,
 		BossItemTutorial,
-		BossTutorialPhase1,
-		BossTutorialPhase2,
 		BossCutSceneVS,
 		BossCutSceneEscape,
 		BossCutSceneEscape2,
@@ -109,4 +102,3 @@ const config: Phaser.Types.Core.GameConfig = {
 }
 
 export default new Phaser.Game(config)
-

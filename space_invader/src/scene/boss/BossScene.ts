@@ -23,11 +23,7 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import {
-	Boss,
-	BossCutScene,
-	BossTutorialScene,
-} from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
@@ -125,9 +121,9 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'dropItem', 
-			'assets/dropItem/dropitem_spritesheet.png', 
-			'assets/dropItem/dropitem_spritesheet.json'
+			'dropItem',
+			'assets/dropItem/dropitem_spritesheet.png',
+			'assets/dropItem/dropitem_spritesheet.json',
 		)
 
 		this.load.image('laser', 'assets/effect/mc_bullet.png')
@@ -270,7 +266,6 @@ export default class BossScene extends Phaser.Scene {
 		) {
 			// Boss Phase 1
 			this.boss.startAttackPhase()
-			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_1, this.boss)
 		}
 
 		if (this.boss.getIsAttackPhase()) {
@@ -320,7 +315,6 @@ export default class BossScene extends Phaser.Scene {
 			// Boss Phase 2
 			this.bulletText.setVisible(false)
 			this.boss.startAttackPhase()
-			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)
 		}
 
 		if (
@@ -341,7 +335,10 @@ export default class BossScene extends Phaser.Scene {
 			setTimeout(() => {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
-			const data = await this.apiService.updateGameSession({score : this.score.getScore(), lap : this.scene.scene.registry.get('lap')})
+			const data = await this.apiService.updateGameSession({
+				score: this.score.getScore(),
+				lap: this.scene.scene.registry.get('lap'),
+			})
 			console.log(data)
 		}
 
