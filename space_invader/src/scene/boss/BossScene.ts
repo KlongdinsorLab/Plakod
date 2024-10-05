@@ -42,6 +42,7 @@ import { Booster1 } from 'component/booster/boosterList/booster_1'
 import { Booster2 } from 'component/booster/boosterList/booster_2'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { BossObstacleFactory } from 'component/enemy/boss/obstacle/BossObstacleFactory'
+import CollectBulletBar from 'component/ui/CollectBulletBar'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -63,7 +64,6 @@ export default class BossScene extends Phaser.Scene {
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
-	private bulletText!: Phaser.GameObjects.Text
 
 	private isCompleteInit = false
 	private props!: BossInterface
@@ -79,7 +79,7 @@ export default class BossScene extends Phaser.Scene {
 
 	private apiService!: supabaseAPIService
 
-	private collectBulletBar!: Phaser.GameObjects.Image
+	private collectBulletBar!: CollectBulletBar
 
 	constructor() {
 		super({ key: 'bossScene' })
@@ -241,26 +241,7 @@ export default class BossScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
-		this.collectBulletBar = this.add
-			.image(
-				width / 2,
-				height - MARGIN + HOLD_BAR_BORDER + 29,
-				'inGameUI',
-				'collect_bullet_bar.png',
-			)
-			.setOrigin(0.5, 1)
-			.setDepth(10)
-			.setVisible(false)
-
-		this.bulletText = this.add
-			.text(
-				width / 2 + 32,
-				height - MARGIN + HOLD_BAR_BORDER + 14,
-				` /${COLLECT_BULLET_COUNT}`,
-			)
-			.setOrigin(0.5, 1)
-			.setDepth(11)
-		this.bulletText.setVisible(false)
+		this.collectBulletBar = new CollectBulletBar(this)
 
 		// activate booster_1 if existed
 		if (this.boosterEffect.remainingUses > 0) {
@@ -279,15 +260,8 @@ export default class BossScene extends Phaser.Scene {
 				}
 				self.score.getBody().setStyle(menuUiStyle)
 				self.reloadCount.getBody().setStyle(menuUiStyle)
-				self.bulletText
-					.setStyle({
-						fontFamily: 'Jua',
-						color: 'white',
-					})
-					.setFontSize('48px')
-					.setStroke('#42342C', 10)
-
 				self.player.getShield().initFontStyle()
+				self.collectBulletBar.initFontStyle()
 			},
 		})
 	}
@@ -353,15 +327,11 @@ export default class BossScene extends Phaser.Scene {
 					delta,
 				)
 
-			this.collectBulletBar.setVisible(true)
-			this.bulletText.setVisible(true)
-			this.bulletText.setText(
-				` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`,
-			)
+			this.collectBulletBar.show()
+			this.collectBulletBar.setBulletText(this.player.getBulletCount())
 		} else if (this.player.getIsBulletFull() && !this.boss.getIsStartAttack()) {
 			// Boss Phase 2
-			this.collectBulletBar.setVisible(false)
-			this.bulletText.setVisible(false)
+			this.collectBulletBar.hide()
 			this.boss.startAttackPhase()
 			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)
 		}

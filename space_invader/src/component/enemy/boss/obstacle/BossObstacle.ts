@@ -8,6 +8,7 @@ import {
 	HIT_METEOR_SCORE,
 	METEOR_ITEMPHASE_SPEED,
 	METEOR_SPEED,
+	METEOR_SPIN_SPEED,
 	PLAYER_HIT_DELAY_MS,
 } from 'config'
 
@@ -141,6 +142,7 @@ export class BossObstacle extends Enemy {
 			this.isInItemPhase ? METEOR_ITEMPHASE_SPEED : METEOR_SPEED,
 		)
 		this.enemy.setVelocityX(velocityX)
+		this.enemy.setAngularVelocity(METEOR_SPIN_SPEED)
 	}
 
 	attack(): void {}
