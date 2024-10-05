@@ -12,14 +12,16 @@ export default class ConfirmScene extends Phaser.Scene {
     private selectedData: { age: string, gender: string, airflow: string, difficulty: string } | undefined;
     private apiService !: supabaseAPIService
     private phoneNumber !: string
+    private bgm?: Phaser.Sound.BaseSound
 
     constructor() {
         super('confirm');
     }
 
-    init(data: { phoneNumber : string; age: string; gender: string; airflow: string; difficulty: string; edit:boolean }) {
+    init(data: { phoneNumber : string; age: string; gender: string; airflow: string; difficulty: string; edit:boolean; bgm:Phaser.Sound.BaseSound }) {
         this.selectedData = data;
         this.phoneNumber = data.phoneNumber
+        this.bgm = data.bgm
     }
     
 
@@ -144,7 +146,8 @@ export default class ConfirmScene extends Phaser.Scene {
                     , gender: this.selectedData?.gender
                     , airflow: airflowInput.textContent
                     , difficulty: this.selectedData?.difficulty
-                    , edit:true})
+                    , edit:true
+                    , bgm: this.bgm})
 			}else if(event?.target?.id === 'confirm-button'){
                 // alert('ลงทะเบียนเสร็จสิ้น');
                 element.destroy()
@@ -176,7 +179,8 @@ export default class ConfirmScene extends Phaser.Scene {
                     parseInt(airflowInput.textContent === null ? '100' : airflowInput.textContent),
                     parseInt(this.selectedData?.difficulty ?? '1')
                 )
-                this.scene.launch('home')
+                this.scene.stop()
+                this.scene.launch('home',{bgm: this.bgm})
             }
 		})
 

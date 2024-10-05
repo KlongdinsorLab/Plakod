@@ -18,10 +18,15 @@ interface DOMEvent<T extends EventTarget> extends Event {
 }
 export default class LoginScene extends Phaser.Scene {
 	private element!: Phaser.GameObjects.DOMElement
+	private bgm?: Phaser.Sound.BaseSound
 
 
 	constructor() {
 		super('login')
+	}
+
+	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {
+		this.bgm = bgm
 	}
 
 	preload() {
@@ -127,7 +132,8 @@ export default class LoginScene extends Phaser.Scene {
 			this.element.destroy()
 			this.scene.launch('otp', {
 				confirmationResult: confirmationResult,
-				data: { phoneNumber: phoneNumber }
+				data: { phoneNumber: phoneNumber },
+				bgm: this.bgm
 			});
 			
 		} catch (e) {
