@@ -32,9 +32,10 @@ export class B1Boss extends Boss {
 	// private bossHitSounds!: (Phaser.Sound.NoAudioSound
 	// 	| Phaser.Sound.WebAudioSound
 	// 	| Phaser.Sound.HTML5AudioSound)[]
-	private bossSound!: Phaser.Sound.NoAudioSound
-	| Phaser.Sound.WebAudioSound
-	| Phaser.Sound.HTML5AudioSound
+	private bossSound!:
+		| Phaser.Sound.NoAudioSound
+		| Phaser.Sound.WebAudioSound
+		| Phaser.Sound.HTML5AudioSound
 	private bossRemoved!: boolean
 
 	private boosterEffect!: BoosterEffect
@@ -46,13 +47,13 @@ export class B1Boss extends Boss {
 		lap: number = 6,
 	) {
 		super(scene, player, score, lap)
-		
+
 		// this.soundManager = new SoundManager(scene)
 		this.bossSound = scene.sound.addAudioSprite('bossSound')
 		this.phaseCount = 0
 
 		this.bossVersion = this.setVersion(lap)
-		
+
 		this.enemy = this.bossVersion.createAnimation(this.scene)
 		this.enemy.depth = 3
 
@@ -66,8 +67,7 @@ export class B1Boss extends Boss {
 		this.bossSkill = new B1BossSkill(this.scene, this, this.player)
 		this.scene.physics.world.enable(this.bossSkill.getBody())
 
-
-		this.boosterEffect = scene.registry.get("boosterEffect")
+		this.boosterEffect = scene.registry.get('boosterEffect')
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -90,10 +90,18 @@ export class B1Boss extends Boss {
 
 	attack(delta: number): void {
 		this.bossTimer += delta
-		if(!this.isSecondPhase){
-			if(this.bossTimer >= this.bossVersion.getDurationPhase1() && !this.bossRemoved) this.remove()
+		if (!this.isSecondPhase) {
+			if (
+				this.bossTimer >= this.bossVersion.getDurationPhase1() &&
+				!this.bossRemoved
+			)
+				this.remove()
 		} else {
-			if(this.bossTimer >= this.bossVersion.getDurationPhase2() && !this.bossRemoved) this.remove()
+			if (
+				this.bossTimer >= this.bossVersion.getDurationPhase2() &&
+				!this.bossRemoved
+			)
+				this.remove()
 		}
 	}
 
@@ -119,7 +127,7 @@ export class B1Boss extends Boss {
 			this.enemy.play('boss-move')
 		}, BOSS_HIT_DELAY_MS)
 		// this.soundManager.play(this.enermyDestroyedSound!, true)
-		this.score.add(BOSS_HIT_SCORE*this.boosterEffect.destroyMeteorScore)
+		this.score.add(BOSS_HIT_SCORE * this.boosterEffect.destroyMeteorScore)
 	}
 
 	destroy() {
@@ -141,7 +149,9 @@ export class B1Boss extends Boss {
 			-200,
 		)
 		this.bossRemoved = true
-		this.enemy.setPath(path).startFollow({ duration: 300, onComplete:() => this.endAttackPhase() })
+		this.enemy
+			.setPath(path)
+			.startFollow({ duration: 300, onComplete: () => this.endAttackPhase() })
 	}
 
 	startAttackPhase(): void {
@@ -217,12 +227,6 @@ export class B1Boss extends Boss {
 	playAttack(delta: number): void {
 		this.attack(delta)
 		if (this.isSecondPhase) {
-			this.bossVersion.createObstacleByTime(
-				this.scene,
-				this.player,
-				this.score,
-				delta,
-			)
 			this.bossVersion.useSkill(this.bossSkill, delta)
 		}
 	}
