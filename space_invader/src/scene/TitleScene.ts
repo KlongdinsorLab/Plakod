@@ -31,6 +31,17 @@ export default class TitleScene extends Phaser.Scene {
 	private bgm?: Phaser.Sound.BaseSound
 	private hasController = false
 
+	private howToConnectPopUp1 !: Phaser.GameObjects.DOMElement
+	private howToConnectPopUp2 !: Phaser.GameObjects.DOMElement
+	private howToConnectPopUp3 !: Phaser.GameObjects.DOMElement
+	private howToConnectPopUp4 !: Phaser.GameObjects.DOMElement
+	private howToTurnOffPopUp1 !: Phaser.GameObjects.DOMElement
+	private howToTurnOffPopUp2 !: Phaser.GameObjects.DOMElement
+	private howToChargePopUp1 !: Phaser.GameObjects.DOMElement
+	private howToChargePopUp2 !: Phaser.GameObjects.DOMElement
+	private howToChargePopUp3 !: Phaser.GameObjects.DOMElement
+
+
 	constructor() {
 		super('title')
 	}
@@ -52,6 +63,16 @@ export default class TitleScene extends Phaser.Scene {
         this.load.atlas('icon_spritesheet', 'assets/icon_spritesheet/icon_spritesheet.png', 'assets/icon_spritesheet/icon_spritesheet.json')
 
         this.load.image('press_home', 'assets/press_home.png')
+
+		this.load.html('howToConnect1', 'html/device_connected/howToConnect1.html')
+		this.load.html('howToConnect2', 'html/device_connected/howToConnect2.html')
+		this.load.html('howToConnect3', 'html/device_connected/howToConnect3.html')
+		this.load.html('howToConnect4', 'html/device_connected/howToConnect4.html')
+		this.load.html('howToTurnOff1', 'html/device_connected/howToTurnOff1.html')
+		this.load.html('howToTurnOff2', 'html/device_connected/howToTurnOff2.html')
+		this.load.html('howToCharge1', 'html/device_connected/howToCharge1.html')
+		this.load.html('howToCharge2', 'html/device_connected/howToCharge2.html')
+		this.load.html('howToCharge3', 'html/device_connected/howToCharge3.html')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 
@@ -149,7 +170,7 @@ export default class TitleScene extends Phaser.Scene {
         // Button 2
         this.add.nineslice(width/2, 920, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp2())
-        this.add.image(144 + (width/2 - 528/2), 920 + 96/2, 'icon_spritesheet', 'icon_turnoff.png')
+        this.add.image(124 + (width/2 - 528/2), 920 + 96/2, 'icon_spritesheet', 'icon_turnoff.png')
         const buttontext2 = i18n.createTranslatedText(this, width/2 + 15, 920 + 96/2, "how_to_close").setOrigin(0.5,0.5)
             .setColor("#D35E24")
             .setFontSize(28)
@@ -163,6 +184,8 @@ export default class TitleScene extends Phaser.Scene {
             .setColor("#D35E24")
             .setFontSize(28)
             .setPadding(0,20,0,20)  
+
+		this.createPopUp()
 
         WebFont.load({
             google: {
@@ -213,18 +236,20 @@ export default class TitleScene extends Phaser.Scene {
 				this,
 			)
 		}
+
+		this.popUp3()
 	}
 
 	update() {
-		if (
-			this.hasController &&
-			(this.controller1?.direction.LEFT ||
-				this.controller1?.direction.RIGHT ||
-				this.controller1?.buttons.B7 > 0 ||
-				this.input.pointer1.isDown)
-		) {
-			this.startGame()
-		}
+		// if (
+		// 	this.hasController &&
+		// 	(this.controller1?.direction.LEFT ||
+		// 		this.controller1?.direction.RIGHT ||
+		// 		this.controller1?.buttons.B7 > 0 ||
+		// 		this.input.pointer1.isDown)
+		// ) {
+		// 	this.startGame()
+		// }
 	}
 
 	startGame() {
@@ -238,17 +263,165 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	popUp1() : void {
-        // Connecting
-        console.log("Device Connecting Instruction")
+		this.scene.pause()
+		this.howToConnectPopUp1.setVisible(true)
     }
 
     popUp2() : void {
-        // Closing
-        console.log("Device Closing Instruction")
+        this.scene.pause()
+		this.howToTurnOffPopUp1.setVisible(true)
     }
 
     popUp3() : void {
-        // Charging
-        console.log("Device Charging Instruction")
+        this.scene.pause()
+		this.howToChargePopUp1.setVisible(true)
     }
+
+	createPopUp(){
+		const self = this
+
+		// How to Connect
+		this.howToConnectPopUp1 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToConnect1')
+		this.howToConnectPopUp1.setVisible(false)
+		this.howToConnectPopUp1.addListener('click')
+		this.howToConnectPopUp1.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToConnectPopUp1.setVisible(false)
+				self.howToConnectPopUp2.setVisible(true)
+			}
+		})
+
+		this.howToConnectPopUp2 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToConnect2')
+		this.howToConnectPopUp2.setVisible(false)
+		this.howToConnectPopUp2.addListener('click')
+		this.howToConnectPopUp2.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToConnectPopUp2.setVisible(false)
+				self.howToConnectPopUp3.setVisible(true)
+			}
+			if (event.target.name === 'previous') {
+				self.howToConnectPopUp2.setVisible(false)
+				self.howToConnectPopUp1.setVisible(true)
+			}
+		})
+
+		this.howToConnectPopUp3 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToConnect3')
+		this.howToConnectPopUp3.setVisible(false)
+		this.howToConnectPopUp3.addListener('click')
+		this.howToConnectPopUp3.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToConnectPopUp3.setVisible(false)
+				self.howToConnectPopUp4.setVisible(true)
+			}
+			if (event.target.name === 'previous') {
+				self.howToConnectPopUp3.setVisible(false)
+				self.howToConnectPopUp2.setVisible(true)
+			}
+		})
+
+		this.howToConnectPopUp4 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToConnect4')
+		this.howToConnectPopUp4.setVisible(false)
+		this.howToConnectPopUp4.addListener('click')
+		this.howToConnectPopUp4.on('click', function (event: any) {
+			if (event.target.name === 'finish') {
+				self.howToConnectPopUp4.setVisible(false)
+				self.scene.resume()
+			}
+			if (event.target.name === 'previous') {
+				self.howToConnectPopUp4.setVisible(false)
+				self.howToConnectPopUp3.setVisible(true)
+			}
+		})
+
+		// How to Turn Off
+		this.howToTurnOffPopUp1 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToTurnOff1')
+		this.howToTurnOffPopUp1.setVisible(false)
+		this.howToTurnOffPopUp1.addListener('click')
+		this.howToTurnOffPopUp1.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToTurnOffPopUp1.setVisible(false)
+				self.howToTurnOffPopUp2.setVisible(true)
+			}
+		})
+
+		this.howToTurnOffPopUp2 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToTurnOff2')
+		this.howToTurnOffPopUp2.setVisible(false)
+		this.howToTurnOffPopUp2.addListener('click')
+		this.howToTurnOffPopUp2.on('click', function (event: any) {
+			if (event.target.name === 'finish') {
+				self.howToTurnOffPopUp2.setVisible(false)
+				self.scene.resume()
+			}
+			if (event.target.name === 'previous'){
+				self.howToTurnOffPopUp2.setVisible(false)
+				self.howToTurnOffPopUp1.setVisible(true)
+			}
+		})
+		
+		// How to Charge
+		this.howToChargePopUp1 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToCharge1')
+		this.howToChargePopUp1.setVisible(false)
+		this.howToChargePopUp1.addListener('click')
+		this.howToChargePopUp1.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToChargePopUp1.setVisible(false)
+				self.howToChargePopUp2.setVisible(true)
+			}
+		})
+
+		this.howToChargePopUp2 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToCharge2')
+		this.howToChargePopUp2.setVisible(false)
+		this.howToChargePopUp2.addListener('click')
+		this.howToChargePopUp2.on('click', function (event: any) {
+			if (event.target.name === 'next') {
+				self.howToChargePopUp2.setVisible(false)
+				self.howToChargePopUp3.setVisible(true)
+			}
+			if (event.target.name === 'previous') {
+				self.howToChargePopUp2.setVisible(false)
+				self.howToChargePopUp1.setVisible(true)
+			}
+		})
+
+		this.howToChargePopUp3 = this.add
+			.dom(0,0)
+			.setOrigin(0,0)
+			.createFromCache('howToCharge3')
+		this.howToChargePopUp3.setVisible(false)
+		this.howToChargePopUp3.addListener('click')
+		this.howToChargePopUp3.on('click', function (event: any) {
+			if (event.target.name === 'finish') {
+				self.howToChargePopUp3.setVisible(false)
+				self.scene.resume()
+			}
+			if (event.target.name === 'previous') {
+				self.howToChargePopUp3.setVisible(false)
+				self.howToChargePopUp2.setVisible(true)
+			}
+		})
+	}	
 }
