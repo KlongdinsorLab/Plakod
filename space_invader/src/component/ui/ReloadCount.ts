@@ -56,7 +56,7 @@ export default class ReloadCount {
 			.text(
 				x + logo.width / 2 + MARGIN / 2,
 				y + 4,
-				`${RELOAD_COUNT - this.reloadCount}/${RELOAD_COUNT}`,
+				`${RELOAD_COUNT - this.reloadCount} / ${RELOAD_COUNT}`,
 			)
 			.setFontSize(MEDIUM_FONT_SIZE)
 		this.layer.add(this.body)
