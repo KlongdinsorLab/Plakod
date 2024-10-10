@@ -4,6 +4,7 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import {
 	BULLET_COUNT,
+	BUTTON_MAP,
 	DARK_BROWN,
 	GAME_TIME_LIMIT_MS,
 	HOLD_DURATION_MS,
@@ -110,12 +111,17 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
-		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+		this.load.atlas(
+			'inGameUI',
+			'assets/ui/ingameui_spritesheet.png',
+			'assets/ui/ingameui_spritesheet.json',
+		)
 		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
 		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
 		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
 		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
 		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
+		this.load.image('obstacle', 'assets/character/enemy/obstacle.png')
 
 		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
 
@@ -177,15 +183,15 @@ export default class GameScene extends Phaser.Scene {
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
-			.defineKey(0, 'B16', 'SPACE')
+			?.defineKey(0, BUTTON_MAP['left'].controller, BUTTON_MAP['left'].keyboard)
+			.defineKey(0, BUTTON_MAP['right'].controller, BUTTON_MAP['right'].keyboard)
+			.defineKey(0, BUTTON_MAP['charge'].controller, BUTTON_MAP['charge'].keyboard)
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
-			.defineKey(0, 'B6', 'ONE')
-			.defineKey(0, 'B4', 'TWO')
-			.defineKey(0, 'B7', 'THREE')
-			.defineKey(0, 'B5', 'FOUR')
+			.defineKey(0, BUTTON_MAP[1].controller, BUTTON_MAP[1].keyboard)
+			.defineKey(0, BUTTON_MAP[2].controller, BUTTON_MAP[2].keyboard)
+			.defineKey(0, BUTTON_MAP[3].controller, BUTTON_MAP[3].keyboard)
+			.defineKey(0, BUTTON_MAP[4].controller, BUTTON_MAP[4].keyboard)
 
 			// .defineKey(0, 'B5', 'ONE')
 			// .defineKey(0, 'B7', 'TWO')
@@ -325,7 +331,6 @@ export default class GameScene extends Phaser.Scene {
 		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
 	update(_: number, delta: number) {
-
 		//        if (this.input.gamepad.total === 0) {
 		//            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
 		//            text.x = width / 2 - text.width / 2
@@ -488,7 +493,10 @@ export default class GameScene extends Phaser.Scene {
 					this.boosterEffect.shootingPhase,
 				callback: async () => {
 					this.reloadCount.decrementCount()
-					const data = await this.apiService.updateGameSession({score : this.score.getScore(), lap : this.scene.scene.registry.get('lap')})
+					const data = await this.apiService.updateGameSession({
+						score: this.score.getScore(),
+						lap: this.scene.scene.registry.get('lap'),
+					})
 					console.log(data)
 					this.isCompleteBoss = false
 				},

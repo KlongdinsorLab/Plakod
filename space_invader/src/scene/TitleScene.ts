@@ -8,6 +8,7 @@ import {
 	getAuth,
 	setPersistence,
 } from 'firebase/auth'
+import { BUTTON_MAP } from 'config'
 import WebFont from "webfontloader";
 import MockAPIService from 'services/API/mockUp/MockAPIService'
 import i18next from 'i18next'
@@ -92,7 +93,7 @@ export default class TitleScene extends Phaser.Scene {
 		])
 	}
 
-	async create() {
+	create() {
 		const {width,height} = this.scene.scene.scale
 		const queryString = window.location.search
 		const urlParams = new URLSearchParams(queryString)
@@ -104,23 +105,6 @@ export default class TitleScene extends Phaser.Scene {
 		// 	this.scene.launch('setup')
 		// 	return
 		// }
-
-		const auth = getAuth();
-		auth.useDeviceLanguage();
-		(async ()=> {
-			await setPersistence(auth, browserSessionPersistence)
-			const user = auth.currentUser
-
-			if (user === null) {
-				this.scene.pause()
-				this.scene.launch('start-login')
-				return
-			}
-
-			// TODO check user data
-			// this.scene.pause()
-			// this.scene.launch('register')
-		})()
 
 		const i18n = I18nSingleton.getInstance()
 
@@ -219,8 +203,8 @@ export default class TitleScene extends Phaser.Scene {
 
 		this.controller1 = this.mergedInput?.addPlayer(0)
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
+			?.defineKey(0, BUTTON_MAP['left'].controller, BUTTON_MAP['left'].keyboard)
+			.defineKey(0, BUTTON_MAP['right'].controller, BUTTON_MAP['right'].keyboard)
 			.defineKey(0, 'B0', 'SPACE')
 
 		//		this.player = new Player(this)
@@ -254,7 +238,7 @@ export default class TitleScene extends Phaser.Scene {
 		
 	}
 
-	update() {
+	async update() {
 		if (
 			this.hasController &&
 			(this.controller1?.direction.LEFT ||
@@ -262,16 +246,42 @@ export default class TitleScene extends Phaser.Scene {
 				this.controller1?.buttons.B7 > 0 /*||
 				this.input.pointer1.isDown*/)
 		) {
-			this.startGame()
+			await this.startGame()
 		}
 	}
 
-	startGame() {
-		I18nSingleton.getInstance().destroyEmitter()
+	async startGame() {
+		if(import.meta.env.VITE_START_SCENE) {
+			// testing flow
+			this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
+				bgm: this.bgm,
+			})
+		}
+		else {
+			// normal flow
+			const auth = getAuth();
+			auth.useDeviceLanguage();
+			(async ()=> {
+				await setPersistence(auth, browserSessionPersistence)
+				const user = auth.currentUser
+			
+				if (user === null) {
+					this.scene.stop()
+					this.scene.launch('start-login', {bgm: this.bgm,})
+					return
+				}
+				else {
+					this.scene.stop()
+					this.scene.start('home', {bgm: this.bgm,})
+				}
 
-		this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
-			bgm: this.bgm,
-		})
+					// TODO check user data
+					// this.scene.pause()
+					// this.scene.launch('register')
+			})()
+			I18nSingleton.getInstance().destroyEmitter()
+		}
+
 		//this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
 		// import.meta.env.VITE_START_SCENE && new SoundManager(this).stop(this.bgm!)
 	}

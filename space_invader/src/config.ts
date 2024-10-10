@@ -76,6 +76,8 @@ export const VAS_COUNT = 10
 export const MAX_PLAYED = 10
 export const TOTAL_MC = 2
 
+export const INHALE_GAUGE_SECTIONS = 5
+
 export const ALL_CHARACTER = [
 	{
 		characterId: 1,
@@ -93,3 +95,51 @@ export const ALL_CHARACTER = [
 		detail: '',
 	},
 ]
+
+export type keyboardInput = 
+	'ONE' | 
+	'TWO' | 
+	'THREE' | 
+	'FOUR' | 
+	'LEFT' | 
+	'RIGHT' |
+	'SPACE'
+
+const keyboardOne : keyboardInput = 'ONE'
+const keyboardTwo : keyboardInput = 'TWO'
+const keyboardThree : keyboardInput = 'THREE'
+const keyboardFour : keyboardInput = 'FOUR'
+const keyboardCharge : keyboardInput = 'SPACE'
+const keyboardLeft : keyboardInput = 'LEFT'
+const keyboardRight : keyboardInput = 'RIGHT'
+
+export const BUTTON_MAP = {
+	'1': {
+		controller: 'B6',
+		keyboard: keyboardOne
+	},
+	'2': {
+		controller: 'B4',
+		keyboard: keyboardTwo
+	},
+	'3': {
+		controller: 'B7',
+		keyboard: keyboardThree
+	},
+	'4': {
+		controller: 'B5',
+		keyboard: keyboardFour
+	},
+	'charge': {
+		controller: 'B16',
+		keyboard: keyboardCharge
+	},
+	'left': {
+		controller: 'LEFT',
+		keyboard: keyboardLeft
+	},
+	'right': {
+		controller: 'RIGHT',
+		keyboard: keyboardRight
+	}
+}
