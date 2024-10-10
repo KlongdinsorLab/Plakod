@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth'
 import WebFont from "webfontloader";
 import MockAPIService from 'services/API/mockUp/MockAPIService'
+import i18next from 'i18next'
 
 const tirabase = new MockAPIService()
 
@@ -187,9 +188,19 @@ export default class TitleScene extends Phaser.Scene {
 
 		this.createPopUp()
 
+		// temporary start game button
+		this.add.nineslice(width/2, 1160, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
+            .setInteractive().on('pointerup', () => this.startGame())
+        this.add.image(92 + (width/2 - 528/2), 1040 + 96/2, 'icon_spritesheet', 'icon_battery.png')
+        const buttontext4 = i18n.createTranslatedText(this, width/2 + 15, 1160 + 96/2, "เข้าเกม").setOrigin(0.5,0.5)
+            .setColor("#D35E24")
+            .setFontSize(28)
+            .setPadding(0,20,0,20) 
+
+		const self = this
         WebFont.load({
             google: {
-              families: ['Mali']
+              families: ['Mali', 'Sarabun:300,400,500,600']
             },
             active: function() {
               const menuUiStyle = {
@@ -201,7 +212,8 @@ export default class TitleScene extends Phaser.Scene {
               buttontext1.setStyle(menuUiStyle)
               buttontext2.setStyle(menuUiStyle)
               buttontext3.setStyle(menuUiStyle)
-              
+			  buttontext4.setStyle(menuUiStyle)
+              self.applyPopUpFontStyle()
             }
           });
 
@@ -237,25 +249,27 @@ export default class TitleScene extends Phaser.Scene {
 			)
 		}
 
-		this.popUp3()
+		// this.popUp3()
+
+		
 	}
 
 	update() {
-		// if (
-		// 	this.hasController &&
-		// 	(this.controller1?.direction.LEFT ||
-		// 		this.controller1?.direction.RIGHT ||
-		// 		this.controller1?.buttons.B7 > 0 ||
-		// 		this.input.pointer1.isDown)
-		// ) {
-		// 	this.startGame()
-		// }
+		if (
+			this.hasController &&
+			(this.controller1?.direction.LEFT ||
+				this.controller1?.direction.RIGHT ||
+				this.controller1?.buttons.B7 > 0 /*||
+				this.input.pointer1.isDown*/)
+		) {
+			this.startGame()
+		}
 	}
 
 	startGame() {
 		I18nSingleton.getInstance().destroyEmitter()
 
-		this.scene.start(import.meta.env.VITE_START_SCEN || 'home', {
+		this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
 			bgm: this.bgm,
 		})
 		//this.scene.start(import.meta.env.VITE_START_SCEN || 'setting')
@@ -293,6 +307,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToConnectPopUp2.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToConnectPopUp1, "connect", 1)
 
 		this.howToConnectPopUp2 = this.add
 			.dom(0,0)
@@ -310,6 +325,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToConnectPopUp1.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToConnectPopUp2, "connect", 2)
 
 		this.howToConnectPopUp3 = this.add
 			.dom(0,0)
@@ -327,6 +343,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToConnectPopUp2.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToConnectPopUp3, "connect", 3)
 
 		this.howToConnectPopUp4 = this.add
 			.dom(0,0)
@@ -344,6 +361,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToConnectPopUp3.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToConnectPopUp4, "connect", 4)
 
 		// How to Turn Off
 		this.howToTurnOffPopUp1 = this.add
@@ -358,6 +376,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToTurnOffPopUp2.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToTurnOffPopUp1, "turnoff", 1)
 
 		this.howToTurnOffPopUp2 = this.add
 			.dom(0,0)
@@ -375,6 +394,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToTurnOffPopUp1.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToTurnOffPopUp2, "turnoff", 2)
 		
 		// How to Charge
 		this.howToChargePopUp1 = this.add
@@ -389,6 +409,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToChargePopUp2.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToChargePopUp1, "charge", 1)
 
 		this.howToChargePopUp2 = this.add
 			.dom(0,0)
@@ -406,6 +427,7 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToChargePopUp1.setVisible(true)
 			}
 		})
+		this.createTranslateTextPopUp(this.howToChargePopUp2, "charge", 2)
 
 		this.howToChargePopUp3 = this.add
 			.dom(0,0)
@@ -423,5 +445,57 @@ export default class TitleScene extends Phaser.Scene {
 				self.howToChargePopUp2.setVisible(true)
 			}
 		})
-	}	
+		this.createTranslateTextPopUp(this.howToChargePopUp3, "charge", 3)
+	}
+
+	createTranslateTextPopUp(popUp : Phaser.GameObjects.DOMElement, type: string, page: number) {
+		let i = 1
+		let text : Element = <Element>(popUp.getChildByID(`${type}${page}.${i+1}`))
+		while(popUp.getChildByID(`${type}${page}.${i}`)){
+			text = <Element>(popUp.getChildByID(`${type}${page}.${i}`))
+			text.textContent = i18next.t(`${type}${page}.${i}`)
+			i++
+		}
+
+		if(popUp.getChildByID("next")){
+			text = <Element>(popUp.getChildByName("next"))
+			text.textContent = i18next.t("next")
+		}
+
+		if(popUp.getChildByID("previous")){
+			text = <Element>(popUp.getChildByID("previous"))
+			text.textContent = i18next.t("previous")
+		}
+
+		if(popUp.getChildByID("finish")){
+			text = <Element>(popUp.getChildByName("finish"))
+			text.textContent = i18next.t("finish")
+		}
+	}
+
+	applyPopUpFontStyle() {
+        const regularElement = document.querySelectorAll(".sarabun-regular")
+        regularElement.forEach(element => {
+            (element as HTMLElement).style.fontFamily = 'Sarabun';
+            (element as HTMLElement).style.fontWeight = '400';
+        })
+
+        const semiboldElement = document.querySelectorAll(".sarabun-semibold")
+        semiboldElement.forEach(element => {
+            (element as HTMLElement).style.fontFamily = 'Sarabun';
+            (element as HTMLElement).style.fontWeight = '600';
+        })
+
+        const lightElement = document.querySelectorAll(".sarabun-light")
+        lightElement.forEach(element => {
+            (element as HTMLElement).style.fontFamily = 'Sarabun';
+            (element as HTMLElement).style.fontWeight = '300';
+        })
+
+        const mediumElement = document.querySelectorAll(".sarabun-medium")
+        mediumElement.forEach(element => {
+            (element as HTMLElement).style.fontFamily = 'Sarabun';
+            (element as HTMLElement).style.fontWeight = '500';
+        })
+    }
 }

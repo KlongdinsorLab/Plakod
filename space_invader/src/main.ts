@@ -51,6 +51,7 @@ import LifeCountScene from 'scene/LifeCountScene'
 import DisplayNameScene from 'scene/DisplayNameScene'
 import MyBagScene from 'scene/submenu/MyBagScene'
 import DeviceConnectedScene from 'scene/DeviceConnectedScene'
+import InstructionScene from 'scene/submenu/InstructionScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -106,7 +107,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		LifeCountScene,
 		DisplayNameScene,
 		MyBagScene,
-		DeviceConnectedScene
+		DeviceConnectedScene,
+		InstructionScene
 	],
 }
 
