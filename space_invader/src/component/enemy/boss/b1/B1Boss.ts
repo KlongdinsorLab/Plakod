@@ -158,14 +158,17 @@ export class B1Boss extends Boss {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
 		this.isStartAttack = true
-		setTimeout(() => {
-			this.isAttackPhase = true
-			this.isItemPhase = false
-			this.bossRemoved = false
-			this.bossTimer = 0
-			this.move()
-			this.player.startReload()
-		}, BOSS_TUTORIAL_DELAY_MS)
+		setTimeout(
+			() => {
+				this.isAttackPhase = true
+				this.isItemPhase = false
+				this.bossRemoved = false
+				this.bossTimer = 0
+				this.move()
+				this.player.startReload()
+			},
+			this.isSecondPhase ? BOSS_TUTORIAL_DELAY_MS : 0, //a little of delay after collect item
+		)
 	}
 
 	endAttackPhase(): void {

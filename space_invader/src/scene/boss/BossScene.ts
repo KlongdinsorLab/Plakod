@@ -16,11 +16,7 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import {
-	Boss,
-	BossCutScene,
-	BossTutorialScene,
-} from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
 import { BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
@@ -284,7 +280,6 @@ export default class BossScene extends Phaser.Scene {
 		) {
 			// Boss Phase 1
 			this.boss.startAttackPhase()
-			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_1, this.boss)
 		}
 
 		if (this.boss.getIsAttackPhase()) {
@@ -326,7 +321,6 @@ export default class BossScene extends Phaser.Scene {
 			// Boss Phase 2
 			this.collectBulletBar.hide()
 			this.boss.startAttackPhase()
-			this.scene.launch(BossTutorialScene.TUTORIAL_PHASE_2, this.boss)
 		}
 
 		if (
