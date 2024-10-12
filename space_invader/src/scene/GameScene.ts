@@ -19,9 +19,6 @@ import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-// import { Boss } from '../component/enemy/boss/Boss'
-// import I18nSingleton from '../i18n/I18nSingleton'
-import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
 import { BossCutScene } from 'component/enemy/boss/Boss'
 import SoundManager from 'component/sound/SoundManager'
@@ -46,17 +43,13 @@ export default class GameScene extends Phaser.Scene {
 	private reloadCountNumber = RELOAD_COUNT
 
 	private reloadCount!: ReloadCount
-	//	private reloadCount = RELOAD_COUNT
-	//	private reloadCountText!: Phaser.GameObjects.Text
-
 	private mergedInput?: MergedInput
 	private controller1!: PlayerInput | undefined | any
-	//    private timerText!: Phaser.GameObjects.Text;
 
 	private meteorFactory!: MeteorFactory
-	private tutorial!: Tutorial
 	private tutorialMeteor!: Meteor
 	private isCompleteWarmup = false
+	private isCompleteGaugeWarmup = false
 	private isCompleteBoss = false
 	private menu!: Menu
 	private bossName!: keyof typeof BossByName
@@ -126,7 +119,6 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
-		this.load.svg('finger press', 'assets/icon/finger-press.svg')
 
 		// this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
 		// this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
@@ -184,8 +176,16 @@ export default class GameScene extends Phaser.Scene {
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
 			?.defineKey(0, BUTTON_MAP['left'].controller, BUTTON_MAP['left'].keyboard)
-			.defineKey(0, BUTTON_MAP['right'].controller, BUTTON_MAP['right'].keyboard)
-			.defineKey(0, BUTTON_MAP['charge'].controller, BUTTON_MAP['charge'].keyboard)
+			.defineKey(
+				0,
+				BUTTON_MAP['right'].controller,
+				BUTTON_MAP['right'].keyboard,
+			)
+			.defineKey(
+				0,
+				BUTTON_MAP['charge'].controller,
+				BUTTON_MAP['charge'].keyboard,
+			)
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
 			.defineKey(0, BUTTON_MAP[1].controller, BUTTON_MAP[1].keyboard)
@@ -193,11 +193,11 @@ export default class GameScene extends Phaser.Scene {
 			.defineKey(0, BUTTON_MAP[3].controller, BUTTON_MAP[3].keyboard)
 			.defineKey(0, BUTTON_MAP[4].controller, BUTTON_MAP[4].keyboard)
 
-			// .defineKey(0, 'B5', 'ONE')
-			// .defineKey(0, 'B7', 'TWO')
-			// .defineKey(0, 'B4', 'THREE')
-			// .defineKey(0, 'B6', 'FOUR')
-			//
+		// .defineKey(0, 'B5', 'ONE')
+		// .defineKey(0, 'B7', 'TWO')
+		// .defineKey(0, 'B4', 'THREE')
+		// .defineKey(0, 'B6', 'FOUR')
+		//
 
 		this.gameLayer = this.add.layer()
 		this.player = new Player(this, this.gameLayer)
@@ -205,12 +205,6 @@ export default class GameScene extends Phaser.Scene {
 		// this.player.addJetEngine()
 
 		this.player.addChargeParticle()
-
-		// TODO Move to UI
-		//	this.add
-		//		.rectangle(0, height, width, HOLD_BAR_HEIGHT + MARGIN * 2, 0x000000)
-		//		.setOrigin(0, 1)
-		//		.setAlpha(0.25)
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
@@ -224,8 +218,6 @@ export default class GameScene extends Phaser.Scene {
 		// this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
 		this.meteorFactory = new MeteorFactory()
-
-		this.tutorial = new Tutorial(this)
 
 		this.subScenes = [
 			'warmup',
@@ -308,8 +300,6 @@ export default class GameScene extends Phaser.Scene {
 			this.boosterEffect.laserFactory
 		]()
 
-		// this.reloadCount.setCount(1)
-
 		const self = this
 		WebFont.load({
 			google: {
@@ -327,53 +317,18 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
-	isCompleteControlerTutorial = () =>
-		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
 	update(_: number, delta: number) {
-		//        if (this.input.gamepad.total === 0) {
-		//            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
-		//            text.x = width / 2 - text.width / 2
-		//            this.input.gamepad.once('connected', function () {
-		//                text.destroy();
-		//            }, this);
-		//            return;
-		//        }
-		//        const pad = this.input.gamepad.gamepads[0]
-
 		const gauge = this.gaugeRegistry?.get(0)
 		this.menu.updateGameState(
 			this.score.getScore(),
 			RELOAD_COUNT - this.reloadCount.getCount(),
 		)
-		//        const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
-		//        this.timerText.text = `time: ${timeLeft}`
-		//        if (timeLeft <= 0) {
-		//            this.scene.pause()
-		//        }
-
-		// Tutorial
-		if (!this.isCompleteTutorial()) {
-			this.tutorial.launchTutorial(Step.CHARACTER, delta, {
-				meteor: this.tutorialMeteor,
-				player: this.player,
-				gameLayer: this.gameLayer,
-			})
-
-			this.tutorial.launchTutorial(Step.HUD, delta, {
-				score: this.score,
-				gauge: gauge,
-				menu: this.menu,
-				reloadCount: this.reloadCount,
-			})
-
-			this.tutorial.launchTutorial(Step.CONTROLLER, delta, {
-				player: this.player,
-				event: this.event,
-			})
-		}
 
 		this.event.once('completeWarmup', () => (this.isCompleteWarmup = true))
+		this.event.once('completeGaugeWarmUp', () => {
+			this.isCompleteGaugeWarmup = true
+		})
 
 		if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
 			this.scene.pause()
@@ -382,7 +337,11 @@ export default class GameScene extends Phaser.Scene {
 			this.scene.launch('warmup', { event: this.event })
 		}
 
-		if (this.isCompleteTutorial() && this.isCompleteWarmup) {
+		if (
+			this.isCompleteTutorial() &&
+			this.isCompleteWarmup &&
+			this.isCompleteGaugeWarmup
+		) {
 			this.meteorFactory.createByTime(
 				this,
 				this.player,
@@ -415,10 +374,10 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.input.pointer1.isDown) {
 			const { x } = this.input.pointer1
-			if (this.player.isRightOf(x) && this.isCompleteControlerTutorial()) {
+			if (this.player.isRightOf(x)) {
 				this.player.moveRight(delta)
 			}
-			if (this.player.isLeftOf(x) && this.isCompleteControlerTutorial()) {
+			if (this.player.isLeftOf(x)) {
 				this.player.moveLeft(delta)
 			}
 		}
