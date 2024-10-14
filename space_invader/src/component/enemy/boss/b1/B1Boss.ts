@@ -16,6 +16,7 @@ import { B1BossVersion1 } from './B1BossVersion1'
 import { B1BossVersion2 } from './B1BossVersion2'
 
 import { BoosterEffect } from 'component/booster/booster'
+import { BossByName } from 'scene/boss/bossInterface'
 
 let isHit = false
 
@@ -232,5 +233,9 @@ export class B1Boss extends Boss {
 		if (this.isSecondPhase) {
 			this.bossVersion.useSkill(this.bossSkill, delta)
 		}
+	}
+
+	getName(): keyof typeof BossByName {
+		return "B1"
 	}
 }
