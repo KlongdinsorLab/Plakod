@@ -427,7 +427,7 @@ export default class GameScene extends Phaser.Scene {
 				this.soundManager.stop(this.bgm)
 				this.scene.stop()
 				this.scene.launch(BossCutScene.VS, {
-					name: "B2",
+					name: this.bossName ?? "B1",
 					score: this.score.getScore(),
 					playerX: this.player.getBody().x,
 					reloadCount: this.reloadCount.getCount(),
