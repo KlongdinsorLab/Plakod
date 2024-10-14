@@ -2,6 +2,7 @@ import { Enemy } from '../Enemy'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 import { BossVersion } from './BossVersion'
+import { BossByName } from 'scene/boss/bossInterface'
 
 
 export enum BossPhase {
@@ -59,4 +60,5 @@ export abstract class Boss extends Enemy {
 	abstract getVersion(): BossVersion
 	abstract getSkill(): any
 	abstract playAttack(delta: number): void
+	abstract getName() : keyof typeof BossByName
 }

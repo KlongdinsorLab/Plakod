@@ -4,8 +4,12 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import Player from 'component/player/Player'
 import { Boss } from '../Boss'
+import { BossSkill } from '../BossSkill'
 
 export class B2BossVersion1 extends BossVersion {
+	private skillTimer = 0
+	private skillCounter = 0
+	private movePattern!: Phaser.Curves.Path
 	constructor() {
 		super()
 	}
@@ -40,10 +44,12 @@ export class B2BossVersion1 extends BossVersion {
 			repeat: -1,
 		})
 
+
 		return scene.add.follower(path, width / 2, -140, 'b2v1').setOrigin(0.5)
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
+		this.handleNewPhase()
 		const enemy = boss.getBody()
 		const { width } = scene.scale
 		const randomVector = [...Array(5)].map((_) => {
@@ -60,7 +66,13 @@ export class B2BossVersion1 extends BossVersion {
 			.lineTo(width / 2, 100)
 			.lineTo(width + 200, 400)
 			.lineTo(-200, 400)
+		this.movePattern = path
 		return path
+	}
+
+	handleNewPhase() {
+		this.skillCounter = 0
+		this.skillTimer = 0
 	}
 
 	isShootAttack(): boolean {
@@ -75,7 +87,19 @@ export class B2BossVersion1 extends BossVersion {
 		return false
 	}
 
-	useSkill(): void {}
+	useSkill(bossSkill: BossSkill, delta: number): void {
+		if (this.skillTimer === 0) {
+			bossSkill.setMovePath(this.movePattern)
+			bossSkill.move()
+		}
+		this.skillTimer += delta
+
+		if(this.skillTimer >= 6000 && this.skillCounter < 4) {
+			this.skillTimer -= 6000
+			this.skillCounter++
+			bossSkill.attack()
+		}
+	}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS
@@ -103,7 +127,7 @@ export class B2BossVersion1 extends BossVersion {
 		rectangleBox.angle = -30
 
 		const bossImage = scene.add
-			.image(-350, 500, 'b2v1', 'b2v1_attack_00000.png')
+			.image(-350, 500, 'b2v1', 'b2v1_attack_00001.png')
 			.setOrigin(0.5, 1)
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
@@ -231,6 +255,7 @@ export class B2BossVersion1 extends BossVersion {
 
 		const path = new Phaser.Curves.Path(0, 0)
 		const boss = scene.add.follower(path, width / 2, 300, 'b2v1').setOrigin(0.5)
+		boss.play('boss-hit')
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {
@@ -245,7 +270,68 @@ export class B2BossVersion1 extends BossVersion {
 	}
 
 	playItemTutorial(scene: Phaser.Scene): void {
-		console.log(scene)
+		const { width, height } = scene.scale
+
+		const avoidText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'avoid_poison')
+			.setOrigin(0.5, 0)
+		const bulletText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'collect_item')
+			.setOrigin(0.5, 0)
+
+		const poison = scene.add
+			.image(width / 2, 17 * MARGIN, 'dropItem', 'item_poison.png')
+			.setOrigin(0.5, 1)
+		const bullet = scene.add
+			.image(width / 2, 9 * MARGIN, 'dropItem', 'item_bullet.png')
+			.setOrigin(0.5, 1)
+
+		const poisonBox = scene.add
+			.graphics()
+			.lineStyle(8, 0xfb511c, 1)
+			.strokeRoundedRect(width / 2 - 264, 14 * MARGIN + 8, 528, height / 8, 32)
+		const bulletBox = scene.add
+			.graphics()
+			.lineStyle(8, 0x7eaf08, 1)
+			.strokeRoundedRect(width / 2 - 264, 6 * MARGIN + 8, 528, height / 8, 32)
+
+		WebFont.load({
+			google: {
+				families: ['Mali'],
+			},
+			active: function () {
+				const bossTutorialUiStyle = {
+					fontFamily: 'Mali',
+				}
+
+				avoidText
+					.setStyle({
+						...bossTutorialUiStyle,
+						color: 'white',
+						fontWeight: 700,
+					})
+					.setFontSize('6em')
+					.setStroke('#FB511C', 12)
+
+				bulletText
+					.setStyle({
+						...bossTutorialUiStyle,
+						color: 'white',
+						fontWeight: 700,
+					})
+					.setFontSize('6em')
+					.setStroke('#7EAF08', 12)
+			},
+		})
+
+		setTimeout(() => {
+			poison.setVisible(false)
+			bullet.setVisible(false)
+			poisonBox.setVisible(false)
+			bulletBox.setVisible(false)
+			avoidText.setVisible(false)
+			bulletText.setVisible(false)
+		}, 2000)
 	}
 
 	playRandomScene(scene: Phaser.Scene, player: Player): void {
