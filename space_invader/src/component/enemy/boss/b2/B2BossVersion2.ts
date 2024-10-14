@@ -95,7 +95,6 @@ export class B2BossVersion2 extends BossVersion {
 	}
 
 	useSkill(bossSkill: BossSkill, delta: number): void {
-		console.log(this.phase)
 		if (this.skillTimer === 0) {
 			bossSkill.setMovePath(this.movePattern)
 			bossSkill.move()

@@ -25,8 +25,6 @@ export class B2BossSkill extends BossSkill {
         this.skill.destroy()
     }
     attack(): void {
-        console.log("shoot")
-        console.log(this.skill.x, this.skill.y)
         new B2Bullet(this.scene, this.player, this.score, this.skill.x, this.skill.y)
     }
     applySkill(_laser: Phaser.Types.Physics.Arcade.ImageWithDynamicBody): void {
