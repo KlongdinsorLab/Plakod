@@ -11,14 +11,15 @@ import {
 import { Boss } from '../Boss'
 import { BossVersion } from '../BossVersion'
 import { BossSkill } from '../BossSkill'
-import { B2BossVersion1 } from './B2BossVersion1'
-import { B2BossVersion2 } from './B2BossVersion2'
+import { B4BossSkill } from './B4BossSkill'
+import { B4BossVersion1 } from './B4BossVersion1'
+import { B4BossVersion2 } from './B4BossVersion2'
 
 import { BoosterEffect } from 'component/booster/booster'
 import { BossByName } from 'scene/boss/bossInterface'
 let isHit = false
 
-export class B2Boss extends Boss {
+export class B4Boss extends Boss {
 	// private soundManager: SoundManager
 	private phaseCount!: number
 	private bossTimer = 0
@@ -59,7 +60,7 @@ export class B2Boss extends Boss {
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
 
-		// this.bossSkill = new B1BossSkill(this.scene, this, this.player)
+		this.bossSkill = new B4BossSkill(this.scene, this, this.player, this.score)
 		// this.scene.physics.world.enable(this.bossSkill.getBody())
 
 		this.boosterEffect = scene.registry.get('boosterEffect')
@@ -74,6 +75,8 @@ export class B2Boss extends Boss {
 	move(): void {
 		const path = this.bossVersion.getMovePattern(this.scene, this)
 		this.enemy.setPath(path)
+		this.bossSkill.setMovePath(path)
+		this.bossSkill.move()
 		this.enemy.startFollow({
 			positionOnPath: true,
 			duration: 7000,
@@ -106,7 +109,7 @@ export class B2Boss extends Boss {
 		// TODO fixes me
 		// const randomSoundIndex = Math.floor(Math.random() * 4)
 		// this.soundManager.play(this.bossHitSounds[randomSoundIndex], false)
-		this.bossSound.play(`b2-hit${Math.floor(Math.random() * 4) + 1}`)
+		this.bossSound.play(`b4-hit${Math.floor(Math.random() * 4) + 1}`)
 
 		this.enemy.stop()
 		// this.enemy.setTexture('boss')
@@ -152,7 +155,9 @@ export class B2Boss extends Boss {
 	startAttackPhase(): void {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
+		if(this.isSecondPhase) this.bossVersion.handleSecondPhase()
 		this.isStartAttack = true
+		this.bossSkill.setActive(true)
 		setTimeout(
 			() => {
 				this.isAttackPhase = true
@@ -167,6 +172,7 @@ export class B2Boss extends Boss {
 	}
 
 	endAttackPhase(): void {
+		this.bossSkill.setActive(false)
 		if (!this.isSecondPhase) {
 			this.isItemPhase = true
 			this.isAttackPhase = false
@@ -202,7 +208,7 @@ export class B2Boss extends Boss {
 
 	setVersion(lap: number): BossVersion {
 		const version = Math.floor((10 - lap) / BOSS_MULTIPLE_COUNT)
-		const bossVersions = [B2BossVersion1, B2BossVersion2]
+		const bossVersions = [B4BossVersion1, B4BossVersion2]
 		this.bossVersion = new bossVersions[version]()
 
 		this.scene.anims.remove('boss-move')
@@ -224,12 +230,10 @@ export class B2Boss extends Boss {
 
 	playAttack(delta: number): void {
 		this.attack(delta)
-		if (this.isSecondPhase) {
-			this.bossVersion.useSkill(this.bossSkill, delta)
-		}
+        this.bossVersion.useSkill(this.bossSkill, delta)
 	}
 
-	getName(): keyof typeof BossByName {
-		return "B2"
+    getName(): keyof typeof BossByName {
+		return "B4"
 	}
 }

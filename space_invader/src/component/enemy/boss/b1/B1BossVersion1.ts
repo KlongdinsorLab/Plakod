@@ -63,6 +63,10 @@ export class B1BossVersion1 extends BossVersion {
 		return path
 	}
 
+	handleSecondPhase(): void {
+		
+	}
+
 	isShootAttack(): boolean {
 		return false
 	}

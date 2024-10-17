@@ -50,6 +50,7 @@ export default class BossScene extends Phaser.Scene {
 	// TODO move to boss class
 	private boss!: Boss
 	private bossVersion!: BossVersion
+	private bossId!: number
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
@@ -76,7 +77,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boss_background', 'assets/background/bg_boss.jpg')
+		this.load.image('boss_background', `assets/background/b${this.bossId}_boss_map.png`)
 
 		this.load.atlas(
 			'player',
@@ -85,27 +86,15 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'b1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`b${this.bossId}v1`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
 		this.load.atlas(
-			'b1v2',
-			'assets/character/enemy/b1v2_spritesheet.png',
-			'assets/character/enemy/b1v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b2v1',
-			'assets/character/enemy/b2v1_spritesheet.png',
-			'assets/character/enemy/b2v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b2v2',
-			'assets/character/enemy/b2v2_spritesheet.png',
-			'assets/character/enemy/b2v2_spritesheet.json',
+			`b1v2`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -153,6 +142,7 @@ export default class BossScene extends Phaser.Scene {
 
 	init(props: BossInterface) {
 		this.props = props
+		this.bossId = +props.name.substring(props.name.length - 1)
 	}
 
 	async create() {

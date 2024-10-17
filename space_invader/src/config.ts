@@ -20,6 +20,12 @@ export const PHASE_1_BOSS_TIME_MS = 30_000
 export const PHASE_2_BOSS_TIME_MS = 45_000
 export const COLLECT_BULLET_COUNT = 10
 
+export const BOSS_4_DOUBLE_CRESCENT_ANGLE = 10
+export const BOSS_4_CRESCENT_SCALE_DURATION = 1600
+export const BOSS_4_CRESCENT_VELOCITY_Y = 500
+export const BOSS_4_DOUBLE_CRESCENT_VELOCITY_X = 50
+export const BOSS_4_CRESCENT_SCORE_REDUCTION = -200
+
 //export const BULLET_COUNT = 5
 //export const RELOAD_COUNT = 4
 //export const BOSS_MULTIPLE_COUNT = 2

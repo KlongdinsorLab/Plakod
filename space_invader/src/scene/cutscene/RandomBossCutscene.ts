@@ -20,6 +20,7 @@ const bossNameText = {
 export default class RandomBossCutScene extends Phaser.Scene {
 	private boss!: Boss
 	private bossVersion!: BossVersion
+	private bossId!: number
 	private bossName!: keyof typeof BossByName
 	private mcName!: keyof typeof PlayerByName
 	private bgm?: Phaser.Sound.BaseSound
@@ -37,10 +38,12 @@ export default class RandomBossCutScene extends Phaser.Scene {
 	}) {
 		this.mcName = mcName
 		this.bgm = bgm
+		this.bossName = 'B4'
+		this.bossId = +this.bossName.substring(this.bossName.length - 1)
 	}
 
 	preload() {
-		this.load.image('background', 'assets/background/background.jpg')
+		this.load.image('background', `assets/background/b${this.bossId}_normal_map.png`)
 		this.load.script(
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
@@ -52,21 +55,14 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'b1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`b${this.bossId}v1`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
-		this.load.atlas(
-			'b2v1',
-			'assets/character/enemy/b2v1_spritesheet.png',
-			'assets/character/enemy/b2v1_spritesheet.json',
-		)
-
-		this.load.image('boss1_background', 'assets/background/bg_boss.jpg')
 		this.load.image(
-			'boss2_background',
-			'assets/background/bg_boss scene_b2.png',
+			`boss${this.bossId}_background`,
+			`assets/background/b${this.bossId}_boss_map.png`,
 		)
 	}
 
@@ -85,7 +81,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		const score = new Score(this)
 		score.hide()
 
-		this.bossName = this.randomBoss()
+		// this.bossName = this.randomBoss()
 		this.boss = new BossByName[this.bossName](this, player, score, 6)
 		this.bossVersion = this.boss.getVersion()
 
@@ -153,7 +149,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		}
 
 		setTimeout(() => {
-			this.scene.start('game', { bossName: 'B1' })
+			this.scene.start('game', { bossName: this.bossName })
 			new SoundManager(this).stop(this.bgm!)
 		}, 3000)
 	}

@@ -1,9 +1,30 @@
 {
 	"frames": [
 		{
-			"filename": "b2v2_attack_00001.png",
+			"filename": "b2_skill1.png",
 			"frame": {
 				"x": 1,
+				"y": 1,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b2v2_attack_00001.png",
+			"frame": {
+				"x": 228,
 				"y": 1,
 				"w": 225,
 				"h": 225
@@ -24,7 +45,7 @@
 		{
 			"filename": "b2v2_attack_00002.png",
 			"frame": {
-				"x": 228,
+				"x": 455,
 				"y": 1,
 				"w": 225,
 				"h": 225
@@ -45,8 +66,8 @@
 		{
 			"filename": "b2v2_attack_00003.png",
 			"frame": {
-				"x": 455,
-				"y": 1,
+				"x": 1,
+				"y": 228,
 				"w": 225,
 				"h": 225
 			},
@@ -66,7 +87,7 @@
 		{
 			"filename": "b2v2_attack_00004.png",
 			"frame": {
-				"x": 1,
+				"x": 228,
 				"y": 228,
 				"w": 225,
 				"h": 225
@@ -87,7 +108,7 @@
 		{
 			"filename": "b2v2_attack_00005.png",
 			"frame": {
-				"x": 228,
+				"x": 455,
 				"y": 228,
 				"w": 225,
 				"h": 225
@@ -108,27 +129,6 @@
 		{
 			"filename": "b2v2_attack_00006.png",
 			"frame": {
-				"x": 455,
-				"y": 228,
-				"w": 225,
-				"h": 225
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 225,
-				"h": 225
-			},
-			"sourceSize": {
-				"w": 225,
-				"h": 225
-			}
-		},
-		{
-			"filename": "b2v2_attack_00007.png",
-			"frame": {
 				"x": 1,
 				"y": 455,
 				"w": 225,
@@ -148,7 +148,7 @@
 			}
 		},
 		{
-			"filename": "b2v2_attack_00008.png",
+			"filename": "b2v2_attack_00007.png",
 			"frame": {
 				"x": 228,
 				"y": 455,
@@ -169,7 +169,7 @@
 			}
 		},
 		{
-			"filename": "b2v2_attack_00009.png",
+			"filename": "b2v2_attack_00008.png",
 			"frame": {
 				"x": 455,
 				"y": 455,
@@ -190,7 +190,7 @@
 			}
 		},
 		{
-			"filename": "b2v2_attack_00010.png",
+			"filename": "b2v2_attack_00009.png",
 			"frame": {
 				"x": 682,
 				"y": 1,
@@ -211,7 +211,7 @@
 			}
 		},
 		{
-			"filename": "b2v2_attack_00011.png",
+			"filename": "b2v2_attack_00010.png",
 			"frame": {
 				"x": 682,
 				"y": 228,
@@ -232,7 +232,7 @@
 			}
 		},
 		{
-			"filename": "b2v2_attack_00012.png",
+			"filename": "b2v2_attack_00011.png",
 			"frame": {
 				"x": 682,
 				"y": 455,
@@ -253,9 +253,30 @@
 			}
 		},
 		{
-			"filename": "b2v2_hurt.png",
+			"filename": "b2v2_attack_00012.png",
 			"frame": {
 				"x": 1,
+				"y": 682,
+				"w": 225,
+				"h": 225
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 225,
+				"h": 225
+			},
+			"sourceSize": {
+				"w": 225,
+				"h": 225
+			}
+		},
+		{
+			"filename": "b2v2_hurt.png",
+			"frame": {
+				"x": 228,
 				"y": 682,
 				"w": 225,
 				"h": 225
