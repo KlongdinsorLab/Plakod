@@ -271,29 +271,50 @@ export class B4BossVersion1 extends BossVersion {
 
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
-
 		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'avoid_poison')
+			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)
 		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'collect_item')
+			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
+		const meteor = scene.physics.add.staticGroup()
+		meteor
+			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
+			.setOrigin(0.5, 1)
+		meteor
+			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
+			.setOrigin(0.5, 1)
 		const poison = scene.add
-			.image(width / 2, 17 * MARGIN, 'dropItem', 'item_poison.png')
+			.image((2 * width) / 3, 8 * MARGIN, 'bossAsset', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 2, 9 * MARGIN, 'dropItem', 'item_bullet.png')
+			.image(width / 3, 16 * MARGIN, 'bossAsset', 'item_bullet.png')
+			.setOrigin(0.5, 1)
+		const booster = scene.add
+			.image((2 * width) / 3, 16 * MARGIN, 'bossAsset', 'booster_random.png')
 			.setOrigin(0.5, 1)
 
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
-			.strokeRoundedRect(width / 2 - 264, 14 * MARGIN + 8, 528, height / 8, 32)
+			.strokeRoundedRect(
+				width / 6,
+				4 * MARGIN + 16,
+				width / 1.5,
+				height / 6,
+				32,
+			)
 		const bulletBox = scene.add
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
-			.strokeRoundedRect(width / 2 - 264, 6 * MARGIN + 8, 528, height / 8, 32)
+			.strokeRoundedRect(
+				width / 6,
+				12 * MARGIN + 16,
+				width / 1.5,
+				height / 6,
+				32,
+			)
 
 		WebFont.load({
 			google: {
@@ -325,8 +346,10 @@ export class B4BossVersion1 extends BossVersion {
 		})
 
 		setTimeout(() => {
+			meteor.setVisible(false)
 			poison.setVisible(false)
 			bullet.setVisible(false)
+			booster.setVisible(false)
 			poisonBox.setVisible(false)
 			bulletBox.setVisible(false)
 			avoidText.setVisible(false)
