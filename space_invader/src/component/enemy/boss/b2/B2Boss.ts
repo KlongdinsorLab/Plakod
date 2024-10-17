@@ -156,6 +156,7 @@ export class B2Boss extends Boss {
 	startAttackPhase(): void {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
+		if(this.isSecondPhase) this.bossVersion.handleSecondPhase()
 		this.isStartAttack = true
 		setTimeout(
 			() => {

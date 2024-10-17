@@ -7,11 +7,13 @@ import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
 
 export class B2BossVersion1 extends BossVersion {
-	private skillTimer = 0
-	private skillCounter = 0
+	private skillTimer : number
+	private skillCounter : number
 	private movePattern!: Phaser.Curves.Path
 	constructor() {
 		super()
+		this.skillTimer = 0
+		this.skillCounter = 4
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -49,7 +51,6 @@ export class B2BossVersion1 extends BossVersion {
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
-		this.handleNewPhase()
 		const enemy = boss.getBody()
 		const { width } = scene.scale
 		const randomVector = [...Array(5)].map((_) => {
@@ -70,8 +71,8 @@ export class B2BossVersion1 extends BossVersion {
 		return path
 	}
 
-	handleNewPhase() {
-		this.skillCounter = 0
+	handleSecondPhase() : void {
+		this.skillCounter = 4
 		this.skillTimer = 0
 	}
 
@@ -94,9 +95,9 @@ export class B2BossVersion1 extends BossVersion {
 		}
 		this.skillTimer += delta
 
-		if(this.skillTimer >= 6000 && this.skillCounter < 4) {
+		if(this.skillTimer >= 6000 && this.skillCounter > 0) {
 			this.skillTimer -= 6000
-			this.skillCounter++
+			this.skillCounter--
 			bossSkill.attack()
 		}
 	}

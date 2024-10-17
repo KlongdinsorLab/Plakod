@@ -10,13 +10,11 @@ export class B2BossVersion2 extends BossVersion {
 	private skillTimer: number
 	private movePattern!: Phaser.Curves.Path
 	private skillCounter: number
-	private phase: number
 
 	constructor() {
 		super()
 		this.skillTimer = 0
-		this.skillCounter = 0
-		this.phase = 0
+		this.skillCounter = 9
 	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
@@ -53,7 +51,6 @@ export class B2BossVersion2 extends BossVersion {
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
-		this.handleNewPhase()
 		if(this.movePattern) {
 			return this.movePattern
 		}
@@ -76,10 +73,9 @@ export class B2BossVersion2 extends BossVersion {
 		return path
 	}
 
-	handleNewPhase() {
-		this.skillCounter = 0
+	handleSecondPhase() {
+		this.skillCounter = 14
 		this.skillTimer = 0
-		this.phase++
 	}
 
 	isShootAttack(): boolean {
@@ -102,11 +98,10 @@ export class B2BossVersion2 extends BossVersion {
 		this.skillTimer += delta
 
 		if(this.skillTimer >= 3000 &&
-			((this.phase === 1 && this.skillCounter < 9) ||
-			(this.phase === 2 && this.skillCounter < 14))
+			this.skillCounter > 0
 		) {
 			this.skillTimer -= 3000
-			this.skillCounter++
+			this.skillCounter--
 			bossSkill.attack()
 		}
 	}
