@@ -69,6 +69,7 @@ export default class BossEscape2 extends Phaser.Scene {
 						score: this.score,
 						reloadCount: updatedCount,
 						isCompleteBoss: true,
+						bossName: this.boss.getName()
 					})
 					this.tweens.add({
 						targets: smoke,

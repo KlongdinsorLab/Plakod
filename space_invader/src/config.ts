@@ -20,6 +20,8 @@ export const PHASE_1_BOSS_TIME_MS = 30_000
 export const PHASE_2_BOSS_TIME_MS = 45_000
 export const COLLECT_BULLET_COUNT = 10
 
+export const BOSS2_SKILL_SCORE_REDUCTION = -200
+
 //export const BULLET_COUNT = 5
 //export const RELOAD_COUNT = 4
 //export const BOSS_MULTIPLE_COUNT = 2

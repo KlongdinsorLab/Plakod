@@ -50,6 +50,7 @@ export default class BossScene extends Phaser.Scene {
 	// TODO move to boss class
 	private boss!: Boss
 	private bossVersion!: BossVersion
+	private bossId!: number
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private isCompleteItemTutorial!: boolean
@@ -76,7 +77,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boss_background', 'assets/background/bg_boss.jpg')
+		this.load.image('boss_background', `assets/background/b${this.bossId}_boss_map.png`)
 
 		this.load.atlas(
 			'player',
@@ -153,6 +154,7 @@ export default class BossScene extends Phaser.Scene {
 
 	init(props: BossInterface) {
 		this.props = props
+		this.bossId = +props.name.substring(props.name.length - 1)
 	}
 
 	async create() {

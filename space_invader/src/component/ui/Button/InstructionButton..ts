@@ -30,8 +30,9 @@ export default class InstructionButton extends Button{
 			.setOrigin(0.5, 0.5)
 
 		this.button.setInteractive()
-		this.button.on('pointerdown', () => {
-			// TODO: link to instruction
+		this.button.on('pointerup', () => {
+			scene.scene.stop()
+			scene.scene.start('instruction')
 		})
 	}
 

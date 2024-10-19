@@ -16,4 +16,5 @@ export abstract class BossVersion {
 	abstract playItemTutorial(scene: Phaser.Scene): void
 	abstract playRandomScene(scene: Phaser.Scene, player: Player): void
 	abstract hasBoosterDrop(): boolean
+	abstract handleSecondPhase(): void
 }
