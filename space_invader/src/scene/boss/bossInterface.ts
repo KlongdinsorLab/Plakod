@@ -24,22 +24,3 @@ export const BossByName = {
 	B3: B3Boss,
 	B4: B1Boss,
 }
-
-export const BackgroundByBossName = {
-	B1: {
-		gameBackground: 'b1_game_background',
-		bossBackground: 'b1_boss_background',
-	},
-	B2: {
-		gameBackground: 'b1_game_background',
-		bossBackground: 'b1_boss_background',
-	},
-	B3: {
-		gameBackground: 'b3_game_background',
-		bossBackground: 'b3_boss_background',
-	},
-	B4: {
-		gameBackground: 'b1_game_background',
-		bossBackground: 'b1_boss_background',
-	},
-}

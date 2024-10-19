@@ -22,6 +22,11 @@ export const COLLECT_BULLET_COUNT = 10
 
 export const BOSS2_SKILL_SCORE_REDUCTION = -200
 
+export const BOSS3_SKILL_SPEED = 600
+export const BOSS3_PHASE1_SKILL_ANGLE = 6
+export const BOSS3_PHASE2_SKILL_ANGLE = 10
+export const BOSS3_SKILL_GAP = 30
+
 //export const BULLET_COUNT = 5
 //export const RELOAD_COUNT = 4
 //export const BOSS_MULTIPLE_COUNT = 2
@@ -98,50 +103,50 @@ export const ALL_CHARACTER = [
 	},
 ]
 
-export type keyboardInput = 
-	'ONE' | 
-	'TWO' | 
-	'THREE' | 
-	'FOUR' | 
-	'LEFT' | 
-	'RIGHT' |
-	'SPACE'
+export type keyboardInput =
+	| 'ONE'
+	| 'TWO'
+	| 'THREE'
+	| 'FOUR'
+	| 'LEFT'
+	| 'RIGHT'
+	| 'SPACE'
 
-const keyboardOne : keyboardInput = 'ONE'
-const keyboardTwo : keyboardInput = 'TWO'
-const keyboardThree : keyboardInput = 'THREE'
-const keyboardFour : keyboardInput = 'FOUR'
-const keyboardCharge : keyboardInput = 'SPACE'
-const keyboardLeft : keyboardInput = 'LEFT'
-const keyboardRight : keyboardInput = 'RIGHT'
+const keyboardOne: keyboardInput = 'ONE'
+const keyboardTwo: keyboardInput = 'TWO'
+const keyboardThree: keyboardInput = 'THREE'
+const keyboardFour: keyboardInput = 'FOUR'
+const keyboardCharge: keyboardInput = 'SPACE'
+const keyboardLeft: keyboardInput = 'LEFT'
+const keyboardRight: keyboardInput = 'RIGHT'
 
 export const BUTTON_MAP = {
 	'1': {
 		controller: 'B6',
-		keyboard: keyboardOne
+		keyboard: keyboardOne,
 	},
 	'2': {
 		controller: 'B4',
-		keyboard: keyboardTwo
+		keyboard: keyboardTwo,
 	},
 	'3': {
 		controller: 'B7',
-		keyboard: keyboardThree
+		keyboard: keyboardThree,
 	},
 	'4': {
 		controller: 'B5',
-		keyboard: keyboardFour
+		keyboard: keyboardFour,
 	},
-	'charge': {
+	charge: {
 		controller: 'B16',
-		keyboard: keyboardCharge
+		keyboard: keyboardCharge,
 	},
-	'left': {
+	left: {
 		controller: 'LEFT',
-		keyboard: keyboardLeft
+		keyboard: keyboardLeft,
 	},
-	'right': {
+	right: {
 		controller: 'RIGHT',
-		keyboard: keyboardRight
-	}
+		keyboard: keyboardRight,
+	},
 }

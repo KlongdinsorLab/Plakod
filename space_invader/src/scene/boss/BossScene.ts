@@ -16,12 +16,8 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
-import {
-	BackgroundByBossName,
-	BossByName,
-	BossInterface,
-} from './bossInterface'
+import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
+import { BossByName, BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { BoosterFactory } from 'component/item/BoosterFactory'
