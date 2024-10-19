@@ -15,6 +15,7 @@ import { B2BossVersion1 } from './B2BossVersion1'
 import { B2BossVersion2 } from './B2BossVersion2'
 
 import { BoosterEffect } from 'component/booster/booster'
+import { B2BossSkill } from './B2BossSkill'
 import { BossByName } from 'scene/boss/bossInterface'
 let isHit = false
 
@@ -59,10 +60,11 @@ export class B2Boss extends Boss {
 		this.enemy.play('boss-move')
 		this.scene.physics.world.enable(this.enemy)
 
-		// this.bossSkill = new B1BossSkill(this.scene, this, this.player)
+		this.bossSkill = new B2BossSkill(this.scene, this, this.player, this.score)
 		// this.scene.physics.world.enable(this.bossSkill.getBody())
 
 		this.boosterEffect = scene.registry.get('boosterEffect')
+		// this.bossVersion.getMovePattern(this.scene, this)
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody | void {
@@ -74,6 +76,8 @@ export class B2Boss extends Boss {
 	move(): void {
 		const path = this.bossVersion.getMovePattern(this.scene, this)
 		this.enemy.setPath(path)
+		this.bossSkill.setMovePath(path)
+		this.bossSkill.move()
 		this.enemy.startFollow({
 			positionOnPath: true,
 			duration: 7000,
@@ -152,6 +156,7 @@ export class B2Boss extends Boss {
 	startAttackPhase(): void {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
+		if (this.isSecondPhase) this.bossVersion.handleSecondPhase()
 		this.isStartAttack = true
 		setTimeout(
 			() => {
@@ -224,12 +229,10 @@ export class B2Boss extends Boss {
 
 	playAttack(delta: number): void {
 		this.attack(delta)
-		if (this.isSecondPhase) {
-			this.bossVersion.useSkill(this.bossSkill, delta)
-		}
+		this.bossVersion.useSkill(this.bossSkill, delta)
 	}
 
 	getName(): keyof typeof BossByName {
-		return "B2"
+		return 'B2'
 	}
 }

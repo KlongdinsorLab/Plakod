@@ -81,7 +81,10 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', `assets/background/b${this.bossId}_normal_map.png`)
+		this.load.image(
+			'background',
+			`assets/background/b${this.bossId}_normal_map.png`,
+		)
 
 		this.load.atlas(
 			'player',
@@ -158,6 +161,8 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	create() {
+		console.log(this.bossName)
+		console.log(this.bossId)
 		const { width, height } = this.scale
 		this.setGameTimeout()
 
@@ -425,7 +430,7 @@ export default class GameScene extends Phaser.Scene {
 				this.soundManager.stop(this.bgm)
 				this.scene.stop()
 				this.scene.launch(BossCutScene.VS, {
-					name: this.bossName,
+					name: this.bossName ?? 'B1',
 					score: this.score.getScore(),
 					playerX: this.player.getBody().x,
 					reloadCount: this.reloadCount.getCount(),

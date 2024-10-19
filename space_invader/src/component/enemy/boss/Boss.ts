@@ -4,7 +4,6 @@ import Score from 'component/ui/Score'
 import { BossVersion } from './BossVersion'
 import { BossByName } from 'scene/boss/bossInterface'
 
-
 export enum BossPhase {
 	PHASE_1 = 'b1v1',
 	PHASE_2 = 'b1v2',

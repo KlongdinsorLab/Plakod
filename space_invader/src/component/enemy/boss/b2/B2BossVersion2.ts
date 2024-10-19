@@ -7,11 +7,14 @@ import { BossSkill } from '../BossSkill'
 import Player from 'component/player/Player'
 
 export class B2BossVersion2 extends BossVersion {
-	private skillTimer = 0
+	private skillTimer: number
 	private movePattern!: Phaser.Curves.Path
+	private skillCounter: number
 
 	constructor() {
 		super()
+		this.skillTimer = 0
+		this.skillCounter = 9
 	}
 
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
@@ -48,6 +51,9 @@ export class B2BossVersion2 extends BossVersion {
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
+		if (this.movePattern) {
+			return this.movePattern
+		}
 		const enemy = boss.getBody()
 		const { width } = scene.scale
 		const path = new Phaser.Curves.Path(enemy.x, enemy.y)
@@ -67,8 +73,9 @@ export class B2BossVersion2 extends BossVersion {
 		return path
 	}
 
-	handleSecondPhase(): void {
-		
+	handleSecondPhase() {
+		this.skillCounter = 14
+		this.skillTimer = 0
 	}
 
 	isShootAttack(): boolean {
@@ -90,17 +97,11 @@ export class B2BossVersion2 extends BossVersion {
 		}
 		this.skillTimer += delta
 
-		if (this.skillTimer > 12000 && this.skillTimer < 18000) {
-			bossSkill.setActive(true)
-			return
+		if (this.skillTimer >= 3000 && this.skillCounter > 0) {
+			this.skillTimer -= 3000
+			this.skillCounter--
+			bossSkill.attack()
 		}
-
-		if (this.skillTimer > 36000 && this.skillTimer < 42000) {
-			bossSkill.setActive(true)
-			return
-		}
-
-		bossSkill.setActive(false)
 	}
 
 	getDurationPhase1(): number {
@@ -273,6 +274,7 @@ export class B2BossVersion2 extends BossVersion {
 
 		const path = new Phaser.Curves.Path(0, 0)
 		const boss = scene.add.follower(path, width / 2, 300, 'b2v2').setOrigin(0.5)
+		boss.play('boss-hit')
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {
@@ -289,49 +291,37 @@ export class B2BossVersion2 extends BossVersion {
 	playItemTutorial(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 		const avoidText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'avoid_poison')
+			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'avoid_poison')
 			.setOrigin(0.5, 0)
 		const bulletText = I18nSingleton.getInstance()
-			.createTranslatedText(scene, width / 2, 17 * MARGIN, 'collect_item')
+			.createTranslatedText(scene, width / 2, 9 * MARGIN, 'collect_item')
 			.setOrigin(0.5, 0)
 
-		const meteor = scene.physics.add.staticGroup()
-		meteor
-			.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
-			.setOrigin(0.5, 1)
-		meteor
-			.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
-			.setOrigin(0.5, 1)
+		// const meteor = scene.physics.add.staticGroup()
+		// meteor
+		// 	.create(width / 3, 8 * MARGIN, 'bossAsset', 'fireball2.png')
+		// 	.setOrigin(0.5, 1)
+		// meteor
+		// 	.create(width / 3 - 4, 8 * MARGIN - 16, 'bossAsset', 'skull.png')
+		// 	.setOrigin(0.5, 1)
 		const poison = scene.add
-			.image((2 * width) / 3, 8 * MARGIN, 'bossAsset', 'item_poison.png')
+			.image(width / 2, 16 * MARGIN, 'dropItem', 'item_poison.png')
 			.setOrigin(0.5, 1)
 		const bullet = scene.add
-			.image(width / 3, 16 * MARGIN, 'bossAsset', 'item_bullet.png')
+			.image(width / 3, 8 * MARGIN, 'dropItem', 'item_bullet.png')
 			.setOrigin(0.5, 1)
 		const booster = scene.add
-			.image((2 * width) / 3, 16 * MARGIN, 'bossAsset', 'booster_random.png')
+			.image((2 * width) / 3, 8 * MARGIN, 'dropItem', 'booster_random.png')
 			.setOrigin(0.5, 1)
 
 		const poisonBox = scene.add
 			.graphics()
 			.lineStyle(8, 0xfb511c, 1)
-			.strokeRoundedRect(
-				width / 6,
-				4 * MARGIN + 16,
-				width / 1.5,
-				height / 6,
-				32,
-			)
+			.strokeRoundedRect(width / 2 - 264, 12 * MARGIN + 16, 528, height / 6, 32)
 		const bulletBox = scene.add
 			.graphics()
 			.lineStyle(8, 0x7eaf08, 1)
-			.strokeRoundedRect(
-				width / 6,
-				12 * MARGIN + 16,
-				width / 1.5,
-				height / 6,
-				32,
-			)
+			.strokeRoundedRect(width / 2 - 264, 4 * MARGIN + 16, 528, height / 6, 32)
 
 		WebFont.load({
 			google: {
@@ -363,7 +353,7 @@ export class B2BossVersion2 extends BossVersion {
 		})
 
 		setTimeout(() => {
-			meteor.setVisible(false)
+			// meteor.setVisible(false)
 			poison.setVisible(false)
 			bullet.setVisible(false)
 			booster.setVisible(false)
