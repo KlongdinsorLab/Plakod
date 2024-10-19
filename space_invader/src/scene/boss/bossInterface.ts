@@ -23,5 +23,5 @@ export const BossByName = {
 	B1: B1Boss,
 	B2: B2Boss,
 	B3: B3Boss,
-	B4: B1Boss,
+	B4: B4Boss,
 }
