@@ -10,6 +10,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	private props!: BossInterface
 	private bossVersion!: BossVersion
 	private boss!: Boss
+	private bossId!:number
 
 	constructor() {
 		super({ key: BossCutScene.VS })
@@ -18,7 +19,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	preload() {
 		this.load.image(
 			'boss_cutscene_background',
-			'assets/background/bg_set5_cutscene.png',
+			`assets/background/b${this.bossId}_vs_bg.png`,
 		)
 		this.load.atlas(
 			'player',
@@ -27,15 +28,15 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'b1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`b${this.bossId}v1`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
 		this.load.atlas(
-			'b1v2',
-			'assets/character/enemy/b1v2_spritesheet.png',
-			'assets/character/enemy/b1v2_spritesheet.json',
+			`b${this.bossId}v2`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.json`,
 		)
 
 		// this.load.audio('bossVs', 'sound/boss-vs.mp3')
@@ -52,6 +53,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 	init(props: BossInterface) {
 		this.props = props
+		this.bossId = +props.name.substring(props.name.length - 1)
 	}
 
 	create() {

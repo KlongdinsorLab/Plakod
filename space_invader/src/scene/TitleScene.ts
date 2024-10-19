@@ -253,9 +253,14 @@ export default class TitleScene extends Phaser.Scene {
 	async startGame() {
 		if(import.meta.env.VITE_START_SCENE) {
 			// testing flow
-			this.scene.start(import.meta.env.VITE_START_SCENE || 'home', {
-				bgm: this.bgm,
-			})
+			if(import.meta.env.VITE_START_SCENE_INIT){
+				console.log(JSON.parse(import.meta.env.VITE_START_SCENE_INIT))
+				this.scene.start(import.meta.env.VITE_START_SCENE, JSON.parse(import.meta.env.VITE_START_SCENE_INIT))
+			}
+			else{
+				this.scene.start(import.meta.env.VITE_START_SCENE)
+			}
+			
 		}
 		else {
 			// normal flow
