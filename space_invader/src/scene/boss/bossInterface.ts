@@ -3,6 +3,7 @@ import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { B1Boss } from 'component/enemy/boss/b1/B1Boss'
 import { B2Boss } from 'component/enemy/boss/b2/B2Boss'
 import { B3Boss } from 'component/enemy/boss/b3/B3Boss'
+import { B4Boss } from 'component/enemy/boss/b4/B4Boss'
 
 export interface BossInterface {
 	name: BossName

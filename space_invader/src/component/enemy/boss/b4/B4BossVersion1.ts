@@ -6,14 +6,14 @@ import Player from 'component/player/Player'
 import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
 
-export class B2BossVersion1 extends BossVersion {
-	private skillTimer: number
-	private skillCounter: number
-	private movePattern!: Phaser.Curves.Path
+export class B4BossVersion1 extends BossVersion {
+    private skillTimer : number
+    private skillCounter : number   
+    private movePattern!: Phaser.Curves.Path
 	constructor() {
 		super()
-		this.skillTimer = 0
-		this.skillCounter = 4
+        this.skillTimer = 0
+        this.skillCounter = 4
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -22,8 +22,8 @@ export class B2BossVersion1 extends BossVersion {
 		scene.anims.remove('boss-hit')
 		scene.anims.create({
 			key: 'boss-move',
-			frames: scene.anims.generateFrameNames('b2v1', {
-				prefix: 'b2v1_attack_',
+			frames: scene.anims.generateFrameNames('b4v1', {
+				prefix: 'b4v1_attack_',
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -35,8 +35,8 @@ export class B2BossVersion1 extends BossVersion {
 
 		scene.anims.create({
 			key: 'boss-hit',
-			frames: scene.anims.generateFrameNames('b2v1', {
-				prefix: 'b2v1_hurt_',
+			frames: scene.anims.generateFrameNames('b4v1', {
+				prefix: 'b4v1_hurt_',
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -46,7 +46,7 @@ export class B2BossVersion1 extends BossVersion {
 			repeat: -1,
 		})
 
-		return scene.add.follower(path, width / 2, -140, 'b2v1').setOrigin(0.5)
+		return scene.add.follower(path, width / 2, -140, 'b4v1').setOrigin(0.5)
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
@@ -66,14 +66,14 @@ export class B2BossVersion1 extends BossVersion {
 			.lineTo(width / 2, 100)
 			.lineTo(width + 200, 400)
 			.lineTo(-200, 400)
-		this.movePattern = path
+        this.movePattern = path
 		return path
 	}
 
-	handleSecondPhase(): void {
-		this.skillCounter = 4
-		this.skillTimer = 0
-	}
+    handleSecondPhase() {
+        this.skillTimer = 0
+        this.skillCounter = 7
+    }
 
 	isShootAttack(): boolean {
 		return false
@@ -87,19 +87,19 @@ export class B2BossVersion1 extends BossVersion {
 		return false
 	}
 
-	useSkill(bossSkill: BossSkill, delta: number): void {
-		if (this.skillTimer === 0) {
-			bossSkill.setMovePath(this.movePattern)
-			bossSkill.move()
-		}
-		this.skillTimer += delta
+	useSkill(bossSkill : BossSkill, delta : number): void {
+        if (this.skillTimer === 0) {
+            bossSkill.setMovePath(this.movePattern)
+            bossSkill.move()
+        }
+        this.skillTimer += delta
 
-		if (this.skillTimer >= 6000 && this.skillCounter > 0) {
-			this.skillTimer -= 6000
-			this.skillCounter--
-			bossSkill.attack()
-		}
-	}
+        if (this.skillTimer >= 6000 && this.skillCounter > 0) {
+            this.skillTimer -= 6000
+            this.skillCounter--
+            bossSkill.attack()
+        }
+    }
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS
@@ -127,7 +127,7 @@ export class B2BossVersion1 extends BossVersion {
 		rectangleBox.angle = -30
 
 		const bossImage = scene.add
-			.image(-350, 500, 'b2v1', 'b2v1_attack_00001.png')
+			.image(-350, 500, 'b4v1', 'b4v1_attack_00001.png')
 			.setOrigin(0.5, 1)
 			.setScale(2.0)
 		const bossText = scene.add.text(width / 2, 760, 'VS').setOrigin(0.5, 1)
@@ -204,7 +204,7 @@ export class B2BossVersion1 extends BossVersion {
 		const path = new Phaser.Curves.Path(0, 0)
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
-		const boss = scene.add.follower(path, width / 2, 300, 'b2v1').setOrigin(0.5)
+		const boss = scene.add.follower(path, width / 2, 300, 'b4v1').setOrigin(0.5)
 		boss.play('boss-hit')
 
 		setTimeout(() => {
@@ -254,8 +254,8 @@ export class B2BossVersion1 extends BossVersion {
 		})
 
 		const path = new Phaser.Curves.Path(0, 0)
-		const boss = scene.add.follower(path, width / 2, 300, 'b2v1').setOrigin(0.5)
-		boss.play('boss-hit')
+		const boss = scene.add.follower(path, width / 2, 300, 'b4v1').setOrigin(0.5)
+        boss.play('boss-hit')
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {
@@ -338,12 +338,12 @@ export class B2BossVersion1 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const bg = scene.add
-			.tileSprite(0, 0, width, height, 'boss2_background')
+			.tileSprite(0, 0, width, height, 'boss4_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
 		const bossImage = scene.add
-			.image(870, height - 275, 'b2v1', 'b2v1_attack_00001.png')
+			.image(870, height - 275, 'b4v1', 'b4v1_attack_00001.png')
 			.setOrigin(0.5, 1)
 			.setScale(2.5)
 		const polygon = scene.add

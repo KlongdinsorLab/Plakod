@@ -38,7 +38,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 	}) {
 		this.mcName = mcName
 		this.bgm = bgm
-		this.bossName = 'B2'
+		this.bossName = 'B1'
 		this.bossId = +this.bossName.substring(this.bossName.length - 1)
 	}
 
@@ -58,21 +58,14 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'b1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`b${this.bossId}v1`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
-		this.load.atlas(
-			'b2v1',
-			'assets/character/enemy/b2v1_spritesheet.png',
-			'assets/character/enemy/b2v1_spritesheet.json',
-		)
-
-		this.load.image('boss1_background', 'assets/background/bg_boss.jpg')
 		this.load.image(
-			'boss2_background',
-			'assets/background/bg_boss scene_b2.png',
+			`boss${this.bossId}_background`,
+			`assets/background/b${this.bossId}_boss_map.png`,
 		)
 	}
 
@@ -91,7 +84,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		const score = new Score(this)
 		score.hide()
 
-		// this.bossName = 'B2'
+		// this.bossName = this.randomBoss()
 		this.boss = new BossByName[this.bossName](this, player, score, 6)
 		this.bossVersion = this.boss.getVersion()
 

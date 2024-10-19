@@ -62,5 +62,5 @@ export abstract class Boss extends Enemy {
 	abstract getVersion(): BossVersion
 	abstract getSkill(): any
 	abstract playAttack(delta: number): void
-	abstract getName() : keyof typeof BossByName
+	abstract getName(): keyof typeof BossByName
 }

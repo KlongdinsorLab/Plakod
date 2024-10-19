@@ -81,7 +81,6 @@ export default class BossScene extends Phaser.Scene {
 			'boss_background',
 			`assets/background/b${this.bossId}_boss_map.png`,
 		)
-		this.load.image('obstacle', 'assets/character/enemy/obstacle.png')
 
 		this.load.atlas(
 			'player',
@@ -90,39 +89,15 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'b1v1',
-			'assets/character/enemy/b1v1_spritesheet.png',
-			'assets/character/enemy/b1v1_spritesheet.json',
+			`b${this.bossId}v1`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v1_spritesheet.json`,
 		)
 
 		this.load.atlas(
-			'b1v2',
-			'assets/character/enemy/b1v2_spritesheet.png',
-			'assets/character/enemy/b1v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b2v1',
-			'assets/character/enemy/b2v1_spritesheet.png',
-			'assets/character/enemy/b2v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b2v2',
-			'assets/character/enemy/b2v2_spritesheet.png',
-			'assets/character/enemy/b2v2_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b3v1',
-			'assets/character/enemy/b3v1_spritesheet.png',
-			'assets/character/enemy/b3v1_spritesheet.json',
-		)
-
-		this.load.atlas(
-			'b3v2',
-			'assets/character/enemy/b3v2_spritesheet.png',
-			'assets/character/enemy/b3v2_spritesheet.json',
+			`b${this.bossId}v2`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.png`,
+			`assets/character/enemy/b${this.bossId}v2_spritesheet.json`,
 		)
 
 		this.load.atlas(
