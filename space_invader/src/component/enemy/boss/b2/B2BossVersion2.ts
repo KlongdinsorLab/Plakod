@@ -51,7 +51,7 @@ export class B2BossVersion2 extends BossVersion {
 	}
 
 	getMovePattern(scene: Phaser.Scene, boss: Boss): Phaser.Curves.Path {
-		if(this.movePattern) {
+		if (this.movePattern) {
 			return this.movePattern
 		}
 		const enemy = boss.getBody()
@@ -97,9 +97,7 @@ export class B2BossVersion2 extends BossVersion {
 		}
 		this.skillTimer += delta
 
-		if(this.skillTimer >= 3000 &&
-			this.skillCounter > 0
-		) {
+		if (this.skillTimer >= 3000 && this.skillCounter > 0) {
 			this.skillTimer -= 3000
 			this.skillCounter--
 			bossSkill.attack()
