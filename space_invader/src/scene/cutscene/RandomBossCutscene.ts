@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Boss } from 'component/enemy/boss/Boss'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 // import Player from 'component/player/Player'
@@ -103,7 +104,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		// 	.createTranslatedText(this, 0, 0, bossNameText[this.bossName])
 		// 	.setVisible(false)
 
-		const username = this.scene.scene.registry.get("username")
+		const username = this.scene.scene.registry.get('username')
 
 		const dialogText = i18n
 			.createTranslatedText(
@@ -140,6 +141,16 @@ export default class RandomBossCutScene extends Phaser.Scene {
 					.setFontSize('36px')
 			},
 		})
+
+		const isCompleteTutorial = localStorage.getItem('tutorial') || false
+
+		if (!isCompleteTutorial) {
+			setTimeout(() => {
+				this.scene.start('tutorial character')
+				new SoundManager(this).stop(this.bgm!)
+			}, 3000)
+			return
+		}
 
 		setTimeout(() => {
 			this.scene.start('game', { bossName: 'B1' })
