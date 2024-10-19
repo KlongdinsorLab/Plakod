@@ -10,7 +10,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	private props!: BossInterface
 	private bossVersion!: BossVersion
 	private boss!: Boss
-	private bossId!:number
+	private bossId!: number
 
 	constructor() {
 		super({ key: BossCutScene.VS })
@@ -61,7 +61,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 		// const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
 		// const bossSound = this.sound.addAudioSprite('bossSound')
 		// tutorialSound.play('boss-vs')
-		
+
 		// setTimeout(() => bossSound.play('b1-vs'), 500)
 
 		// const soundManager = new SoundManager(this)

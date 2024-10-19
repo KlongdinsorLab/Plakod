@@ -4,7 +4,6 @@ import Score from 'component/ui/Score'
 import { BossVersion } from './BossVersion'
 import { BossByName } from 'scene/boss/bossInterface'
 
-
 export enum BossPhase {
 	PHASE_1 = 'b1v1',
 	PHASE_2 = 'b1v2',
@@ -25,6 +24,9 @@ export enum BossTutorialScene {
 
 export enum BossName {
 	B1 = 'B1',
+	B2 = 'B2',
+	B3 = 'B3',
+	B4 = 'B4',
 }
 
 interface Constructable<T> {

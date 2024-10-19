@@ -43,7 +43,10 @@ export default class RandomBossCutScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', `assets/background/b${this.bossId}_normal_map.png`)
+		this.load.image(
+			'background',
+			`assets/background/b${this.bossId}_normal_map.png`,
+		)
 		this.load.script(
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',

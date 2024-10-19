@@ -16,8 +16,12 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene } from 'component/enemy/boss/Boss'
-import { BossByName, BossInterface } from './bossInterface'
+import { Boss, BossCutScene, BossName } from 'component/enemy/boss/Boss'
+import {
+	BackgroundByBossName,
+	BossByName,
+	BossInterface,
+} from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { BossVersion } from 'component/enemy/boss/BossVersion'
 import { BoosterFactory } from 'component/item/BoosterFactory'
@@ -77,7 +81,11 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('boss_background', `assets/background/b${this.bossId}_boss_map.png`)
+		this.load.image(
+			'boss_background',
+			`assets/background/b${this.bossId}_boss_map.png`,
+		)
+		this.load.image('obstacle', 'assets/character/enemy/obstacle.png')
 
 		this.load.atlas(
 			'player',
@@ -107,6 +115,18 @@ export default class BossScene extends Phaser.Scene {
 			'b2v2',
 			'assets/character/enemy/b2v2_spritesheet.png',
 			'assets/character/enemy/b2v2_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b3v1',
+			'assets/character/enemy/b3v1_spritesheet.png',
+			'assets/character/enemy/b3v1_spritesheet.json',
+		)
+
+		this.load.atlas(
+			'b3v2',
+			'assets/character/enemy/b3v2_spritesheet.png',
+			'assets/character/enemy/b3v2_spritesheet.json',
 		)
 
 		this.load.atlas(
@@ -176,7 +196,7 @@ export default class BossScene extends Phaser.Scene {
 		this.bossLayer = this.add.layer()
 
 		this.player = new Player(this, this.bossLayer)
-		this.player.updatePosition(playerX)
+		this.player.updatePosition(playerX ?? width / 2)
 		this.player.addChargeParticle()
 
 		this.menu = new Menu(this)
@@ -188,10 +208,7 @@ export default class BossScene extends Phaser.Scene {
 		this.reloadCount.getBody().setOrigin(0.5, 0)
 		this.reloadCount.setCount(reloadCount)
 
-		// const classRef = await importClassByName<Boss>(`${name}Boss`);
-		// this.boss = new classRef(this, this.player, this.score)
-
-		this.boss = new BossByName[name ?? 'B1'](
+		this.boss = new BossByName[name ?? 'B3'](
 			this,
 			this.player,
 			this.score,
@@ -220,17 +237,32 @@ export default class BossScene extends Phaser.Scene {
 
 		this.boosterEffect = this.scene.scene.registry.get('boosterEffect')
 
+		this.boosterEffect = {
+			remainingUses: 0,
+			remainingTime: 0,
+			hitMeteorScore: 1,
+			laserFrequency: 1,
+			bulletCount: 1,
+			shootingPhase: 1,
+			destroyMeteorScore: 1,
+			laserFactory: 'single',
+			releasedBullet: 1,
+			bulletMultiply: 1,
+			score: 1,
+		}
+
 		if (
-			this.boosterEffect.remainingUses === 0 &&
-			this.boosterEffect.remainingTime > 0 &&
-			this.boosterEffect.remainingTime < 15
+			this.boosterEffect?.remainingUses === 0 &&
+			this.boosterEffect?.remainingTime > 0 &&
+			this.boosterEffect?.remainingTime < 15
 		) {
-			this.player.activateShield(this.boosterEffect.remainingTime)
+			this.player.activateShield(this.boosterEffect?.remainingTime)
 		}
 
 		this.laserFactory = new LaserFactoryByName[
 			this.boosterEffect.laserFactory
 		]()
+		console.log(this.laserFactory)
 
 		this.collectBulletBar = new CollectBulletBar(this)
 

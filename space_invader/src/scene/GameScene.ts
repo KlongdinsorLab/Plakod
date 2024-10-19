@@ -53,7 +53,7 @@ export default class GameScene extends Phaser.Scene {
 	private isCompleteBoss = false
 	private menu!: Menu
 	private bossName!: keyof typeof BossByName
-	private bossId!:number
+	private bossId!: number
 
 	private event!: EventEmitter
 	private gameLayer!: Phaser.GameObjects.Layer
@@ -81,7 +81,10 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', `assets/background/b${this.bossId}_normal_map.png`)
+		this.load.image(
+			'background',
+			`assets/background/b${this.bossId}_normal_map.png`,
+		)
 
 		this.load.atlas(
 			'player',
@@ -427,7 +430,7 @@ export default class GameScene extends Phaser.Scene {
 				this.soundManager.stop(this.bgm)
 				this.scene.stop()
 				this.scene.launch(BossCutScene.VS, {
-					name: this.bossName ?? "B1",
+					name: this.bossName ?? 'B1',
 					score: this.score.getScore(),
 					playerX: this.player.getBody().x,
 					reloadCount: this.reloadCount.getCount(),
