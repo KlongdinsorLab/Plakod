@@ -270,37 +270,37 @@ export default class GameScene extends Phaser.Scene {
 			score: 1,
 		}
 		if (this.reloadCountNumber > 5) {
-			// boosters.forEach((booster) => {
-			// 	this.boosterByName = booster
-			// 	this.booster = new boosterByName[this.boosterByName]()
-			// 	const boosterEffect = this.booster.getBoosterEffect()
-			// 	this.boosterEffect = {
-			// 		remainingUses:
-			// 			this.boosterEffect.remainingUses + boosterEffect.remainingUses,
-			// 		remainingTime:
-			// 			this.boosterEffect.remainingTime + boosterEffect.remainingTime,
-			// 		hitMeteorScore:
-			// 			this.boosterEffect.hitMeteorScore - boosterEffect.hitMeteorScore,
-			// 		laserFrequency:
-			// 			this.boosterEffect.laserFrequency - boosterEffect.laserFrequency,
-			// 		bulletCount:
-			// 			this.boosterEffect.bulletCount + boosterEffect.bulletCount,
-			// 		shootingPhase:
-			// 			this.boosterEffect.shootingPhase + boosterEffect.shootingPhase,
-			// 		destroyMeteorScore:
-			// 			this.boosterEffect.destroyMeteorScore +
-			// 			boosterEffect.destroyMeteorScore,
-			// 		laserFactory:
-			// 			this.boosterEffect.laserFactory === 'triple'
-			// 				? this.boosterEffect.laserFactory
-			// 				: boosterEffect.laserFactory,
-			// 		releasedBullet:
-			// 			this.boosterEffect.releasedBullet + boosterEffect.releasedBullet,
-			// 		bulletMultiply:
-			// 			this.boosterEffect.bulletMultiply + boosterEffect.bulletMultiply,
-			// 		score: this.boosterEffect.score + boosterEffect.score,
-			// 	}
-			// })
+			boosters.forEach((booster) => {
+				this.boosterByName = booster
+				this.booster = new boosterByName[this.boosterByName]()
+				const boosterEffect = this.booster.getBoosterEffect()
+				this.boosterEffect = {
+					remainingUses:
+						this.boosterEffect.remainingUses + boosterEffect.remainingUses,
+					remainingTime:
+						this.boosterEffect.remainingTime + boosterEffect.remainingTime,
+					hitMeteorScore:
+						this.boosterEffect.hitMeteorScore - boosterEffect.hitMeteorScore,
+					laserFrequency:
+						this.boosterEffect.laserFrequency - boosterEffect.laserFrequency,
+					bulletCount:
+						this.boosterEffect.bulletCount + boosterEffect.bulletCount,
+					shootingPhase:
+						this.boosterEffect.shootingPhase + boosterEffect.shootingPhase,
+					destroyMeteorScore:
+						this.boosterEffect.destroyMeteorScore +
+						boosterEffect.destroyMeteorScore,
+					laserFactory:
+						this.boosterEffect.laserFactory === 'triple'
+							? this.boosterEffect.laserFactory
+							: boosterEffect.laserFactory,
+					releasedBullet:
+						this.boosterEffect.releasedBullet + boosterEffect.releasedBullet,
+					bulletMultiply:
+						this.boosterEffect.bulletMultiply + boosterEffect.bulletMultiply,
+					score: this.boosterEffect.score + boosterEffect.score,
+				}
+			})
 			this.scene.scene.registry.set('boosterEffect', this.boosterEffect)
 		}
 		this.laserFactory = new LaserFactoryByName[
