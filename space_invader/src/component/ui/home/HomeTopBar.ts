@@ -9,6 +9,10 @@ const Difficulty = {
 
 export default class HomeTopBar {
 	constructor(scene: Phaser.Scene) {
+		// TODO get from registry
+		let progression = 9
+		if(progression < 10) progression = 10
+
 		// Level Progress
 		const currentLevel = scene.registry.get('playerLevel').level
 		scene.add
@@ -21,10 +25,18 @@ export default class HomeTopBar {
 			.graphics()
 			.fillStyle(0xffffff, 0.5)
 			.fillRoundedRect(MARGIN, 2 * MARGIN + 40, 240, 24, 10)
+
+		scene.add
+			.graphics()
+			.fillStyle(0x43a99e)
+			.fillRoundedRect(MARGIN, 2 * MARGIN + 40, 240 * progression / 100, 24, 10)
+
 		scene.add
 			.graphics()
 			.lineStyle(3, 0x57453b, 1)
 			.strokeRoundedRect(MARGIN, 2 * MARGIN + 40, 240, 24, 32)
+
+		
 
 		// Airflow level
 		scene.add
