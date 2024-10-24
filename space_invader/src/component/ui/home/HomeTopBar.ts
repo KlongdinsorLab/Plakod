@@ -2,15 +2,15 @@ import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
 const Difficulty = {
-	easy: 'difficulty_easy',
-	medium: 'difficulty_medium',
-	hard: 'difficulty_hard',
+	1: 'difficulty_easy',
+	2: 'difficulty_medium',
+	3: 'difficulty_hard',
 }
 
 export default class HomeTopBar {
 	constructor(scene: Phaser.Scene) {
 		// Level Progress
-		const currentLevel = 10
+		const currentLevel = scene.registry.get('playerLevel').level
 		scene.add
 			.image(MARGIN + 120, 40, 'landing_page', 'logo_level.png')
 			.setOrigin(0.5, 0)
@@ -38,10 +38,11 @@ export default class HomeTopBar {
 		scene.add
 			.image(336, 40, 'landing_page', 'bar_airflow.png')
 			.setOrigin(0.5, 0)
-		// TODO: Choosing airflow
+		
+		const airflowNumber = scene.registry.get('airflow')
 		const airFlowLevelText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, 336 + 28, 40, 'home_airflow_level', {
-				level: 600,
+				level: airflowNumber,
 			})
 			.setAlign('center')
 
@@ -57,13 +58,14 @@ export default class HomeTopBar {
 		scene.add
 			.image(336, 40 + 56 + 8, 'landing_page', 'bar_difficulty.png')
 			.setOrigin(0.5, 0)
-		// TODO: Choosing difficulty
+		
+		const difficultyId: keyof typeof Difficulty = scene.registry.get('difficulty').id ?? 1
 		const difficultyText = I18nSingleton.getInstance()
 			.createTranslatedText(
 				scene,
 				336 + 336 / 2,
 				40 + 56 + 8 + 6 + 24,
-				`${Difficulty['easy']}`,
+				`${Difficulty[difficultyId]}`,
 			)
 			.setAlign('center')
 			.setOrigin(0.5, 0.5)

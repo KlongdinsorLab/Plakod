@@ -119,7 +119,6 @@ export default class HomeScene extends Phaser.Scene {
 			this.scene.scene.registry.get('playToday')[1],
 		)
 
-		// TODO: call api
 		this.playCount = this.scene.scene.registry.get('playCount')
 
 		this.add
