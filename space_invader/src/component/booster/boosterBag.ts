@@ -7,7 +7,7 @@ import i18next from "i18next"
 export default class BoosterBag{
     private scene: Phaser.Scene
     private boosterUI: BoosterUI[] = []
-    private boosterJson:{ boosterId: number, expired_at: string | null }[]
+    private boosterJson:{ booster_id: number, expired_at: string | null }[]
 
     private maxBoostersPerLine = 4
     private maxLines = 2
@@ -21,8 +21,8 @@ export default class BoosterBag{
 
     private totalBooster: number = 0
     private boosterAmount: number[] = [0, 0, 0, 0, 0, 0, 0]
-    private boosterLimitedTime: { boosterId: number, expired_at: string | null }[] = []
-    private sortedBooster: { boosterId: number, expired_at?: string | null, amount?:number }[] = []
+    private boosterLimitedTime: { booster_id: number, expired_at: string | null }[] = []
+    private sortedBooster: { booster_id: number, expired_at?: string | null, amount?:number }[] = []
 
     private descriptionBackground!: Phaser.GameObjects.Graphics
     private descriptionTitle!: Phaser.GameObjects.Text
@@ -40,7 +40,7 @@ export default class BoosterBag{
 
     private isHide: boolean = false
 
-    constructor(scene:Phaser.Scene, boosterJson:{ boosterId: number, expired_at: string | null }[]){
+    constructor(scene:Phaser.Scene, boosterJson:{ booster_id: number, expired_at: string | null }[]){
         this.scene = scene
         this.boosterJson = boosterJson
         this.countBooster()
@@ -65,7 +65,7 @@ export default class BoosterBag{
                     x: this.startPosition.x + (this.boosterSize.width + this.gapSize.width) * j, 
                     y: this.startPosition.y + (this.boosterSize.height + this.gapSize.height) * i
                 }
-                const boosterName = this.getBoosterName(this.sortedBooster[this.index].boosterId)
+                const boosterName = this.getBoosterName(this.sortedBooster[this.index].booster_id)
                 this.boosterUI[this.index] = new BoosterUI(
                     this.scene, 
                     boosterName, 
@@ -275,7 +275,7 @@ export default class BoosterBag{
         this.boosterJson.forEach((booster)=>{
             this.totalBooster++
             if(booster.expired_at === null){
-                this.boosterAmount[booster.boosterId-1]++
+                this.boosterAmount[booster.booster_id-1]++
             }else{
                 this.boosterLimitedTime.push(booster)
             }
@@ -285,11 +285,11 @@ export default class BoosterBag{
         this.sortedBooster = this.boosterLimitedTime.concat()
         this.boosterAmount.forEach((amount, index)=>{
             if(amount>0){
-                this.sortedBooster.push({boosterId: index+1, amount: amount})
+                this.sortedBooster.push({booster_id: index+1, amount: amount})
             }
         })
     }
-    sortBoosterByTime(boosters: { boosterId: number, expired_at: string | null }[]): { boosterId: number, expired_at: string | null }[]{
+    sortBoosterByTime(boosters: { booster_id: number, expired_at: string | null }[]): { booster_id: number, expired_at: string | null }[]{
         return boosters.sort((a, b) => {
             if (a.expired_at === null) return 1
             if (b.expired_at === null) return -1
@@ -304,8 +304,8 @@ export default class BoosterBag{
     setPageIndex(index: number):void{
         this.pageIndex = index
     }
-    getBoosterName(boosterId: number): BoosterName{
-        switch(boosterId){
+    getBoosterName(booster_id: number): BoosterName{
+        switch(booster_id){
             case 1: return BoosterName.BOOSTER_1
             case 2: return BoosterName.BOOSTER_2
             case 3: return BoosterName.BOOSTER_3
