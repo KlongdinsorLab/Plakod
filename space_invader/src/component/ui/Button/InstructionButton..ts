@@ -32,7 +32,7 @@ export default class InstructionButton extends Button{
 		this.button.setInteractive()
 		this.button.on('pointerup', () => {
 			scene.scene.stop()
-			scene.scene.start('instruction')
+			scene.scene.start('instruction', {key : this.scene.scene.key})
 		})
 	}
 

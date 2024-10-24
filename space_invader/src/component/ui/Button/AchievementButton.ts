@@ -16,7 +16,7 @@ export default class AchievementButton extends Button {
 			.setOrigin(0.5, 0)
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			this.scene.scene.start('mybag')
+			this.scene.scene.start('mybag', {key: this.scene.scene.key})
 			// TODO: Link to achievement
 		})
 	}
