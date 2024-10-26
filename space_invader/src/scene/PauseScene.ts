@@ -203,7 +203,7 @@ export default class PauseScene extends Phaser.Scene {
 		const handleHomeClick = async () => {
 			try {
 				await apiService.updateGameSession({
-					score: this.score,
+					score: Math.round(this.score),
 					lap: this.lap,
 				})
 				apiService.endGameSession()
@@ -317,7 +317,7 @@ export default class PauseScene extends Phaser.Scene {
 					lap: this.lap,
 				})
 				await apiService.updateGameSession({
-					score: this.score,
+					score: Math.round(this.score),
 					lap: this.lap,
 				})
 				apiService.endGameSession()
