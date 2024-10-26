@@ -163,7 +163,7 @@ export default class RedeemScene extends Phaser.Scene {
             const gameSession = ( await apiService.startGameSession(0) ).response
             console.log(gameSession)
             this.scene.scene.registry.set('booster_drop_id', gameSession.booster_drop_id)
-            this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+            this.scene.scene.registry.set('boss_id', 4)
             
             this.destroy();
             this.scene.stop();
