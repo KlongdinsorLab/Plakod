@@ -149,6 +149,7 @@ export default class EndGameScene extends Phaser.Scene {
 
 	async create() {
 		this.isLoading = true
+		await this.updatePlayToday()
 
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
@@ -324,7 +325,7 @@ export default class EndGameScene extends Phaser.Scene {
 		this.isLoading = false
 	}
 
-	update(_: number, __: number): void {
+	update(): void {
 		if (this.isLoading) return
 
 		this.isHeartEmpty =
@@ -360,16 +361,16 @@ export default class EndGameScene extends Phaser.Scene {
 
 		if (this.vas?.getIsCompleteVas()) {
 			this.vas.clearPopup()
-			this.ShowUI()
+			this.showUI()
 			return
 		}
 
 		if (this.playerJson.totalPlayed % VAS_COUNT != 0) {
-			this.ShowUI()
+			this.showUI()
 		}
 	}
 
-	ShowUI(): void {
+	showUI(): void {
 		this.isHeartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if (!this.isHeartEmpty && this.playerJson.todayPlayed < MAX_PLAYED) {
@@ -395,5 +396,31 @@ export default class EndGameScene extends Phaser.Scene {
 
 		this.heart1.getBody().setVisible(true)
 		this.heart2.getBody().setVisible(true)
+	}
+
+	private async updatePlayToday() {
+		const apiService = new supabaseAPIService()
+		const response = await apiService.getPlayer()
+		const data = response.response
+		const playToday = this.handlePlayToday(data.play_today)
+		data.play_today = playToday
+
+		this.scene.scene.registry.set('playToday', playToday)
+	}
+
+	sortDate(dates: Date[]): Date[] {
+		dates.sort((a: Date, b: Date) => {
+			return b.getTime() - a.getTime()
+		})
+		return dates
+	}
+
+	handlePlayToday(playTodayString: string[]) {
+		const playTodayDate: Date[] = []
+		playTodayString.forEach((element) => {
+			playTodayDate.push(new Date(element))
+		})
+		this.sortDate(playTodayDate)
+		return playTodayDate
 	}
 }
