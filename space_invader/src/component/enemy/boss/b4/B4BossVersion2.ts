@@ -112,7 +112,7 @@ export class B4BossVersion2 extends BossVersion {
 	playVsScene(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 		scene.add
-			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
+			.tileSprite(0, 0, width, height, 'background_b4_vs')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 

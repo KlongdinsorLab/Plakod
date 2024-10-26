@@ -404,8 +404,10 @@ export default class Player {
 	playRandomBossScene(scene: Phaser.Scene): void {
 		const { width, height } = scene.scale
 
+		const bossId = this.scene.registry.get('boss_id')
+
 		const bg = scene.add
-			.tileSprite(width / 2, 0, width, height, 'background')
+			.tileSprite(width / 2, 0, width, height, `background_b${bossId}_normal`)
 			.setOrigin(0.5, 0.5)
 			.setScrollFactor(0, 0)
 			.setScale(1.15)
