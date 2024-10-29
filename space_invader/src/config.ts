@@ -1,3 +1,5 @@
+import { PlayerByName } from 'component/player/playerInterface'
+
 export const SCREEN_WIDTH = 720
 export const SCREEN_HEIGHT = 1280
 export const MARGIN = 48
@@ -91,21 +93,29 @@ export const TOTAL_MC = 2
 
 export const INHALE_GAUGE_SECTIONS = 5
 
-export const ALL_CHARACTER = [
+export const ALL_CHARACTER: {
+	characterId: number
+	name: string
+	detail: string
+	mcName: keyof typeof PlayerByName
+}[] = [
 	{
 		characterId: 1,
 		name: 'นักผจญภัย',
 		detail: '',
+		mcName: 'mc1',
 	},
 	{
 		characterId: 2,
 		name: 'นักเวทย์',
 		detail: '',
+		mcName: 'mc2',
 	},
 	{
 		characterId: 3,
 		name: 'จอมโจร',
 		detail: '',
+		mcName: 'mc3',
 	},
 ]
 

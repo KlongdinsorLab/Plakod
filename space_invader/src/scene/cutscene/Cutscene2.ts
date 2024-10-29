@@ -1,12 +1,11 @@
 import { PlayerByName } from 'component/player/playerInterface'
-import { MARGIN } from 'config'
+import { ALL_CHARACTER, MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
-
 export default class Cutscene1 extends Phaser.Scene {
-    private mcName!: keyof typeof PlayerByName
+	private mcName!: keyof typeof PlayerByName
 	private bgm?: Phaser.Sound.BaseSound
 	constructor() {
 		super('cutscene2')
@@ -59,7 +58,10 @@ export default class Cutscene1 extends Phaser.Scene {
 			.setOrigin(0.5, 0)
 			.setAlpha(0)
 
-        this.mcName = this.randomMC()
+		const selectedCharacterId = this.registry.get('selectedCharacterId') ?? 1
+		const selectedCharacter = ALL_CHARACTER[selectedCharacterId - 1].mcName
+		this.mcName = selectedCharacter
+
 		const playerImage = this.add.image(
 			width / 2,
 			height / 2 - MARGIN,
@@ -97,7 +99,10 @@ export default class Cutscene1 extends Phaser.Scene {
 					'pointerdown',
 					() => {
 						this.scene.stop()
-						this.scene.launch('cutscene_randomboss', {mcName: this.mcName, bgm: this.bgm})
+						this.scene.launch('cutscene_randomboss', {
+							mcName: this.mcName,
+							bgm: this.bgm,
+						})
 						// i18n.removeAllListeners(this)
 					},
 					this,
@@ -129,7 +134,7 @@ export default class Cutscene1 extends Phaser.Scene {
 	}
 
 	// Mock only delete after create mc input handler
-    randomMC(): keyof typeof PlayerByName {
+	randomMC(): keyof typeof PlayerByName {
 		// TODO: weighted random
 		const playerPool = Object.keys(PlayerByName)
 		const randomIndex = Math.round(Math.random() * (playerPool.length - 1))
