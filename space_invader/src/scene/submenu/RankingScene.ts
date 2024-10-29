@@ -49,7 +49,7 @@ export default class RankingScene extends Phaser.Scene {
         username: string, 
         total_score: number, 
         total_game: number 
-    } = { id: '23', username: 'user23', total_score: 86 , total_game: 999 };
+    } = { id: '2',  username: 'สู้เขาสิน้องหญิง',  total_score: 256000000 , total_game: 90 };
     private currentPlayerJson!: { 
         id: string,
         username: string, 
@@ -381,6 +381,10 @@ export default class RankingScene extends Phaser.Scene {
     private async handleData(){
         const response = await this.apiService.getRanking()
         const data = response.response
+        // const data = {
+        //     ranking_by_score : this.sortPlayerScoreJson1,
+        //     ranking_by_play : this.sortPlayerHeartJson1
+        // }
 
         this.sortPlayerScoreJson1 = data.ranking_by_score.slice(0,20)
         this.sortPlayerScoreJson2 = []
@@ -399,11 +403,13 @@ export default class RankingScene extends Phaser.Scene {
             }) => element.username = this.scene.scene.registry.get("username"))
 
 
-        this.currentPlayerHeartRank = this.sortPlayerHeartJson1.indexOf(this.currentPlayer) + 1
-        this.currentPlayerScoreRank = this.sortPlayerScoreJson1.indexOf(this.currentPlayer) + 1
 
-        if(this.currentPlayerHeartRank === -1) this.currentPlayerHeartRank = this.sortPlayerHeartJson2.indexOf(this.currentPlayer) + 1
-        if(this.currentPlayerScoreRank === -1) this.currentPlayerScoreRank = this.sortPlayerScoreJson2.indexOf(this.currentPlayer) + 1
+        this.currentPlayerHeartRank = this.sortPlayerHeartJson1.map(function(e) { return e.id } ).indexOf(this.currentPlayer.id) + 1
+        this.currentPlayerScoreRank = this.sortPlayerScoreJson1.map(function(e) { return e.id } ).indexOf(this.currentPlayer.id) + 1
+
+        if(this.currentPlayerHeartRank === 0) this.currentPlayerHeartRank = this.sortPlayerHeartJson2.indexOf(this.currentPlayer) + 1
+        if(this.currentPlayerScoreRank === 0) this.currentPlayerScoreRank = this.sortPlayerScoreJson2.indexOf(this.currentPlayer) + 1
+        
     }
 
     private createScoreButton():void{
@@ -477,7 +483,8 @@ export default class RankingScene extends Phaser.Scene {
             this.setPlayedButtonDisabled(true)
             this.setScoreButtonDisabled(false)
             this.setButtonOverlayLeft(true)
-            this.setButtonOverlayRight(false)
+            if(this.totalPlayer <= 5) this.setButtonOverlayRight(true)
+            else this.setButtonOverlayRight(false)
             this.rankingIndex = 0
             this.accumulationType = AccumulationType.ACCUMULATION_SCORE
             this.currentPlayerJson = this.setCurrentPlayerData()
@@ -515,7 +522,8 @@ export default class RankingScene extends Phaser.Scene {
             this.setScoreButtonDisabled(true)
             this.setPlayedButtonDisabled(false)
             this.setButtonOverlayLeft(true)
-            this.setButtonOverlayRight(false)
+            if(this.totalPlayer <= 5) this.setButtonOverlayRight(true)
+            else this.setButtonOverlayRight(false)
             this.rankingIndex = 0
             this.accumulationType = AccumulationType.ACCUMULATION_HEART
             this.currentPlayerJson = this.setCurrentPlayerData()
@@ -558,6 +566,10 @@ export default class RankingScene extends Phaser.Scene {
         .setActive(false)
         .setVisible(false)
         .setDepth(1)
+
+        if(this.totalPlayer <= 5) {
+            this.OverlayRightButton.setVisible(true)
+        }
     }
 
     private setButtonOverlayLeft(isActive:boolean):void{
