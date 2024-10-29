@@ -1,6 +1,7 @@
 export interface PlayerDTO {
 	username: string
 	level: number
+	progression: number
 	airflow: number
 	play_count: number
 	play_today: Date[]
