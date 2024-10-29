@@ -32,7 +32,7 @@ export default class RewardDialog {
 
 		const boosterDropId = scene.registry.get('booster_drop_id')
 
-		this.descriptionBoosterUI = new BoosterUI(scene, boosterDropId, {
+		this.descriptionBoosterUI = new BoosterUI(scene, this.getBoosterName(boosterDropId), {
 			x: 96 + MARGIN / 2,
 			y: this.rewardText.y + this.rewardText.height + 48 + 32,
 		})
@@ -75,6 +75,19 @@ export default class RewardDialog {
 			.setFontSize(28)
 			.setColor('#57453B')
 	}
+
+	getBoosterName(boosterId: number): BoosterName{
+        switch(boosterId){
+            case 1: return BoosterName.BOOSTER_1
+            case 2: return BoosterName.BOOSTER_2
+            case 3: return BoosterName.BOOSTER_3
+            case 4: return BoosterName.BOOSTER_4
+            case 5: return BoosterName.BOOSTER_5
+            case 6: return BoosterName.BOOSTER_RARE1
+            case 7: return BoosterName.BOOSTER_RARE2
+            default: return BoosterName.BOOSTER_1
+        }
+    }
 
 	initFontStyle() {
 		this.descriptionTitle.setStyle({
