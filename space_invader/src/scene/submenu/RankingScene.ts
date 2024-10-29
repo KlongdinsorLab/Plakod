@@ -3,6 +3,7 @@ import WebFont from 'webfontloader';
 import { PlayerSlotStack } from 'component/ranking/playerSlotStack';
 import { MARGIN } from "config";
 import supabaseAPIService from 'services/API/backend/supabaseAPIService';
+import BackButton from 'component/ui/Button/BackButton';
 
 export enum AccumulationType{
     ACCUMULATION_SCORE,
@@ -10,7 +11,7 @@ export enum AccumulationType{
 }
 
 export default class RankingScene extends Phaser.Scene {
-    private bgm?: Phaser.Sound.BaseSound
+    private key!: string
     private background!: Phaser.GameObjects.TileSprite;
     private banner!: Phaser.GameObjects.NineSlice;
     private redButtonLeft!: Phaser.GameObjects.NineSlice;
@@ -169,8 +170,8 @@ export default class RankingScene extends Phaser.Scene {
     constructor(){
         super('ranking');
     }
-    init({ bgm } : { bgm : any}){
-        this.bgm = bgm
+    init({ key } : { key : string}){
+        this.key = key
     }
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
@@ -210,13 +211,7 @@ export default class RankingScene extends Phaser.Scene {
           'bg'
         ).setOrigin(0).setScrollFactor(0,0)
 
-        this.buttonBack = this.add.image(MARGIN,MARGIN,'icon', 'icon_white_arrow.png')
-        this.buttonBackHitBox = this.add.rectangle(0, 0, 256, 256)
-        this.buttonBackHitBox.setInteractive().on('pointerup', () => {
-            this.destroy()
-            this.scene.stop()
-            this.scene.start('home', {bgm: this.bgm})
-        })
+        new BackButton(this, this.key)
 
         this.iconRanking = this.add.image(
           width/2, 
@@ -667,7 +662,6 @@ export default class RankingScene extends Phaser.Scene {
     }
 
     destroy():void {
-        this.bgm?.destroy()
         this.background.destroy()
         this.banner.destroy()
         this.redButtonLeft.destroy()

@@ -1,6 +1,7 @@
 export const SCREEN_WIDTH = 720
 export const SCREEN_HEIGHT = 1280
 export const MARGIN = 48
+export const BACK_BUTTON_HITBOX_WIDTH = 256
 export const PLAYER_START_MARGIN = 240
 export const PLAYER_SPEED = 480
 export const LASER_SPEED = 800

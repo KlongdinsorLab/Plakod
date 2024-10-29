@@ -17,7 +17,7 @@ export default class RankingButton extends Button {
 		
 			this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			this.scene.scene.start('ranking');
+			this.scene.scene.start('ranking', {key: this.scene.scene.key});
 		})
 	}
 
