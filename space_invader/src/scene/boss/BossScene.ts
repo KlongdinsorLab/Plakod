@@ -347,7 +347,7 @@ export default class BossScene extends Phaser.Scene {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
 			const data = await this.apiService.updateGameSession({
-				score: this.score.getScore(),
+				score: Math.round(this.score.getScore()),
 				lap: this.scene.scene.registry.get('lap'),
 			})
 			console.log(data)
