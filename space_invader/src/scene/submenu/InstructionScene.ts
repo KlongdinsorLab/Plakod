@@ -50,7 +50,7 @@ export default class InstructionScene extends Phaser.Scene {
 			'assets/heading/heading_spritesheet.json',
 		)
 
-        this.load.image('bg', 'assets/background/submenu-background.png')
+        this.load.image('submenu_bg', 'assets/background/submenu-background.png')
 
         this.load.html('howToConnect1', 'html/device_connected/howToConnect1.html')
 		this.load.html('howToConnect2', 'html/device_connected/howToConnect2.html')
@@ -71,7 +71,7 @@ export default class InstructionScene extends Phaser.Scene {
 
         const i18n = I18nSingleton.getInstance()
 
-        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.tileSprite(0,0,width,height,'submenu_bg').setOrigin(0).setScrollFactor(0,0)
 
         this.add.image(width/2, 64, 'icon', "icon_guidebook.png").setOrigin(0.5, 0)
             .setScale(3,3)

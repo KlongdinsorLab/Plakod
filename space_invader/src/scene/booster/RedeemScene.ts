@@ -31,7 +31,7 @@ export default class RedeemScene extends Phaser.Scene {
     }
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-        this.load.image('bg', 'assets/background/bg/landing page_bg.png')
+        this.load.image('landing_page_bg', 'assets/background/bg/landing page_bg.png')
 
         //spritesheet
         this.load.atlas('icon', 'assets/icon/icon_spritesheet.png', 'assets/icon/icon_spritesheet.json')
@@ -56,7 +56,7 @@ export default class RedeemScene extends Phaser.Scene {
 		boosters.length = 0
        
         //todo: remove this, load background from other scene
-        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.tileSprite(0,0,width,height,'landing_page_bg').setOrigin(0).setScrollFactor(0,0)
         this.add.rectangle(width/2, height/2, width, height, 0x303030, 0.6);
 
         //popup box

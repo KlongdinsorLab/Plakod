@@ -74,7 +74,7 @@ export default class MyBagScene extends Phaser.Scene {
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
-		this.load.image('bg', 'assets/background/submenu-background.png')
+		this.load.image('submenu_bg', 'assets/background/submenu-background.png')
 		this.load.atlas(
 			'heading',
 			'assets/heading/heading_spritesheet.png',
@@ -136,7 +136,7 @@ export default class MyBagScene extends Phaser.Scene {
 			await apiService.getUnlockedCharacter()
 
 		this.background = this.add
-			.tileSprite(width / 2, height / 2, 720, 1280, 'bg')
+			.tileSprite(width / 2, height / 2, 720, 1280, 'submenu_bg')
 			.setOrigin(0.5)
 			.setScrollFactor(0, 0)
 		this.myBagIcon = this.add

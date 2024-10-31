@@ -175,7 +175,7 @@ export default class RankingScene extends Phaser.Scene {
     }
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-        this.load.image('bg', 'assets/background/submenu-background.png');
+        this.load.image('submenu_bg', 'assets/background/submenu-background.png');
         this.load.atlas(
             'heading', 
             'assets/heading/heading_spritesheet.png', 
@@ -208,7 +208,7 @@ export default class RankingScene extends Phaser.Scene {
           0,
           width,
           height,
-          'bg'
+          'submenu_bg'
         ).setOrigin(0).setScrollFactor(0,0)
 
         new BackButton(this, this.key)
