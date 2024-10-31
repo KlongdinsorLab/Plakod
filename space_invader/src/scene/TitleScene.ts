@@ -268,7 +268,8 @@ export default class TitleScene extends Phaser.Scene {
 			auth.useDeviceLanguage();
 			(async ()=> {
 				await setPersistence(auth, browserSessionPersistence)
-				const user = auth.currentUser
+				// const user = auth.currentUser
+				const user = null
 			
 				if (user === null) {
 					this.scene.stop()
