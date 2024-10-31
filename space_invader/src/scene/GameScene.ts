@@ -54,6 +54,7 @@ export default class GameScene extends Phaser.Scene {
 	private menu!: Menu
 	private bossName!: keyof typeof BossByName
 	private bossId!: number
+	private mcId!: number
 
 	private event!: EventEmitter
 	private gameLayer!: Phaser.GameObjects.Layer
@@ -88,8 +89,8 @@ export default class GameScene extends Phaser.Scene {
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.mcId}_spritesheet.png`,
+			`assets/character/player/mc${this.mcId}_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -158,11 +159,14 @@ export default class GameScene extends Phaser.Scene {
 		this.bossName = bossName
 		this.bossId = +bossName.substring(bossName.length - 1)
 		this.soundManager.unmute()
+
+		this.mcId = this.registry.get('selectedCharacterId') ?? 1
 	}
 
 	create() {
 		console.log(this.bossName)
-		console.log(this.bossId)
+		console.log(this.mcId)
+		console.log("Test\ntest\ntest")
 		const { width, height } = this.scale
 		this.setGameTimeout()
 

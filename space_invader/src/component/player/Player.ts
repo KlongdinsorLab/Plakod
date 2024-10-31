@@ -43,10 +43,13 @@ export default class Player {
 		| Phaser.Sound.NoAudioSound
 		| Phaser.Sound.WebAudioSound
 		| Phaser.Sound.HTML5AudioSound
+	private mcId: number
 
 	private shield!: Shield
 	constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
 		this.scene = scene
+		this.mcId = this.scene.registry.get('selectedCharacterId') ?? 1
+
 		// this.soundManager = new SoundManager(scene)
 		this.playerSound = scene.sound.addAudioSprite('mcSound')
 		const { width, height } = this.scene.scale
@@ -99,7 +102,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'run',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_normal_',
+				prefix: `mc${this.mcId}_normal_`,
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -112,7 +115,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'charge',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_inhale_',
+				prefix: `mc${this.mcId}_inhale_`,
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -125,7 +128,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'attack',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_attack_',
+				prefix: `mc${this.mcId}_attack_`,
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -138,7 +141,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'hurt',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_hurt_',
+				prefix: `mc${this.mcId}_hurt_`,
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -208,7 +211,7 @@ export default class Player {
 	}
 
 	damaged(): void {
-		this.playerSound.play(`mc1-hit${Math.floor(Math.random() * 3) + 1}`)
+		this.playerSound.play(`mc${this.mcId}-hit${Math.floor(Math.random() * 3) + 1}`)
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
@@ -365,7 +368,7 @@ export default class Player {
 
 	playVsScene(scene: Phaser.Scene): void {
 		setTimeout(() => {
-			this.playerSound.play('mc1-vs')
+			this.playerSound.play(`mc${this.mcId}-vs`)
 		}, 2000)
 
 		const playerImage = scene.add

@@ -219,7 +219,7 @@ export default class HomeScene extends Phaser.Scene {
 		const heartEmpty =
 			!this.heart1.getIsRecharged() && !this.heart2.getIsRecharged()
 		if (this.playCount >= 10 || heartEmpty) {
-			this.playButton.disable()
+			// this.playButton.disable()
 		}
 
 		if (!heartEmpty) {
