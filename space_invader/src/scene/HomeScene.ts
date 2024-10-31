@@ -64,6 +64,10 @@ export default class HomeScene extends Phaser.Scene {
 		)
 		this.scene.scene.registry.set('playerLevel', this.playerData.level)
 		this.scene.scene.registry.set(
+			'playerProgression',
+			this.playerData.progression,
+		)
+		this.scene.scene.registry.set(
 			'selectedCharacterId',
 			this.playerData.selected_character_id,
 		)

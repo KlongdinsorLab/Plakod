@@ -1,16 +1,11 @@
 import { MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
-const Difficulty = {
-	easy: 'difficulty_easy',
-	medium: 'difficulty_medium',
-	hard: 'difficulty_hard',
-}
-
 export default class HomeTopBar {
 	constructor(scene: Phaser.Scene) {
 		// Level Progress
-		const currentLevel = 10
+		const currentLevel = scene.registry.get('playerLevel').level
+		const currentProgress = scene.registry.get('playerProgression')
 		scene.add
 			.image(MARGIN + 120, 40, 'landing_page', 'logo_level.png')
 			.setOrigin(0.5, 0)
@@ -21,6 +16,16 @@ export default class HomeTopBar {
 			.graphics()
 			.fillStyle(0xffffff, 0.5)
 			.fillRoundedRect(MARGIN, 2 * MARGIN + 40, 240, 24, 10)
+		scene.add
+			.graphics()
+			.fillStyle(0x43a99e, 1)
+			.fillRoundedRect(
+				MARGIN,
+				2 * MARGIN + 40,
+				currentProgress * 0.01 * 240,
+				24,
+				10,
+			)
 		scene.add
 			.graphics()
 			.lineStyle(3, 0x57453b, 1)
@@ -38,10 +43,10 @@ export default class HomeTopBar {
 		scene.add
 			.image(336, 40, 'landing_page', 'bar_airflow.png')
 			.setOrigin(0.5, 0)
-		// TODO: Choosing airflow
+
 		const airFlowLevelText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, 336 + 28, 40, 'home_airflow_level', {
-				level: 600,
+				level: scene.registry.get('airflow'),
 			})
 			.setAlign('center')
 
@@ -57,13 +62,13 @@ export default class HomeTopBar {
 		scene.add
 			.image(336, 40 + 56 + 8, 'landing_page', 'bar_difficulty.png')
 			.setOrigin(0.5, 0)
-		// TODO: Choosing difficulty
+
 		const difficultyText = I18nSingleton.getInstance()
 			.createTranslatedText(
 				scene,
 				336 + 336 / 2,
 				40 + 56 + 8 + 6 + 24,
-				`${Difficulty['easy']}`,
+				scene.registry.get('difficulty').name,
 			)
 			.setAlign('center')
 			.setOrigin(0.5, 0.5)
