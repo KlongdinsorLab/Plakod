@@ -325,4 +325,21 @@ export default class supabaseAPIService {
 
 		return data
 	}
+
+	async useBooster( boosterId : number ) {
+		const { data, error } = await supabaseClient.functions.invoke(
+			'use-booster',
+			{
+				headers: {
+					Authorization: this.getAuthHeader(),
+				},
+				body: { booster_id : boosterId },
+			},
+		)
+		if (error) {
+			throw new Error('error')
+		}
+
+		return data
+	}
 }
