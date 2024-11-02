@@ -52,7 +52,7 @@ export default class SettingScene extends Phaser.Scene {
         this.load.atlas('sheet','assets/setting/setting_spritesheet.png','assets/setting/setting_spritesheet.json');
         this.load.atlas('icon', 'assets/icon/icon_spritesheet.png', 'assets/icon/icon_spritesheet.json')
 
-        this.load.image('bg','assets/setting/setting_bg.png')
+        this.load.image('submenu_bg','assets/background/submenu-background.png')
 
         this.load.svg('editAirflow', 'assets/setting/logo_modal_edit airflow.svg')
         this.load.svg('editName', 'assets/setting/logo_modal_edit name.svg')
@@ -70,7 +70,7 @@ export default class SettingScene extends Phaser.Scene {
 
         const i18n = I18nSingleton.getInstance()
         
-        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.tileSprite(0,0,width,height,'submenu_bg').setOrigin(0).setScrollFactor(0,0)
 
         // Back Button
         new BackButton(this, this.key ?? "home")
