@@ -124,7 +124,12 @@ export default class LoginScene extends Phaser.Scene {
 			await setPersistence(auth, browserSessionPersistence)
 		} catch (e) {
 			console.log(e)
-			// TODO
+
+			const toast = <Element>(this.element.getChildByID('toast'))
+			toast.innerHTML += '<div class="bg-red-500 rounded-lg p-4 w-[680px] h-[75px] flex justify-center"><span class="text-3xl">เกิดข้อผิดพลาด</span></div>'
+			setTimeout(() => {
+				toast.innerHTML = ''
+			}, 5000)
 		}
 
 		try {
@@ -140,6 +145,12 @@ export default class LoginScene extends Phaser.Scene {
 			// TODO handle ERROR Message
 			// reset recaptcha
 			console.log(e)
+
+			const toast = <Element>(this.element.getChildByID('toast'))
+			toast.innerHTML += '<div class="bg-red-500 rounded-lg p-4 w-[680px] h-[75px] flex justify-center"><span class="text-3xl">เกิดข้อผิดพลาด</span></div>'
+			setTimeout(() => {
+				toast.innerHTML = ''
+			}, 5000)
 		}
 
 	}

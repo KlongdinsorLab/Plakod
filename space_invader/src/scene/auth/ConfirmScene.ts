@@ -13,6 +13,7 @@ export default class ConfirmScene extends Phaser.Scene {
     private apiService !: supabaseAPIService
     private phoneNumber !: string
     private bgm?: Phaser.Sound.BaseSound
+    private element!: Phaser.GameObjects.DOMElement
 
     constructor() {
         super('confirm');
@@ -81,6 +82,8 @@ export default class ConfirmScene extends Phaser.Scene {
 			.dom(0,0)
 			.createFromCache('confirmForm')
 			.setOrigin(0,0)
+
+        this.element = element
 
         
         //change language
@@ -172,15 +175,27 @@ export default class ConfirmScene extends Phaser.Scene {
                 //     airflowNumber,
                 //     parseInt(this.selectedData?.difficulty ?? '1'))
                 // tirabase.login('0123456789')
-                this.apiService.register(
-                    this.phoneNumber,
-                    parseInt(ageInput.textContent === null ? '1' : ageInput.textContent),
-                    this.selectedData?.gender === "male" ? "M" : "F",
-                    parseInt(airflowInput.textContent === null ? '100' : airflowInput.textContent),
-                    parseInt(this.selectedData?.difficulty ?? '1')
-                )
-                this.scene.stop()
-                this.scene.launch('home',{bgm: this.bgm})
+                try{
+                    this.apiService.register(
+                        this.phoneNumber,
+                        parseInt(ageInput.textContent === null ? '1' : ageInput.textContent),
+                        this.selectedData?.gender === "male" ? "M" : "F",
+                        parseInt(airflowInput.textContent === null ? '100' : airflowInput.textContent),
+                        parseInt(this.selectedData?.difficulty ?? '1')
+                    )
+                    this.scene.stop()
+                    this.scene.launch('home',{bgm: this.bgm})
+                }
+                catch(e){
+                    console.log(e)
+
+                    const toast = <Element>(this.element.getChildByID('toast'))
+			        toast.innerHTML += '<div class="bg-red-500 rounded-lg p-4 w-[680px] h-[75px] flex justify-center"><span class="text-3xl">เกิดข้อผิดพลาด</span></div>'
+			        setTimeout(() => {
+				    toast.innerHTML = ''
+			        }, 5000)
+                }
+                
             }
 		})
 
