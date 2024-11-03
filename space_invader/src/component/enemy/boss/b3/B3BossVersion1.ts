@@ -109,7 +109,7 @@ export class B3BossVersion1 extends BossVersion {
 		const { width, height } = scene.scale
 
 		scene.add
-			.tileSprite(0, 0, width, height, 'boss_cutscene_background')
+			.tileSprite(0, 0, width, height, 'background_b3_vs')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
@@ -253,7 +253,7 @@ export class B3BossVersion1 extends BossVersion {
 		const { width, height } = scene.scale
 
 		const bg = scene.add
-			.tileSprite(0, 0, width, height, 'boss2_background')
+			.tileSprite(0, 0, width, height, 'boss3_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 

@@ -78,7 +78,7 @@ export default class BossScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image(
-			'boss_background',
+			`background_b${this.bossId}_boss`,
 			`assets/background/b${this.bossId}_boss_map.png`,
 		)
 
@@ -155,7 +155,7 @@ export default class BossScene extends Phaser.Scene {
 		this.apiService = new supabaseAPIService()
 
 		this.background = this.add
-			.tileSprite(0, 0, width, height, 'boss_background')
+			.tileSprite(0, 0, width, height, `background_b${this.bossId}_boss`)
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 

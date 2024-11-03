@@ -44,7 +44,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image(
-			'background',
+			`background_b${this.bossId}_normal`,
 			`assets/background/b${this.bossId}_normal_map.png`,
 		)
 		this.load.script(
@@ -73,7 +73,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		const i18n = I18nSingleton.getInstance()
 		this.add
-			.tileSprite(0, 0, width, height, 'background')
+			.tileSprite(0, 0, width, height, `background_b${this.bossId}_normal`)
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 

@@ -82,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image(
-			'background',
+			`background_b${this.bossId}_normal`,
 			`assets/background/b${this.bossId}_normal_map.png`,
 		)
 
@@ -174,7 +174,7 @@ export default class GameScene extends Phaser.Scene {
 		this.soundEffect = this.sound.addAudioSprite('mcSound')
 
 		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
+			.tileSprite(0, 0, width, height, `background_b${this.bossId}_normal`)
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
