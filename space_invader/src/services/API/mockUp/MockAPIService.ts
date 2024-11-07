@@ -463,6 +463,7 @@ export default class MockAPIService extends AbstractAPIService {
 				difficulty: difficultDTO,
 				selected_character_id: player.selected_character_id,
 				unlocked_characters_id: playerCharacterId,
+				progression: 0,
 			}
 
 			resolve({

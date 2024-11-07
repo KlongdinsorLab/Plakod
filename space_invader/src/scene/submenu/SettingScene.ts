@@ -8,6 +8,7 @@ import difficultySelectUi from "component/setting/difficultySelectUi";
 import usernameBox from "component/setting/usernameBox";
 import airflowBox from "component/setting/airflowBox";
 import { DifficultyDTO } from "services/API/definition/responseDTO";
+import BackButton from "component/ui/Button/BackButton";
 
 export default class SettingScene extends Phaser.Scene {
     // Heading
@@ -32,16 +33,14 @@ export default class SettingScene extends Phaser.Scene {
     private difficultySelectUi : difficultySelectUi | undefined
 
     //Return Scene
-    private returnscene = 'home'
+    private key = 'home'
 
     constructor() {
         super('setting')
     }
 
-    init({ returnscene, characterId } : { returnscene? : string, characterId? : number }) {
-        if (returnscene) {
-            this.returnscene = returnscene;
-        }
+    init({ key, characterId } : { key : string, characterId? : number }) {
+        this.key = key
         if (characterId) {
             this.characterId = characterId;
         }
@@ -51,8 +50,9 @@ export default class SettingScene extends Phaser.Scene {
     preload(){
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
         this.load.atlas('sheet','assets/setting/setting_spritesheet.png','assets/setting/setting_spritesheet.json');
+        this.load.atlas('icon', 'assets/icon/icon_spritesheet.png', 'assets/icon/icon_spritesheet.json')
 
-        this.load.image('bg','assets/setting/setting_bg.png')
+        this.load.image('submenu_bg','assets/background/submenu-background.png')
 
         this.load.svg('editAirflow', 'assets/setting/logo_modal_edit airflow.svg')
         this.load.svg('editName', 'assets/setting/logo_modal_edit name.svg')
@@ -70,13 +70,10 @@ export default class SettingScene extends Phaser.Scene {
 
         const i18n = I18nSingleton.getInstance()
         
-        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.tileSprite(0,0,width,height,'submenu_bg').setOrigin(0).setScrollFactor(0,0)
 
         // Back Button
-        this.add.image( MARGIN, MARGIN, 'sheet', "logo_setting_next.png").setOrigin(0,0)
-            .setInteractive().on('pointerup', () => {
-                this.scene.start(this.returnscene)
-            })
+        new BackButton(this, this.key ?? "home")
 
         // Headings
         this.add.image( width/2 , MARGIN, 'sheet', "logo_heading_setting.png" ).setOrigin(0.5,0)

@@ -2,6 +2,7 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 import i18next from 'i18next'
+import BackButton from 'component/ui/Button/BackButton'
 
 export default class InstructionScene extends Phaser.Scene {
     private howToConnectPopUp1 !: Phaser.GameObjects.DOMElement
@@ -17,14 +18,14 @@ export default class InstructionScene extends Phaser.Scene {
     private howToPlayPopUp2 !: Phaser.GameObjects.DOMElement
     private howToPlayPopUp3 !: Phaser.GameObjects.DOMElement
 
-	private returnscene = 'home'
+	private key !: string 
 
     constructor() {
         super("instruction")
     }
 
-	init({returnscene} : {returnscene?: string}) {
-		if(returnscene) this.returnscene = returnscene
+	init({key} : {key : string}) {
+		this.key = key
 	}
 
     preload() {
@@ -38,7 +39,7 @@ export default class InstructionScene extends Phaser.Scene {
             'assets/button_spritesheet/button_spritesheet.json'
         )
 
-        this.load.atlas('icon_spritesheet', 
+        this.load.atlas('icon', 
             'assets/icon_spritesheet/icon_spritesheet.png', 
             'assets/icon_spritesheet/icon_spritesheet.json'
         )
@@ -49,7 +50,7 @@ export default class InstructionScene extends Phaser.Scene {
 			'assets/heading/heading_spritesheet.json',
 		)
 
-        this.load.image('bg', 'assets/background/submenu-background.png')
+        this.load.image('submenu_bg', 'assets/background/submenu-background.png')
 
         this.load.html('howToConnect1', 'html/device_connected/howToConnect1.html')
 		this.load.html('howToConnect2', 'html/device_connected/howToConnect2.html')
@@ -70,9 +71,9 @@ export default class InstructionScene extends Phaser.Scene {
 
         const i18n = I18nSingleton.getInstance()
 
-        this.add.tileSprite(0,0,width,height,'bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.tileSprite(0,0,width,height,'submenu_bg').setOrigin(0).setScrollFactor(0,0)
 
-        this.add.image(width/2, 64, "icon_spritesheet", "icon_guidebook.png").setOrigin(0.5, 0)
+        this.add.image(width/2, 64, 'icon', "icon_guidebook.png").setOrigin(0.5, 0)
             .setScale(3,3)
 
         this.add.image(width/2, 168, "heading_spritesheet", "heading_red.png").setOrigin(0.5,0)
@@ -81,16 +82,12 @@ export default class InstructionScene extends Phaser.Scene {
             .setFontSize(42)
             .setStroke("#9E461B", 12)
 
-		this.add.image(48,48,'icon_spritesheet','icon_white arrow.png').setOrigin(0,0)
-			.setInteractive().on('pointerup', () => {
-				this.scene.stop()
-				this.scene.start(this.returnscene)
-			})
+		new BackButton(this, this.key)
 
         // Button 1 
         this.add.nineslice(width/2, 432, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp1())
-        this.add.image(100 + (width/2 - 528/2), 432 + 96/2, 'icon_spritesheet', 'icon_bluetooth.png').setOrigin(0,0.5)
+        this.add.image(100 + (width/2 - 528/2), 432 + 96/2, 'icon', 'icon_bluetooth.png').setOrigin(0,0.5)
         const buttontext1 = i18n.createTranslatedText(this, 170 + (width/2 - 528/2), 432 + 96/2, "how_to_connect")
             .setOrigin(0,0.5)
             .setColor("#D35E24")
@@ -100,7 +97,7 @@ export default class InstructionScene extends Phaser.Scene {
         // Button 2
         this.add.nineslice(width/2, 576, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp2())
-        this.add.image(90 + (width/2 - 528/2), 576 + 96/2, 'icon_spritesheet', 'icon_turnoff.png').setOrigin(0,0.5)
+        this.add.image(90 + (width/2 - 528/2), 576 + 96/2, 'icon', 'icon_turnoff.png').setOrigin(0,0.5)
         const buttontext2 = i18n.createTranslatedText(this, 153 + (width/2 - 528/2), 576 + 96/2, "how_to_close")
             .setOrigin(0,0.5)
             .setColor("#D35E24")
@@ -110,7 +107,7 @@ export default class InstructionScene extends Phaser.Scene {
         // Button 3
         this.add.nineslice(width/2, 720, 'button_spritesheet', 'button_white.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp3())
-        this.add.image(50 + (width/2 - 528/2), 720 + 96/2, 'icon_spritesheet', 'icon_battery.png').setOrigin(0,0.5)
+        this.add.image(50 + (width/2 - 528/2), 720 + 96/2, 'icon', 'icon_battery.png').setOrigin(0,0.5)
         const buttontext3 = i18n.createTranslatedText(this, 130 + (width/2 - 528/2), 720 + 96/2, "how_to_charge")
             .setOrigin(0,0.5)
             .setColor("#D35E24")
@@ -120,7 +117,7 @@ export default class InstructionScene extends Phaser.Scene {
         // Button 4
         this.add.nineslice(width/2, 864, 'button_spritesheet', 'button_red.png', 528, 96, 20, 20, 20, 30).setOrigin(0.5,0)
             .setInteractive().on('pointerup', () => this.popUp4())
-        this.add.image(153 + (width/2 - 528/2), 864 + 96/2, 'icon_spritesheet', 'icon_play.png')
+        this.add.image(153 + (width/2 - 528/2), 864 + 96/2, 'icon', 'icon_play.png')
         const buttontext4 = i18n.createTranslatedText(this, 217 + (width/2 - 528/2), 864 + 96/2, "how_to_play")
             .setOrigin(0,0.5)
             .setColor("#FFFFFF")

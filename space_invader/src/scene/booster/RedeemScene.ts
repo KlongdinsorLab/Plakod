@@ -25,15 +25,13 @@ export default class RedeemScene extends Phaser.Scene {
 		this.bgm = bgm
 	}
 
-	constructor() {
-		super('redeem')
-	}
-	preload() {
-		this.load.script(
-			'webfont',
-			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
-		)
-		this.load.image('bg', 'assets/background/bg/landing page_bg.png')
+    constructor(){
+        super('redeem');
+    
+    }
+    preload(){
+        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+        this.load.image('landing_page_bg', 'assets/background/bg/landing page_bg.png')
 
 		//spritesheet
 		this.load.atlas(
@@ -71,13 +69,10 @@ export default class RedeemScene extends Phaser.Scene {
 
 		//clear boosters
 		boosters.length = 0
-
-		//todo: remove this, load background from other scene
-		this.add
-			.tileSprite(0, 0, width, height, 'bg')
-			.setOrigin(0)
-			.setScrollFactor(0, 0)
-		this.add.rectangle(width / 2, height / 2, width, height, 0x303030, 0.6)
+       
+        //todo: remove this, load background from other scene
+        this.add.tileSprite(0,0,width,height,'landing_page_bg').setOrigin(0).setScrollFactor(0,0)
+        this.add.rectangle(width/2, height/2, width, height, 0x303030, 0.6);
 
 		//popup box
 		const box = this.add.graphics()
@@ -164,19 +159,55 @@ export default class RedeemScene extends Phaser.Scene {
 			.on('pointerup', async () => {
 				this.buttonRed.setInteractive().off('pointerup')
 
-				const gameSession = (await apiService.startGameSession(0)).response
-				console.log(gameSession)
-				this.scene.scene.registry.set(
-					'booster_drop_id',
-					gameSession.booster_drop_id,
-				)
-				this.scene.scene.registry.set('boss_id', 3)
+            const gameSession = ( await apiService.startGameSession(0) ).response
+            console.log(gameSession)
+            this.scene.scene.registry.set('booster_drop_id', gameSession.booster_drop_id)
+            this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+            
+            this.destroy();
+            this.scene.stop();
+            boosters = this.boosterBar.getBooster();
+            console.log(boosters)
+            try{
+                boosters.forEach(async (element) => {
+                    let boosterId = 0
+                    switch(element){
+                        case BoosterName.BOOSTER_1: 
+                            boosterId = 1
+                            break
+                        case BoosterName.BOOSTER_2: 
+                            boosterId = 2
+                            break
+                        case BoosterName.BOOSTER_3: 
+                            boosterId = 3
+                            break
+                        case BoosterName.BOOSTER_4: 
+                            boosterId = 4
+                            break
+                        case BoosterName.BOOSTER_5: 
+                            boosterId = 5
+                            break
+                        case BoosterName.BOOSTER_RARE1: 
+                            boosterId = 6
+                            break
+                        case BoosterName.BOOSTER_RARE2: 
+                            boosterId = 7
+                            break
+                    }
+                    await apiService.useBooster(boosterId)
+                    console.log(boosterId)
+                })
+            }
+            catch(e){
+                console.log(e)
 
-				this.destroy()
-				this.scene.stop()
-				boosters = this.boosterBar.getBooster()
-				this.scene.start('life_count', { bgm: this.bgm })
-			})
+                // In case of errors, no booster is used
+                boosters = []
+            }
+            
+            
+            this.scene.start('life_count', { bgm : this.bgm });
+        })
 
 		this.buttonText = I18nSingleton.getInstance()
 			.createTranslatedText(

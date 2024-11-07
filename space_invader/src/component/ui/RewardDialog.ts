@@ -1,22 +1,19 @@
-import { boosterList } from 'component/item/Booster'
+import { BoosterName } from 'component/booster/booster'
+import { BoosterUI } from 'component/booster/boosterUI'
 import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
-const RewardDescription = {
-	scoreX2: 'reward_dialog_scoreX2',
-	speedbullet: '',
-	strongbullet: '',
-}
-
 export default class RewardDialog {
-	private rewardDescriptionText!: Phaser.GameObjects.Text
 	private rewardText!: Phaser.GameObjects.Text
 	private dialog!: Phaser.GameObjects.Graphics
-	private rewardReceived!: Phaser.GameObjects.Image
+	private descriptionTitle!: Phaser.GameObjects.Text
+	private descriptionText!: Phaser.GameObjects.Text
+	private descriptionBoosterUI!: BoosterUI
 
 	constructor(scene: Phaser.Scene) {
 		const { width } = scene.scale
 		const i18n = I18nSingleton.getInstance()
+
 		this.rewardText = i18n
 			.createTranslatedText(scene, width / 2, 556 + 80, 'receive_item')
 			.setAlign('center')
@@ -32,31 +29,76 @@ export default class RewardDialog {
 				160,
 				20,
 			)
-		this.rewardReceived = scene.add
-			.image(
-				96 + MARGIN / 2,
-				this.rewardText.y + this.rewardText.height + 48 + 80,
-				'bossAsset',
-				boosterList[2],
-			)
-			.setOrigin(0, 0.5)
-		this.rewardDescriptionText = i18n
+
+		const boosterDropId = scene.registry.get('booster_drop_id')
+
+		this.descriptionBoosterUI = new BoosterUI(scene, this.getBoosterName(boosterDropId), {
+			x: 96 + MARGIN / 2,
+			y: this.rewardText.y + this.rewardText.height + 48 + 32,
+		})
+		this.descriptionBoosterUI.create()
+		this.descriptionBoosterUI.initBooster()
+
+		let title = 'booster_title_' + this.descriptionBoosterUI.getFrame()
+		let text = 'booster_description_' + this.descriptionBoosterUI.getFrame()
+		if (
+			this.descriptionBoosterUI.getName() === BoosterName.BOOSTER_RARE1 ||
+			this.descriptionBoosterUI.getName() === BoosterName.BOOSTER_RARE2
+		) {
+			title = 'booster_title' + this.descriptionBoosterUI.getFrame()
+			text = 'booster_description' + this.descriptionBoosterUI.getFrame()
+		}
+
+		this.descriptionBoosterUI.create()
+		this.descriptionTitle = i18n
 			.createTranslatedText(
 				scene,
-				96 + this.rewardReceived .width + MARGIN,
-				this.rewardText.y + this.rewardText.height + 48 + 80,
-				RewardDescription['scoreX2'],
+				252,
+				this.descriptionBoosterUI.getBody().y,
+				title,
 			)
-			.setOrigin(0, 0.5)
+			.setOrigin(0)
+			.setAlign('left')
+			.setSize(334, 96)
+			.setFontSize(28)
+			.setColor('#57453B')
+		this.descriptionText = i18n
+			.createTranslatedText(
+				scene,
+				252,
+				this.descriptionBoosterUI.getBody().y + 42,
+				text,
+			)
+			.setOrigin(0)
+			.setAlign('left')
+			.setSize(334, 96)
+			.setFontSize(28)
+			.setColor('#57453B')
 	}
 
+	getBoosterName(boosterId: number): BoosterName{
+        switch(boosterId){
+            case 1: return BoosterName.BOOSTER_1
+            case 2: return BoosterName.BOOSTER_2
+            case 3: return BoosterName.BOOSTER_3
+            case 4: return BoosterName.BOOSTER_4
+            case 5: return BoosterName.BOOSTER_5
+            case 6: return BoosterName.BOOSTER_RARE1
+            case 7: return BoosterName.BOOSTER_RARE2
+            default: return BoosterName.BOOSTER_1
+        }
+    }
+
 	initFontStyle() {
-		this.rewardDescriptionText
-			.setStyle({
-				fontFamily: 'Mali',
-				color: 'black',
-			})
-			.setFontSize('24px')
+		this.descriptionTitle.setStyle({
+			fontFamily: 'Mali',
+			fontStyle: 'bold',
+		})
+
+		this.descriptionText.setStyle({
+			fontFamily: 'Mali',
+			fontWeight: 500,
+		})
 
 		this.rewardText
 			.setStyle({
@@ -68,16 +110,19 @@ export default class RewardDialog {
 			.setStroke('#3F088C', 6)
 	}
 
-	hide(){
+	hide() {
 		this.dialog.setVisible(false)
-		this.rewardDescriptionText.setVisible(false)
 		this.rewardText.setVisible(false)
-		this.rewardReceived.setVisible(false)
+		this.descriptionBoosterUI.hide()
+		this.descriptionTitle.setVisible(false)
+		this.descriptionText.setVisible(false)
 	}
-	show(){
+
+	show() {
 		this.dialog.setVisible(true)
-		this.rewardDescriptionText.setVisible(true)
 		this.rewardText.setVisible(true)
-		this.rewardReceived.setVisible(true)
+		this.descriptionBoosterUI.show()
+		this.descriptionTitle.setVisible(true)
+		this.descriptionText.setVisible(true)
 	}
 }

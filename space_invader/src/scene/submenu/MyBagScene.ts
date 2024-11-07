@@ -7,6 +7,7 @@ import BoosterBag from 'component/booster/boosterBag'
 import AchievementBag from 'component/achievement/achievementBag'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { UnlockedCharacterDTO } from 'services/API/definition/responseDTO'
+import BackButton from 'component/ui/Button/BackButton'
 
 enum SlotType {
 	BOOSTER,
@@ -14,7 +15,7 @@ enum SlotType {
 }
 
 export default class MyBagScene extends Phaser.Scene {
-	private bgm?: Phaser.Sound.BaseSound
+	private key!: string
 
 	private background!: Phaser.GameObjects.TileSprite
 	private banner!: Phaser.GameObjects.NineSlice
@@ -63,15 +64,17 @@ export default class MyBagScene extends Phaser.Scene {
 	constructor() {
 		super('mybag')
 	}
-	init(bgm: Phaser.Sound.BaseSound) {
-		this.bgm = bgm
+
+	init({key} : {key : string}) {
+		this.key = key
 	}
+
 	preload() {
 		this.load.script(
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
-		this.load.image('bg', 'assets/background/submenu-background.png')
+		this.load.image('submenu_bg', 'assets/background/submenu-background.png')
 		this.load.atlas(
 			'heading',
 			'assets/heading/heading_spritesheet.png',
@@ -133,7 +136,7 @@ export default class MyBagScene extends Phaser.Scene {
 			await apiService.getUnlockedCharacter()
 
 		this.background = this.add
-			.tileSprite(width / 2, height / 2, 720, 1280, 'bg')
+			.tileSprite(width / 2, height / 2, 720, 1280, 'submenu_bg')
 			.setOrigin(0.5)
 			.setScrollFactor(0, 0)
 		this.myBagIcon = this.add
@@ -152,18 +155,7 @@ export default class MyBagScene extends Phaser.Scene {
 			.setOrigin(0.5)
 			.setAlign('center')
 
-		this.buttonBack = this.add.image(
-			MARGIN,
-			MARGIN,
-			'icon',
-			'icon_white_arrow.png',
-		)
-		this.buttonBackHitBox = this.add.rectangle(0, 0, 256, 256)
-		this.buttonBackHitBox.setInteractive().on('pointerup', () => {
-			this.destroy()
-			this.scene.stop()
-			this.scene.start('home', { bgm: this.bgm })
-		})
+		new BackButton(this, this.key)
 
 		const boosterButton = this.createSlotButton(
 			{ x: width / 2 - 272, y: 528 },

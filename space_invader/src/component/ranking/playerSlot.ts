@@ -66,6 +66,8 @@ export class PlayerSlot{
                 this.position.x, this.position.y, 624, 136,  
                 { tl: 0, tr: 0, bl: 40, br: 40 }
             )
+            // console.log(this.badgeKey)
+            // console.log(this.playerRank)
     
         }else{
             if(this.isCurrentPlayer ) slotColor = this.currentPlayerSlotBackgroundColor;

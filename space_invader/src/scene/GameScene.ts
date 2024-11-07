@@ -82,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image(
-			'background',
+			`background_b${this.bossId}_normal`,
 			`assets/background/b${this.bossId}_normal_map.png`,
 		)
 
@@ -174,7 +174,7 @@ export default class GameScene extends Phaser.Scene {
 		this.soundEffect = this.sound.addAudioSprite('mcSound')
 
 		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
+			.tileSprite(0, 0, width, height, `background_b${this.bossId}_normal`)
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
@@ -256,20 +256,20 @@ export default class GameScene extends Phaser.Scene {
 			boosterUI.create()
 		})
 
+		this.boosterEffect = {
+			remainingUses: 0,
+			remainingTime: 0,
+			hitMeteorScore: 1,
+			laserFrequency: 1,
+			bulletCount: 1,
+			shootingPhase: 1,
+			destroyMeteorScore: 1,
+			laserFactory: 'single',
+			releasedBullet: 1,
+			bulletMultiply: 1,
+			score: 1,
+		}
 		if (this.reloadCountNumber > 5) {
-			this.boosterEffect = {
-				remainingUses: 0,
-				remainingTime: 0,
-				hitMeteorScore: 1,
-				laserFrequency: 1,
-				bulletCount: 1,
-				shootingPhase: 1,
-				destroyMeteorScore: 1,
-				laserFactory: 'single',
-				releasedBullet: 1,
-				bulletMultiply: 1,
-				score: 1,
-			}
 			boosters.forEach((booster) => {
 				this.boosterByName = booster
 				this.booster = new boosterByName[this.boosterByName]()
@@ -304,7 +304,7 @@ export default class GameScene extends Phaser.Scene {
 			this.scene.scene.registry.set('boosterEffect', this.boosterEffect)
 		}
 		this.laserFactory = new LaserFactoryByName[
-			this.boosterEffect.laserFactory
+			this.boosterEffect?.laserFactory ?? 'single'
 		]()
 
 		const self = this
@@ -462,7 +462,7 @@ export default class GameScene extends Phaser.Scene {
 				callback: async () => {
 					this.reloadCount.decrementCount()
 					const data = await this.apiService.updateGameSession({
-						score: this.score.getScore(),
+						score: Math.round(this.score.getScore()),
 						lap: this.scene.scene.registry.get('lap'),
 					})
 					console.log(data)
