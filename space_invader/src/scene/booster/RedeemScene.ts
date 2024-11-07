@@ -160,52 +160,43 @@ export default class RedeemScene extends Phaser.Scene {
         .setInteractive().on('pointerup', async () => {
             this.buttonRed.setInteractive().off('pointerup')
 
-            const gameSession = ( await apiService.startGameSession(0) ).response
+            boosters = this.boosterBar.getBooster();
+            console.log(boosters)
+
+            let boosterId = 0
+            if(boosters.length > 0) {
+                switch(boosters[0]){
+                    case BoosterName.BOOSTER_1: 
+                        boosterId = 1
+                        break
+                    case BoosterName.BOOSTER_2: 
+                        boosterId = 2
+                        break
+                    case BoosterName.BOOSTER_3: 
+                        boosterId = 3
+                        break
+                    case BoosterName.BOOSTER_4: 
+                        boosterId = 4
+                        break
+                    case BoosterName.BOOSTER_5: 
+                        boosterId = 5
+                        break
+                    case BoosterName.BOOSTER_RARE1: 
+                        boosterId = 6
+                        break
+                    case BoosterName.BOOSTER_RARE2: 
+                        boosterId = 7
+                        break
+                }
+            }
+            
+            const gameSession = ( await apiService.startGameSession(boosterId) ).response
             console.log(gameSession)
             this.scene.scene.registry.set('booster_drop_id', gameSession.booster_drop_id)
             this.scene.scene.registry.set('boss_id', gameSession.boss_id)
             
             this.destroy();
             this.scene.stop();
-            boosters = this.boosterBar.getBooster();
-            console.log(boosters)
-            try{
-                boosters.forEach(async (element) => {
-                    let boosterId = 0
-                    switch(element){
-                        case BoosterName.BOOSTER_1: 
-                            boosterId = 1
-                            break
-                        case BoosterName.BOOSTER_2: 
-                            boosterId = 2
-                            break
-                        case BoosterName.BOOSTER_3: 
-                            boosterId = 3
-                            break
-                        case BoosterName.BOOSTER_4: 
-                            boosterId = 4
-                            break
-                        case BoosterName.BOOSTER_5: 
-                            boosterId = 5
-                            break
-                        case BoosterName.BOOSTER_RARE1: 
-                            boosterId = 6
-                            break
-                        case BoosterName.BOOSTER_RARE2: 
-                            boosterId = 7
-                            break
-                    }
-                    await apiService.useBooster(boosterId)
-                    console.log(boosterId)
-                })
-            }
-            catch(e){
-                console.log(e)
-
-                // In case of errors, no booster is used
-                boosters = []
-            }
-            
             
             this.scene.start('life_count', { bgm : this.bgm });
         })
