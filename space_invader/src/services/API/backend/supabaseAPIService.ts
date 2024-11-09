@@ -133,7 +133,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async startGameSession(playerBoosterId: number) {
+	async startGameSession(boosterId: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'start-game',
 			{
@@ -141,7 +141,7 @@ export default class supabaseAPIService {
 					Authorization: this.getAuthHeader(),
 				},
 				body: {
-					player_booster_id: playerBoosterId,
+					booster_id: boosterId,
 				},
 			},
 		)
