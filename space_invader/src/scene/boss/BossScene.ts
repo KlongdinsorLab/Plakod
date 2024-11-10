@@ -71,6 +71,8 @@ export default class BossScene extends Phaser.Scene {
 
 	private collectBulletBar!: CollectBulletBar
 
+	private selectedCharacterId!: string
+
 	constructor() {
 		super({ key: 'bossScene' })
 		this.soundManager = new SoundManager(this)
@@ -84,8 +86,8 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -146,6 +148,7 @@ export default class BossScene extends Phaser.Scene {
 	init(props: BossInterface) {
 		this.props = props
 		this.bossId = +props.name.substring(props.name.length - 1)
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 	}
 
 	async create() {
@@ -262,6 +265,16 @@ export default class BossScene extends Phaser.Scene {
 
 	async update(_: number, delta: number) {
 		if (!this.isCompleteInit) return
+
+		if (this.input.pointer1.isDown) {
+			const { x } = this.input.pointer1
+			if (this.player.isRightOf(x)) {
+				this.player.moveRight(delta)
+			}
+			if (this.player.isLeftOf(x)) {
+				this.player.moveLeft(delta)
+			}
+		}
 
 		this.menu.updateGameState(
 			this.score.getScore(),

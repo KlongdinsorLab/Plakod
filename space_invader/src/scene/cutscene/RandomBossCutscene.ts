@@ -24,6 +24,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 	private bossName!: keyof typeof BossByName
 	private mcName!: keyof typeof PlayerByName
 	private bgm?: Phaser.Sound.BaseSound
+	private selectedCharacterId!: string
 
 	constructor() {
 		super('cutscene_randomboss')
@@ -40,6 +41,7 @@ export default class RandomBossCutScene extends Phaser.Scene {
 		this.bgm = bgm
 		this.bossId = this.registry.get('boss_id')
 		this.bossName = `B${this.bossId}` as keyof typeof BossByName
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 	}
 
 	preload() {
@@ -51,10 +53,11 @@ export default class RandomBossCutScene extends Phaser.Scene {
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
+
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 
 		this.load.atlas(

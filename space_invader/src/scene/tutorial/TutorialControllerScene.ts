@@ -15,6 +15,7 @@ export type Controller = {
 export default class TutorialControllerScene extends Phaser.Scene {
 	private player!: Player
 	private event!: EventEmitter
+	private selectedCharacterId!: string
 
 	constructor() {
 		super('tutorial controller')
@@ -23,13 +24,14 @@ export default class TutorialControllerScene extends Phaser.Scene {
 	init({ player, event }: Controller) {
 		this.player = player
 		this.event = event
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 	}
 
 	preload() {
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 		this.load.svg('finger press', 'assets/icon/finger-press.svg')
 	}

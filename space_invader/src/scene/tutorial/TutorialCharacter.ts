@@ -33,9 +33,14 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 	private reloadCount!: ReloadCount
 	private gaugeRegistry!: InhaleGaugeRegistry
 	private menu!: Menu
+	private selectedCharacterId!: string
 
 	constructor() {
 		super('tutorial character')
+	}
+
+	init() {
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 	}
 
 	preload() {
@@ -45,8 +50,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 		)
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 
 		this.load.image('background', 'assets/background/background.jpg')

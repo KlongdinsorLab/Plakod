@@ -99,7 +99,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'run',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_normal_',
+				prefix: 'mc_normal_',
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -112,7 +112,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'charge',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_inhale_',
+				prefix: 'mc_inhale_',
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -125,7 +125,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'attack',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_attack_',
+				prefix: 'mc_attack_',
 				suffix: '.png',
 				start: 1,
 				end: 12,
@@ -138,7 +138,7 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'hurt',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: 'mc1_hurt_',
+				prefix: 'mc_hurt_',
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -208,7 +208,7 @@ export default class Player {
 	}
 
 	damaged(): void {
-		this.playerSound.play(`mc1-hit${Math.floor(Math.random() * 3) + 1}`)
+		this.playerSound.play(`mc-hit${Math.floor(Math.random() * 3) + 1}`)
 		this.player.play('hurt', true)
 		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
@@ -365,7 +365,7 @@ export default class Player {
 
 	playVsScene(scene: Phaser.Scene): void {
 		setTimeout(() => {
-			this.playerSound.play('mc1-vs')
+			this.playerSound.play('mc-vs')
 		}, 2000)
 
 		const playerImage = scene.add
