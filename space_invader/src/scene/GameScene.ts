@@ -75,6 +75,8 @@ export default class GameScene extends Phaser.Scene {
 
 	private apiService!: supabaseAPIService
 
+	private selectedCharacterId!: string
+
 	constructor() {
 		super({ key: 'game' })
 		this.soundManager = new SoundManager(this)
@@ -88,8 +90,8 @@ export default class GameScene extends Phaser.Scene {
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -152,6 +154,7 @@ export default class GameScene extends Phaser.Scene {
 		isCompleteBoss: boolean
 		bossName: keyof typeof BossByName
 	}) {
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 		this.scoreNumber = score ?? 0
 		this.reloadCountNumber = reloadCount ?? RELOAD_COUNT
 		this.isCompleteBoss = isCompleteBoss ?? false

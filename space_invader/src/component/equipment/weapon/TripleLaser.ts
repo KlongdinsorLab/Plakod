@@ -10,9 +10,11 @@ export class TripleLaser extends Laser {
 	private laser2!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 	private laser3!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
-	private angularVelocityIndex1 !: number
-	private angularVelocityIndex2 !: number
-	private angularVelocityIndex3 !: number
+	private angularVelocityIndex1!: number
+	private angularVelocityIndex2!: number
+	private angularVelocityIndex3!: number
+
+	private selectedCharacterId!: string
 
 	constructor(scene: Phaser.Scene, player: Player) {
 		super()
@@ -21,12 +23,22 @@ export class TripleLaser extends Laser {
 		this.angularVelocityIndex1 = Math.floor(Math.random() * 8)
 		this.angularVelocityIndex2 = Math.floor(Math.random() * 8)
 		this.angularVelocityIndex3 = Math.floor(Math.random() * 8)
+		this.selectedCharacterId = this.scene.registry.get('selectedCharacterId')
 	}
 	shoot(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody[] {
 		const { x, y } = this.player.getLaserLocation()
-		this.laser1 = this.scene.physics.add.image(x, y, 'laser')
-		this.laser2 = this.scene.physics.add.image(x + MARGIN, y, 'laser')
-		this.laser3 = this.scene.physics.add.image(x - MARGIN, y, 'laser')
+		this.laser1 =
+			this.selectedCharacterId === '1'
+				? this.scene.physics.add.image(x, y, 'laser')
+				: this.scene.physics.add.image(x, y, 'player', 'mc_bullet.png')
+		this.laser2 =
+			this.selectedCharacterId === '1'
+				? this.scene.physics.add.image(x + MARGIN, y, 'laser')
+				: this.scene.physics.add.image(x + MARGIN, y, 'player', 'mc_bullet.png')
+		this.laser3 =
+			this.selectedCharacterId === '1'
+				? this.scene.physics.add.image(x - MARGIN, y, 'laser')
+				: this.scene.physics.add.image(x - MARGIN, y, 'player', 'mc_bullet.png')
 		this.laser1.setVelocityY(-1 * LASER_SPEED)
 		this.laser2.setVelocityY(-1 * LASER_SPEED)
 		this.laser2.setVelocityX(TRIPLE_LASER_X_SPEED)
@@ -36,7 +48,6 @@ export class TripleLaser extends Laser {
 		this.laser2.setAngularVelocity(angularVelocity[this.angularVelocityIndex2])
 		this.laser3.setAngularVelocity(angularVelocity[this.angularVelocityIndex3])
 
-
 		return [this.laser1, this.laser2, this.laser3]
 	}
 
@@ -45,5 +56,4 @@ export class TripleLaser extends Laser {
 		this.laser2?.destroy()
 		this.laser3?.destroy()
 	}
-
 }

@@ -52,6 +52,7 @@ export default class characterSelectUi {
 		const characters: {
 			[characterId: number]: { name: string; unlocked: boolean }
 		} = {}
+
 		allCharacter.forEach((characterResponse) => {
 			const characterResponseId: number = characterResponse.characterId
 			const playerCharacterFound = !!playerCharactersId.find(
@@ -234,6 +235,7 @@ export default class characterSelectUi {
 
 	useChar(): void {
 		this.usingCharIndex = this.showingCharIndex
+		this.scene?.registry.set('selectedCharacterId', this.showingCharIndex)
 		this.usingButton?.setVisible(true)
 		this.useButton?.setVisible(false)
 		this.useText?.setVisible(false)

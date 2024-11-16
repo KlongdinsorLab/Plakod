@@ -11,6 +11,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	private bossVersion!: BossVersion
 	private boss!: Boss
 	private bossId!: number
+	private selectedCharacterId!: string
 
 	constructor() {
 		super({ key: BossCutScene.VS })
@@ -21,10 +22,11 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			`background_b${this.bossId}_vs`,
 			`assets/background/b${this.bossId}_vs_bg.png`,
 		)
+
 		this.load.atlas(
 			'player',
-			'assets/character/player/mc1_spritesheet.png',
-			'assets/character/player/mc1_spritesheet.json',
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.png`,
+			`assets/character/player/mc${this.selectedCharacterId}_spritesheet.json`,
 		)
 
 		this.load.atlas(
@@ -54,6 +56,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	init(props: BossInterface) {
 		this.props = props
 		this.bossId = +props.name.substring(props.name.length - 1)
+		this.selectedCharacterId = this.registry.get('selectedCharacterId')
 	}
 
 	create() {
