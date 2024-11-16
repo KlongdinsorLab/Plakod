@@ -400,8 +400,7 @@ export default class RankingScene extends Phaser.Scene {
                 username: string, 
                 total_score: number, 
                 total_game: number 
-            }) => element.username = this.scene.scene.registry.get("username"))
-
+            }) => element.username === this.scene.scene.registry.get("username"))
 
 
         this.currentPlayerHeartRank = this.sortPlayerHeartJson1.map(function(e) { return e.id } ).indexOf(this.currentPlayer.id) + 1
