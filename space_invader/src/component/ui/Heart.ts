@@ -8,14 +8,19 @@ export default class Heart {
 	private scene: Phaser.Scene
 	private timerEvent: Phaser.Time.TimerEvent
 
+	private timeService: TimeService
+	private heartIndex: number
+
 	constructor(scene: Phaser.Scene, x: number, y: number, heartIndex: number, playFillAnimation?: boolean, hasText: boolean = true) {
 		this.scene = scene
 		
-		const timeService = new TimeService(this.scene.scene.scene.registry.get('playCount'))
+		this.timeService = new TimeService(this.scene.scene.scene.registry.get('playCount'))
+
+		this.heartIndex = heartIndex
 		
 		// TODO: call api
 		const lastPlayTime = this.scene.scene.scene.registry.get('playToday')[heartIndex - 1] ?? new Date('')
-		this.isHeartRecharged = timeService.isRecharged(lastPlayTime)
+		this.isHeartRecharged = this.timeService.isRecharged(lastPlayTime)
 
 		this.heart = scene.add
 		.image(x, y, 'heart_spritesheet', this.isHeartRecharged ? 'heart_full.png' : 'heart_empty.png')
@@ -35,7 +40,7 @@ export default class Heart {
 
 			if(hasText) {
 				// set countdown text
-				const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
+				const timeCountdown = this.timeService.getTimeCountdown(lastPlayTime);
 				this.heartCountdown.setText(timeCountdown)
 			} 
 		}
@@ -46,7 +51,7 @@ export default class Heart {
 			callback: () => {
 				
 				// event when heart is recharged finish
-				this.isHeartRecharged = timeService.isRecharged(lastPlayTime);
+				this.isHeartRecharged = this.timeService.isRecharged(lastPlayTime);
 				if (this.isHeartRecharged) {
 					if ((playFillAnimation ?? true) && !this.isHeartStartRecharged) {
 						this.fillHeart();
@@ -59,7 +64,7 @@ export default class Heart {
 
 				if(hasText) {
 					// set countdown text
-					const timeCountdown = timeService.getTimeCountdown(lastPlayTime);
+					const timeCountdown = this.timeService.getTimeCountdown(lastPlayTime);
 					this.heartCountdown.setText(timeCountdown)
 				} 
 
@@ -153,5 +158,15 @@ export default class Heart {
 		})
 	}
 	
-	
+	resetTime(){
+		this.scene.scene.scene.registry.set('playToday', [])
+		const lastPlayTime = this.scene.scene.scene.registry.get('playToday')[this.heartIndex - 1] ?? new Date('')
+		this.isHeartRecharged = this.timeService.isRecharged(lastPlayTime)
+		console.log(this.isHeartRecharged)
+
+		this.fillHeart()
+
+		this.timerEvent.destroy()
+		this.heartCountdown.setText('')
+	}
 }
