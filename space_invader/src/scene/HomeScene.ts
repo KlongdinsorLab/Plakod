@@ -183,6 +183,18 @@ export default class HomeScene extends Phaser.Scene {
 		this.achievementButton = new AchievementButton(this)
 		this.settingButton = new SettingButton(this)
 
+		// Refill Button
+		const refillButton = this.add.nineslice(width/2 + 4 * MARGIN, 464,'landing_page', 'button_red.png',100,100,32,32,64,64).setOrigin(0,0)
+		refillButton.setInteractive().on('pointerup', () => {
+			this.heart1.resetTime()
+			this.heart2.resetTime()
+			console.log("refill")
+		})
+		this.add.text(width/2 + 4 * MARGIN + 50, 464 + 50, '+')
+			.setOrigin(0.5,0.5)
+			.setFontSize(64)
+			.setColor('#FFFFFF')
+
 		const self = this
 		WebFont.load({
 			google: {
