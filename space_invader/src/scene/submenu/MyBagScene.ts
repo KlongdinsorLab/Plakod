@@ -65,7 +65,7 @@ export default class MyBagScene extends Phaser.Scene {
 		super('mybag')
 	}
 
-	init({key} : {key : string}) {
+	init({ key }: { key: string }) {
 		this.key = key
 	}
 
@@ -125,7 +125,6 @@ export default class MyBagScene extends Phaser.Scene {
 
 		const boosterData = await apiService.getBoosterBag()
 		const boosterJson = boosterData.response
-		console.log(boosterJson)
 
 		const data = await apiService.getUnlockedAchievement()
 		const unlockedAchievement = data.response

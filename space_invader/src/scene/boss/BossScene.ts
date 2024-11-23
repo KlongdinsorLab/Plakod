@@ -236,7 +236,6 @@ export default class BossScene extends Phaser.Scene {
 		this.laserFactory = new LaserFactoryByName[
 			this.boosterEffect.laserFactory
 		]()
-		console.log(this.laserFactory)
 
 		this.collectBulletBar = new CollectBulletBar(this)
 
@@ -363,7 +362,6 @@ export default class BossScene extends Phaser.Scene {
 				score: Math.round(this.score.getScore()),
 				lap: this.scene.scene.registry.get('lap'),
 			})
-			console.log(data)
 		}
 
 		if (this.input.pointer1.isDown) {
