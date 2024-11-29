@@ -19,14 +19,18 @@ export class Logger {
 		return level <= this.logLevel
 	}
 
-	private formatMessage(level: LogLevel, message: string): string {
+	private formatMessage(
+		scene: string,
+		message: string,
+		level: LogLevel,
+	): string {
 		const timestamp = new Date().toISOString()
-		return `[${timestamp}] ${LogLevel[level]}: ${message}`
+		return `[${timestamp}] | [Scene:${scene}] ${LogLevel[level]}: ${message}`
 	}
 
-	public log(message: string, level: LogLevel): void {
+	public log(scene: string, message: string, level: LogLevel): void {
 		if (this.shouldLog(level)) {
-			const formattedMessage = this.formatMessage(level, message)
+			const formattedMessage = this.formatMessage(scene, message, level)
 			switch (level) {
 				case LogLevel.ERROR:
 					console.error(formattedMessage)
@@ -52,24 +56,28 @@ export class Logger {
 		}
 	}
 
-	public error(message: string, error?: Error): void {
-		this.log(`${message}${error ? ` | ${error.message}` : ''}`, LogLevel.ERROR)
+	public error(scene: string, message: string, error?: Error): void {
+		this.log(
+			scene,
+			`${message}${error ? ` | ${error.message}` : ''}`,
+			LogLevel.ERROR,
+		)
 	}
 
-	public warn(message: string): void {
-		this.log(message, LogLevel.WARN)
+	public warn(scene: string, message: string): void {
+		this.log(scene, message, LogLevel.WARN)
 	}
 
-	public info(message: string): void {
-		this.log(message, LogLevel.INFO)
+	public info(scene: string, message: string): void {
+		this.log(scene, message, LogLevel.INFO)
 	}
 
-	public verbose(message: string): void {
-		this.log(message, LogLevel.VERBOSE)
+	public verbose(scene: string, message: string): void {
+		this.log(scene, message, LogLevel.VERBOSE)
 	}
 
-	public debug(message: string): void {
-		this.log(message, LogLevel.DEBUG)
+	public debug(scene: string, message: string): void {
+		this.log(scene, message, LogLevel.DEBUG)
 	}
 }
 

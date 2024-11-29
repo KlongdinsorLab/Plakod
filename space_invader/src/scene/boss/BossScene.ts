@@ -32,6 +32,7 @@ import { Booster2 } from 'component/booster/boosterList/booster_2'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { BossObstacleFactory } from 'component/enemy/boss/obstacle/BossObstacleFactory'
 import CollectBulletBar from 'component/ui/CollectBulletBar'
+import { logger } from 'services/logger'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -358,10 +359,15 @@ export default class BossScene extends Phaser.Scene {
 			setTimeout(() => {
 				this.soundManager.stop(this.bgm)
 			}, 5000)
-			const data = await this.apiService.updateGameSession({
-				score: Math.round(this.score.getScore()),
-				lap: this.scene.scene.registry.get('lap'),
-			})
+
+			try {
+				const data = await this.apiService.updateGameSession({
+					score: Math.round(this.score.getScore()),
+					lap: this.scene.scene.registry.get('lap'),
+				})
+			} catch (error) {
+				logger.error(this.scene.key, `${error}`)
+			}
 		}
 
 		if (this.input.pointer1.isDown) {

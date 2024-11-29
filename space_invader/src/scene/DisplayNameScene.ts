@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 import I18nSingleton from 'i18n/I18nSingleton'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export default class DisplayNameScene extends Phaser.Scene {
 	private texts: Phaser.GameObjects.Text[] = []
@@ -45,20 +46,19 @@ export default class DisplayNameScene extends Phaser.Scene {
 			const inputElement = <HTMLInputElement>this.inputHTML
 			const username: string = inputElement.value
 			if (username !== '') {
-				await apiService.updateUsername(username)
+				try {
+					await apiService.updateUsername(username)
 
-				//console.log('submit success')
-				//this.scene.start('home') // for test
-				this.scene.start('redeem')
-				return
+					this.scene.start('redeem')
+					return
+				} catch (error) {
+					logger.error(this.scene.key, `${error}`)
+				}
 			}
 		}
-
-		//console.log('Please Enter username.')
 	}
 
 	init() {
-		// initial instance variables with default value
 		this.texts = []
 		this.inputHTML = null
 	}

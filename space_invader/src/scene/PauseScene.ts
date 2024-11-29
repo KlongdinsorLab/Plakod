@@ -11,6 +11,7 @@ import SoundManager from 'component/sound/SoundManager'
 import WebFont from 'webfontloader'
 import SoundToggle from 'component/ui/home/SoundToggle'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export type Menu = {
 	menu: Phaser.GameObjects.Image
@@ -212,7 +213,7 @@ export default class PauseScene extends Phaser.Scene {
 				i18n.destroyEmitter()
 				this.scene.start('home')
 			} catch (error) {
-				console.error(error)
+				logger.error(this.scene.key, `${error}`)
 			}
 		}
 
@@ -328,7 +329,7 @@ export default class PauseScene extends Phaser.Scene {
 				this.game.events.removeListener(Phaser.Core.Events.FOCUS)
 				this.scene.start('home')
 			} catch (error) {
-				console.error(error)
+				logger.error(this.scene.key, `${error}`)
 			}
 		}
 

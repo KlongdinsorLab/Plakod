@@ -14,6 +14,7 @@ import { AchievementDetailDTO } from 'services/API/definition/responseDTO'
 import { LevelUpPopup } from 'component/popup/LevelUpPopup'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { FinishGameResponse } from 'services/API/definition/responseDTO'
+import { logger } from 'services/logger'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
@@ -168,7 +169,7 @@ export default class EndGameScene extends Phaser.Scene {
 					is_booster_received: this.registry.get('isBoosterReceived'),
 				})
 			} catch (error) {
-				console.error(error)
+				logger.error(this.scene.key, `${error}`)
 			}
 		}
 		finishGame()
@@ -400,12 +401,15 @@ export default class EndGameScene extends Phaser.Scene {
 
 	private async updatePlayToday() {
 		const apiService = new supabaseAPIService()
-		const response = await apiService.getPlayer()
-		const data = response.response
-		const playToday = this.handlePlayToday(data.play_today)
-		data.play_today = playToday
-
-		this.scene.scene.registry.set('playToday', playToday)
+		try {
+			const response = await apiService.getPlayer()
+			const data = response.response
+			const playToday = this.handlePlayToday(data.play_today)
+			data.play_today = playToday
+			this.scene.scene.registry.set('playToday', playToday)
+		} catch (error) {
+			logger.error(this.scene.key, `${error}`)
+		}
 	}
 
 	sortDate(dates: Date[]): Date[] {

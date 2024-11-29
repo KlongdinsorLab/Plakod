@@ -2,6 +2,7 @@
 import i18next from 'i18next'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { Airflow } from 'services/API/definition/typeProperty'
+import { logger } from 'services/logger'
 
 export default class editAirflowPopUp {
 	private scene: Phaser.Scene | undefined
@@ -357,7 +358,11 @@ export default class editAirflowPopUp {
 	async updateAirflow(airflow: number): Promise<void> {
 		this.airflow = airflow
 		const apiService = new supabaseAPIService()
-		await apiService.updateAirflow(airflow as Airflow)
+		try {
+			await apiService.updateAirflow(airflow as Airflow)
+		} catch (error) {
+			logger.error(this.scene?.scene.key ?? 'EditAirFlow', `${error}`)
+		}
 
 		this.airflowText?.setText(this.airflow.toString())
 	}

@@ -7,6 +7,7 @@ import {
 	UnlockedCharacterDTO,
 } from 'services/API/definition/responseDTO'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 export default class AchievementBag {
 	private scene: Phaser.Scene
 	private achievementUI: AchievementUI[]
@@ -389,13 +390,17 @@ export default class AchievementBag {
 		}
 	}
 	async unlockReward(achievement: number) {
-		const characterId = achievement / 4 + 1
-		const apiService = new supabaseAPIService()
-		apiService.unlockCharacter({ character_id: characterId })
+		try {
+			const characterId = achievement / 4 + 1
+			const apiService = new supabaseAPIService()
+			apiService.unlockCharacter({ character_id: characterId })
 
-		this.rewardPopup = new RewardPopup(this.scene, characterId)
-		this.rewardPopup.create()
-		this.initFontStyle()
+			this.rewardPopup = new RewardPopup(this.scene, characterId)
+			this.rewardPopup.create()
+			this.initFontStyle()
+		} catch (error) {
+			logger.error(this.scene.scene.key, `${error}`)
+		}
 	}
 	handleSelectAchievement(achievementUI: AchievementUI): void {
 		if (this.selectedAchievement !== undefined) {

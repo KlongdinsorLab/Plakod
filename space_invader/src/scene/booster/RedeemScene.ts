@@ -5,6 +5,7 @@ import { MARGIN } from 'config'
 import boosterBar from 'component/booster/boosterBar'
 import { BoosterName } from 'component/booster/booster'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export let boosters: BoosterName[] = []
 
@@ -69,9 +70,6 @@ export default class RedeemScene extends Phaser.Scene {
 
 		const apiService = new supabaseAPIService()
 
-		const boosterData = await apiService.getBoosterRedeem()
-		const boosterJson = boosterData.response
-
 		//clear boosters
 		boosters.length = 0
 
@@ -117,8 +115,14 @@ export default class RedeemScene extends Phaser.Scene {
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 
-		//boosters
-		this.boosterBar = new boosterBar(this, boosterJson)
+		try {
+			//boosters
+			const boosterData = await apiService.getBoosterRedeem()
+			const boosterJson = boosterData.response
+			this.boosterBar = new boosterBar(this, boosterJson)
+		} catch (error) {
+			logger.error(this.scene.key, `${error}`)
+		}
 
 		//button
 		this.buttonGrey = this.add
@@ -196,13 +200,17 @@ export default class RedeemScene extends Phaser.Scene {
 					}
 				}
 
-				const gameSession = (await apiService.startGameSession(boosterId))
-					.response
-				this.scene.scene.registry.set(
-					'booster_drop_id',
-					gameSession.booster_drop_id,
-				)
-				this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+				try {
+					const gameSession = (await apiService.startGameSession(boosterId))
+						.response
+					this.scene.scene.registry.set(
+						'booster_drop_id',
+						gameSession.booster_drop_id,
+					)
+					this.scene.scene.registry.set('boss_id', gameSession.boss_id)
+				} catch (error) {
+					logger.error(this.scene.key, `${error}`)
+				}
 
 				this.destroy()
 				this.scene.stop()
