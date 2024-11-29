@@ -165,8 +165,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	create() {
-		console.log(this.bossName)
-		console.log(this.bossId)
+		logger.debug(this.scene.key, `Random boss: ${this.bossName}`)
 		const { width, height } = this.scale
 		this.setGameTimeout()
 
@@ -485,7 +484,10 @@ export default class GameScene extends Phaser.Scene {
 					ShootingPhase.NORMAL * this.boosterEffect.shootingPhase,
 					LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
 				)
-				console.log(this.boosterEffect)
+				logger.debug(
+					this.scene.key,
+					`Booster effect applied: ${this.boosterEffect}`,
+				)
 				gauge.set(
 					BULLET_COUNT *
 						this.boosterEffect.bulletCount *
@@ -521,8 +523,6 @@ export default class GameScene extends Phaser.Scene {
 		if (gauge.isReducing()) {
 			gauge.release(delta)
 		}
-
-		// console.log(gauge.getDuratation())
 	}
 
 	setGameTimeout() {

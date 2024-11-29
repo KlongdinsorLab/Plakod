@@ -12,6 +12,7 @@ import { BUTTON_MAP } from 'config'
 import WebFont from 'webfontloader'
 import MockAPIService from 'services/API/mockUp/MockAPIService'
 import i18next from 'i18next'
+import { logger } from 'services/logger'
 
 const tirabase = new MockAPIService()
 
@@ -368,7 +369,10 @@ export default class TitleScene extends Phaser.Scene {
 		if (import.meta.env.VITE_START_SCENE) {
 			// testing flow
 			if (import.meta.env.VITE_START_SCENE_INIT) {
-				console.log(JSON.parse(import.meta.env.VITE_START_SCENE_INIT))
+				logger.debug(
+					this.scene.key,
+					JSON.parse(import.meta.env.VITE_START_SCENE_INIT),
+				)
 				this.scene.start(
 					import.meta.env.VITE_START_SCENE,
 					JSON.parse(import.meta.env.VITE_START_SCENE_INIT),

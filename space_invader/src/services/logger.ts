@@ -25,7 +25,7 @@ export class Logger {
 		level: LogLevel,
 	): string {
 		const timestamp = new Date().toISOString()
-		return `[${timestamp}] | [Scene:${scene}] ${LogLevel[level]}: ${message}`
+		return `[${timestamp}] | ${LogLevel[level]} | [Scene:${scene}]: ${message}`
 	}
 
 	public log(scene: string, message: string, level: LogLevel): void {

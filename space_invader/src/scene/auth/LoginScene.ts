@@ -74,7 +74,7 @@ export default class LoginScene extends Phaser.Scene {
 			.dom(0, 0)
 			.createFromCache('loginForm')
 			.setOrigin(0, 0)
-		console.log('element added')
+		logger.debug(this.scene.key, 'Element added')
 		i18n
 			.createTranslatedText(this, 100, 680 - 3, 'use_button')
 			.setFontSize(32)
@@ -131,8 +131,8 @@ export default class LoginScene extends Phaser.Scene {
 		})
 		try {
 			await setPersistence(auth, browserSessionPersistence)
-		} catch (e) {
-			console.log(e)
+		} catch (error) {
+			logger.error(this.scene.key, `${error}`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=

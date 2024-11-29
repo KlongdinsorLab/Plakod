@@ -98,7 +98,7 @@ export default class OtpScene extends Phaser.Scene {
 		//const { width, height } = this.scale
 
 		this.element = this.add.dom(0, 0).createFromCache('otpForm').setOrigin(0, 0)
-		console.log('otp scene added')
+		logger.debug(this.scene.key, 'Otp scene added')
 
 		const textElementIds = [
 			'phoneNumber-text',
@@ -176,7 +176,7 @@ export default class OtpScene extends Phaser.Scene {
 
 		this.element.addListener('click')
 		this.element.on('click', (event: DOMEvent<HTMLInputElement>) => {
-			console.log(event.target.id)
+			logger.debug(this.scene.key, `${event.target.id} clicked`)
 			if (
 				event.target.id === 'resend' ||
 				event.target.id === 'resend-text-button'
@@ -241,9 +241,8 @@ export default class OtpScene extends Phaser.Scene {
 		)
 		try {
 			await setPersistence(auth, browserSessionPersistence)
-		} catch (e) {
-			console.log(e)
-			// TODO
+		} catch (error) {
+			logger.error(this.scene.key, `${error}`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=
@@ -293,7 +292,7 @@ export default class OtpScene extends Phaser.Scene {
 
 			if (min === 0 && counter === 0) {
 				this.isTimeout = true
-				console.log('Time out')
+				logger.info(this.scene.key, 'Scene time out')
 				clearInterval(this.countdownInterval)
 				return
 			}

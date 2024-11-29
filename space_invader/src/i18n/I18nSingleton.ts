@@ -1,6 +1,7 @@
 import i18next from 'i18next'
 import en from 'i18n/translation/en.json' assert { type: 'json' }
 import th from 'i18n/translation/th.json' assert { type: 'json' }
+import { logger } from 'services/logger'
 
 export default class I18nSingleton {
 	private static instance: I18nSingleton
@@ -9,7 +10,7 @@ export default class I18nSingleton {
 	private constructor() {
 		if (i18next.isInitialized) return
 		i18next?.init({
-			lng: localStorage.getItem('language') || "th",
+			lng: localStorage.getItem('language') || 'th',
 			debug: false,
 			resources: {
 				en: {
@@ -57,7 +58,7 @@ export default class I18nSingleton {
 		try {
 			text.setText(i18next.t(key, options))
 		} catch (e) {
-			console.log(e)
+			logger.error('Singleton', `${e}`)
 		}
 	}
 

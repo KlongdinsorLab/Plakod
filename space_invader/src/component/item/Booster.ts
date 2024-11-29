@@ -4,6 +4,7 @@ import { BULLET_SPEED, MARGIN } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
 import { Item } from './Item'
 import InhaleGauge from 'component/ui/InhaleGauge'
+import { logger } from 'services/logger'
 
 export class Booster extends Item {
 	// private soundManager: SoundManager
@@ -24,7 +25,7 @@ export class Booster extends Item {
 	): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
 		const { width } = this.scene.scale
 		const boosterIndex = this.scene.scene.scene.registry.get('booster_drop_id')
-		console.log(boosterIndex)
+		logger.debug(this.scene.scene.key, `Dropped boosterIndex: ${boosterIndex}`)
 		const startingX = isTutorial ? width / 2 : Math.floor(Math.random() * width)
 		this.item = this.scene.physics.add.image(
 			startingX,

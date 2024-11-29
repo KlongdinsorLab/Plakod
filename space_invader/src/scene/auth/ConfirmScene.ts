@@ -155,9 +155,11 @@ export default class ConfirmScene extends Phaser.Scene {
 		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'edit-button') {
-				console.log('Edit button submitted in ConfirmScene')
-				console.log('Gender from textContent:', genderInput.textContent)
-				// TODO
+				logger.debug(this.scene.key, 'Edit button submitted')
+				logger.debug(
+					this.scene.key,
+					`Gender from textContent: ${genderInput.textContent}`,
+				)
 				this.scene.stop()
 				this.scene.launch('register', {
 					age: ageInput.textContent,
@@ -170,13 +172,16 @@ export default class ConfirmScene extends Phaser.Scene {
 			} else if (event?.target?.id === 'confirm-button') {
 				// alert('ลงทะเบียนเสร็จสิ้น');
 				element.destroy()
-				console.log({
-					age: ageInput.textContent,
-					gender: this.selectedData?.gender,
-					airflow: airflowInput.textContent,
-					difficulty: this.selectedData?.difficulty,
-					edit: true,
-				})
+				logger.debug(
+					this.scene.key,
+					`Input data: ${{
+						age: ageInput.textContent,
+						gender: this.selectedData?.gender,
+						airflow: airflowInput.textContent,
+						difficulty: this.selectedData?.difficulty,
+						edit: true,
+					}}`,
+				)
 
 				try {
 					this.apiService.register(

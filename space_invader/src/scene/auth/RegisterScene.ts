@@ -3,6 +3,7 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import i18next from 'i18next'
 import { getAuth, updateProfile } from 'firebase/auth'
 import WebFont from 'webfontloader'
+import { logger } from 'services/logger'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -34,8 +35,8 @@ export default class RegisterScene extends Phaser.Scene {
 		this.isEdit = data.edit
 		this.phoneNumber = data.phoneNumber
 		this.bgm = data.bgm
-		console.log('register init:', data)
-		console.log('register isEdit:', this.isEdit)
+		logger.debug(this.scene.key, `register init: ${data}`)
+		logger.debug(this.scene.key, `register isEdit: ${this.isEdit}`)
 	}
 
 	constructor() {
@@ -95,19 +96,28 @@ export default class RegisterScene extends Phaser.Scene {
 			.setOrigin(0, 0)
 
 		if (this.isEdit) {
-			console.log('age in isEdit:', this.selectedData!.age)
+			logger.debug(this.scene.key, `age isEdit: ${this.selectedData!.age}`)
 			const ageInput = element.getChildByID('age')! as HTMLSelectElement
 			ageInput.value = this.selectedData!.age
 
-			console.log('gender in isEdit:', this.selectedData!.gender)
+			logger.debug(
+				this.scene.key,
+				`gender isEdit: ${this.selectedData!.gender}`,
+			)
 			const genderInput = element.getChildByID('gender')! as HTMLSelectElement
 			genderInput.value = this.selectedData!.gender
 
-			console.log('airflow in isEdit:', this.selectedData!.airflow)
+			logger.debug(
+				this.scene.key,
+				`airflow isEdit: ${this.selectedData!.airflow}`,
+			)
 			const airflowInput = element.getChildByID('airflow')! as HTMLSelectElement
 			airflowInput.value = this.selectedData!.airflow
 
-			console.log('difficulty in isEdit:', this.selectedData!.difficulty)
+			logger.debug(
+				this.scene.key,
+				`difficulty isEdit: ${this.selectedData?.difficulty}`,
+			)
 			const difficultyInput = element.getChildByID(
 				'difficulty',
 			)! as HTMLSelectElement

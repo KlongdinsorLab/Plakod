@@ -313,10 +313,13 @@ export default class PauseScene extends Phaser.Scene {
 		const apiService = new supabaseAPIService()
 		const handleInactivity = async () => {
 			try {
-				console.log({
-					score: this.score,
-					lap: this.lap,
-				})
+				logger.info(
+					this.scene.key,
+					`User inactive at ${this.sceneName} scene, current lap: ${{
+						score: this.score,
+						lap: this.lap,
+					}}`,
+				)
 				await apiService.updateGameSession({
 					score: Math.round(this.score),
 					lap: this.lap,
@@ -333,7 +336,9 @@ export default class PauseScene extends Phaser.Scene {
 			}
 		}
 
-		this.game.events.on(Phaser.Core.Events.BLUR, () => console.log('blur'))
+		this.game.events.on(Phaser.Core.Events.BLUR, () =>
+			logger.debug(this.scene.key, 'Game blurred'),
+		)
 		this.game.events.on(Phaser.Core.Events.BLUR, () => {
 			inactivityTimeout = setTimeout(handleInactivity, inactivityTime)
 		})
