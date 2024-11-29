@@ -79,7 +79,8 @@ export default class characterSelectUi {
 		const apiService = new supabaseAPIService()
 		this.useChar()
 		try {
-			await apiService.updateSelectedCharacter(this.usingCharIndex)
+			const data = await apiService.updateSelectedCharacter(this.usingCharIndex)
+			logger.info(this.scene!.scene.key, `Api call success, Response: ${data}`)
 		} catch (error) {
 			logger.error(this.scene!.scene.key, `${error}`)
 		}

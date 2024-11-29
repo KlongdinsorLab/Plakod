@@ -365,6 +365,7 @@ export default class BossScene extends Phaser.Scene {
 					score: Math.round(this.score.getScore()),
 					lap: this.scene.scene.registry.get('lap'),
 				})
+				logger.info(this.scene.key, `Api call success, Response: ${data}`)
 			} catch (error) {
 				logger.error(this.scene.key, `${error}`)
 			}

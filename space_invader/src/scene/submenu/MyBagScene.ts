@@ -258,6 +258,7 @@ export default class MyBagScene extends Phaser.Scene {
 		try {
 			const boosterData = await apiService.getBoosterBag()
 			const boosterJson = boosterData.response
+			logger.info(this.scene.key, `Api call success, Response: ${boosterJson}`)
 
 			this.boosterBag = new BoosterBag(this, boosterJson)
 			this.boosterBag.create()
@@ -268,12 +269,20 @@ export default class MyBagScene extends Phaser.Scene {
 
 		try {
 			const data = await apiService.getUnlockedAchievement()
+			logger.info(
+				this.scene.key,
+				`Api call success, Response: ${data.response}`,
+			)
 			const unlockedAchievement = data.response
 
 			const {
 				response: unlockedCharacterList,
 			}: { response: UnlockedCharacterDTO[] } =
 				await apiService.getUnlockedCharacter()
+			logger.info(
+				this.scene.key,
+				`Api call success, Response: ${unlockedCharacterList}`,
+			)
 
 			this.achievementBag = new AchievementBag(
 				this,

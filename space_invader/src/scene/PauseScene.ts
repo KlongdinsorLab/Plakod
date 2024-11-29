@@ -203,11 +203,20 @@ export default class PauseScene extends Phaser.Scene {
 
 		const handleHomeClick = async () => {
 			try {
-				await apiService.updateGameSession({
+				const updateGameResponse = await apiService.updateGameSession({
 					score: Math.round(this.score),
 					lap: this.lap,
 				})
-				apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${updateGameResponse}`,
+				)
+
+				const endGameResponse = await apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${endGameResponse}`,
+				)
 				this.stopAllScenes()
 				this.scene.stop()
 				i18n.destroyEmitter()
@@ -320,11 +329,22 @@ export default class PauseScene extends Phaser.Scene {
 						lap: this.lap,
 					}}`,
 				)
-				await apiService.updateGameSession({
+
+				const data = await apiService.updateGameSession({
 					score: Math.round(this.score),
 					lap: this.lap,
 				})
-				apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${data.response}`,
+				)
+
+				const endGameResponse = await apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${endGameResponse}`,
+				)
+
 				this.stopAllScenes()
 				this.scene.stop()
 				I18nSingleton.getInstance().destroyEmitter()

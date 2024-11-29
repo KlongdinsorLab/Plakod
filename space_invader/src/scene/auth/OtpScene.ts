@@ -207,6 +207,10 @@ export default class OtpScene extends Phaser.Scene {
 			this.scene.stop()
 
 			const supabaseResponse = await this.apiService.login(this.phoneNumber)
+			logger.info(
+				this.scene.key,
+				`Api call success, Response: ${supabaseResponse}`,
+			)
 
 			if (supabaseResponse.message === 'No existing player')
 				this.scene.launch('register', {

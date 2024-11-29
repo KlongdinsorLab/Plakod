@@ -47,8 +47,11 @@ export default class DisplayNameScene extends Phaser.Scene {
 			const username: string = inputElement.value
 			if (username !== '') {
 				try {
-					await apiService.updateUsername(username)
-
+					const data = await apiService.updateUsername(username)
+					logger.info(
+						this.scene.key,
+						`Api call success, Response: ${data.response}`,
+					)
 					this.scene.start('redeem')
 					return
 				} catch (error) {

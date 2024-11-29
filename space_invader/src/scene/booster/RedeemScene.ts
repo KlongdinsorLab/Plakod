@@ -119,6 +119,7 @@ export default class RedeemScene extends Phaser.Scene {
 			//boosters
 			const boosterData = await apiService.getBoosterRedeem()
 			const boosterJson = boosterData.response
+			logger.info(this.scene.key, `Api call success, Response: ${boosterJson}`)
 			this.boosterBar = new boosterBar(this, boosterJson)
 		} catch (error) {
 			logger.error(this.scene.key, `${error}`)
@@ -203,6 +204,10 @@ export default class RedeemScene extends Phaser.Scene {
 				try {
 					const gameSession = (await apiService.startGameSession(boosterId))
 						.response
+					logger.info(
+						this.scene.key,
+						`Api call success, Response: ${gameSession}`,
+					)
 					this.scene.scene.registry.set(
 						'booster_drop_id',
 						gameSession.booster_drop_id,

@@ -152,7 +152,7 @@ export default class ConfirmScene extends Phaser.Scene {
 		}
 
 		element.addListener('click')
-		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
+		element.on('click', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'edit-button') {
 				logger.debug(this.scene.key, 'Edit button submitted')
@@ -184,7 +184,7 @@ export default class ConfirmScene extends Phaser.Scene {
 				)
 
 				try {
-					this.apiService.register(
+					const data = await this.apiService.register(
 						this.phoneNumber,
 						parseInt(
 							ageInput.textContent === null ? '1' : ageInput.textContent,
@@ -196,6 +196,10 @@ export default class ConfirmScene extends Phaser.Scene {
 								: airflowInput.textContent,
 						),
 						parseInt(this.selectedData?.difficulty ?? '1'),
+					)
+					logger.info(
+						this.scene.key,
+						`Api call success, Response: ${data.response}`,
 					)
 					this.scene.stop()
 					this.scene.launch('home', { bgm: this.bgm })

@@ -393,7 +393,13 @@ export default class AchievementBag {
 		try {
 			const characterId = achievement / 4 + 1
 			const apiService = new supabaseAPIService()
-			apiService.unlockCharacter({ character_id: characterId })
+			const data = await apiService.unlockCharacter({
+				character_id: characterId,
+			})
+			logger.info(
+				this.scene.scene.key,
+				`Api call success, Response: ${data.response}`,
+			)
 
 			this.rewardPopup = new RewardPopup(this.scene, characterId)
 			this.rewardPopup.create()

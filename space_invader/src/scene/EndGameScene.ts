@@ -168,6 +168,10 @@ export default class EndGameScene extends Phaser.Scene {
 					lap: this.scene.scene.registry.get('lap'),
 					is_booster_received: this.registry.get('isBoosterReceived'),
 				})
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${this.finishGameResponse}`,
+				)
 			} catch (error) {
 				logger.error(this.scene.key, `${error}`)
 			}
@@ -404,6 +408,8 @@ export default class EndGameScene extends Phaser.Scene {
 		try {
 			const response = await apiService.getPlayer()
 			const data = response.response
+			logger.info(this.scene.key, `Api call success, Response: ${data}`)
+
 			const playToday = this.handlePlayToday(data.play_today)
 			data.play_today = playToday
 			this.scene.scene.registry.set('playToday', playToday)
