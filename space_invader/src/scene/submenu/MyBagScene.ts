@@ -264,7 +264,7 @@ export default class MyBagScene extends Phaser.Scene {
 			this.boosterBag.create()
 			this.boosterBag.createDefaultText()
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 
 		try {
@@ -303,7 +303,7 @@ export default class MyBagScene extends Phaser.Scene {
 					.setOrigin(0)
 			}
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 
 		const arrowButtonLeft = this.createArrowButton(

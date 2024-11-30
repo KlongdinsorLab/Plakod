@@ -132,7 +132,7 @@ export default class LoginScene extends Phaser.Scene {
 		try {
 			await setPersistence(auth, browserSessionPersistence)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Set persistence failed: ${error}`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=

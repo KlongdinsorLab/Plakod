@@ -474,7 +474,7 @@ export default class GameScene extends Phaser.Scene {
 							`Api call success, Response: ${data.response}`,
 						)
 					} catch (error) {
-						logger.error(this.scene.key, `${error}`)
+						logger.error(this.scene.key, `Api call failed: ${error}`)
 					}
 
 					this.isCompleteBoss = false

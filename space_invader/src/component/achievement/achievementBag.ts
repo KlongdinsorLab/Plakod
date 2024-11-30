@@ -405,7 +405,7 @@ export default class AchievementBag {
 			this.rewardPopup.create()
 			this.initFontStyle()
 		} catch (error) {
-			logger.error(this.scene.scene.key, `${error}`)
+			logger.error(this.scene.scene.key, `Api call failed ${error}`)
 		}
 	}
 	handleSelectAchievement(achievementUI: AchievementUI): void {

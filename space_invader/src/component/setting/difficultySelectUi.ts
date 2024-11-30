@@ -107,7 +107,7 @@ export default class difficultySelectUi {
 			const data = await apiService.updateCurrentDifficulty(difficulty)
 			logger.info(this.scene.scene.key, `Api call success, Response: ${data}`)
 		} catch (error) {
-			logger.error(this.scene.scene.key, `${error}`)
+			logger.error(this.scene.scene.key, `Api call failed: ${error}`)
 		}
 		// change ui
 		this.changeDifficulty(difficulty)

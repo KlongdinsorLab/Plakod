@@ -204,7 +204,10 @@ export default class ConfirmScene extends Phaser.Scene {
 					this.scene.stop()
 					this.scene.launch('home', { bgm: this.bgm })
 				} catch (error) {
-					logger.error(this.scene.key, `${error}`)
+					logger.error(
+						this.scene.key,
+						`Confirm button clicked failed: ${error}`,
+					)
 
 					const toast = <Element>this.element.getChildByID('toast')
 					toast.innerHTML +=

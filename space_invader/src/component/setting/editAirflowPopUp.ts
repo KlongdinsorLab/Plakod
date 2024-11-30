@@ -362,7 +362,10 @@ export default class editAirflowPopUp {
 			const data = await apiService.updateAirflow(airflow as Airflow)
 			logger.info(this.scene!.scene.key, `Api call success, Response: ${data}`)
 		} catch (error) {
-			logger.error(this.scene?.scene.key ?? 'EditAirFlow', `${error}`)
+			logger.error(
+				this.scene?.scene.key ?? 'EditAirFlow',
+				`Api call failed: ${error}`,
+			)
 		}
 
 		this.airflowText?.setText(this.airflow.toString())

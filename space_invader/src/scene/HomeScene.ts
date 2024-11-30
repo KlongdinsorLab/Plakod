@@ -49,12 +49,12 @@ export default class HomeScene extends Phaser.Scene {
 			const response = await this.apiService.getPlayer()
 			const data = response.response
 			logger.info(this.scene.key, `Api call success, Response: ${data}`)
+			logger.debug(this.scene.key, `Current player data: ${data}`)
+
 			const playToday = this.handlePlayToday(data.play_today)
 			data.play_today = playToday
 
 			this.playerData = data
-
-			console.log(this.playerData)
 
 			this.scene.scene.registry.set('username', this.playerData.username)
 			this.scene.scene.registry.set('airflow', this.playerData.airflow)
@@ -75,7 +75,7 @@ export default class HomeScene extends Phaser.Scene {
 				this.playerData.selected_character_id,
 			)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Handle player data failed: ${error}`)
 		}
 	}
 

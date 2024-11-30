@@ -246,7 +246,7 @@ export default class OtpScene extends Phaser.Scene {
 		try {
 			await setPersistence(auth, browserSessionPersistence)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Set persistence failed: ${error}`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=
@@ -265,7 +265,7 @@ export default class OtpScene extends Phaser.Scene {
 			this.isTimeout = false
 			this.SetCountDown()
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=

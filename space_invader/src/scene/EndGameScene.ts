@@ -173,7 +173,7 @@ export default class EndGameScene extends Phaser.Scene {
 					`Api call success, Response: ${this.finishGameResponse}`,
 				)
 			} catch (error) {
-				logger.error(this.scene.key, `${error}`)
+				logger.error(this.scene.key, `Api call failed: ${error}`)
 			}
 		}
 		finishGame()
@@ -414,7 +414,7 @@ export default class EndGameScene extends Phaser.Scene {
 			data.play_today = playToday
 			this.scene.scene.registry.set('playToday', playToday)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 	}
 

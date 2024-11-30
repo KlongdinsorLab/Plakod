@@ -122,7 +122,7 @@ export default class RedeemScene extends Phaser.Scene {
 			logger.info(this.scene.key, `Api call success, Response: ${boosterJson}`)
 			this.boosterBar = new boosterBar(this, boosterJson)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 
 		//button
@@ -214,7 +214,7 @@ export default class RedeemScene extends Phaser.Scene {
 					)
 					this.scene.scene.registry.set('boss_id', gameSession.boss_id)
 				} catch (error) {
-					logger.error(this.scene.key, `${error}`)
+					logger.error(this.scene.key, `Api call failed: ${error}`)
 				}
 
 				this.destroy()

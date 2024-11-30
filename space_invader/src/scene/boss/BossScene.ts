@@ -367,7 +367,7 @@ export default class BossScene extends Phaser.Scene {
 				})
 				logger.info(this.scene.key, `Api call success, Response: ${data}`)
 			} catch (error) {
-				logger.error(this.scene.key, `${error}`)
+				logger.error(this.scene.key, `Api call failed: ${error}`)
 			}
 		}
 

@@ -222,7 +222,7 @@ export default class PauseScene extends Phaser.Scene {
 				i18n.destroyEmitter()
 				this.scene.start('home')
 			} catch (error) {
-				logger.error(this.scene.key, `${error}`)
+				logger.error(this.scene.key, `Back to home clicked failed: ${error}`)
 			}
 		}
 
@@ -352,7 +352,7 @@ export default class PauseScene extends Phaser.Scene {
 				this.game.events.removeListener(Phaser.Core.Events.FOCUS)
 				this.scene.start('home')
 			} catch (error) {
-				logger.error(this.scene.key, `${error}`)
+				logger.error(this.scene.key, `Api call failed: ${error}`)
 			}
 		}
 

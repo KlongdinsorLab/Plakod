@@ -389,7 +389,7 @@ export default class RankingScene extends Phaser.Scene {
 				}) => element.username === this.scene.scene.registry.get('username'),
 			)
 		} catch (error) {
-			logger.error(this.scene.key, `${error}`)
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 
 		this.currentPlayerHeartRank =

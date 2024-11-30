@@ -122,7 +122,7 @@ export default class editUsernamePopUp {
 			const data = await apiService.updateUsername(username)
 			logger.info(this.scene.scene.key, `Api call success, Response: ${data}`)
 		} catch (error) {
-			logger.error(this.scene.scene.key, `${error}`)
+			logger.error(this.scene.scene.key, `Api call failed: ${error}`)
 		}
 	}
 
