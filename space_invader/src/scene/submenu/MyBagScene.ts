@@ -8,6 +8,7 @@ import AchievementBag from 'component/achievement/achievementBag'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { UnlockedCharacterDTO } from 'services/API/definition/responseDTO'
 import BackButton from 'component/ui/Button/BackButton'
+import { logger } from 'services/logger'
 
 enum SlotType {
 	BOOSTER,
@@ -65,7 +66,7 @@ export default class MyBagScene extends Phaser.Scene {
 		super('mybag')
 	}
 
-	init({key} : {key : string}) {
+	init({ key }: { key: string }) {
 		this.key = key
 	}
 
@@ -122,18 +123,6 @@ export default class MyBagScene extends Phaser.Scene {
 		const self = this
 
 		const apiService = new supabaseAPIService()
-
-		const boosterData = await apiService.getBoosterBag()
-		const boosterJson = boosterData.response
-		console.log(boosterJson)
-
-		const data = await apiService.getUnlockedAchievement()
-		const unlockedAchievement = data.response
-
-		const {
-			response: unlockedCharacterList,
-		}: { response: UnlockedCharacterDTO[] } =
-			await apiService.getUnlockedCharacter()
 
 		this.background = this.add
 			.tileSprite(width / 2, height / 2, 720, 1280, 'submenu_bg')
@@ -266,26 +255,58 @@ export default class MyBagScene extends Phaser.Scene {
 			br: 40,
 		})
 
-		this.boosterBag = new BoosterBag(this, boosterJson)
-		this.boosterBag.create()
-		this.boosterBag.createDefaultText()
+		try {
+			const boosterData = await apiService.getBoosterBag()
+			const boosterJson = boosterData.response
+			logger.verbose(
+				this.scene.key,
+				`Api call success, Boosters: ${boosterJson}`,
+			)
 
-		this.achievementBag = new AchievementBag(
-			this,
-			unlockedAchievement,
-			unlockedCharacterList,
-		)
-		this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
-		this.achievementBag.create()
-		this.achievementBag.createDefaultTextDescription()
-		this.achievementBag.createDefaultUI()
-		this.achievementBag.createProgressBar()
-		this.achievementBag.hide()
-		const currentUnlockedReward = this.achievementBag.getCurrentUnlockedReward()
-		if (currentUnlockedReward.length !== 0) {
-			this.alert = this.add
-				.image(572, 502, 'icon', 'icon_alert.png')
-				.setOrigin(0)
+			this.boosterBag = new BoosterBag(this, boosterJson)
+			this.boosterBag.create()
+			this.boosterBag.createDefaultText()
+		} catch (error) {
+			logger.error(this.scene.key, `Api call failed: ${error}`)
+		}
+
+		try {
+			const data = await apiService.getUnlockedAchievement()
+			logger.verbose(
+				this.scene.key,
+				`Api call success, Unlocked achievement: ${data.response}`,
+			)
+			const unlockedAchievement = data.response
+
+			const {
+				response: unlockedCharacterList,
+			}: { response: UnlockedCharacterDTO[] } =
+				await apiService.getUnlockedCharacter()
+			logger.verbose(
+				this.scene.key,
+				`Api call success, Unlocked character: ${unlockedCharacterList}`,
+			)
+
+			this.achievementBag = new AchievementBag(
+				this,
+				unlockedAchievement,
+				unlockedCharacterList,
+			)
+			this.achievementBag.setPageIndex(this.achievementBag.getStartIndex())
+			this.achievementBag.create()
+			this.achievementBag.createDefaultTextDescription()
+			this.achievementBag.createDefaultUI()
+			this.achievementBag.createProgressBar()
+			this.achievementBag.hide()
+			const currentUnlockedReward =
+				this.achievementBag.getCurrentUnlockedReward()
+			if (currentUnlockedReward.length !== 0) {
+				this.alert = this.add
+					.image(572, 502, 'icon', 'icon_alert.png')
+					.setOrigin(0)
+			}
+		} catch (error) {
+			logger.error(this.scene.key, `Api call failed: ${error}`)
 		}
 
 		const arrowButtonLeft = this.createArrowButton(

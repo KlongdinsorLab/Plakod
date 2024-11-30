@@ -155,7 +155,7 @@ export class B4Boss extends Boss {
 	startAttackPhase(): void {
 		this.phaseCount++
 		this.isSecondPhase = this.phaseCount === 2
-		if(this.isSecondPhase) this.bossVersion.handleSecondPhase()
+		if (this.isSecondPhase) this.bossVersion.handleSecondPhase()
 		this.isStartAttack = true
 		this.bossSkill.setActive(true)
 		setTimeout(
@@ -230,10 +230,10 @@ export class B4Boss extends Boss {
 
 	playAttack(delta: number): void {
 		this.attack(delta)
-        this.bossVersion.useSkill(this.bossSkill, delta)
+		this.bossVersion.useSkill(this.bossSkill, delta)
 	}
 
-    getName(): keyof typeof BossByName {
-		return "B4"
+	getName(): keyof typeof BossByName {
+		return 'B4'
 	}
 }

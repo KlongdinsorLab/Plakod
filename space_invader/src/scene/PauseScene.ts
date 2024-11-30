@@ -11,6 +11,7 @@ import SoundManager from 'component/sound/SoundManager'
 import WebFont from 'webfontloader'
 import SoundToggle from 'component/ui/home/SoundToggle'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export type Menu = {
 	menu: Phaser.GameObjects.Image
@@ -202,17 +203,26 @@ export default class PauseScene extends Phaser.Scene {
 
 		const handleHomeClick = async () => {
 			try {
-				await apiService.updateGameSession({
+				const updateGameResponse = await apiService.updateGameSession({
 					score: Math.round(this.score),
 					lap: this.lap,
 				})
-				apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${updateGameResponse}`,
+				)
+
+				const endGameResponse = await apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${endGameResponse}`,
+				)
 				this.stopAllScenes()
 				this.scene.stop()
 				i18n.destroyEmitter()
 				this.scene.start('home')
 			} catch (error) {
-				console.error(error)
+				logger.error(this.scene.key, `Back to home clicked failed: ${error}`)
 			}
 		}
 
@@ -312,15 +322,29 @@ export default class PauseScene extends Phaser.Scene {
 		const apiService = new supabaseAPIService()
 		const handleInactivity = async () => {
 			try {
-				console.log({
-					score: this.score,
-					lap: this.lap,
-				})
-				await apiService.updateGameSession({
+				logger.info(
+					this.scene.key,
+					`User inactive at ${this.sceneName} scene, current lap: ${{
+						score: this.score,
+						lap: this.lap,
+					}}`,
+				)
+
+				const data = await apiService.updateGameSession({
 					score: Math.round(this.score),
 					lap: this.lap,
 				})
-				apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${data.response}`,
+				)
+
+				const endGameResponse = await apiService.endGameSession()
+				logger.info(
+					this.scene.key,
+					`Api call success, Response: ${endGameResponse}`,
+				)
+
 				this.stopAllScenes()
 				this.scene.stop()
 				I18nSingleton.getInstance().destroyEmitter()
@@ -328,11 +352,13 @@ export default class PauseScene extends Phaser.Scene {
 				this.game.events.removeListener(Phaser.Core.Events.FOCUS)
 				this.scene.start('home')
 			} catch (error) {
-				console.error(error)
+				logger.error(this.scene.key, `Api call failed: ${error}`)
 			}
 		}
 
-		this.game.events.on(Phaser.Core.Events.BLUR, () => console.log('blur'))
+		this.game.events.on(Phaser.Core.Events.BLUR, () =>
+			logger.debug(this.scene.key, 'Game blurred'),
+		)
 		this.game.events.on(Phaser.Core.Events.BLUR, () => {
 			inactivityTimeout = setTimeout(handleInactivity, inactivityTime)
 		})

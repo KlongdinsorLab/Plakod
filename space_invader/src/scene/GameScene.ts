@@ -33,6 +33,7 @@ import { Booster, BoosterEffect } from 'component/booster/booster'
 import { LaserFactoryByName } from 'component/equipment/weapon/LaserFactoryByName'
 import { LaserFactory } from 'component/equipment/weapon/LaserFactory'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -164,8 +165,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	create() {
-		console.log(this.bossName)
-		console.log(this.bossId)
+		logger.debug(this.scene.key, `Random boss: ${this.bossName}`)
 		const { width, height } = this.scale
 		this.setGameTimeout()
 
@@ -464,11 +464,19 @@ export default class GameScene extends Phaser.Scene {
 					this.boosterEffect.shootingPhase,
 				callback: async () => {
 					this.reloadCount.decrementCount()
-					const data = await this.apiService.updateGameSession({
-						score: Math.round(this.score.getScore()),
-						lap: this.scene.scene.registry.get('lap'),
-					})
-					console.log(data)
+					try {
+						const data = await this.apiService.updateGameSession({
+							score: Math.round(this.score.getScore()),
+							lap: this.scene.scene.registry.get('lap'),
+						})
+						logger.info(
+							this.scene.key,
+							`Api call success, Response: ${data.response}`,
+						)
+					} catch (error) {
+						logger.error(this.scene.key, `Api call failed: ${error}`)
+					}
+
 					this.isCompleteBoss = false
 				},
 				loop: false,
@@ -479,7 +487,10 @@ export default class GameScene extends Phaser.Scene {
 					ShootingPhase.NORMAL * this.boosterEffect.shootingPhase,
 					LASER_FREQUENCY_MS * this.boosterEffect.laserFrequency,
 				)
-				console.log(this.boosterEffect)
+				logger.debug(
+					this.scene.key,
+					`Booster effect applied: ${this.boosterEffect}`,
+				)
 				gauge.set(
 					BULLET_COUNT *
 						this.boosterEffect.bulletCount *
@@ -515,8 +526,6 @@ export default class GameScene extends Phaser.Scene {
 		if (gauge.isReducing()) {
 			gauge.release(delta)
 		}
-
-		// console.log(gauge.getDuratation())
 	}
 
 	setGameTimeout() {

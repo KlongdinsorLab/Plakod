@@ -7,8 +7,8 @@ import { BossSkill } from '../BossSkill'
 import Player from 'component/player/Player'
 
 export class B4BossVersion2 extends BossVersion {
-	private skillTimer : number
-	private skillCounter : number
+	private skillTimer: number
+	private skillCounter: number
 	private movePattern!: Phaser.Curves.Path
 
 	constructor() {

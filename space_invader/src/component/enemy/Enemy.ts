@@ -16,7 +16,7 @@ export abstract class Enemy {
 		player: Player,
 		score: Score,
 		isTutorial?: boolean,
-		isItemPhase?: boolean
+		isItemPhase?: boolean,
 	) {
 		this.scene = scene
 		this.player = player

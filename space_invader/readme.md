@@ -1,4 +1,5 @@
 # Plakod Space Invador
+
 Plakod is a video game-assisted rehabilitation that aims to increase motivation and build engagement for patients.
 [website](https://klongdinsor.com)
 
@@ -23,37 +24,45 @@ nvm use node
 Replace 'node' with 'latest' for `nvm-windows`.
 
 Set .env for Firebase
+
 ```.env
 VITE_FIREBASE_API_KEY=
 VITE_FIREBASE_PROJECT_ID=
 ```
 
 Install dependencies
+
 ```bash
 npm install
 ```
 
 ### Run
+
 ```bash
 npm run start
 ```
+
 Go to `localhost:8000`
 
 ### Build
+
 ```bash
 npm run build
 ```
+
 Test build file
+
 ```bash
 cd ./dist
 python3 -m http.server
 ```
 
 ### Deploy
+
 Deploy to Github pages with Github Action
 
-
 ### Template
+
 Phaser 3 + TypeScript + Vite.js Template
 
 This is a TypeScript specific fork of [phaser3-vite-template](https://github.com/ourcade/phaser3-vite-template).
@@ -127,28 +136,32 @@ There are 2 branches develop and production. Develop branch will be deployed on 
 Create new Firebase hosting channel
 b
 $ npm exec -- firebase hosting:channel:create CHANNEL_ID
-```
+
+````
 
 list all Firebase hosting channel
 ```sh
 $ npm exec -- firebase hosting:channel:list
-```
+````
 
 ### Deploying with another site ID
 
 Currently we use plakod-game.web.app but we can have multple xxx.web.app
 
 Create new site ID
+
 ```sh
 $ npm exec -- firebase hosting:sites:create SITE_ID
 ```
 
 Delete site ID
+
 ```sh
 $ npm exec -- firebase hosting:sites:delete SITE_ID
 ```
 
 Deploy
+
 ```sh
 $ firebase deploy --only hosting:TARGET_NAME
 ```
@@ -156,19 +169,26 @@ $ firebase deploy --only hosting:TARGET_NAME
 [see more](https://firebase.google.com/docs/hosting/multisites)
 
 ## Special Thanks
+
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
 - [Pixabay](https://pixabay.com/) for sound effect
 
 ## Known Fixed Issues
+
 As with any development process, we've encountered a few challenges along the way. Below are some issues we faced and how we've resolved them:
 
 ### Time Intervals
+
 - What Happened: Time Intervals don't stop when scene is closed
 - How We Fixed It: Use Phaser's time event instead
+
 ### Physics Bodies
+
 - What Happened: Too much physics bodies at the same time causes performance issues
 - How We Fixed It: Make sure to destroy unused physics body, such as those not on the screen anymore
+
 ### Random Number Generation
+
 - What Happened: Random method that involves constant division causes performance issues
 - How We Fixed It: Simplify random method such as random number in a fixed array

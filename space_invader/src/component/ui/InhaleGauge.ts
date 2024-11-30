@@ -61,7 +61,11 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract set(bulletCount: number, laserFrequency?:number, releasedBullet?:number): void
+	abstract set(
+		bulletCount: number,
+		laserFrequency?: number,
+		releasedBullet?: number,
+	): void
 
 	abstract resetting(): void
 
@@ -69,13 +73,13 @@ export default abstract class InhaleGauge {
 
 	abstract isReducing(): boolean
 
-//	abstract showUp(): void
-//
-//	abstract hideUp(): void
-//
-//	abstract showDown(): void
-//
-//	abstract hideDown(): void
+	//	abstract showUp(): void
+	//
+	//	abstract hideUp(): void
+	//
+	//	abstract showDown(): void
+	//
+	//	abstract hideDown(): void
 
 	abstract setStep(step: number): void
 

@@ -101,7 +101,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		DisplayNameScene,
 		MyBagScene,
 		DeviceConnectedScene,
-		InstructionScene
+		InstructionScene,
 	],
 }
 

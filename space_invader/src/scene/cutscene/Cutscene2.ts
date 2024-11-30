@@ -2,6 +2,7 @@ import { PlayerByName } from 'component/player/playerInterface'
 import { ALL_CHARACTER, MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import Phaser from 'phaser'
+import { logger } from 'services/logger'
 import WebFont from 'webfontloader'
 
 export default class Cutscene1 extends Phaser.Scene {
@@ -59,6 +60,12 @@ export default class Cutscene1 extends Phaser.Scene {
 			.setAlpha(0)
 
 		const selectedCharacterId = this.registry.get('selectedCharacterId') ?? 1
+		if (!this.registry.get('selectedCharacterId')) {
+			logger.warn(
+				this.scene.key,
+				'No selected character id, using "1" as default value',
+			)
+		}
 		const selectedCharacter = ALL_CHARACTER[selectedCharacterId - 1].mcName
 		this.mcName = selectedCharacter
 

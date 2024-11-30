@@ -2,15 +2,26 @@ import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { Button } from './Button'
 
-export default class InstructionButton extends Button{
+export default class InstructionButton extends Button {
 	constructor(scene: Phaser.Scene) {
 		super(scene)
 		const { width, height } = scene.scale
 
-        this.button = scene.add
-			.nineslice(width - MARGIN - 160, height - 3 * MARGIN,'landing_page', 'button_red.png', 160, 106, 32, 32, 64, 64)
-			.setOrigin(0,0)
-			
+		this.button = scene.add
+			.nineslice(
+				width - MARGIN - 160,
+				height - 3 * MARGIN,
+				'landing_page',
+				'button_red.png',
+				160,
+				106,
+				32,
+				32,
+				64,
+				64,
+			)
+			.setOrigin(0, 0)
+
 		this.scene.add
 			.image(
 				width - MARGIN - 160 + 20,
@@ -32,7 +43,7 @@ export default class InstructionButton extends Button{
 		this.button.setInteractive()
 		this.button.on('pointerup', () => {
 			scene.scene.stop()
-			scene.scene.start('instruction', {key : this.scene.scene.key})
+			scene.scene.start('instruction', { key: this.scene.scene.key })
 		})
 	}
 
@@ -66,7 +77,7 @@ export default class InstructionButton extends Button{
 	getIsActive(): boolean {
 		return this.isActive
 	}
-	
+
 	getBody(): Phaser.GameObjects.NineSlice | Phaser.GameObjects.Image {
 		return this.button
 	}

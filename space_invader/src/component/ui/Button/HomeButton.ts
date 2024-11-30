@@ -7,22 +7,31 @@ export default class HomeButton extends Button {
 		super(scene)
 		const { width, height } = scene.scale
 		const i18n = I18nSingleton.getInstance()
-        
+
 		this.button = this.scene.add
-			.nineslice(width / 2, 1018, 'end_game_scene', 'button_gray.png', 528, 96, 24, 24)
+			.nineslice(
+				width / 2,
+				1018,
+				'end_game_scene',
+				'button_gray.png',
+				528,
+				96,
+				24,
+				24,
+			)
 			.setOrigin(0.5, 0)
-            this.button.setInteractive()
-            this.button.on('pointerup', () => {
+		this.button.setInteractive()
+		this.button.on('pointerup', () => {
 			scene.scene.stop()
 			i18n.destroyEmitter()
-			scene.scene.start("home")
+			scene.scene.start('home')
 		})
 
 		this.buttonText = i18n
 			.createTranslatedText(
 				scene,
 				width / 2 + MARGIN / 2,
-			    height - 128 - MARGIN - 40,
+				height - 128 - MARGIN - 40,
 				'home',
 			)
 			.setAlign('center')
@@ -30,23 +39,23 @@ export default class HomeButton extends Button {
 
 		this.buttonLogo = scene.add
 			.image(
-				width / 2  - 2 * MARGIN - 20 , 
-                height - 128 - MARGIN - 44,
-                'end_game_scene',
-                'logo_button_back to home.png'
+				width / 2 - 2 * MARGIN - 20,
+				height - 128 - MARGIN - 44,
+				'end_game_scene',
+				'logo_button_back to home.png',
 			)
 			.setOrigin(1, 0.5)
 	}
 
 	initFontStyle() {
 		this.buttonText
-        .setStyle({
-            fontFamily: 'Mali',
-			fontStyle: 'bold',
-            color: 'white',
-        })
-        .setFontSize('32px')
-        .setStroke('#7A7367', 6)
+			.setStyle({
+				fontFamily: 'Mali',
+				fontStyle: 'bold',
+				color: 'white',
+			})
+			.setFontSize('32px')
+			.setStroke('#7A7367', 6)
 	}
 
 	activate() {
@@ -80,7 +89,7 @@ export default class HomeButton extends Button {
 		this.isActive = false
 	}
 
-	show(): void{
+	show(): void {
 		this.button.setVisible(true)
 		this.buttonLogo.setVisible(true)
 		this.buttonText.setVisible(true)
