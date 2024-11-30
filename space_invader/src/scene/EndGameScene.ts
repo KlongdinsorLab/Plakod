@@ -408,7 +408,7 @@ export default class EndGameScene extends Phaser.Scene {
 		try {
 			const response = await apiService.getPlayer()
 			const data = response.response
-			logger.info(this.scene.key, `Api call success, Response: ${data}`)
+			logger.verbose(this.scene.key, `Api call success, Player: ${data}`)
 
 			const playToday = this.handlePlayToday(data.play_today)
 			data.play_today = playToday

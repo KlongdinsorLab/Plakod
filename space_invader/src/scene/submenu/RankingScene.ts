@@ -370,7 +370,7 @@ export default class RankingScene extends Phaser.Scene {
 		try {
 			const response = await this.apiService.getRanking()
 			const data = response.response
-			logger.info(this.scene.key, `Api call success, Response: ${data}`)
+			logger.verbose(this.scene.key, `Api call success, Ranking: ${data}`)
 
 			this.sortPlayerScoreJson1 = data.ranking_by_score.slice(0, 20)
 			this.sortPlayerScoreJson2 = []

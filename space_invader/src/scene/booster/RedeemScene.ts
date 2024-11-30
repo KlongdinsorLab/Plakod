@@ -119,7 +119,10 @@ export default class RedeemScene extends Phaser.Scene {
 			//boosters
 			const boosterData = await apiService.getBoosterRedeem()
 			const boosterJson = boosterData.response
-			logger.info(this.scene.key, `Api call success, Response: ${boosterJson}`)
+			logger.verbose(
+				this.scene.key,
+				`Api call success, Booster redeem: ${boosterJson}`,
+			)
 			this.boosterBar = new boosterBar(this, boosterJson)
 		} catch (error) {
 			logger.error(this.scene.key, `Api call failed: ${error}`)
