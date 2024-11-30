@@ -9,8 +9,20 @@ export default class PlayButton extends Button {
 		super(scene)
 		//this.timeService = new TimeService()
 
-       	this.button = scene.add.nineslice(144, 772,'landing_page', 'button_red.png', 432, 170, 32, 32, 64, 64)
-			                        .setOrigin(0,0)
+		this.button = scene.add
+			.nineslice(
+				144,
+				772,
+				'landing_page',
+				'button_red.png',
+				432,
+				170,
+				32,
+				32,
+				64,
+				64,
+			)
+			.setOrigin(0, 0)
 		this.buttonText = I18nSingleton.getInstance()
 			.createTranslatedText(scene, 420, 748 + 24 + 80, 'home_start_game')
 			.setAlign('center')
@@ -21,20 +33,19 @@ export default class PlayButton extends Button {
 
 		this.button.setInteractive()
 		this.button.on('pointerup', () => {
-			
 			//this.timeService.saveLastPlayTime()
 
 			//scene.scene.start('cutscene1', { bgm: bgm })
 
-			const username = scene.registry.get('username');
+			const username = scene.registry.get('username')
 			if (username) {
-				scene.scene.start('redeem', { bgm : bgm })
+				scene.scene.start('redeem', { bgm: bgm })
 			} else {
-				scene.scene.start('display name', { bgm : bgm })
+				scene.scene.start('display name', { bgm: bgm })
 			}
 		})
 	}
- 
+
 	initFontStyle() {
 		this.buttonText
 			.setStyle({
@@ -65,7 +76,7 @@ export default class PlayButton extends Button {
 	getIsActive(): boolean {
 		return this.isActive
 	}
-	
+
 	getBody(): Phaser.GameObjects.NineSlice | Phaser.GameObjects.Image {
 		return this.button
 	}

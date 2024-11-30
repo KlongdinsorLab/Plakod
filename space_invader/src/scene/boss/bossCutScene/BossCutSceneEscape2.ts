@@ -44,8 +44,7 @@ export default class BossEscape2 extends Phaser.Scene {
 		// soundManager.play(bossEscape, false)
 		const tutorialSound = this.sound.addAudioSprite('tutorialWarmupSound')
 		tutorialSound.play('boss-escape')
-		
-		
+
 		this.boss.getVersion().playEscapePhase2(this)
 		const smoke = this.add.image(0, height / 2, 'smoke').setOrigin(1, 0.5)
 
@@ -69,7 +68,7 @@ export default class BossEscape2 extends Phaser.Scene {
 						score: this.score,
 						reloadCount: updatedCount,
 						isCompleteBoss: true,
-						bossName: this.boss.getName()
+						bossName: this.boss.getName(),
 					})
 					this.tweens.add({
 						targets: smoke,

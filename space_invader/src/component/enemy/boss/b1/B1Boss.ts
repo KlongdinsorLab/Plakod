@@ -236,6 +236,6 @@ export class B1Boss extends Boss {
 	}
 
 	getName(): keyof typeof BossByName {
-		return "B1"
+		return 'B1'
 	}
 }

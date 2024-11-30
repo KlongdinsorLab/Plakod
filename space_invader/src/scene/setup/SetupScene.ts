@@ -45,7 +45,7 @@ export default class SetupScene extends Phaser.Scene {
 		next.on('pointerup', () => {
 			if (this.step >= this.TOTAL_STEPS) {
 				localStorage.setItem('setup', 'true')
-//	TODO			this.scene.resume('title')
+				//	TODO			this.scene.resume('title')
 				this.scene.stop()
 				this.scene.launch('login')
 				return

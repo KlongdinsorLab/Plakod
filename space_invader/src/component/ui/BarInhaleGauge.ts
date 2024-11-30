@@ -108,8 +108,12 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	charge(delta: number) {
-		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR)
-		;(<Phaser.GameObjects.Shape>this.gauge).width += this.getHoldWithIncrement(delta)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(
+			HOLD_BAR_BORDER,
+			HOLD_BAR_CHARGING_COLOR,
+		)
+		;(<Phaser.GameObjects.Shape>this.gauge).width +=
+			this.getHoldWithIncrement(delta)
 		this.soundManager.play(this.chargingSound!)
 	}
 
@@ -121,7 +125,10 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	setFullCharge() {
-		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(
+			HOLD_BAR_BORDER,
+			HOLD_BAR_CHARGED_COLOR,
+		)
 		this.soundManager.play(this.chargedSound!)
 	}
 
@@ -132,7 +139,10 @@ export default class BarInhaleGauge extends InhaleGauge {
 			duration: LASER_FREQUENCY_MS * bulletCount,
 			ease: 'sine.inout',
 		})
-		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(
+			HOLD_BAR_BORDER,
+			HOLD_BAR_IDLE_COLOR,
+		)
 		this.holdButtonDuration = 0
 		setTimeout(
 			() => (this.holdButtonDuration = 0),
@@ -141,16 +151,24 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	resetting() {
-		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(
+			HOLD_BAR_BORDER,
+			HOLD_BAR_IDLE_COLOR,
+		)
 		this.isHoldbarReducing = true
 	}
 
 	deplete() {
-		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(
+			HOLD_BAR_BORDER,
+			HOLD_BAR_EMPTY_COLOR,
+		)
 	}
 
 	isReducing(): boolean {
-		return this.isHoldbarReducing && (<Phaser.GameObjects.Shape>this.gauge).width > 0
+		return (
+			this.isHoldbarReducing && (<Phaser.GameObjects.Shape>this.gauge).width > 0
+		)
 	}
 
 	showUp(): void {
@@ -169,15 +187,15 @@ export default class BarInhaleGauge extends InhaleGauge {
 		this.down.setVisible(false)
 	}
 
-	setStep(_:number): void {
+	setStep(_: number): void {
 		// TODO
 	}
 
-	setVisible(_:boolean): void {
+	setVisible(_: boolean): void {
 		// TODO
 	}
 
 	setVisibleAll(_: boolean): void {
 		// TODO
-    }
+	}
 }
