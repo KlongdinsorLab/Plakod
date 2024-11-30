@@ -296,7 +296,7 @@ export default class OtpScene extends Phaser.Scene {
 
 			if (min === 0 && counter === 0) {
 				this.isTimeout = true
-				logger.info(this.scene.key, 'Scene time out')
+				logger.warn(this.scene.key, 'Scene time out')
 				clearInterval(this.countdownInterval)
 				return
 			}

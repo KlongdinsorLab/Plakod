@@ -241,6 +241,8 @@ export default class RegisterScene extends Phaser.Scene {
 				difficulty: difficulty,
 				bgm: this.bgm,
 			})
+		} else {
+			logger.error(this.scene.key, 'Update user profile failed')
 		}
 	}
 }

@@ -119,6 +119,8 @@ export default class editAirflowPopUp {
 					self.closeEditAirflowPopUp2()
 					self.editAirflowForm2?.setVisible(false)
 					self.popUpEditAirflow3()
+				} else {
+					logger.warn(scene.scene.key, 'User submit with null input value')
 				}
 			}
 		})
@@ -302,18 +304,20 @@ export default class editAirflowPopUp {
 		const defaultInput = <HTMLOptionElement>(
 			this.editAirflowForm3.getChildByID(this.airflow?.toString() ?? '100')
 		)
+		logger.warn(
+			this.scene?.scene.key ?? 'Setting',
+			'Difficulty is null, using "1" as default value',
+		)
 		defaultInput.selected = true
 	}
 
 	closeEditAirflowPopUp3(): void {
 		this.blackWindow?.setVisible(false)
-		// this.setInteractiveOn()
 		this.scene?.scene.resume()
 	}
 
 	popUpEditAirflow4(): void {
 		this.scene?.scene.pause()
-		// this.setInteractiveOff()
 		this.editAirflowForm4?.setVisible(true)
 		this.blackWindow?.setVisible(true)
 

@@ -119,7 +119,11 @@ export default class LoginScene extends Phaser.Scene {
 	update() {}
 
 	getPhoneNumber(phoneNumber: string): string {
-		if (!phoneNumber.startsWith('0')) return `+66${phoneNumber}`
+		if (!phoneNumber.startsWith('0')) {
+			logger.warn(this.scene.key, 'User input non local format phone number')
+			return `+66${phoneNumber}`
+		}
+
 		return `+66${phoneNumber.substring(1, phoneNumber.length)}`
 	}
 
@@ -129,6 +133,7 @@ export default class LoginScene extends Phaser.Scene {
 		const recaptchaVerifier = new RecaptchaVerifier(auth, 'button', {
 			size: 'invisible',
 		})
+
 		try {
 			await setPersistence(auth, browserSessionPersistence)
 		} catch (error) {

@@ -97,6 +97,12 @@ export default class editUsernamePopUp {
 			this.editNameForm?.getChildByName('namefield')
 		)
 		namefieldValue.value = this.username ?? 'Player'
+		if (this.username == null) {
+			logger.warn(
+				this.scene.scene.key,
+				'User username input value is null, using "Player" as default value',
+			)
+		}
 	}
 
 	closeEditNamePopUp(): void {

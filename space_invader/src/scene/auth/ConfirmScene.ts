@@ -197,6 +197,24 @@ export default class ConfirmScene extends Phaser.Scene {
 						),
 						parseInt(this.selectedData?.difficulty ?? '1'),
 					)
+					if (ageInput.textContent === null) {
+						logger.warn(
+							this.scene.key,
+							'Age input is null, using "1" as default value',
+						)
+					}
+					if (airflowInput.textContent === null) {
+						logger.warn(
+							this.scene.key,
+							'Airflow input is null, using "100" as default value',
+						)
+					}
+					if (!this.selectedData?.difficulty) {
+						logger.warn(
+							this.scene.key,
+							'Difficulty input is null, using "1" as default value',
+						)
+					}
 					logger.info(
 						this.scene.key,
 						`Api call success, Response: ${data.response}`,
