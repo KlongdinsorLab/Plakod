@@ -7,13 +7,13 @@ import { Boss } from '../Boss'
 import { BossSkill } from '../BossSkill'
 
 export class B4BossVersion1 extends BossVersion {
-    private skillTimer : number
-    private skillCounter : number   
-    private movePattern!: Phaser.Curves.Path
+	private skillTimer: number
+	private skillCounter: number
+	private movePattern!: Phaser.Curves.Path
 	constructor() {
 		super()
-        this.skillTimer = 0
-        this.skillCounter = 4
+		this.skillTimer = 0
+		this.skillCounter = 4
 	}
 	createAnimation(scene: Phaser.Scene): Phaser.GameObjects.PathFollower {
 		const { width } = scene.scale
@@ -66,14 +66,14 @@ export class B4BossVersion1 extends BossVersion {
 			.lineTo(width / 2, 100)
 			.lineTo(width + 200, 400)
 			.lineTo(-200, 400)
-        this.movePattern = path
+		this.movePattern = path
 		return path
 	}
 
-    handleSecondPhase() {
-        this.skillTimer = 0
-        this.skillCounter = 7
-    }
+	handleSecondPhase() {
+		this.skillTimer = 0
+		this.skillCounter = 7
+	}
 
 	isShootAttack(): boolean {
 		return false
@@ -87,19 +87,19 @@ export class B4BossVersion1 extends BossVersion {
 		return false
 	}
 
-	useSkill(bossSkill : BossSkill, delta : number): void {
-        if (this.skillTimer === 0) {
-            bossSkill.setMovePath(this.movePattern)
-            bossSkill.move()
-        }
-        this.skillTimer += delta
+	useSkill(bossSkill: BossSkill, delta: number): void {
+		if (this.skillTimer === 0) {
+			bossSkill.setMovePath(this.movePattern)
+			bossSkill.move()
+		}
+		this.skillTimer += delta
 
-        if (this.skillTimer >= 6000 && this.skillCounter > 0) {
-            this.skillTimer -= 6000
-            this.skillCounter--
-            bossSkill.attack()
-        }
-    }
+		if (this.skillTimer >= 6000 && this.skillCounter > 0) {
+			this.skillTimer -= 6000
+			this.skillCounter--
+			bossSkill.attack()
+		}
+	}
 
 	getDurationPhase1(): number {
 		return PHASE_1_BOSS_TIME_MS
@@ -255,7 +255,7 @@ export class B4BossVersion1 extends BossVersion {
 
 		const path = new Phaser.Curves.Path(0, 0)
 		const boss = scene.add.follower(path, width / 2, 300, 'b4v1').setOrigin(0.5)
-        boss.play('boss-hit')
+		boss.play('boss-hit')
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {

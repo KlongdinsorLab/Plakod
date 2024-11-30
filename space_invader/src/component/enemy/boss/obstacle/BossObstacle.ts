@@ -88,7 +88,6 @@ export class BossObstacle extends Enemy {
 				!this.player.getIsUsedShield() &&
 				!this.isHit
 			) {
-				console.log('hit2')
 				this.player.activateShield(this.boosterEffect.remainingTime)
 				this.isHit = true
 				return

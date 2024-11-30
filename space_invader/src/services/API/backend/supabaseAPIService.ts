@@ -10,8 +10,10 @@ import { supabaseClient } from './supabaseClient'
 // TODO headers
 
 export default class supabaseAPIService {
-	private getAuthHeader() : string {
-		const header = 'Bearer ' + (localStorage.getItem('idToken') ?? import.meta.env.VITE_JWT_TOKEN)
+	private getAuthHeader(): string {
+		const header =
+			'Bearer ' +
+			(localStorage.getItem('idToken') ?? import.meta.env.VITE_JWT_TOKEN)
 		return header
 	}
 
@@ -310,7 +312,7 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async getRanking(){
+	async getRanking() {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'get-ranking',
 			{
@@ -326,14 +328,14 @@ export default class supabaseAPIService {
 		return data
 	}
 
-	async useBooster( boosterId : number ) {
+	async useBooster(boosterId: number) {
 		const { data, error } = await supabaseClient.functions.invoke(
 			'use-booster',
 			{
 				headers: {
 					Authorization: this.getAuthHeader(),
 				},
-				body: { booster_id : boosterId },
+				body: { booster_id: boosterId },
 			},
 		)
 		if (error) {

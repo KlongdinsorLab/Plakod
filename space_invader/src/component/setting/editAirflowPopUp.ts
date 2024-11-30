@@ -2,6 +2,7 @@
 import i18next from 'i18next'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
 import { Airflow } from 'services/API/definition/typeProperty'
+import { logger } from 'services/logger'
 
 export default class editAirflowPopUp {
 	private scene: Phaser.Scene | undefined
@@ -118,6 +119,8 @@ export default class editAirflowPopUp {
 					self.closeEditAirflowPopUp2()
 					self.editAirflowForm2?.setVisible(false)
 					self.popUpEditAirflow3()
+				} else {
+					logger.warn(scene.scene.key, 'User submit with null input value')
 				}
 			}
 		})
@@ -301,18 +304,20 @@ export default class editAirflowPopUp {
 		const defaultInput = <HTMLOptionElement>(
 			this.editAirflowForm3.getChildByID(this.airflow?.toString() ?? '100')
 		)
+		logger.warn(
+			this.scene?.scene.key ?? 'Setting',
+			'Difficulty is null, using "1" as default value',
+		)
 		defaultInput.selected = true
 	}
 
 	closeEditAirflowPopUp3(): void {
 		this.blackWindow?.setVisible(false)
-		// this.setInteractiveOn()
 		this.scene?.scene.resume()
 	}
 
 	popUpEditAirflow4(): void {
 		this.scene?.scene.pause()
-		// this.setInteractiveOff()
 		this.editAirflowForm4?.setVisible(true)
 		this.blackWindow?.setVisible(true)
 
@@ -357,7 +362,15 @@ export default class editAirflowPopUp {
 	async updateAirflow(airflow: number): Promise<void> {
 		this.airflow = airflow
 		const apiService = new supabaseAPIService()
-		await apiService.updateAirflow(airflow as Airflow)
+		try {
+			const data = await apiService.updateAirflow(airflow as Airflow)
+			logger.info(this.scene!.scene.key, `Api call success, Response: ${data}`)
+		} catch (error) {
+			logger.error(
+				this.scene?.scene.key ?? 'EditAirFlow',
+				`Api call failed: ${error}`,
+			)
+		}
 
 		this.airflowText?.setText(this.airflow.toString())
 	}

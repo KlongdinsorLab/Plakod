@@ -14,6 +14,7 @@ import SettingButton from 'component/ui/Button/SettingButton'
 import SoundToggle from 'component/ui/home/SoundToggle'
 import { PlayerDTO } from 'services/API/definition/responseDTO'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 const ReminderText = {
 	firstRound: 'home_reminder_first_play',
@@ -44,33 +45,40 @@ export default class HomeScene extends Phaser.Scene {
 	}
 
 	private async handleData() {
-		const response = await this.apiService.getPlayer()
-		const data = response.response
-		const playToday = this.handlePlayToday(data.play_today)
-		data.play_today = playToday
+		try {
+			const response = await this.apiService.getPlayer()
+			const data = response.response
+			logger.verbose(
+				this.scene.key,
+				`Api call success, Current player data: ${data}`,
+			)
 
-		this.playerData = data
+			const playToday = this.handlePlayToday(data.play_today)
+			data.play_today = playToday
 
-		console.log(this.playerData)
+			this.playerData = data
 
-		this.scene.scene.registry.set('username', this.playerData.username)
-		this.scene.scene.registry.set('airflow', this.playerData.airflow)
-		this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
-		this.scene.scene.registry.set('playCount', this.playerData.play_count)
-		this.scene.scene.registry.set('playToday', this.playerData.play_today)
-		this.scene.scene.registry.set(
-			'playerCharactersId',
-			this.playerData.unlocked_characters_id,
-		)
-		this.scene.scene.registry.set('playerLevel', this.playerData.level)
-		this.scene.scene.registry.set(
-			'playerProgression',
-			this.playerData.progression,
-		)
-		this.scene.scene.registry.set(
-			'selectedCharacterId',
-			this.playerData.selected_character_id,
-		)
+			this.scene.scene.registry.set('username', this.playerData.username)
+			this.scene.scene.registry.set('airflow', this.playerData.airflow)
+			this.scene.scene.registry.set('difficulty', this.playerData.difficulty)
+			this.scene.scene.registry.set('playCount', this.playerData.play_count)
+			this.scene.scene.registry.set('playToday', this.playerData.play_today)
+			this.scene.scene.registry.set(
+				'playerCharactersId',
+				this.playerData.unlocked_characters_id,
+			)
+			this.scene.scene.registry.set('playerLevel', this.playerData.level)
+			this.scene.scene.registry.set(
+				'playerProgression',
+				this.playerData.progression,
+			)
+			this.scene.scene.registry.set(
+				'selectedCharacterId',
+				this.playerData.selected_character_id,
+			)
+		} catch (error) {
+			logger.error(this.scene.key, `Handle player data failed: ${error}`)
+		}
 	}
 
 	init({ bgm }: { bgm: Phaser.Sound.BaseSound }) {

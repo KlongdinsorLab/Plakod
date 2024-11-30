@@ -9,7 +9,7 @@ import { BOOSTER_FREQUENCT_MS } from 'config'
 export class BoosterFactory extends ItemFactory {
 	private boosters: Booster[] = []
 	private boosterTimer = 0
-    private isCreated!: boolean
+	private isCreated!: boolean
 
 	create(
 		scene: Phaser.Scene,
@@ -31,7 +31,7 @@ export class BoosterFactory extends ItemFactory {
 		this.boosterTimer += delta
 		if (!this.isCreated && this.boosterTimer > BOOSTER_FREQUENCT_MS) {
 			this.create(scene, player, score, gauge)
-            this.isCreated = true
+			this.isCreated = true
 		}
 	}
 

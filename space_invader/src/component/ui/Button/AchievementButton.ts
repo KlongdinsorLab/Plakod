@@ -5,8 +5,19 @@ export default class AchievementButton extends Button {
 	constructor(scene: Phaser.Scene) {
 		super(scene)
 		this.button = scene.add
-								.nineslice(296, 966,'landing_page', 'button_grey.png', 128, 138, 10, 10, 64, 64)
-								.setOrigin(0,0)
+			.nineslice(
+				296,
+				966,
+				'landing_page',
+				'button_grey.png',
+				128,
+				138,
+				10,
+				10,
+				64,
+				64,
+			)
+			.setOrigin(0, 0)
 		this.buttonLogo = scene.add
 			.image(296 + 64, 966 + 48, 'landing_page', 'logo_button_achievement.png')
 			.setOrigin(0.5, 0.5)
@@ -16,7 +27,7 @@ export default class AchievementButton extends Button {
 			.setOrigin(0.5, 0)
 		this.button.setInteractive()
 		this.button.on('pointerdown', () => {
-			this.scene.scene.start('mybag', {key: this.scene.scene.key})
+			this.scene.scene.start('mybag', { key: this.scene.scene.key })
 			// TODO: Link to achievement
 		})
 	}
@@ -51,7 +62,7 @@ export default class AchievementButton extends Button {
 	getIsActive(): boolean {
 		return this.isActive
 	}
-	
+
 	getBody(): Phaser.GameObjects.NineSlice | Phaser.GameObjects.Image {
 		return this.button
 	}

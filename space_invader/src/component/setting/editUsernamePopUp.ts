@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import i18next from 'i18next'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export default class editUsernamePopUp {
 	private scene: Phaser.Scene
@@ -96,6 +97,12 @@ export default class editUsernamePopUp {
 			this.editNameForm?.getChildByName('namefield')
 		)
 		namefieldValue.value = this.username ?? 'Player'
+		if (this.username == null) {
+			logger.warn(
+				this.scene.scene.key,
+				'User username input value is null, using "Player" as default value',
+			)
+		}
 	}
 
 	closeEditNamePopUp(): void {
@@ -117,7 +124,12 @@ export default class editUsernamePopUp {
 		this.scene.registry.set('username', username)
 
 		const apiService = new supabaseAPIService()
-		await apiService.updateUsername(username)
+		try {
+			const data = await apiService.updateUsername(username)
+			logger.info(this.scene.scene.key, `Api call success, Response: ${data}`)
+		} catch (error) {
+			logger.error(this.scene.scene.key, `Api call failed: ${error}`)
+		}
 	}
 
 	getUsername(): string {

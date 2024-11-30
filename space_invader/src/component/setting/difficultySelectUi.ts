@@ -1,7 +1,9 @@
 import I18nSingleton from 'i18n/I18nSingleton'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export default class difficultySelectUi {
+	private scene!: Phaser.Scene
 	//Difficulty
 	private difficulty: number | undefined // from database
 
@@ -18,6 +20,7 @@ export default class difficultySelectUi {
 	private hardText: Phaser.GameObjects.Text | undefined
 
 	constructor(scene: Phaser.Scene, difficulty?: number) {
+		this.scene = scene
 		const i18n = I18nSingleton.getInstance()
 
 		this.difficulty = difficulty === undefined ? 0 : difficulty
@@ -100,8 +103,12 @@ export default class difficultySelectUi {
 
 	private async handleChangeDifficulty(difficulty: number) {
 		const apiService = new supabaseAPIService()
-		await apiService.updateCurrentDifficulty(difficulty)
-
+		try {
+			const data = await apiService.updateCurrentDifficulty(difficulty)
+			logger.info(this.scene.scene.key, `Api call success, Response: ${data}`)
+		} catch (error) {
+			logger.error(this.scene.scene.key, `Api call failed: ${error}`)
+		}
 		// change ui
 		this.changeDifficulty(difficulty)
 	}

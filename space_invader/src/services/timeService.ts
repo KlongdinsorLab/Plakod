@@ -2,7 +2,7 @@ export default class TimeService {
 	private playCount!: number
 	private lastPlay1!: Date
 	private lastPlay2!: Date
-	constructor(playCount?: number,lastPlay1?: Date, lastPlay2?: Date) {
+	constructor(playCount?: number, lastPlay1?: Date, lastPlay2?: Date) {
 		// TODO: call api
 		this.lastPlay1 = lastPlay1 ?? new Date('')
 		this.lastPlay2 = lastPlay2 ?? new Date('')
@@ -34,7 +34,12 @@ export default class TimeService {
 	// }
 
 	getTimeCountdown(lastPlayTime: Date): string {
-		if (isNaN(lastPlayTime.getTime()) || this.playCount >= 10 || this.isRecharged(lastPlayTime)) return ''
+		if (
+			isNaN(lastPlayTime.getTime()) ||
+			this.playCount >= 10 ||
+			this.isRecharged(lastPlayTime)
+		)
+			return ''
 
 		const timeNow = new Date().getTime()
 		const distance =
@@ -48,25 +53,21 @@ export default class TimeService {
 		return timeText
 	}
 
-
-	
-
 	getDurationTime(endTime: Date): string {
-		const endTimeInSeconds = Math.floor(endTime.getTime() / 1000);
-		const currentSeconds = Math.floor(Date.now() / 1000);
-	
-		let remainingSeconds = endTimeInSeconds - currentSeconds;
-	
-		if (remainingSeconds <= 0) return 'timeout';
-	
-		const hours = Math.floor(remainingSeconds / 3600);
-		remainingSeconds %= 3600;
-		const minutes = Math.floor(remainingSeconds / 60);
-		const seconds = remainingSeconds % 60;
-	
-		return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+		const endTimeInSeconds = Math.floor(endTime.getTime() / 1000)
+		const currentSeconds = Math.floor(Date.now() / 1000)
+
+		let remainingSeconds = endTimeInSeconds - currentSeconds
+
+		if (remainingSeconds <= 0) return 'timeout'
+
+		const hours = Math.floor(remainingSeconds / 3600)
+		remainingSeconds %= 3600
+		const minutes = Math.floor(remainingSeconds / 60)
+		const seconds = remainingSeconds % 60
+
+		return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`
 	}
-	
 
 	isRecharged(lastPlayTime: Date): boolean {
 		if (isNaN(lastPlayTime.getTime())) {
@@ -76,4 +77,3 @@ export default class TimeService {
 		return diff >= 1 && this.playCount < 10
 	}
 }
-

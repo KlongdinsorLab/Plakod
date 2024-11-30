@@ -39,7 +39,6 @@ export default class Shield extends Equipment {
 				this.shieldCountDown.setText(
 					this.boosterEffect.remainingTime.toString(),
 				)
-				console.log(this.boosterEffect.remainingTime)
 				if (this.boosterEffect.remainingTime === 0) {
 					this.timeEvent.remove()
 					this.deactivate()

@@ -1,80 +1,141 @@
 <div class="register bg-white w-[720px] h-[1280px]">
-    <div class="register-head static bg-[#f1f1f1] min-w-full justify-center h-[336px] pl-12">
-        <h1 id='head-text' class="sarabun-medium text-[56px] text-black text-center pt-[96px] pr-12">
-            ลงทะเบียน
-        </h1>
-        <br/>
-        <div class="step-box flex justify-center flex-row">
-          <ul class="timeline mt-[56] w-[193px] justify-center flex flex-row">
-            <li>
-              <div class="timeline-start"></div>
-              <div class="timeline-middle">
-                <div class="sarabun-regular bg-[#43a99e] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white">1</div>
-              </div>
-            </li>
-            <li class="flex items-center">
-              <hr class="bg-[#cdcdcd] h-[10px] w-[96px] flex-grow "/>
-            </li>
-            <li>
-              <div class="timeline-middle">
-                <div class="sarabun-regular bg-[#cdcdcd] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-[#727272]">2</div>
-              </div>
-              <div class="timeline-end ml-[123px]"></div>
-            </li>
-          </ul>
-        </div>
-    </div>
-    <div class="register-body h-full w-full pt-16">
-        <form id="submit-form">
-            <div class="firstLine-input flex flex-row mb-12">
-                <div class="age-section w-64 h-36 flex flex-col ml-[96px]">
-                    <label id="age-label" for="age" class="sarabun-regular text-black text-[36px] mb-4">อายุ</label>
-                    <select id="age" class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]" required>
-                        <option id='default-value1' disabled selected>ยังไม่ระบุ</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
-                <div class="gender-section w-64 h-36 flex flex-col ml-3">
-                    <label id="gender-label" for="gender" class="sarabun-regular text-black text-[36px] mb-4">เพศ</label>
-                    <select id="gender" class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]" required>
-                        <option id='default-value2' disabled selected>ยังไม่ระบุ</option>
-                        <option id="option-male" value="male">ชาย</option>
-                        <option id="option-female" value="female">หญิง</option>
-                        <option id="option-other" value="other">ไม่ระบุ</option>
-                    </select>
-                </div>
-            </div>
-            <div class="airflow-section flex flex-col justify-center h-[208px] w-[528px] mx-24 mb-6">
-                <label for="airflow" class="sarabun-regular text-black text-[36px] mb-4"><span id="airflow-label">ปริมาณอากาศ</span><span class="text-[#ff0000]"> *</span></label>
-                <select id="airflow" class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]" required>
-                    <option id='default-value3' disabled selected>ยังไม่ระบุ</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="400">400</option>
-                    <option value="500">500</option>
-                    <option value="600">600</option>
-                </select>
-                <h1 id="warning-text" class="text-[#ff0000] sarabun-light text-[28px] mt-4">* แก้ไขได้ในภายหลังตามคำแนะนำของแพทย์</h1>
-            </div>
-            <div class="difficulty-section flex flex-col justify-center h-36 w-[528px] mx-24 mb-20">
-                <label id="difficulty-label" for="difficulty" class="sarabun-regular text-black text-[36px] mb-4">ระดับกายภาพ</label>
-                <select id="difficulty" class="select select-bordered sarabun-light bg-transparent text-4xl text-black text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]" required>
-                    <option id='default-value4' disabled selected>ยังไม่ระบุ</option>
-                    <option id="option-easy" value="1">ระดับ1 - ง่าย</option>
-                    <option id="option-medium" value="2">ระดับ2 - ปานกลาง</option>
-                    <option id="option-hard" value="3">ระดับ3 - ยาก</option>
-                </select>
-            </div>
-            <button id="button" class="btn sarabun-medium rounded-2xl bg-[#43a99e] border-none text-white text-4xl h-[96px] w-[528px] ml-[96px] mr-[96px]">ยืนยัน</button>
-        </form>
-        <div id="toast" class="toast"></div>
-    </div>
-  </div>
+	<div
+		class="register-head static bg-[#f1f1f1] min-w-full justify-center h-[336px] pl-12"
+	>
+		<h1
+			id="head-text"
+			class="sarabun-medium text-[56px] text-black text-center pt-[96px] pr-12"
+		>
+			ลงทะเบียน
+		</h1>
+		<br />
+		<div class="step-box flex justify-center flex-row">
+			<ul class="timeline mt-[56] w-[193px] justify-center flex flex-row">
+				<li>
+					<div class="timeline-start"></div>
+					<div class="timeline-middle">
+						<div
+							class="sarabun-regular bg-[#43a99e] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-white"
+						>
+							1
+						</div>
+					</div>
+				</li>
+				<li class="flex items-center">
+					<hr class="bg-[#cdcdcd] h-[10px] w-[96px] flex-grow" />
+				</li>
+				<li>
+					<div class="timeline-middle">
+						<div
+							class="sarabun-regular bg-[#cdcdcd] flex items-center justify-center rounded-full w-[60px] h-[60px] border-none text-3xl text-[#727272]"
+						>
+							2
+						</div>
+					</div>
+					<div class="timeline-end ml-[123px]"></div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="register-body h-full w-full pt-16">
+		<form id="submit-form">
+			<div class="firstLine-input flex flex-row mb-12">
+				<div class="age-section w-64 h-36 flex flex-col ml-[96px]">
+					<label
+						id="age-label"
+						for="age"
+						class="sarabun-regular text-black text-[36px] mb-4"
+						>อายุ</label
+					>
+					<select
+						id="age"
+						class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]"
+						required
+					>
+						<option id="default-value1" disabled selected>ยังไม่ระบุ</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+					</select>
+				</div>
+				<div class="gender-section w-64 h-36 flex flex-col ml-3">
+					<label
+						id="gender-label"
+						for="gender"
+						class="sarabun-regular text-black text-[36px] mb-4"
+						>เพศ</label
+					>
+					<select
+						id="gender"
+						class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]"
+						required
+					>
+						<option id="default-value2" disabled selected>ยังไม่ระบุ</option>
+						<option id="option-male" value="male">ชาย</option>
+						<option id="option-female" value="female">หญิง</option>
+						<option id="option-other" value="other">ไม่ระบุ</option>
+					</select>
+				</div>
+			</div>
+			<div
+				class="airflow-section flex flex-col justify-center h-[208px] w-[528px] mx-24 mb-6"
+			>
+				<label for="airflow" class="sarabun-regular text-black text-[36px] mb-4"
+					><span id="airflow-label">ปริมาณอากาศ</span
+					><span class="text-[#ff0000]"> *</span></label
+				>
+				<select
+					id="airflow"
+					class="select select-bordered sarabun-light text-black bg-transparent text-4xl text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]"
+					required
+				>
+					<option id="default-value3" disabled selected>ยังไม่ระบุ</option>
+					<option value="100">100</option>
+					<option value="200">200</option>
+					<option value="300">300</option>
+					<option value="400">400</option>
+					<option value="500">500</option>
+					<option value="600">600</option>
+				</select>
+				<h1
+					id="warning-text"
+					class="text-[#ff0000] sarabun-light text-[28px] mt-4"
+				>
+					* แก้ไขได้ในภายหลังตามคำแนะนำของแพทย์
+				</h1>
+			</div>
+			<div
+				class="difficulty-section flex flex-col justify-center h-36 w-[528px] mx-24 mb-20"
+			>
+				<label
+					id="difficulty-label"
+					for="difficulty"
+					class="sarabun-regular text-black text-[36px] mb-4"
+					>ระดับกายภาพ</label
+				>
+				<select
+					id="difficulty"
+					class="select select-bordered sarabun-light bg-transparent text-4xl text-black text-start border-2 border-[#727272] w-full h-full rounded-2xl p-2 pl-6 leading-[3.5rem]"
+					required
+				>
+					<option id="default-value4" disabled selected>ยังไม่ระบุ</option>
+					<option id="option-easy" value="1">ระดับ1 - ง่าย</option>
+					<option id="option-medium" value="2">ระดับ2 - ปานกลาง</option>
+					<option id="option-hard" value="3">ระดับ3 - ยาก</option>
+				</select>
+			</div>
+			<button
+				id="button"
+				class="btn sarabun-medium rounded-2xl bg-[#43a99e] border-none text-white text-4xl h-[96px] w-[528px] ml-[96px] mr-[96px]"
+			>
+				ยืนยัน
+			</button>
+		</form>
+		<div id="toast" class="toast"></div>
+	</div>
+</div>

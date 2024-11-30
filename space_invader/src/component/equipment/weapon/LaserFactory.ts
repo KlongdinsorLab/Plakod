@@ -17,10 +17,10 @@ export abstract class LaserFactory {
 		player: Player,
 		enemies: Enemy[],
 		delta: number,
-		options?: { 
-			bossSkill?: BossSkill 
+		options?: {
+			bossSkill?: BossSkill
 			laserFrequency?: number
-		} ,
+		},
 	): void {
 		this.laserFrequency = options?.laserFrequency ?? LASER_FREQUENCY_MS
 		this.timer += delta
@@ -30,7 +30,8 @@ export abstract class LaserFactory {
 			const laser = this.create(scene, player)
 			const laserBodies = laser.shoot()
 			this.bulletCount -= 1
-			options?.bossSkill && this.setSkillCollision(scene, laserBodies, options?.bossSkill)
+			options?.bossSkill &&
+				this.setSkillCollision(scene, laserBodies, options?.bossSkill)
 			this.setEnemiesCollision(scene, laserBodies, enemies)
 			scene.time.delayedCall(5000, () => {
 				laser.destroy()
@@ -41,14 +42,12 @@ export abstract class LaserFactory {
 	setEnemiesCollision(
 		scene: Phaser.Scene,
 		lasers: Phaser.Types.Physics.Arcade.ImageWithDynamicBody[],
-		enemies: Enemy[]
+		enemies: Enemy[],
 	) {
 		if (!Array.isArray(enemies) || enemies.length === 0) return
 		enemies.forEach((enemy) => {
 			lasers.forEach((laser) => {
-				scene.physics.add.overlap(laser, enemy.getBody(), () =>
-					enemy.hit()
-				)
+				scene.physics.add.overlap(laser, enemy.getBody(), () => enemy.hit())
 			})
 		})
 	}
@@ -56,20 +55,20 @@ export abstract class LaserFactory {
 	setSkillCollision(
 		scene: Phaser.Scene,
 		lasers: Phaser.Types.Physics.Arcade.ImageWithDynamicBody[],
-		bossSkill: BossSkill
+		bossSkill: BossSkill,
 	) {
 		if (!bossSkill) return
 		lasers.forEach((laser) => {
-			const collider = scene.physics.add.collider(laser, bossSkill.getBody(), () =>
-				bossSkill.applySkill(laser)
+			const collider = scene.physics.add.collider(
+				laser,
+				bossSkill.getBody(),
+				() => bossSkill.applySkill(laser),
 			)
 			!bossSkill.getIsActive() && scene.physics.world.removeCollider(collider)
 		})
 	}
 
-	set(bulletCount:number): void {
+	set(bulletCount: number): void {
 		this.bulletCount = bulletCount
 	}
 }
-
-

@@ -6,7 +6,7 @@ import { MARGIN } from 'config'
 export default class RestartButton extends Button {
 	// private timeService!: TimeService
 	// private playCount!: number
-	
+
 	constructor(scene: Phaser.Scene) {
 		super(scene)
 		const { width } = scene.scale
@@ -16,11 +16,20 @@ export default class RestartButton extends Button {
 		// this.playCount = Number(localStorage.getItem('playCount')) ?? 0
 
 		this.button = this.scene.add
-			.nineslice(width / 2, 900, 'end_game_scene', 'button_purple.png', 528, 96, 24, 24,)
+			.nineslice(
+				width / 2,
+				900,
+				'end_game_scene',
+				'button_purple.png',
+				528,
+				96,
+				24,
+				24,
+			)
 			.setOrigin(0.5, 0)
 
-        this.button.setInteractive()
-        this.button.on('pointerup', () => {
+		this.button.setInteractive()
+		this.button.on('pointerup', () => {
 			scene.scene.stop()
 			i18n.destroyEmitter()
 			// this.timeService.saveLastPlayTime()
@@ -51,12 +60,12 @@ export default class RestartButton extends Button {
 	initFontStyle() {
 		this.buttonText
 			.setStyle({
-                    fontFamily: 'Mali',
-                    fontStyle: 'bold',
-					color: 'white',
-				})
-				.setFontSize('32px')
-				.setStroke('#3F088C', 6)
+				fontFamily: 'Mali',
+				fontStyle: 'bold',
+				color: 'white',
+			})
+			.setFontSize('32px')
+			.setStroke('#3F088C', 6)
 	}
 
 	activate() {

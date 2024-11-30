@@ -3,6 +3,7 @@ import { PlayerFullNameByName } from 'component/player/playerInterface'
 import { ALL_CHARACTER } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import supabaseAPIService from 'services/API/backend/supabaseAPIService'
+import { logger } from 'services/logger'
 
 export default class characterSelectUi {
 	private scene: Phaser.Scene | undefined
@@ -77,7 +78,12 @@ export default class characterSelectUi {
 	private async handleButtonUseCharacter() {
 		const apiService = new supabaseAPIService()
 		this.useChar()
-		await apiService.updateSelectedCharacter(this.usingCharIndex)
+		try {
+			const data = await apiService.updateSelectedCharacter(this.usingCharIndex)
+			logger.info(this.scene!.scene.key, `Api call success, Response: ${data}`)
+		} catch (error) {
+			logger.error(this.scene!.scene.key, `Api call failed: ${error}`)
+		}
 	}
 
 	private async createInstance(

@@ -37,40 +37,39 @@ export default class DifficultyScene extends Phaser.Scene {
 				width / 2,
 				title.y + 2 * MARGIN,
 				'difficulty_description',
-				)
+			)
 			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(width/2, height / 2)
+			.dom(width / 2, height / 2)
 			.createFromCache('difficultyForm')
 			.setScale(1.5)
 		const easyButton = <HTMLButtonElement>element.getChildByID('easy')
 		easyButton.textContent = i18next.t('difficulty_easy')
-		
+
 		const mediumButton = <HTMLButtonElement>element.getChildByID('medium')
 		mediumButton.textContent = i18next.t('difficulty_medium')
-		
+
 		const hardButton = <HTMLButtonElement>element.getChildByID('hard')
 		hardButton.textContent = i18next.t('difficulty_hard')
-		
+
 		element.addListener('click')
 		element.on('click', (_: DOMEvent<HTMLInputElement>) => {
-//			if(event?.target?.id === '')
-//			event.preventDefault()
+			//			if(event?.target?.id === '')
+			//			event.preventDefault()
 			this.scene.stop()
 			this.scene.launch('airflow')
 		})
-		
+
 		const easyLabel = <Element>element.getChildByID('easy-description')
 		easyLabel.textContent = i18next.t('difficulty_easy_description')
 
 		const mediumLabel = <Element>element.getChildByID('medium-description')
 		mediumLabel.textContent = i18next.t('difficulty_medium_description')
-		
+
 		const hardLabel = <Element>element.getChildByID('hard-description')
 		hardLabel.textContent = i18next.t('difficulty_hard_description')
-		
 	}
 
 	update() {
