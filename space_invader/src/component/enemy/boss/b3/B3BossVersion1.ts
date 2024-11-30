@@ -246,7 +246,68 @@ export class B3BossVersion1 extends BossVersion {
 	}
 
 	playItemTutorial(scene: Phaser.Scene): void {
-		console.log(scene)
+		const { width, height } = scene.scale
+
+		const avoidText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, width / 2, 18 * MARGIN, 'avoid_poison')
+			.setOrigin(0.5, 0)
+		const bulletText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, width / 2, 10 * MARGIN, 'collect_item')
+			.setOrigin(0.5, 0)
+
+		const poison = scene.add
+			.image(width / 2, 17 * MARGIN, 'dropItem', 'item_poison.png')
+			.setOrigin(0.5, 1)
+		const bullet = scene.add
+			.image(width / 2, 9 * MARGIN, 'dropItem', 'item_bullet.png')
+			.setOrigin(0.5, 1)
+
+		const poisonBox = scene.add
+			.graphics()
+			.lineStyle(8, 0xfb511c, 1)
+			.strokeRoundedRect(width / 2 - 264, 14 * MARGIN + 8, 528, height / 8, 32)
+		const bulletBox = scene.add
+			.graphics()
+			.lineStyle(8, 0x7eaf08, 1)
+			.strokeRoundedRect(width / 2 - 264, 6 * MARGIN + 8, 528, height / 8, 32)
+
+		WebFont.load({
+			google: {
+				families: ['Mali'],
+			},
+			active: function () {
+				const bossTutorialUiStyle = {
+					fontFamily: 'Mali',
+				}
+
+				avoidText
+					.setStyle({
+						...bossTutorialUiStyle,
+						color: 'white',
+						fontWeight: 700,
+					})
+					.setFontSize('6em')
+					.setStroke('#FB511C', 12)
+
+				bulletText
+					.setStyle({
+						...bossTutorialUiStyle,
+						color: 'white',
+						fontWeight: 700,
+					})
+					.setFontSize('6em')
+					.setStroke('#7EAF08', 12)
+			},
+		})
+
+		setTimeout(() => {
+			poison.setVisible(false)
+			bullet.setVisible(false)
+			poisonBox.setVisible(false)
+			bulletBox.setVisible(false)
+			avoidText.setVisible(false)
+			bulletText.setVisible(false)
+		}, 2000)
 	}
 
 	playRandomScene(scene: Phaser.Scene, player: Player): void {
