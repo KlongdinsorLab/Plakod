@@ -26,6 +26,7 @@
 	},
 	"dependencies": {
 		"@sentry/browser": "^8.40.0",
+		"@supabase/sentry-js-integration": "^0.3.0",
 		"@supabase/supabase-js": "^2.45.1",
 		"@types/webfontloader": "^1.6.38",
 		"firebase": "^10.5.0",
