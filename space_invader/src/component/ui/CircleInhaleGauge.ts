@@ -9,8 +9,8 @@ import {
 	HOLDBAR_REDUCING_RATIO,
 	LASER_FREQUENCY_MS,
 	CIRCLE_GAUGE_MARGIN,
-	CIRCLE_GAUGE_RADUIS,
-	CIRCLE_OVER_GAUGE_RADUIS,
+	CIRCLE_GAUGE_RADIUS,
+	CIRCLE_OVER_GAUGE_RADIUS,
 	CIRCLE_GAUGE_SHAKE_X,
 	MARGIN,
 	MEDIUM_FONT_SIZE,
@@ -44,12 +44,12 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		const { width, height } = this.scene.scale
 		const x =
 			width / (this.division + 1) +
-			index * (2 * CIRCLE_GAUGE_RADUIS) +
-			(this.division !== 1 ? CIRCLE_GAUGE_RADUIS : 0)
+			index * (2 * CIRCLE_GAUGE_RADIUS) +
+			(this.division !== 1 ? CIRCLE_GAUGE_RADIUS : 0)
 		const y = height - CIRCLE_GAUGE_MARGIN
 
 		this.scene.add
-			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+			.circle(x, y, CIRCLE_GAUGE_RADIUS, HOLD_BAR_IDLE_COLOR)
 			.setOrigin(0.5, 0.5)
 
 		I18nSingleton.getInstance()
@@ -58,7 +58,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 			.setOrigin(0.5, 0.5)
 
 		this.gauge = this.scene.add
-			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
+			.circle(x, y, CIRCLE_GAUGE_RADIUS, HOLD_BAR_COLOR)
 			.setOrigin(0.5, 0.5)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 		this.scene.tweens.add({
@@ -72,14 +72,14 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	createUpDownGauge(): void {
 		const { width, height } = this.scene.scale
 		const y = height - CIRCLE_GAUGE_MARGIN
-		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADUIS - 8
+		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADIUS - 8
 		this.down = this.scene.add
-			.circle(downX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+			.circle(downX, y, CIRCLE_OVER_GAUGE_RADIUS, HOLD_BAR_IDLE_COLOR)
 			.setOrigin(0.5, 0.5)
 
-		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADUIS + 8
+		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADIUS + 8
 		this.up = this.scene.add
-			.circle(upX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+			.circle(upX, y, CIRCLE_OVER_GAUGE_RADIUS, HOLD_BAR_IDLE_COLOR)
 			.setOrigin(0.5, 0.5)
 		const i18n = I18nSingleton.getInstance()
 
@@ -105,7 +105,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	}
 
 	getHoldWithIncrement(delta: number): number {
-		return CIRCLE_GAUGE_RADUIS / (HOLD_DURATION_MS / delta)
+		return CIRCLE_GAUGE_RADIUS / (HOLD_DURATION_MS / delta)
 	}
 
 	hold(delta: number) {

@@ -2,12 +2,12 @@ import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
-	BOSS_4_CRESCENT_SCORE_REDUCTION,
-	BOSS_4_DOUBLE_CRESCENT_VELOCITY_X,
-	BOSS_4_CRESCENT_VELOCITY_Y,
-	BOSS_4_DOUBLE_CRESCENT_ANGLE,
+	BOSS4_CRESCENT_SCORE_REDUCTION,
+	BOSS4_DOUBLE_CRESCENT_VELOCITY_X,
+	BOSS4_CRESCENT_VELOCITY_Y,
+	BOSS4_DOUBLE_CRESCENT_ANGLE,
 	PLAYER_HIT_DELAY_MS,
-	BOSS_4_CRESCENT_SCALE_DURATION,
+	BOSS4_CRESCENT_SCALE_DURATION,
 } from 'config'
 
 // import { BoosterEffect } from 'component/booster/booster'
@@ -41,7 +41,7 @@ export default class B4DoubleCrescent {
 		this.enemy1 = this.scene.physics.add
 			.image(x + 75, y, 'b4v1', 'b4_skill1.png')
 			.setOrigin(0.5, 0.5)
-		this.enemy1.angle = -BOSS_4_DOUBLE_CRESCENT_ANGLE
+		this.enemy1.angle = -BOSS4_DOUBLE_CRESCENT_ANGLE
 		this.enemy1.depth = 1
 
 		this.scene.tweens.add({
@@ -49,7 +49,7 @@ export default class B4DoubleCrescent {
 			scaleX: 1.75,
 			scaleY: 1.75,
 			ease: 'Linear',
-			duration: BOSS_4_CRESCENT_SCALE_DURATION,
+			duration: BOSS4_CRESCENT_SCALE_DURATION,
 			repeat: 0,
 		})
 
@@ -60,7 +60,7 @@ export default class B4DoubleCrescent {
 				if (this.player.getIsHit()) return
 				this.player.setIsHit(true)
 				this.player.damaged()
-				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION)
+				this.score.add(BOSS4_CRESCENT_SCORE_REDUCTION)
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
 					this.player.setIsHit(false)
 					this.player.recovered()
@@ -74,7 +74,7 @@ export default class B4DoubleCrescent {
 		this.enemy2 = this.scene.physics.add
 			.image(x - 75, y, 'b4v1', 'b4_skill1.png')
 			.setOrigin(0.5, 0.5)
-		this.enemy2.angle = BOSS_4_DOUBLE_CRESCENT_ANGLE
+		this.enemy2.angle = BOSS4_DOUBLE_CRESCENT_ANGLE
 		this.enemy2.depth = 1
 
 		this.scene.tweens.add({
@@ -82,7 +82,7 @@ export default class B4DoubleCrescent {
 			scaleX: 1.75,
 			scaleY: 1.75,
 			ease: 'Linear',
-			duration: BOSS_4_CRESCENT_SCALE_DURATION,
+			duration: BOSS4_CRESCENT_SCALE_DURATION,
 			repeat: 0,
 		})
 
@@ -93,7 +93,7 @@ export default class B4DoubleCrescent {
 				if (this.player.getIsHit()) return
 				this.player.setIsHit(true)
 				this.player.damaged()
-				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION)
+				this.score.add(BOSS4_CRESCENT_SCORE_REDUCTION)
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
 					this.player.setIsHit(false)
 					this.player.recovered()
@@ -115,11 +115,11 @@ export default class B4DoubleCrescent {
 		// this.enemy.setVelocityX(this.isTutorial ? -120 : velocityX)
 		// this.enemy.setAngularVelocity(METEOR_SPIN_SPEED)
 
-		this.enemy1.setVelocityY(BOSS_4_CRESCENT_VELOCITY_Y)
-		this.enemy1.setVelocityX(BOSS_4_DOUBLE_CRESCENT_VELOCITY_X)
+		this.enemy1.setVelocityY(BOSS4_CRESCENT_VELOCITY_Y)
+		this.enemy1.setVelocityX(BOSS4_DOUBLE_CRESCENT_VELOCITY_X)
 
-		this.enemy2.setVelocityY(BOSS_4_CRESCENT_VELOCITY_Y)
-		this.enemy2.setVelocityX(-BOSS_4_DOUBLE_CRESCENT_VELOCITY_X)
+		this.enemy2.setVelocityY(BOSS4_CRESCENT_VELOCITY_Y)
+		this.enemy2.setVelocityX(-BOSS4_DOUBLE_CRESCENT_VELOCITY_X)
 	}
 
 	// getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {

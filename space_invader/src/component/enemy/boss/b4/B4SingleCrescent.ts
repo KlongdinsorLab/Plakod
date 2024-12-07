@@ -2,9 +2,9 @@ import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
-	BOSS_4_CRESCENT_SCALE_DURATION,
-	BOSS_4_CRESCENT_SCORE_REDUCTION,
-	BOSS_4_CRESCENT_VELOCITY_Y,
+	BOSS4_CRESCENT_SCALE_DURATION,
+	BOSS4_CRESCENT_SCORE_REDUCTION,
+	BOSS4_CRESCENT_VELOCITY_Y,
 	PLAYER_HIT_DELAY_MS,
 } from 'config'
 
@@ -48,7 +48,7 @@ export default class B4SingleCrescent {
 			scaleX: 1.75,
 			scaleY: 1.75,
 			ease: 'Linear',
-			duration: BOSS_4_CRESCENT_SCALE_DURATION,
+			duration: BOSS4_CRESCENT_SCALE_DURATION,
 			repeat: 0,
 		})
 
@@ -59,7 +59,7 @@ export default class B4SingleCrescent {
 				if (this.player.getIsHit()) return
 				this.player.setIsHit(true)
 				this.player.damaged()
-				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION)
+				this.score.add(BOSS4_CRESCENT_SCORE_REDUCTION)
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
 					this.player.setIsHit(false)
 					this.player.recovered()
@@ -74,7 +74,7 @@ export default class B4SingleCrescent {
 	}
 
 	move(): void {
-		this.enemy.setVelocityY(BOSS_4_CRESCENT_VELOCITY_Y)
+		this.enemy.setVelocityY(BOSS4_CRESCENT_VELOCITY_Y)
 	}
 
 	getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {

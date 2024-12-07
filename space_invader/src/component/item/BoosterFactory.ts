@@ -4,7 +4,7 @@ import Score from 'component/ui/Score'
 import { ItemFactory } from './ItemFactory'
 import InhaleGauge from 'component/ui/InhaleGauge'
 import { Booster } from './Booster'
-import { BOOSTER_FREQUENCT_MS } from 'config'
+import { BOOSTER_FREQUENCY_MS } from 'config'
 
 export class BoosterFactory extends ItemFactory {
 	private boosters: Booster[] = []
@@ -29,7 +29,7 @@ export class BoosterFactory extends ItemFactory {
 		delta: number,
 	): void {
 		this.boosterTimer += delta
-		if (!this.isCreated && this.boosterTimer > BOOSTER_FREQUENCT_MS) {
+		if (!this.isCreated && this.boosterTimer > BOOSTER_FREQUENCY_MS) {
 			this.create(scene, player, score, gauge)
 			this.isCreated = true
 		}

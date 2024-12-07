@@ -20,12 +20,13 @@ import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config'
 import { initializeApp } from 'firebase/app'
-import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID } from './config'
+import { FIREBASE_API_KEY, FIREBASE_PROJECT_ID, FIREBASE_APP_ID } from './config'
 
 const firebaseConfig = {
 	apiKey: FIREBASE_API_KEY,
 	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
 	projectId: FIREBASE_PROJECT_ID,
+	appId: FIREBASE_APP_ID
 }
 
 initializeApp(firebaseConfig)

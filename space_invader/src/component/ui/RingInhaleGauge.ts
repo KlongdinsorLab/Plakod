@@ -1,7 +1,7 @@
 import {
 	BULLET_COUNT,
 	CIRCLE_GAUGE_MARGIN,
-	CIRCLE_GAUGE_RADUIS,
+	CIRCLE_GAUGE_RADIUS,
 	HOLD_BAR_IDLE_COLOR,
 	HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
@@ -45,8 +45,8 @@ export default class RingInhaleGauge extends InhaleGauge {
 		const { width, height } = this.scene.scale
 		const x =
 			width / (this.division + 1) +
-			index * (2 * CIRCLE_GAUGE_RADUIS) +
-			(this.division !== 1 ? CIRCLE_GAUGE_RADUIS : 0)
+			index * (2 * CIRCLE_GAUGE_RADIUS) +
+			(this.division !== 1 ? CIRCLE_GAUGE_RADIUS : 0)
 		const y = height - CIRCLE_GAUGE_MARGIN
 
 		gauge.lineStyle(16, color, 1)
@@ -54,7 +54,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 		gauge.arc(
 			x,
 			y,
-			CIRCLE_GAUGE_RADUIS,
+			CIRCLE_GAUGE_RADIUS,
 			Phaser.Math.DegToRad(startDegree),
 			Phaser.Math.DegToRad(endDegree),
 			true,
@@ -104,14 +104,14 @@ export default class RingInhaleGauge extends InhaleGauge {
 		this.steps = steps.map(({ radius, color }) => createCircle(radius, color))
 		//		const { width, height } = this.scene.scale
 		//		const y = height - CIRCLE_GAUGE_MARGIN
-		//		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADUIS - 8
+		//		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADIUS - 8
 		//		this.down = this.scene.add
-		//			.circle(downX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+		//			.circle(downX, y, CIRCLE_OVER_GAUGE_RADIUS, HOLD_BAR_IDLE_COLOR)
 		//			.setOrigin(0.5, 0.5)
 		//
-		//		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADUIS + 8
+		//		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADIUS + 8
 		//		this.up = this.scene.add
-		//			.circle(upX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+		//			.circle(upX, y, CIRCLE_OVER_GAUGE_RADIUS, HOLD_BAR_IDLE_COLOR)
 		//			.setOrigin(0.5, 0.5)
 		//		const i18n = I18nSingleton.getInstance()
 		//

@@ -25,6 +25,7 @@
 		"vite-tsconfig-paths": "^4.2.1"
 	},
 	"dependencies": {
+		"@firebase/remote-config": "^0.4.11",
 		"@sentry/browser": "^8.40.0",
 		"@supabase/supabase-js": "^2.45.1",
 		"@types/webfontloader": "^1.6.38",
