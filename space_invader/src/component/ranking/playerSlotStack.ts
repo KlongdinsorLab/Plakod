@@ -94,8 +94,6 @@ export class PlayerSlotStack {
 			)
 			this.slotNumber++
 		}
-
-		console.log(this.rank)
 	}
 	createCurrentPlayerSlot(): void {
 		let playerStat
