@@ -61,6 +61,7 @@ export class PlayerSlotStack {
 		this.playerRankHeart = playerRankHeart ?? -1
 	}
 	createPlayerSlot() {
+		
 		this.slotNumber = 0
 		for (let i = this.index; i < this.index + this.maxPlayerSlot; i++) {
 			this.rank++
@@ -93,6 +94,8 @@ export class PlayerSlotStack {
 			)
 			this.slotNumber++
 		}
+
+		console.log(this.rank)
 	}
 	createCurrentPlayerSlot(): void {
 		let playerStat
@@ -118,7 +121,7 @@ export class PlayerSlotStack {
 	}
 	nextPage() {
 		this.index += this.maxPlayerSlot
-		//this.rank += this.maxPlayerSlot;
+		this.rank = this.index
 		this.playerSlots.forEach((playerSlot) => {
 			playerSlot.destroy()
 		})
@@ -128,7 +131,7 @@ export class PlayerSlotStack {
 	previousPage() {
 		if (this.index <= 0) return
 		this.index -= this.maxPlayerSlot
-		this.rank -= this.maxPlayerSlot * 2
+		this.rank = this.index
 		this.playerSlots.forEach((playerSlot) => {
 			playerSlot.destroy()
 		})
