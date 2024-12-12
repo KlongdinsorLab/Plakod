@@ -61,7 +61,6 @@ export class PlayerSlotStack {
 		this.playerRankHeart = playerRankHeart ?? -1
 	}
 	createPlayerSlot() {
-		
 		this.slotNumber = 0
 		for (let i = this.index; i < this.index + this.maxPlayerSlot; i++) {
 			this.rank++

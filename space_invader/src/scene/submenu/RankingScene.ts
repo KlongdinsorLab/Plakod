@@ -44,7 +44,7 @@ export default class RankingScene extends Phaser.Scene {
 	//mockup data for test
 	private currentPlayerScoreRank: number = 23
 	private currentPlayerHeartRank: number = 2
-	private totalPlayer: number = 40
+	private totalPlayer: number = 20
 	private currentPlayer: {
 		id: string
 		username: string
@@ -141,8 +141,8 @@ export default class RankingScene extends Phaser.Scene {
 		{ id: '23', username: 'user23', total_score: 86, total_game: 999 },
 		{ id: '1', username: 'น้องลาคูนี่จัง', total_score: 111, total_game: 123 },
 		{ id: '21', username: 'user21', total_score: 88, total_game: 111 },
-		{ id: '2', username: 'สู้เขาสิน้องหญิง', total_score: 105, total_game: 99 },
-		{ id: '22', username: 'user22', total_score: 87, total_game: 90 },
+		{ id: '2', username: 'สู้เขาสิน้องหญิง', total_score: 105, total_game: 90 },
+		{ id: '22', username: 'user22', total_score: 87, total_game: 89 },
 		{ id: '4', username: 'user4', total_score: 103, total_game: 88 },
 		{ id: '24', username: 'user24', total_score: 85, total_game: 86 },
 		{ id: '5', username: 'user5', total_score: 102, total_game: 84 },
@@ -648,11 +648,11 @@ export default class RankingScene extends Phaser.Scene {
 		if (this.rankingIndex + this.maxPlayerSlot >= this.totalPlayer) {
 			this.setButtonOverlayRight(true)
 		}
-		if (this.rankingIndex % 20 === 0) {
-			this.currentPlayerJson = this.setCurrentPlayerData()
-			this.playerSlotStack.setPlayerData(this.currentPlayerJson)
-			return
-		}
+		// if (this.rankingIndex % 20 === 0) {
+		// 	this.currentPlayerJson = this.setCurrentPlayerData()
+		// 	this.playerSlotStack.setPlayerData(this.currentPlayerJson)
+		// 	return
+		// }
 		this.playerSlotStack.nextPage()
 	}
 
