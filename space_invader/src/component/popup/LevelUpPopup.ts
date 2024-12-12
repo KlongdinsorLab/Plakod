@@ -218,9 +218,9 @@ export class LevelUpPopup extends Popup {
 		this.submitButton.setInteractive().on('pointerup', () => {
 			this.isConfirmLevelUp = true
 			this.destroy()
-			this.booster1.destroy()
-			this.booster2.destroy()
-			this.booster3.destroy()
+			this.booster1?.destroy()
+			this.booster2?.destroy()
+			this.booster3?.destroy()
 		})
 		this.layer.add(this.submitButton)
 
