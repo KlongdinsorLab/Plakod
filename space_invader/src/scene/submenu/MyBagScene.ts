@@ -124,6 +124,8 @@ export default class MyBagScene extends Phaser.Scene {
 
 		const apiService = new supabaseAPIService()
 
+		this.slotType = SlotType.BOOSTER
+
 		this.background = this.add
 			.tileSprite(width / 2, height / 2, 720, 1280, 'submenu_bg')
 			.setOrigin(0.5)
