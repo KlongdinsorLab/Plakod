@@ -1,3 +1,4 @@
+import { BoosterEffect } from 'component/booster/booster'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
@@ -19,6 +20,9 @@ export default class B4DoubleCrescent {
 	protected scene: Phaser.Scene
 	protected player: Player
 	protected score: Score
+	protected isHit1: Boolean
+	protected isHit2: Boolean
+	protected boosterEffect: BoosterEffect
 
 	constructor(
 		scene: Phaser.Scene,
@@ -30,6 +34,9 @@ export default class B4DoubleCrescent {
 		this.scene = scene
 		this.player = player
 		this.score = score
+		this.isHit1 = false
+		this.isHit2 = false
+		this.boosterEffect = this.scene.registry.get('boosterEffect')
 		this.create(x, y)
 
 		// this.boosterEffect = scene.registry.get('boosterEffect')
@@ -57,10 +64,61 @@ export default class B4DoubleCrescent {
 			this.player.getBody(),
 			this.enemy1,
 			(_, _meteor) => {
-				if (this.player.getIsHit()) return
+				if (this.player.getIsHit()) {
+					this.isHit1 = false
+					return
+				}
+
+				if(this.isHit1) return
+				
+				if (this.boosterEffect?.remainingUses > 0) {
+					this.boosterEffect.remainingUses--
+					this.player.activateShield()
+					this.isHit1 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.boosterEffect.remainingUses--
+					this.isHit1 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime === 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.player.deactivateShield()
+					this.boosterEffect.remainingUses--
+					this.isHit1 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					!this.player.getIsUsedShield()
+				) {
+					this.player.activateShield(this.boosterEffect.remainingTime)
+					this.isHit1 = true
+					return
+				}
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.isHit1 = true
+					return
+				}
+
 				this.player.setIsHit(true)
 				this.player.damaged()
-				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION)
+				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION * this.boosterEffect?.hitMeteorScore)
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
 					this.player.setIsHit(false)
 					this.player.recovered()
@@ -90,10 +148,61 @@ export default class B4DoubleCrescent {
 			this.player.getBody(),
 			this.enemy2,
 			(_, _meteor) => {
-				if (this.player.getIsHit()) return
+				if (this.player.getIsHit()) {
+					this.isHit2 = false
+					return
+				}
+
+				if(this.isHit2) return
+				
+				if (this.boosterEffect?.remainingUses > 0) {
+					this.boosterEffect.remainingUses--
+					this.player.activateShield()
+					this.isHit2 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.boosterEffect.remainingUses--
+					this.isHit2 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime === 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.player.deactivateShield()
+					this.boosterEffect.remainingUses--
+					this.isHit2 = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					!this.player.getIsUsedShield()
+				) {
+					this.player.activateShield(this.boosterEffect.remainingTime)
+					this.isHit2 = true
+					return
+				}
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.isHit2 = true
+					return
+				}
+
 				this.player.setIsHit(true)
 				this.player.damaged()
-				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION)
+				this.score.add(BOSS_4_CRESCENT_SCORE_REDUCTION * this.boosterEffect?.hitMeteorScore)
 				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
 					this.player.setIsHit(false)
 					this.player.recovered()
