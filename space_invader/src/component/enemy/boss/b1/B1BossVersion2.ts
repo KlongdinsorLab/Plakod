@@ -268,6 +268,7 @@ export class B1BossVersion2 extends BossVersion {
 
 		const path = new Phaser.Curves.Path(0, 0)
 		const boss = scene.add.follower(path, width / 2, 300, 'b1v2').setOrigin(0.5)
+		boss.play('boss-hit')
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
 
 		setTimeout(() => {

@@ -124,6 +124,8 @@ export default class MyBagScene extends Phaser.Scene {
 
 		const apiService = new supabaseAPIService()
 
+		this.slotType = SlotType.BOOSTER
+
 		this.background = this.add
 			.tileSprite(width / 2, height / 2, 720, 1280, 'submenu_bg')
 			.setOrigin(0.5)
@@ -202,35 +204,6 @@ export default class MyBagScene extends Phaser.Scene {
 		)
 		this.disabledRewardButtonBackground = disabledRewardButton.buttonBackground
 		this.disabledRewardButtonText = disabledRewardButton.buttonText
-
-		//set hit box for booster and reward button
-		this.boosterButtonHitBox = this.add
-			.rectangle(width / 2 - 308, 508, 300, 100)
-			.setOrigin(0)
-		this.boosterButtonHitBox.setInteractive().on('pointerup', () => {
-			this.setBoosterButtonDisabled(false)
-			this.setRewardButtonDisabled(true)
-			this.destroyAchievementBag()
-			this.showBoosterBag()
-			this.boosterBag.setStartIndex(this.startIndex)
-			this.slotType = SlotType.BOOSTER
-			this.setArrowOverlay()
-		})
-		this.rewardButtonHitBox = this.add
-			.rectangle(width / 2 + 8, 508, 300, 100)
-			.setOrigin(0)
-		this.rewardButtonHitBox.setInteractive().on('pointerup', () => {
-			this.setBoosterButtonDisabled(true)
-			this.setRewardButtonDisabled(false)
-			this.startIndex = this.boosterBag.getStartIndex()
-			this.hideBoosterBag()
-			this.showAchievementBag()
-			this.slotType = SlotType.REWARD
-			this.setArrowOverlay()
-		})
-
-		this.setBoosterButtonDisabled(false)
-		this.setRewardButtonDisabled(true)
 
 		this.slotBackground = this.add.graphics()
 		this.slotBackground.fillStyle(0xfff6e5)
@@ -330,6 +303,35 @@ export default class MyBagScene extends Phaser.Scene {
 		this.rightButtonOverlay = arrowButtonRight.buttonOverlay
 		this.setArrowOverlay()
 
+		//set hit box for booster and reward button
+		this.boosterButtonHitBox = this.add
+			.rectangle(width / 2 - 308, 508, 300, 100)
+			.setOrigin(0)
+		this.boosterButtonHitBox.setInteractive().on('pointerup', () => {
+			this.setBoosterButtonDisabled(false)
+			this.setRewardButtonDisabled(true)
+			this.destroyAchievementBag()
+			this.showBoosterBag()
+			this.boosterBag.setStartIndex(this.startIndex)
+			this.slotType = SlotType.BOOSTER
+			this.setArrowOverlay()
+		})
+		this.rewardButtonHitBox = this.add
+			.rectangle(width / 2 + 8, 508, 300, 100)
+			.setOrigin(0)
+		this.rewardButtonHitBox.setInteractive().on('pointerup', () => {
+			this.setBoosterButtonDisabled(true)
+			this.setRewardButtonDisabled(false)
+			this.startIndex = this.boosterBag.getStartIndex()
+			this.hideBoosterBag()
+			this.showAchievementBag()
+			this.slotType = SlotType.REWARD
+			this.setArrowOverlay()
+		})
+
+		this.setBoosterButtonDisabled(false)
+		this.setRewardButtonDisabled(true)
+		
 		this.redButtonLeft.setInteractive().on('pointerup', () => {
 			this.leftArrowInteraction()
 			this.setArrowOverlay()
@@ -338,6 +340,7 @@ export default class MyBagScene extends Phaser.Scene {
 			this.rightArrowInteraction()
 			this.setArrowOverlay()
 		})
+
 		WebFont.load({
 			google: {
 				families: ['Mali:500,600,700', 'Jua'],
