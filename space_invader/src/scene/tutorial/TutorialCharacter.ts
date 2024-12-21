@@ -143,7 +143,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 		this.reloadCount.getBody().setOrigin(0.5, 0)
 		this.menu = new Menu(this)
 
-		const holdDurationMs = this.scene.scene.registry.get('difficulty').inhale_second ?? 1 * 1000 
+		const holdDurationMs = (this.scene.scene.registry.get('difficulty').inhale_second ?? 1) * 1000 
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this, holdDurationMs)
 		this.gaugeRegistry.createbyDivision(1)

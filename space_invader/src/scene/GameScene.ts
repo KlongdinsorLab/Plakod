@@ -218,7 +218,7 @@ export default class GameScene extends Phaser.Scene {
 
 		this.player.addChargeParticle()
 
-		this.holdDurationMs = this.scene.scene.registry.get('difficulty').inhale_second ?? 1 * 1000 
+		this.holdDurationMs = (this.scene.scene.registry.get('difficulty').inhale_second ?? 1) * 1000 
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this, this.holdDurationMs)
 		this.gaugeRegistry.createbyDivision(1)
