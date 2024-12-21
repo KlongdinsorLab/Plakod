@@ -253,11 +253,32 @@
 			}
 		},
 		{
-			"filename": "mc_hurt_00001.png",
+			"filename": "mc_bullet.png",
+			"frame": {
+				"x": 1425,
+				"y": 1,
+				"w": 66,
+				"h": 66
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 66,
+				"h": 66
+			},
+			"sourceSize": {
+				"w": 66,
+				"h": 66
+			}
+		},
+		{
+			"filename": "mc_hurt.png",
 			"frame": {
 				"x": 713,
 				"y": 179,
-				"w": 170,
+				"w": 160,
 				"h": 170
 			},
 			"rotated": false,
@@ -265,18 +286,18 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 170,
+				"w": 160,
 				"h": 170
 			},
 			"sourceSize": {
-				"w": 170,
+				"w": 160,
 				"h": 170
 			}
 		},
 		{
 			"filename": "mc_inhale_00001.png",
 			"frame": {
-				"x": 885,
+				"x": 875,
 				"y": 179,
 				"w": 375,
 				"h": 375
@@ -465,7 +486,7 @@
 		{
 			"filename": "mc_inhale_00010.png",
 			"frame": {
-				"x": 1425,
+				"x": 1493,
 				"y": 1,
 				"w": 375,
 				"h": 375
@@ -612,7 +633,7 @@
 		{
 			"filename": "mc_normal_00005.png",
 			"frame": {
-				"x": 1262,
+				"x": 1252,
 				"y": 378,
 				"w": 176,
 				"h": 176
