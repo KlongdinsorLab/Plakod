@@ -1,8 +1,9 @@
+import { BoosterEffect } from 'component/booster/booster'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
-	BOSS2_SKILL_SCORE_REDUCTION,
+	BOSS3_SKILL_SCORE_REDUCTION,
 	BOSS3_PHASE1_SKILL_ANGLE,
 	BOSS3_PHASE2_SKILL_ANGLE,
 	BOSS3_SKILL_GAP,
@@ -18,6 +19,8 @@ export class B3Bullet {
 	protected player: Player
 	protected score: Score
 	protected isSecondPhase = false
+	protected isHit: Boolean[]
+	protected boosterEffect: BoosterEffect
 
 	constructor(
 		scene: Phaser.Scene,
@@ -30,6 +33,8 @@ export class B3Bullet {
 		this.scene = scene
 		this.player = player
 		this.score = score
+		this.isHit = Array(6).fill(false)
+		this.boosterEffect = this.scene.registry.get('boosterEffect')
 		this.isSecondPhase = bossVersion === 2
 		this.create(x, y)
 
@@ -82,16 +87,70 @@ export class B3Bullet {
 		]
 		this.enemies.forEach((enemy) => (enemy.depth = 1))
 
-		this.scene.physics.add.overlap(this.player.getBody(), this.enemies, () => {
-			if (this.player.getIsHit()) return
-			this.player.setIsHit(true)
-			this.player.damaged()
-			this.score.add(BOSS2_SKILL_SCORE_REDUCTION)
-			this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
-				this.player.setIsHit(false)
-				this.player.recovered()
+		this.enemies.forEach((enemy,i) => {
+			this.scene.physics.add.overlap(this.player.getBody(), enemy, () => {
+				if (this.player.getIsHit()) {
+					this.isHit[i] = false
+					return
+				}
+
+				if(this.isHit[i]) return
+				
+				if (this.boosterEffect?.remainingUses > 0) {
+					this.boosterEffect.remainingUses--
+					this.player.activateShield()
+					this.isHit[i] = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.boosterEffect.remainingUses--
+					this.isHit[i] = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime === 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.player.deactivateShield()
+					this.boosterEffect.remainingUses--
+					this.isHit[i] = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					!this.player.getIsUsedShield()
+				) {
+					this.player.activateShield(this.boosterEffect.remainingTime)
+					this.isHit[i] = true
+					return
+				}
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.isHit[i] = true
+					return
+				}
+
+				this.player.setIsHit(true)
+				this.player.damaged()
+				this.score.add(BOSS3_SKILL_SCORE_REDUCTION * this.boosterEffect?.hitMeteorScore)
+				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
+					this.player.setIsHit(false)
+					this.player.recovered()
+				})
 			})
-		})
+		})		
+
 		this.scene.time.delayedCall(5000, () => {
 			this.enemies.forEach((enemy) => enemy.destroy())
 		})

@@ -326,6 +326,7 @@ export default class GameScene extends Phaser.Scene {
 		})
 
 		// this.reloadCount.setCount(6)
+		// if(this.isCompleteBoss) this.reloadCount.setCount(2)
 	}
 
 	isCompleteTutorial = () => localStorage.getItem('tutorial') || false

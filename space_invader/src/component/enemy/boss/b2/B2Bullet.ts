@@ -1,3 +1,4 @@
+import { BoosterEffect } from 'component/booster/booster'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
@@ -11,6 +12,8 @@ export class B2Bullet {
 	protected scene: Phaser.Scene
 	protected player: Player
 	protected score: Score
+	protected isHit: Boolean
+	protected boosterEffect: BoosterEffect
 
 	constructor(
 		scene: Phaser.Scene,
@@ -22,6 +25,8 @@ export class B2Bullet {
 		this.scene = scene
 		this.player = player
 		this.score = score
+		this.isHit = false
+		this.boosterEffect = this.scene.registry.get('boosterEffect')
 		this.create(x, y)
 
 		// this.boosterEffect = scene.registry.get('boosterEffect')
@@ -42,14 +47,68 @@ export class B2Bullet {
 			this.player.getBody(),
 			this.enemy,
 			(_, _meteor) => {
-				if (this.player.getIsHit()) return
-				this.player.setIsHit(true)
-				this.player.damaged()
-				this.score.add(BOSS2_SKILL_SCORE_REDUCTION)
-				this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
-					this.player.setIsHit(false)
-					this.player.recovered()
-				})
+				if (this.player.getIsHit()) {
+					this.isHit = false
+					return
+				}
+
+				if(this.isHit) return
+				
+				if (this.boosterEffect?.remainingUses > 0) {
+					this.boosterEffect.remainingUses--
+					this.player.activateShield()
+					this.isHit = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.boosterEffect.remainingUses--
+					this.isHit = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime === 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.player.deactivateShield()
+					this.boosterEffect.remainingUses--
+					this.isHit = true
+					return
+				}
+				
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					!this.player.getIsUsedShield()
+				) {
+					this.player.activateShield(this.boosterEffect.remainingTime)
+					this.isHit = true
+					return
+				}
+				if (
+					this.boosterEffect?.remainingUses === 0 &&
+					this.boosterEffect.remainingTime > 0 &&
+					this.player.getIsUsedShield()
+				) {
+					this.isHit = true
+					return
+				}
+
+				if (!this.isHit) {
+					this.player.setIsHit(true)
+					this.player.damaged()
+					this.score.add(BOSS2_SKILL_SCORE_REDUCTION * this.boosterEffect?.hitMeteorScore)
+					this.scene.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
+						this.player.setIsHit(false)
+						this.player.recovered()
+					})
+				}
+				
 			},
 		)
 		this.scene.time.delayedCall(5000, () => {
