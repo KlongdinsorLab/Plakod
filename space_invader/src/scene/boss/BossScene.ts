@@ -371,16 +371,6 @@ export default class BossScene extends Phaser.Scene {
 			}
 		}
 
-		if (this.input.pointer1.isDown) {
-			const { x } = this.input.pointer1
-			if (this.player.isRightOf(x)) {
-				this.player.moveRight(delta)
-			}
-			if (this.player.isLeftOf(x)) {
-				this.player.moveLeft(delta)
-			}
-		}
-
 		// scroll the background
 		this.background.tilePositionY += 1.5
 
