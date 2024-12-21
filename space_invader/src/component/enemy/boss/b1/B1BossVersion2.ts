@@ -161,7 +161,7 @@ export class B1BossVersion2 extends BossVersion {
 		scene.tweens.add({
 			targets: group.getChildren(),
 			x: width / 2,
-			y: height / 2 + 225,
+			y: height / 2,
 			duration: 1000,
 			repeat: 0,
 			ease: 'sine.out',
