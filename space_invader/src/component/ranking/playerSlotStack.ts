@@ -118,7 +118,7 @@ export class PlayerSlotStack {
 	}
 	nextPage() {
 		this.index += this.maxPlayerSlot
-		//this.rank += this.maxPlayerSlot;
+		this.rank = this.index
 		this.playerSlots.forEach((playerSlot) => {
 			playerSlot.destroy()
 		})
@@ -128,7 +128,7 @@ export class PlayerSlotStack {
 	previousPage() {
 		if (this.index <= 0) return
 		this.index -= this.maxPlayerSlot
-		this.rank -= this.maxPlayerSlot * 2
+		this.rank = this.index
 		this.playerSlots.forEach((playerSlot) => {
 			playerSlot.destroy()
 		})
