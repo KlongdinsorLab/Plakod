@@ -163,11 +163,12 @@ export default class EndGameScene extends Phaser.Scene {
 
 		const finishGame = async () => {
 			try {
-				this.finishGameResponse = await apiService.finishGameSession({
+				this.finishGameResponse = (await apiService.finishGameSession({
 					score: this.score,
 					lap: this.scene.scene.registry.get('lap'),
 					is_booster_received: this.registry.get('isBoosterReceived'),
-				})
+				})).response
+
 				logger.info(
 					this.scene.key,
 					`Api call success, Response: ${this.finishGameResponse}`,
@@ -176,7 +177,7 @@ export default class EndGameScene extends Phaser.Scene {
 				logger.error(this.scene.key, `Api call failed: ${error}`)
 			}
 		}
-		finishGame()
+		await finishGame()
 
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
@@ -292,6 +293,7 @@ export default class EndGameScene extends Phaser.Scene {
 				self.restartButton.initFontStyle()
 				self.homeButton.initFontStyle()
 				self.achievementPopup?.initFontStyle()
+				self.levelUpPopup?.initFontStyle()
 
 				self.victoryText
 					.setStyle({
@@ -344,15 +346,6 @@ export default class EndGameScene extends Phaser.Scene {
 			!this.levelUpPopup.getIsConfirmLevelUp()
 		) {
 			this.levelUpPopup.setVisibleOn()
-			const self = this
-			WebFont.load({
-				google: {
-					families: ['Mali', 'Jua'],
-				},
-				active: function () {
-					self.levelUpPopup.initFontStyle()
-				},
-			})
 			return
 		}
 
