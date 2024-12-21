@@ -193,7 +193,9 @@ export default class BossScene extends Phaser.Scene {
 
 		this.isCompleteInit = true
 
-		this.gaugeRegistry = new InhaleGaugeRegistry(this)
+		const holdDurationMs = this.scene.scene.registry.get('difficulty').inhale_second * 1000
+
+		this.gaugeRegistry = new InhaleGaugeRegistry(this, holdDurationMs)
 		this.gaugeRegistry.createbyDivision(1)
 		this.gaugeRegistry.get(0).setVisibleAll(false)
 
