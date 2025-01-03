@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
 import {
 	BULLET_COUNT,
-	HOLD_DURATION_MS,
+	// HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
 	MARGIN,
 	HOLD_BAR_BORDER,
@@ -20,11 +20,13 @@ let bulletBar: Phaser.GameObjects.Image
 
 export default class OverlapInhaleGauge extends InhaleGauge {
 	private soundManager: SoundManager
+	private holdDurationMs: number
 	private laserFrequency!: number
 
-	constructor(scene: Phaser.Scene, division: number, index: number) {
+	constructor(scene: Phaser.Scene, division: number, index: number, holdDurationMs: number) {
 		super(scene, division, index)
 		this.soundManager = new SoundManager(scene)
+		this.holdDurationMs = holdDurationMs
 
 		isReloading = false
 	}
@@ -99,14 +101,14 @@ export default class OverlapInhaleGauge extends InhaleGauge {
 	getHoldWithIncrement(delta: number): number {
 		return (
 			((<Phaser.GameObjects.Rectangle>this.gauge).width * 2 + HOLD_BAR_BORDER) /
-			(HOLD_DURATION_MS / delta)
+			(this.holdDurationMs / delta)
 		)
 	}
 
 	getScaleX(): number {
 		return (
 			1 +
-			(this.holdButtonDuration / HOLD_DURATION_MS) * (INHALE_GAUGE_SECTIONS - 1)
+			(this.holdButtonDuration / this.holdDurationMs) * (INHALE_GAUGE_SECTIONS - 1)
 		)
 	}
 
@@ -129,13 +131,13 @@ export default class OverlapInhaleGauge extends InhaleGauge {
 		gauge.setScale(this.getScaleX(), 1)
 		gauge.setFillStyle(0x7fcf01)
 		this.holdButtonDuration -=
-			(delta * HOLD_DURATION_MS) / (LASER_FREQUENCY_MS * BULLET_COUNT)
+			(delta * this.holdDurationMs) / (LASER_FREQUENCY_MS * BULLET_COUNT)
 		this.soundManager.pause(this.chargingSound!)
 	}
 
 	setFullCharge() {
 		;(<Phaser.GameObjects.Rectangle>this.gauge).setFillStyle(0x7fcf01, 1)
-		this.holdButtonDuration = HOLD_DURATION_MS
+		this.holdButtonDuration = this.holdDurationMs
 		this.soundManager.play(this.chargedSound!)
 	}
 

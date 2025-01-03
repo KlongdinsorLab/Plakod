@@ -7,7 +7,7 @@ import {
 	BUTTON_MAP,
 	DARK_BROWN,
 	GAME_TIME_LIMIT_MS,
-	HOLD_DURATION_MS,
+	// HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
 	MARGIN,
 	RELOAD_COUNT,
@@ -77,6 +77,8 @@ export default class GameScene extends Phaser.Scene {
 	private apiService!: supabaseAPIService
 
 	private selectedCharacterId!: string
+
+	private holdDurationMs!: number
 
 	constructor() {
 		super({ key: 'game' })
@@ -216,7 +218,9 @@ export default class GameScene extends Phaser.Scene {
 
 		this.player.addChargeParticle()
 
-		this.gaugeRegistry = new InhaleGaugeRegistry(this)
+		this.holdDurationMs = (this.scene.scene.registry.get('difficulty').inhale_second ?? 1) * 1000 
+
+		this.gaugeRegistry = new InhaleGaugeRegistry(this, this.holdDurationMs)
 		this.gaugeRegistry.createbyDivision(1)
 
 		this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
@@ -226,6 +230,8 @@ export default class GameScene extends Phaser.Scene {
 		this.score = new Score(this)
 		this.score.setScore(this.scoreNumber)
 		// this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+
+		
 
 		this.meteorFactory = new MeteorFactory()
 
@@ -423,7 +429,7 @@ export default class GameScene extends Phaser.Scene {
 		}
 
 		if (
-			gauge.getDuratation() > HOLD_DURATION_MS &&
+			gauge.getDuratation() > this.holdDurationMs &&
 			this.controller1?.buttons.B16 > 0
 		) {
 			this.player.startReload()
@@ -441,7 +447,7 @@ export default class GameScene extends Phaser.Scene {
 				})
 			}
 		} else if (
-			gauge.getDuratation() <= HOLD_DURATION_MS &&
+			gauge.getDuratation() <= this.holdDurationMs &&
 			gauge.getDuratation() !== 0 &&
 			this.controller1?.buttons.B16 > 0 &&
 			!this.player.getIsAttacking()
