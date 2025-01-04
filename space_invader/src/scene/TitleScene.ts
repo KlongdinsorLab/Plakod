@@ -265,7 +265,7 @@ export default class TitleScene extends Phaser.Scene {
 		this.createPopUp()
 
 		// temporary start game button
-		this.add
+		const startGameButton = this.add
 			.nineslice(
 				width / 2,
 				1160,
@@ -281,7 +281,7 @@ export default class TitleScene extends Phaser.Scene {
 			.setOrigin(0.5, 0)
 			.setInteractive()
 			.on('pointerup', () => this.startGame())
-		this.add.image(
+		const startGameIcon = this.add.image(
 			92 + (width / 2 - 528 / 2),
 			1040 + 96 / 2,
 			'icon_spritesheet',
@@ -293,6 +293,13 @@ export default class TitleScene extends Phaser.Scene {
 			.setColor('#D35E24')
 			.setFontSize(28)
 			.setPadding(0, 20, 0, 20)
+
+		console.log(import.meta.env.VITE_START_GAME_BUTTON)
+		if(!import.meta.env.VITE_START_GAME_BUTTON){
+			startGameButton.setVisible(false)
+			startGameIcon.setVisible(false)
+			buttontext4.setVisible(false)
+		}
 
 		const self = this
 		WebFont.load({
