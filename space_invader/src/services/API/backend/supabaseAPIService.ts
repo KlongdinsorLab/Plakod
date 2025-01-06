@@ -52,9 +52,6 @@ export default class supabaseAPIService {
 				phoneNumber: phoneNumber,
 			},
 		})
-		console.log(res.error.context)
-		console.log(res.error.message)
-		console.log(res)
 		if (res.error) {
 			throw {
 				error: res.error,
