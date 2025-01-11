@@ -202,6 +202,7 @@ export default class PauseScene extends Phaser.Scene {
 			.setOrigin(0, 0.5)
 
 		const handleHomeClick = async () => {
+			this.scene.pause()
 			try {
 				const updateGameResponse = await apiService.updateGameSession({
 					score: Math.round(this.score),
