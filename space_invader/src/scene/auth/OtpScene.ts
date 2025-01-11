@@ -212,17 +212,19 @@ export default class OtpScene extends Phaser.Scene {
 				`Api call success, Response: ${supabaseResponse}`,
 			)
 
-			if (supabaseResponse.message === 'No existing player')
+			if (supabaseResponse.message === 'Ok') {
+				this.scene.stop()
+				this.scene.launch('home', { bgm: this.bgm })
+			} else {
+				throw new Error('Authentication Error')
+			}
+		} catch (e: any) {
+			logger.error(this.scene.key, `Authentication Error`)
+			if (e.statusCode == 404)
 				this.scene.launch('register', {
 					phoneNumber: this.phoneNumber,
 					bgm: this.bgm,
 				})
-			else if (supabaseResponse.message === 'Ok') {
-				this.scene.stop()
-				this.scene.launch('home', { bgm: this.bgm })
-			} else throw new Error('Authentication Error')
-		} catch (e) {
-			logger.error(this.scene.key, `Authentication Error`)
 
 			const toast = <Element>this.element.getChildByID('toast')
 			toast.innerHTML +=
