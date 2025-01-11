@@ -18,7 +18,7 @@ import { logger } from 'services/logger'
 
 export default class EndGameScene extends Phaser.Scene {
 	private score!: number
-	private isHighScore = true
+	private isHighScore!: boolean
 	private heart1!: Heart
 	private heart2!: Heart
 	private isHeartEmpty!: boolean
@@ -178,6 +178,8 @@ export default class EndGameScene extends Phaser.Scene {
 			}
 		}
 		await finishGame()
+
+		this.isHighScore = this.finishGameResponse?.is_high_score
 
 		this.add
 			.tileSprite(0, 0, width, height, 'end_game_scene_bg')
