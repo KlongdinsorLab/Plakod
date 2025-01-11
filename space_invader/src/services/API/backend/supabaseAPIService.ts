@@ -44,7 +44,7 @@ export default class supabaseAPIService {
 	}
 
 	async login(phoneNumber: string) {
-		const { data, error } = await supabaseClient.functions.invoke('login', {
+		const res = await supabaseClient.functions.invoke('login', {
 			headers: {
 				Authorization: this.getAuthHeader(),
 			},
@@ -52,11 +52,14 @@ export default class supabaseAPIService {
 				phoneNumber: phoneNumber,
 			},
 		})
-		if (error) {
-			throw new Error('error')
+		if (res.error) {
+			throw {
+				error: res.error,
+				statusCode: res.error.context.status,
+			}
 		}
 
-		return data
+		return res.data
 	}
 
 	async updateUsername(username: string) {
