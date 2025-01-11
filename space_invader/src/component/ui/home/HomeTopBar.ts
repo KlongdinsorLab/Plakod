@@ -16,7 +16,8 @@ export default class HomeTopBar {
 			.graphics()
 			.fillStyle(0xffffff, 0.5)
 			.fillRoundedRect(MARGIN, 2 * MARGIN + 40, 240, 24, 10)
-		scene.add
+		if(currentProgress > 5) {
+			scene.add
 			.graphics()
 			.fillStyle(0x43a99e, 1)
 			.fillRoundedRect(
@@ -24,8 +25,10 @@ export default class HomeTopBar {
 				2 * MARGIN + 40,
 				currentProgress * 0.01 * 240,
 				24,
-				10,
+				10
 			)
+		}
+		
 		scene.add
 			.graphics()
 			.lineStyle(3, 0x57453b, 1)
