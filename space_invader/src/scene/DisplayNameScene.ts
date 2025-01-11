@@ -53,10 +53,12 @@ export default class DisplayNameScene extends Phaser.Scene {
 						`Api call success, Response: ${data.response}`,
 					)
 					this.scene.start('redeem')
+					this.registry.set('username', username)
 					return
 				} catch (error) {
 					logger.error(this.scene.key, `Api call failed: ${error}`)
 				}
+				
 			}
 		}
 	}
