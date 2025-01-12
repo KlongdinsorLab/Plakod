@@ -86,6 +86,7 @@ export interface GameSessionFinishedDTO {
 
 export type FinishGameResponse = {
 	// TODO: add achievement type
+	is_high_score: boolean
 	new_achievements: any[]
 	total_games: number
 	games_played_today: {
