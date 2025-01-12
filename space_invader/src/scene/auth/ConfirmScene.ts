@@ -162,6 +162,7 @@ export default class ConfirmScene extends Phaser.Scene {
 				)
 				this.scene.stop()
 				this.scene.launch('register', {
+					phoneNumber: this.phoneNumber,
 					age: ageInput.textContent,
 					gender: this.selectedData?.gender,
 					airflow: airflowInput.textContent,
