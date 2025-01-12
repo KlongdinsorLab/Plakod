@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import Phaser from 'phaser'
 import { AccumulationType } from 'scene/submenu/RankingScene'
 
@@ -188,11 +189,15 @@ export class PlayerSlot {
 	}
 
 	lengthOfString(username: string): { length: number; noCnt: number } {
-		let length = username.length
+		if (!username) {
+			return { length: 0, noCnt: 0 }
+		}
+
+		let length = username?.length ?? 0
 		let noCnt = 0
 		const pattern = /[่้๊๋ิี็ํูืฺุ]/
 
-		for (let char of username) {
+		for (const char of username) {
 			if (pattern.test(char)) {
 				noCnt++
 			}
